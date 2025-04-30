@@ -12,6 +12,8 @@ import {
 import merge from 'deepmerge';
 import {useColorScheme} from 'react-native';
 import {createContext, PropsWithChildren} from 'react';
+import IonIcons from '@react-native-vector-icons/ionicons';
+import {IconProps} from 'react-native-paper/lib/typescript/components/MaterialCommunityIcon';
 
 const {LightTheme, DarkTheme} = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
@@ -20,6 +22,10 @@ const {LightTheme, DarkTheme} = adaptNavigationTheme({
 
 const CombinedDefaultTheme = {
   ...merge(MD3LightTheme, LightTheme),
+  colors: {
+    ...merge(MD3LightTheme.colors, LightTheme.colors),
+    primary: '#17A2B8', // tu color principal claro
+  },
   fonts: {
     ...MD3LightTheme.fonts,
     regular: {fontFamily: 'Nunito-Regular', fontWeight: '400' as '400'},
@@ -31,6 +37,10 @@ const CombinedDefaultTheme = {
 
 const CombinedDarkTheme = {
   ...merge(MD3DarkTheme, DarkTheme),
+  colors: {
+    ...merge(MD3DarkTheme.colors, DarkTheme.colors),
+    primary: '#058CA1', // tu color principal oscuro
+  },
   fonts: {
     ...MD3DarkTheme.fonts,
     regular: {fontFamily: 'Nunito-Regular', fontWeight: '400' as '400'},
@@ -39,6 +49,8 @@ const CombinedDarkTheme = {
     heavy: {fontFamily: 'Nunito-Heavy', fontWeight: '900' as '900'},
   },
 };
+
+const RenderIcon = (props: IconProps) => <IonIcons {...props} />;
 
 export const ThemeContext = createContext({
   isDark: false,
@@ -51,7 +63,11 @@ export const ThemeContextProvider = ({children}: PropsWithChildren) => {
   const theme = isDarkTheme ? CombinedDarkTheme : CombinedDefaultTheme;
 
   return (
-    <PaperProvider theme={theme}>
+    <PaperProvider
+      theme={theme}
+      settings={{
+        icon: props => RenderIcon(props),
+      }}>
       <NavigationContainer theme={theme}>
         <ThemeContext.Provider value={{isDark: isDarkTheme, theme: theme}}>
           {children}
