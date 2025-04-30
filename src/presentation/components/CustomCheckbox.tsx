@@ -7,6 +7,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import IonIcons from '@react-native-vector-icons/ionicons';
+import { useTheme } from 'react-native-paper';
 
 interface CustomCheckboxProps {
   label: string;
@@ -19,6 +20,7 @@ const CustomCheckbox: React.FC<CustomCheckboxProps> = ({
   onChange,
   style,
 }) => {
+  const {colors} = useTheme();
   const [checked, setChecked] = useState(false);
 
   const toggleCheckbox = () => {
@@ -37,7 +39,7 @@ const CustomCheckbox: React.FC<CustomCheckboxProps> = ({
         <IonIcons
           name={checked ? 'checkbox' : 'square-outline'}
           size={20}
-          color={checked ? '#17A2B8' : 'black'} // Cambia el color según el estado
+          color={checked ? colors.primary : 'black'} // Cambia el color según el estado
         />
       </View>
       <Text style={styles.label}>{label}</Text>

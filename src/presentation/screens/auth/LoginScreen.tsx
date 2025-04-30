@@ -1,11 +1,19 @@
-import React from 'react';
-import {Image, ScrollView} from 'react-native';
-import {Appbar, Button, Text, TextInput, useTheme} from 'react-native-paper';
+import React, {useState} from 'react';
+import {Image, ScrollView, View} from 'react-native';
+import {Text, TextInput, useTheme} from 'react-native-paper';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {useMutation} from '@tanstack/react-query';
 import CustomCheckbox from '../../components/CustomCheckbox';
 import {getVersionApp} from '../../../actions/auth/auth';
+import PrimaryButton from '../../components/PrimaryButton';
+import CustomTextInput from '../../components/CustomTextInput';
+
+interface LoginFormValues {
+  usuario: string;
+  contrasena: string;
+  recordar: boolean;
+}
 
 const LoginSchema = Yup.object().shape({
   usuario: Yup.string().required('Requerido'),
@@ -14,7 +22,8 @@ const LoginSchema = Yup.object().shape({
 
 const LoginScreen = () => {
   const {colors} = useTheme();
-  const _handleMore = () => console.log('Shown more');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  // const _handleMore = () => console.log('Shown more');
 
   const versionMutation = useMutation({
     mutationFn: getVersionApp,
@@ -22,35 +31,55 @@ const LoginScreen = () => {
       console.log('Versión obtenida:', data);
       // Aquí haces la siguiente llamada
       // await loginUsuario({...});
+      setIsSubmitting(false);
     },
     onError: error => {
       console.error('Error al obtener versión:', error);
+      setIsSubmitting(false);
     },
   });
 
+  const startLoginSubmit = (values: LoginFormValues) => {
+    if (isSubmitting) {
+      // evita múltiples envíos
+      return;
+    }
+    console.log('Login con:', values);
+    setIsSubmitting(true);
+    versionMutation.mutate();
+  };
+
   return (
     <>
-      <Appbar.Header style={{backgroundColor: colors.primary}}>
+      {/* <Appbar.Header style={{backgroundColor: colors.primary}}>
         <Appbar.Content title="Iniciar Sesión" titleStyle={{color: 'white'}} />
         <Appbar.Action icon="build" onPress={_handleMore} color="white" />
-      </Appbar.Header>
+      </Appbar.Header> */}
 
       <ScrollView style={{flex: 1, padding: 32}}>
         <Text variant="bodySmall">1.0.0</Text>
 
         <Image
           source={require('../../../assets/images/logo.png')}
-          style={{width: 250, alignSelf: 'center', marginVertical: 32}}
+          style={{
+            width: 100,
+            height: 100,
+            alignSelf: 'center',
+            marginVertical: 32,
+          }}
           resizeMode="contain"
         />
+
+        <Text
+          variant="headlineLarge"
+          style={{textAlign: 'center', marginBottom: 16}}>
+          Iniciar Sesión
+        </Text>
 
         <Formik
           initialValues={{usuario: '', contrasena: '', recordar: false}}
           validationSchema={LoginSchema}
-          onSubmit={values => {
-            console.log('Login con:', values);
-            versionMutation.mutate(); // Llamada a getVersionApp
-          }}>
+          onSubmit={values => startLoginSubmit(values)}>
           {({
             handleChange,
             handleBlur,
@@ -61,7 +90,7 @@ const LoginScreen = () => {
             setFieldValue,
           }) => (
             <>
-              <TextInput
+              <CustomTextInput
                 label="Usuario"
                 mode="outlined"
                 autoCapitalize="characters"
@@ -77,7 +106,7 @@ const LoginScreen = () => {
                 </Text>
               )}
 
-              <TextInput
+              <CustomTextInput
                 label="Contraseña"
                 secureTextEntry
                 mode="outlined"
@@ -95,20 +124,35 @@ const LoginScreen = () => {
                 </Text>
               )}
 
-              <CustomCheckbox
-                label="Recordar"
-                onChange={checked => setFieldValue('recordar', checked)}
-                style={{marginTop: 16}}
-              />
+              <View
+                style={{
+                  marginTop: 16,
+                  flexDirection: 'row',
+                  flex: 1,
+                  justifyContent: 'space-between',
+                }}>
+                <CustomCheckbox
+                  label="Recordar"
+                  onChange={checked => setFieldValue('recordar', checked)}
+                />
+                <Text>¿Olvido su contraseña?</Text>
+              </View>
 
-              <Button
-                mode="contained"
+              <PrimaryButton
                 onPress={() => handleSubmit()}
-                loading={versionMutation.isPending}
-                disabled={versionMutation.isPending}
+                loading={isSubmitting}
+                disabled={isSubmitting}
                 style={{marginTop: 32}}>
                 Iniciar Sesión
-              </Button>
+              </PrimaryButton>
+              <Text
+                style={{
+                  marginTop: 8,
+                  textAlign: 'center',
+                  color: colors.primary,
+                }}>
+                Privacidad y protección de datos
+              </Text>
             </>
           )}
         </Formik>
