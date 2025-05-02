@@ -13,7 +13,7 @@ const AuthLayout = ({children}: Props) => {
   const {colors} = useTheme();
 
   return (
-    <View style={{paddingTop: top, backgroundColor: colors.primary}}>
+    <View style={{flex: 1, paddingTop: top, backgroundColor: colors.primary}}>
       <View style={styles.box}>
         <View style={styles.boxHeader}>
           <Text variant="labelSmall" style={{color: 'white'}}>
@@ -47,9 +47,9 @@ const AuthLayout = ({children}: Props) => {
 
 const styles = StyleSheet.create({
   box: {
-    height: 250,
     padding: 32,
     position: 'relative',
+    height: 250,
   },
   boxHeader: {
     justifyContent: 'space-between',
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   containerChildren: {
-    height: '100%',
+    flex: 1,
     paddingHorizontal: 32,
     paddingBottom: 32,
   },

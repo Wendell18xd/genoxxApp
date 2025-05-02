@@ -8,7 +8,7 @@ import CustomCheckbox from '../../../components/ui/CustomCheckbox';
 import {getVersionApp} from '../../../../actions/auth/auth';
 import PrimaryButton from '../../../components/ui/PrimaryButton';
 import CustomTextInput from '../../../components/ui/CustomTextInput';
-import AuthLayout from '../layout/LoginLayout';
+import AuthLayout from '../layout/AuthLayout';
 
 interface LoginFormValues {
   usuario: string;
