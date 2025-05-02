@@ -13,6 +13,7 @@ export type IonIconProns =
   | 'alert-circle-outline'
   | 'document-text-outline'
   | 'chevron-forward-outline'
+  | 'settings'
   | 'refresh-outline';
 
 interface Props {
