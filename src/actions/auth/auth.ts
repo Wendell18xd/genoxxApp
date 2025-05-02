@@ -1,14 +1,23 @@
 import {genoxxApi} from '../../config/api/genoxxApi';
 import {VersionAppResponse} from '../../infrastructure/interfaces/auth.response';
+import {LoginRequest} from '../../infrastructure/interfaces/login.request';
 
-export const getVersionApp = async (): Promise<VersionAppResponse> => {
+export const getLogin = async (
+  props: LoginRequest,
+): Promise<VersionAppResponse> => {
   try {
     const {data} = await genoxxApi.post<VersionAppResponse>(
-      '/app/get_version_app',
+      '/auth/iniciar_sesion',
+      {
+        usuaCodigo: props.usuaCodigo,
+        usuaClave: props.usuaClave,
+        emprCodigo: props.emprCodigo,
+        recorded: props.recorded,
+      },
     );
 
     return data;
   } catch (error) {
-    throw new Error('Error fetching version app data: ' + error);
+    throw new Error('Error al iniciar sesión: ' + error);
   }
 };

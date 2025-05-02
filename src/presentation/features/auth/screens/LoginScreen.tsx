@@ -5,7 +5,7 @@ import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {useMutation} from '@tanstack/react-query';
 import CustomCheckbox from '../../../components/ui/CustomCheckbox';
-import {getVersionApp} from '../../../../actions/auth/auth';
+import {getLogin} from '../../../../actions/auth/auth';
 import PrimaryButton from '../../../components/ui/PrimaryButton';
 import CustomTextInput from '../../../components/ui/CustomTextInput';
 import AuthLayout from '../layout/AuthLayout';
@@ -24,14 +24,11 @@ const LoginSchema = Yup.object().shape({
 const LoginScreen = () => {
   const {colors} = useTheme();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // const _handleMore = () => console.log('Shown more');
 
   const versionMutation = useMutation({
-    mutationFn: getVersionApp,
+    mutationFn: getLogin,
     onSuccess: async data => {
       console.log('Versión obtenida:', data);
-      // Aquí haces la siguiente llamada
-      // await loginUsuario({...});
       setIsSubmitting(false);
     },
     onError: error => {
@@ -42,17 +39,23 @@ const LoginScreen = () => {
 
   const startLoginSubmit = (values: LoginFormValues) => {
     if (isSubmitting) {
-      // evita múltiples envíos
       return;
     }
-    console.log('Login con:', values);
+
+    const loginData = {
+      usuaCodigo: values.usuario,
+      usuaClave: values.contrasena,
+      emprCodigo: '',
+      recorded: values.recordar,
+    };
+
     setIsSubmitting(true);
-    versionMutation.mutate();
+    versionMutation.mutate(loginData);
   };
 
   return (
     <AuthLayout>
-      <ScrollView style={{flex: 1}}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <Image
           source={require('../../../../assets/images/logo.png')}
           style={{
