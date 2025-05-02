@@ -4,11 +4,11 @@ import {Text, TextInput, useTheme} from 'react-native-paper';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {useMutation} from '@tanstack/react-query';
-import CustomCheckbox from '../../components/ui/CustomCheckbox';
-import {getVersionApp} from '../../../actions/auth/auth';
-import PrimaryButton from '../../components/ui/PrimaryButton';
-import CustomTextInput from '../../components/ui/CustomTextInput';
-import LoginLayout from '../../layout/LoginLayout';
+import CustomCheckbox from '../../../components/ui/CustomCheckbox';
+import {getVersionApp} from '../../../../actions/auth/auth';
+import PrimaryButton from '../../../components/ui/PrimaryButton';
+import CustomTextInput from '../../../components/ui/CustomTextInput';
+import AuthLayout from '../layout/LoginLayout';
 
 interface LoginFormValues {
   usuario: string;
@@ -51,7 +51,7 @@ const LoginScreen = () => {
   };
 
   return (
-    <LoginLayout>
+    <AuthLayout>
       {/* <Appbar.Header style={{backgroundColor: colors.primary}}>
         <Appbar.Content title="Iniciar Sesión" titleStyle={{color: 'white'}} />
         <Appbar.Action icon="build" onPress={_handleMore} color="white" />
@@ -59,7 +59,7 @@ const LoginScreen = () => {
 
       <ScrollView style={{flex: 1}}>
         <Image
-          source={require('../../../assets/images/logo.png')}
+          source={require('../../../../assets/images/logo.png')}
           style={{
             width: 100,
             height: 100,
@@ -156,7 +156,7 @@ const LoginScreen = () => {
           )}
         </Formik>
       </ScrollView>
-    </LoginLayout>
+    </AuthLayout>
   );
 };
 

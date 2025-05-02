@@ -1,14 +1,14 @@
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import IonIcons from '../components/ui/IonIcons';
-import CurvaView from '../components/ui/CurvaView';
+import IonIcons from '../../../components/ui/IonIcons';
+import CurvaView from '../../../components/ui/CurvaView';
 
 interface Props {
   children?: React.ReactNode;
 }
 
-const LoginLayout = ({children}: Props) => {
+const AuthLayout = ({children}: Props) => {
   const {top} = useSafeAreaInsets();
   const {colors} = useTheme();
 
@@ -25,7 +25,7 @@ const LoginLayout = ({children}: Props) => {
         </View>
 
         <Image
-          source={require('../../assets/images/logo_app.png')}
+          source={require('../../../../assets/images/logo_app.png')}
           style={styles.boxImage}
         />
       </View>
@@ -71,4 +71,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginLayout;
+export default AuthLayout;
