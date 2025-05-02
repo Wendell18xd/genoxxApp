@@ -1,10 +1,11 @@
-import {View, Text} from 'react-native';
+import {Text} from 'react-native';
+import AuthLayout from '../layout/LoginLayout';
 
 const GetStartScreen = () => {
   return (
-    <View>
+    <AuthLayout>
       <Text>GetStartScreen</Text>
-    </View>
+    </AuthLayout>
   );
 };
 export default GetStartScreen;

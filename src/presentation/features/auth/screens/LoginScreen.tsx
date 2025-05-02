@@ -52,11 +52,6 @@ const LoginScreen = () => {
 
   return (
     <AuthLayout>
-      {/* <Appbar.Header style={{backgroundColor: colors.primary}}>
-        <Appbar.Content title="Iniciar Sesión" titleStyle={{color: 'white'}} />
-        <Appbar.Action icon="build" onPress={_handleMore} color="white" />
-      </Appbar.Header> */}
-
       <ScrollView style={{flex: 1}}>
         <Image
           source={require('../../../../assets/images/logo.png')}
