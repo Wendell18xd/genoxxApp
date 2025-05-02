@@ -9,8 +9,8 @@ import {getLogin} from '../../../../actions/auth/auth';
 import PrimaryButton from '../../../components/ui/PrimaryButton';
 import CustomTextInput from '../../../components/ui/CustomTextInput';
 import AuthLayout from '../layout/AuthLayout';
-import {Dropdown} from 'react-native-paper-dropdown';
-import IonIcons from '../../../components/ui/IonIcons';
+import {Dropdown, Option} from 'react-native-paper-dropdown';
+import {mapToDropdown} from '../../../../infrastructure/mappers/mapToDropdown';
 
 interface LoginFormValues {
   usuario: string;
@@ -26,16 +26,19 @@ const LoginSchema = Yup.object().shape({
 const LoginScreen = () => {
   const {colors} = useTheme();
   const [value, setValue] = useState<string>();
-  const options = [
-    {label: 'Opción A', value: 'a'},
-    {label: 'Opción B', value: 'b'},
-    {label: 'Opción C', value: 'c'},
-  ];
+  const [empresas, setEmpresas] = useState<Option[]>();
 
   const loginMutation = useMutation({
     mutationFn: getLogin,
     onSuccess: async data => {
-      console.log('Versión obtenida:', data);
+      if (data.datos.estado === 5) {
+        const options = mapToDropdown(
+          data.datos.empresas,
+          'empr_nombre',
+          'empr_codigo',
+        );
+        setEmpresas(options);
+      }
     },
     onError: error => {
       console.error('Error al obtener versión:', error);
@@ -46,7 +49,7 @@ const LoginScreen = () => {
     const loginData = {
       usuaCodigo: values.usuario,
       usuaClave: values.contrasena,
-      emprCodigo: '',
+      emprCodigo: value || '',
       recorded: values.recordar,
     };
 
@@ -96,7 +99,7 @@ const LoginScreen = () => {
                   onChangeText={handleChange('usuario')}
                   onBlur={handleBlur('usuario')}
                   error={touched.usuario && !!errors.usuario}
-                  left={<TextInput.Icon icon="person" />}
+                  left={<TextInput.Icon icon="account" />}
                 />
                 {touched.usuario && errors.usuario && (
                   <Text style={{color: 'red', marginBottom: 4}}>
@@ -112,7 +115,7 @@ const LoginScreen = () => {
                   onChangeText={handleChange('contrasena')}
                   onBlur={handleBlur('contrasena')}
                   error={touched.contrasena && !!errors.contrasena}
-                  left={<TextInput.Icon icon="lock-closed" />}
+                  left={<TextInput.Icon icon="lock" />}
                   right={<TextInput.Icon icon="eye" />}
                   style={{marginTop: 8}}
                 />
@@ -122,20 +125,18 @@ const LoginScreen = () => {
                   </Text>
                 )}
 
-                <View style={{marginTop: 8}}>
-                  <Dropdown
-                    label="Empresa"
-                    placeholder="Seleccione una empresa"
-                    mode="outlined"
-                    options={options}
-                    value={value}
-                    onSelect={setValue}
-                    menuUpIcon={<IonIcons name="chevron-up" color="black" />}
-                    menuDownIcon={
-                      <IonIcons name="chevron-down" color="black" />
-                    }
-                  />
-                </View>
+                {empresas && empresas.length > 0 && (
+                  <View style={{marginTop: 8}}>
+                    <Dropdown
+                      label="Empresa"
+                      placeholder="Seleccione una empresa"
+                      mode="outlined"
+                      options={empresas}
+                      value={value}
+                      onSelect={setValue}
+                    />
+                  </View>
+                )}
 
                 <View
                   style={{

@@ -12,7 +12,7 @@ import {
 import merge from 'deepmerge';
 import {useColorScheme} from 'react-native';
 import {createContext, PropsWithChildren} from 'react';
-import IonIcons from '@react-native-vector-icons/ionicons';
+import MaterialIcons from '@react-native-vector-icons/material-design-icons';
 import {IconProps} from 'react-native-paper/lib/typescript/components/MaterialCommunityIcon';
 
 const {LightTheme, DarkTheme} = adaptNavigationTheme({
@@ -50,7 +50,7 @@ const CombinedDarkTheme = {
   },
 };
 
-const RenderIcon = (props: IconProps) => <IonIcons {...props} />;
+const RenderIcon = (props: IconProps) => <MaterialIcons {...props} />;
 
 export const ThemeContext = createContext({
   isDark: false,

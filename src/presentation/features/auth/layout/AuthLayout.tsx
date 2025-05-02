@@ -10,9 +10,9 @@ import {
 } from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import IonIcons from '../../../components/ui/IonIcons';
 import CurvaView from '../../../components/ui/CurvaView';
 import {useEffect, useState} from 'react';
+import MaterialIcons from '../../../components/ui/MaterialIcons';
 
 interface Props {
   children?: React.ReactNode;
@@ -54,7 +54,7 @@ const AuthLayout = ({children}: Props) => {
             1.0.0
           </Text>
           <TouchableOpacity>
-            <IonIcons name="settings" color="white" />
+            <MaterialIcons name="cog" color="white" />
           </TouchableOpacity>
         </View>
 

@@ -9,7 +9,7 @@ export const getLogin = async (props: LoginRequest): Promise<LoginResponse> => {
       txt_usua_clave: props.usuaClave,
       cbo_empr_codigo: props.emprCodigo,
     });
-
+    console.log(data);
     return data;
   } catch (error) {
     throw new Error('Error al iniciar sesión: ' + error);
