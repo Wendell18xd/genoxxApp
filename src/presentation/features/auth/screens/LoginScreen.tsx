@@ -15,8 +15,16 @@ import {mapToDropdown} from '../../../../infrastructure/mappers/mapToDropdown';
 interface LoginFormValues {
   usuario: string;
   contrasena: string;
+  empresa: string;
   recordar: boolean;
 }
+
+const initialValues: LoginFormValues = {
+  usuario: '',
+  contrasena: '',
+  empresa: '',
+  recordar: false,
+};
 
 const LoginSchema = Yup.object().shape({
   usuario: Yup.string().required('Requerido'),
@@ -25,7 +33,6 @@ const LoginSchema = Yup.object().shape({
 
 const LoginScreen = () => {
   const {colors} = useTheme();
-  const [value, setValue] = useState<string>();
   const [empresas, setEmpresas] = useState<Option[]>();
 
   const loginMutation = useMutation({
@@ -49,7 +56,7 @@ const LoginScreen = () => {
     const loginData = {
       usuaCodigo: values.usuario,
       usuaClave: values.contrasena,
-      emprCodigo: value || '',
+      emprCodigo: values.empresa,
       recorded: values.recordar,
     };
 
@@ -78,7 +85,7 @@ const LoginScreen = () => {
           </Text>
 
           <Formik
-            initialValues={{usuario: '', contrasena: '', recordar: false}}
+            initialValues={initialValues}
             validationSchema={LoginSchema}
             onSubmit={values => startLoginSubmit(values)}>
             {({
@@ -132,8 +139,8 @@ const LoginScreen = () => {
                       placeholder="Seleccione una empresa"
                       mode="outlined"
                       options={empresas}
-                      value={value}
-                      onSelect={setValue}
+                      value={values.empresa} // <- valor de Formik
+                      onSelect={val => setFieldValue('empresa', val)}
                     />
                   </View>
                 )}
