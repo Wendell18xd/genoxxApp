@@ -9,6 +9,8 @@ import {getLogin} from '../../../../actions/auth/auth';
 import PrimaryButton from '../../../components/ui/PrimaryButton';
 import CustomTextInput from '../../../components/ui/CustomTextInput';
 import AuthLayout from '../layout/AuthLayout';
+import {Dropdown} from 'react-native-paper-dropdown';
+import IonIcons from '../../../components/ui/IonIcons';
 
 interface LoginFormValues {
   usuario: string;
@@ -23,25 +25,24 @@ const LoginSchema = Yup.object().shape({
 
 const LoginScreen = () => {
   const {colors} = useTheme();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [value, setValue] = useState<string>();
+  const options = [
+    {label: 'Opción A', value: 'a'},
+    {label: 'Opción B', value: 'b'},
+    {label: 'Opción C', value: 'c'},
+  ];
 
-  const versionMutation = useMutation({
+  const loginMutation = useMutation({
     mutationFn: getLogin,
     onSuccess: async data => {
       console.log('Versión obtenida:', data);
-      setIsSubmitting(false);
     },
     onError: error => {
       console.error('Error al obtener versión:', error);
-      setIsSubmitting(false);
     },
   });
 
   const startLoginSubmit = (values: LoginFormValues) => {
-    if (isSubmitting) {
-      return;
-    }
-
     const loginData = {
       usuaCodigo: values.usuario,
       usuaClave: values.contrasena,
@@ -49,112 +50,131 @@ const LoginScreen = () => {
       recorded: values.recordar,
     };
 
-    setIsSubmitting(true);
-    versionMutation.mutate(loginData);
+    loginMutation.mutate(loginData);
   };
 
   return (
-    <AuthLayout>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Image
-          source={require('../../../../assets/images/logo.png')}
-          style={{
-            width: 100,
-            height: 100,
-            alignSelf: 'center',
-            marginBottom: 32,
-          }}
-          resizeMode="contain"
-        />
+    <>
+      <AuthLayout>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Image
+            source={require('../../../../assets/images/logo.png')}
+            style={{
+              width: 100,
+              height: 100,
+              alignSelf: 'center',
+              marginBottom: 32,
+            }}
+            resizeMode="contain"
+          />
 
-        <Text
-          variant="headlineLarge"
-          style={{textAlign: 'center', marginBottom: 16}}>
-          Iniciar Sesión
-        </Text>
+          <Text
+            variant="headlineLarge"
+            style={{textAlign: 'center', marginBottom: 16}}>
+            Iniciar Sesión
+          </Text>
 
-        <Formik
-          initialValues={{usuario: '', contrasena: '', recordar: false}}
-          validationSchema={LoginSchema}
-          onSubmit={values => startLoginSubmit(values)}>
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-            errors,
-            touched,
-            setFieldValue,
-          }) => (
-            <>
-              <CustomTextInput
-                label="Usuario"
-                mode="outlined"
-                autoCapitalize="characters"
-                value={values.usuario}
-                onChangeText={handleChange('usuario')}
-                onBlur={handleBlur('usuario')}
-                error={touched.usuario && !!errors.usuario}
-                left={<TextInput.Icon icon="person" />}
-              />
-              {touched.usuario && errors.usuario && (
-                <Text style={{color: 'red', marginBottom: 4}}>
-                  {errors.usuario}
-                </Text>
-              )}
-
-              <CustomTextInput
-                label="Contraseña"
-                secureTextEntry
-                mode="outlined"
-                value={values.contrasena}
-                onChangeText={handleChange('contrasena')}
-                onBlur={handleBlur('contrasena')}
-                error={touched.contrasena && !!errors.contrasena}
-                left={<TextInput.Icon icon="lock-closed" />}
-                right={<TextInput.Icon icon="eye" />}
-                style={{marginTop: 8}}
-              />
-              {touched.contrasena && errors.contrasena && (
-                <Text style={{color: 'red', marginBottom: 4}}>
-                  {errors.contrasena}
-                </Text>
-              )}
-
-              <View
-                style={{
-                  marginTop: 16,
-                  flexDirection: 'row',
-                  flex: 1,
-                  justifyContent: 'space-between',
-                }}>
-                <CustomCheckbox
-                  label="Recordar"
-                  onChange={checked => setFieldValue('recordar', checked)}
+          <Formik
+            initialValues={{usuario: '', contrasena: '', recordar: false}}
+            validationSchema={LoginSchema}
+            onSubmit={values => startLoginSubmit(values)}>
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+              setFieldValue,
+            }) => (
+              <>
+                <CustomTextInput
+                  label="Usuario"
+                  mode="outlined"
+                  autoCapitalize="characters"
+                  value={values.usuario}
+                  onChangeText={handleChange('usuario')}
+                  onBlur={handleBlur('usuario')}
+                  error={touched.usuario && !!errors.usuario}
+                  left={<TextInput.Icon icon="person" />}
                 />
-                <Text>¿Olvido su contraseña?</Text>
-              </View>
+                {touched.usuario && errors.usuario && (
+                  <Text style={{color: 'red', marginBottom: 4}}>
+                    {errors.usuario}
+                  </Text>
+                )}
 
-              <PrimaryButton
-                onPress={() => handleSubmit()}
-                loading={isSubmitting}
-                disabled={isSubmitting}
-                style={{marginTop: 32}}>
-                Iniciar Sesión
-              </PrimaryButton>
-              <Text
-                style={{
-                  marginTop: 8,
-                  textAlign: 'center',
-                  color: colors.primary,
-                }}>
-                Privacidad y protección de datos
-              </Text>
-            </>
-          )}
-        </Formik>
-      </ScrollView>
-    </AuthLayout>
+                <CustomTextInput
+                  label="Contraseña"
+                  secureTextEntry
+                  mode="outlined"
+                  value={values.contrasena}
+                  onChangeText={handleChange('contrasena')}
+                  onBlur={handleBlur('contrasena')}
+                  error={touched.contrasena && !!errors.contrasena}
+                  left={<TextInput.Icon icon="lock-closed" />}
+                  right={<TextInput.Icon icon="eye" />}
+                  style={{marginTop: 8}}
+                />
+                {touched.contrasena && errors.contrasena && (
+                  <Text style={{color: 'red', marginBottom: 4}}>
+                    {errors.contrasena}
+                  </Text>
+                )}
+
+                <View style={{marginTop: 8}}>
+                  <Dropdown
+                    label="Empresa"
+                    placeholder="Seleccione una empresa"
+                    mode="outlined"
+                    options={options}
+                    value={value}
+                    onSelect={setValue}
+                    menuUpIcon={<IonIcons name="chevron-up" color="black" />}
+                    menuDownIcon={
+                      <IonIcons name="chevron-down" color="black" />
+                    }
+                  />
+                </View>
+
+                <View
+                  style={{
+                    marginTop: 16,
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'space-between',
+                  }}>
+                  <CustomCheckbox
+                    label="Recordar"
+                    onChange={checked => setFieldValue('recordar', checked)}
+                  />
+                  <Text>¿Olvido su contraseña?</Text>
+                </View>
+
+                <View pointerEvents={loginMutation.isPending ? 'none' : 'auto'}>
+                  <PrimaryButton
+                    onPress={() => handleSubmit()}
+                    loading={loginMutation.isPending}
+                    disabled={loginMutation.isPending}
+                    style={{marginTop: 32}}>
+                    Iniciar Sesión
+                  </PrimaryButton>
+                </View>
+
+                <Text
+                  style={{
+                    marginTop: 8,
+                    textAlign: 'center',
+                    color: colors.primary,
+                  }}>
+                  Privacidad y protección de datos
+                </Text>
+              </>
+            )}
+          </Formik>
+        </ScrollView>
+      </AuthLayout>
+    </>
   );
 };
 

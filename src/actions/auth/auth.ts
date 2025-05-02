@@ -1,20 +1,14 @@
 import {genoxxApi} from '../../config/api/genoxxApi';
-import {VersionAppResponse} from '../../infrastructure/interfaces/auth.response';
+import {LoginResponse} from '../../infrastructure/interfaces/auth.response';
 import {LoginRequest} from '../../infrastructure/interfaces/login.request';
 
-export const getLogin = async (
-  props: LoginRequest,
-): Promise<VersionAppResponse> => {
+export const getLogin = async (props: LoginRequest): Promise<LoginResponse> => {
   try {
-    const {data} = await genoxxApi.post<VersionAppResponse>(
-      '/auth/iniciar_sesion',
-      {
-        usuaCodigo: props.usuaCodigo,
-        usuaClave: props.usuaClave,
-        emprCodigo: props.emprCodigo,
-        recorded: props.recorded,
-      },
-    );
+    const {data} = await genoxxApi.post<LoginResponse>('/auth/iniciar_sesion', {
+      txt_usua_codigo: props.usuaCodigo,
+      txt_usua_clave: props.usuaClave,
+      cbo_empr_codigo: props.emprCodigo,
+    });
 
     return data;
   } catch (error) {

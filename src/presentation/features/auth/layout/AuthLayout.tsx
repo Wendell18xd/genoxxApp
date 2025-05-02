@@ -47,8 +47,7 @@ const AuthLayout = ({children}: Props) => {
   }, []);
 
   return (
-    <View
-      style={{flex: 1, paddingTop: top + 32, backgroundColor: colors.primary}}>
+    <View style={{flex: 1, paddingTop: top, backgroundColor: colors.primary}}>
       <View style={styles.box}>
         <View style={styles.boxHeader}>
           <Text variant="labelSmall" style={{color: 'white'}}>
