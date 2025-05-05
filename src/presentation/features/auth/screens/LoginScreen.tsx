@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, ScrollView, View} from 'react-native';
 import {Text, TextInput, useTheme} from 'react-native-paper';
 import {Formik} from 'formik';
@@ -13,6 +13,7 @@ import {mapToDropdown} from '../../../../infrastructure/mappers/mapToDropdown';
 import Toast from 'react-native-toast-message';
 import LoadingScreen from '../../../components/ui/LoadingScreen';
 import {useAuthStore} from '../../../store/auth/useAuthStore';
+import {StorageAdapter} from '../../../../config/adapter/storage-adapter';
 
 interface LoginFormValues {
   usuario: string;
@@ -35,8 +36,10 @@ const LoginSchema = Yup.object().shape({
 
 const LoginScreen = () => {
   const {colors} = useTheme();
+  const [formValues, setFormValues] = useState<LoginFormValues>(initialValues);
   const [empresas, setEmpresas] = useState<Option[]>();
   const [disabled, setDisabled] = useState(false);
+  const [loadingUser, setLoadingUser] = useState(true);
   const {login} = useAuthStore();
 
   const loginMutation = useMutation({
@@ -96,9 +99,30 @@ const LoginScreen = () => {
     loginMutation.mutate(loginData);
   };
 
+  useEffect(() => {
+    const loadUser = async () => {
+      const user = await StorageAdapter.getItem('usuario');
+      if (user) {
+        const parsedUser = JSON.parse(user);
+        setFormValues({
+          usuario: parsedUser.usua_codigo,
+          contrasena: parsedUser.usua_clave,
+          empresa: '',
+          recordar: parsedUser.recorded,
+        });
+      }
+      setLoadingUser(false);
+    };
+
+    loadUser();
+  }, []);
+
+  if (loadingUser) {
+    return <LoadingScreen state={true} />;
+  }
+
   return (
     <>
-      <LoadingScreen state={loginMutation.isPending} />
       <AuthLayout>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Image
@@ -119,8 +143,9 @@ const LoginScreen = () => {
           </Text>
 
           <Formik
-            initialValues={initialValues}
+            initialValues={formValues}
             validationSchema={LoginSchema}
+            enableReinitialize
             onSubmit={values => startLoginSubmit(values)}>
             {({
               handleChange,
@@ -190,6 +215,7 @@ const LoginScreen = () => {
                   <CustomCheckbox
                     label="Recordar"
                     onChange={checked => setFieldValue('recordar', checked)}
+                    isChecked={values.recordar}
                   />
                   <Text>¿Olvido su contraseña?</Text>
                 </View>

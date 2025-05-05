@@ -1,4 +1,6 @@
-import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
+import {
+  createStackNavigator /* , TransitionPresets */,
+} from '@react-navigation/stack';
 import LoginScreen from '../features/auth/screens/LoginScreen';
 import OlvidarPassScreen from '../features/auth/screens/OlvidarPassScreen';
 import GetStartScreen from '../features/auth/screens/GetStartScreen';
@@ -16,7 +18,7 @@ export const AuthStackNavigation = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        ...TransitionPresets.SlideFromRightIOS,
+        // ...TransitionPresets.SlideFromRightIOS,
       }}
       initialRouteName="GetStartScreen">
       <Stack.Screen name="GetStartScreen" component={GetStartScreen} />

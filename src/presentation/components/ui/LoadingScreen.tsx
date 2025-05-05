@@ -6,7 +6,7 @@ interface LoadingScreenProps {
 
 const LoadingScreen = ({
   state,
-  message = 'Cargando...',
+  message = 'Cargando',
 }: LoadingScreenProps) => {
   return (
     <Spinner
