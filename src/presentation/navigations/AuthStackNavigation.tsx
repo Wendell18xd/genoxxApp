@@ -1,7 +1,4 @@
-import {
-  createStackNavigator,
-  StackCardStyleInterpolator,
-} from '@react-navigation/stack';
+import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import LoginScreen from '../features/auth/screens/LoginScreen';
 import OlvidarPassScreen from '../features/auth/screens/OlvidarPassScreen';
 import GetStartScreen from '../features/auth/screens/GetStartScreen';
@@ -15,14 +12,6 @@ export type AuthStackParam = {
 };
 
 const Stack = createStackNavigator<AuthStackParam>();
-
-const fadeAnimation: StackCardStyleInterpolator = ({current}) => {
-  return {
-    cardStyle: {
-      opacity: current.progress,
-    },
-  };
-};
 
 export const AuthStackNavigation = () => {
   return (

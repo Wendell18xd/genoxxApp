@@ -14,6 +14,8 @@ export type IonIconProns =
   | 'document-text-outline'
   | 'chevron-forward-outline'
   | 'settings'
+  | 'chevron-up'
+  | 'chevron-down'
   | 'refresh-outline';
 
 interface Props {
