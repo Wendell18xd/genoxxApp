@@ -1,0 +1,117 @@
+import {
+  Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
+import {Text, useTheme} from 'react-native-paper';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import CurvaView from '../../../components/ui/CurvaView';
+import {useEffect, useState} from 'react';
+import MaterialIcons from '../../../components/ui/MaterialIcons';
+
+interface Props {
+  children?: React.ReactNode;
+}
+
+const AuthLayout = ({children}: Props) => {
+  const {top} = useSafeAreaInsets();
+  const {colors} = useTheme();
+
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true);
+      },
+    );
+
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false);
+      },
+    );
+
+    // Cleanup listeners on unmount
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
+  return (
+    <View style={{flex: 1, paddingTop: top, backgroundColor: colors.primary}}>
+      <View style={styles.box}>
+        <View style={styles.boxHeader}>
+          <Text variant="labelSmall" style={{color: 'white'}}>
+            1.0.0
+          </Text>
+          <TouchableOpacity>
+            <MaterialIcons name="cog" color="white" />
+          </TouchableOpacity>
+        </View>
+
+        <Image
+          source={require('../../../../assets/images/logo_app.png')}
+          style={styles.boxImage}
+        />
+      </View>
+
+      <View style={{width: '100%'}}>
+        <CurvaView />
+      </View>
+
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View
+            style={[
+              styles.containerChildren,
+              {
+                backgroundColor: colors.background,
+                marginBottom: keyboardVisible ? 0 : -35,
+              },
+            ]}>
+            {children}
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  box: {
+    padding: 32,
+    position: 'relative',
+    height: 250,
+  },
+  boxHeader: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  boxImage: {
+    width: 120,
+    height: 200,
+    alignSelf: 'center',
+    resizeMode: 'stretch',
+    top: 28,
+    position: 'absolute',
+  },
+  containerChildren: {
+    flex: 1,
+    paddingHorizontal: 32,
+    paddingBottom: 32,
+  },
+});
+
+export default AuthLayout;

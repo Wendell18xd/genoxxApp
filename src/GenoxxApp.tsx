@@ -3,6 +3,7 @@ import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {ThemeContextProvider} from './presentation/context/ThemeContext';
 import {StatusBar, useColorScheme} from 'react-native';
 import AppNavigation from './presentation/navigations/AppNavigation';
+import Toast from 'react-native-toast-message';
 
 const queryClient = new QueryClient();
 
@@ -11,16 +12,19 @@ const GenoxxApp = () => {
   const barStyle = colorScheme === 'dark' ? 'light-content' : 'dark-content';
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <StatusBar
-        translucent
-        backgroundColor="transparent"
-        barStyle={barStyle}
-      />
-      <ThemeContextProvider>
-        <AppNavigation />
-      </ThemeContextProvider>
-    </QueryClientProvider>
+    <>
+      <QueryClientProvider client={queryClient}>
+        <StatusBar
+          translucent
+          backgroundColor="transparent"
+          barStyle={barStyle}
+        />
+        <ThemeContextProvider>
+          <AppNavigation />
+        </ThemeContextProvider>
+      </QueryClientProvider>
+      <Toast position="bottom"/>
+    </>
   );
 };
 export default GenoxxApp;
