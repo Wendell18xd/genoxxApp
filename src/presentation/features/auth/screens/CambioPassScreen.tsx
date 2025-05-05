@@ -4,10 +4,10 @@ import {Text, TextInput, useTheme} from 'react-native-paper';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {useMutation} from '@tanstack/react-query';
-import {getVersionApp} from '../../../../actions/auth/auth';
 import PrimaryButton from '../../../components/ui/PrimaryButton';
 import CustomTextInput from '../../../components/ui/CustomTextInput';
-import AuthLayout from '../layout/LoginLayout';
+import AuthLayout from '../layout/AuthLayout';
+import { getLogin } from '../../../../actions/auth/auth';
 
 interface CanbioPassFormValues {
   usuario: string;
@@ -22,7 +22,7 @@ export const CambioPassScreen = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const versionMutation = useMutation({
-    mutationFn: getVersionApp,
+    mutationFn: getLogin,
     onSuccess: async data => {
       console.log('Versión obtenida:', data);
       // Aquí haces la siguiente llamada
@@ -42,7 +42,7 @@ export const CambioPassScreen = () => {
     }
     console.log('Login con:', values);
     setIsSubmitting(true);
-    versionMutation.mutate();
+    // versionMutation.mutate();
   };
 
   return (
