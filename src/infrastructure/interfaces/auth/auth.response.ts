@@ -1,3 +1,5 @@
+import {User} from '../../../domain/entities/User';
+
 export interface LoginResponse {
   datos: Datos;
   mensaje: string;
@@ -17,4 +19,4 @@ export interface Empresa {
   empr_nombre: string;
 }
 
-export interface Usuario {}
+export interface Usuario extends User {}

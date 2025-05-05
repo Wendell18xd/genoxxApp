@@ -1,6 +1,6 @@
 import {genoxxApi} from '../../config/api/genoxxApi';
-import {LoginResponse} from '../../infrastructure/interfaces/auth.response';
-import {LoginRequest} from '../../infrastructure/interfaces/login.request';
+import {LoginResponse} from '../../infrastructure/interfaces/auth/auth.response';
+import {LoginRequest} from '../../infrastructure/interfaces/auth/auth.request';
 
 export const getLogin = async (props: LoginRequest): Promise<LoginResponse> => {
   try {

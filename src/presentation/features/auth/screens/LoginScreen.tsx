@@ -11,6 +11,8 @@ import CustomTextInput from '../../../components/ui/CustomTextInput';
 import AuthLayout from '../layout/AuthLayout';
 import {Dropdown, Option} from 'react-native-paper-dropdown';
 import {mapToDropdown} from '../../../../infrastructure/mappers/mapToDropdown';
+import Toast from 'react-native-toast-message';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 interface LoginFormValues {
   usuario: string;
@@ -38,7 +40,36 @@ const LoginScreen = () => {
   const loginMutation = useMutation({
     mutationFn: getLogin,
     onSuccess: async data => {
-      if (data.datos.estado === 5) {
+      const {estado} = data.datos;
+
+      if (estado === 1) {
+        // Aquí puedes manejar el inicio de sesión exitoso, como redirigir a otra pantalla
+        Toast.show({
+          type: 'success',
+          text1: 'Login exitoso',
+          text2: 'Bienvenido de nuevo',
+        });
+      } else if (estado === 0) {
+        Toast.show({
+          type: 'error',
+          text1: 'Login fallido',
+          text2: 'Credenciales incorrectas',
+        });
+      } else if (estado === 2) {
+        Toast.show({
+          type: 'error',
+          text1: 'Login fallido',
+          text2: 'Usuario de baja',
+        });
+      } else if (estado === 3) {
+        //TODO: navegar a actualizar clave
+      } else if (estado === 4) {
+        Toast.show({
+          type: 'error',
+          text1: 'Login fallido',
+          text2: 'No cuentas con empresa asignada',
+        });
+      } else if (estado === 5) {
         const options = mapToDropdown(
           data.datos.empresas,
           'empr_nombre',
@@ -65,6 +96,11 @@ const LoginScreen = () => {
 
   return (
     <>
+      <Spinner
+        visible={loginMutation.isPending}
+        textContent={'Cargando...'}
+        textStyle={{color: '#FFF', fontSize: 18}}
+      />
       <AuthLayout>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Image
