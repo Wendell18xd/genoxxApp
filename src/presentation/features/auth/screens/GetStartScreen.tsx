@@ -42,7 +42,7 @@ const GetStartScreen = ({navigation}: Props) => {
         <View style={{marginTop: 32, width: '100%'}}>
           <PrimaryButton
             mode="contained"
-            onPress={() => navigation.push('LoginScreen')}>
+            onPress={() => navigation.navigate('LoginScreen')}>
             Ingresar
           </PrimaryButton>
           <Text
