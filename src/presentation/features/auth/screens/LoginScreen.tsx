@@ -48,11 +48,11 @@ const LoginScreen = () => {
       const {estado} = data.datos;
 
       if (estado === 1) {
-        // Aquí puedes manejar el inicio de sesión exitoso, como redirigir a otra pantalla
         Toast.show({
           type: 'success',
           text1: 'Bienvenido al sistema',
         });
+        //TODO: navegar al menu principal
       } else if (estado === 0) {
         Toast.show({
           type: 'error',
@@ -74,13 +74,19 @@ const LoginScreen = () => {
           text2: 'No cuentas con empresa asignada',
         });
       } else if (estado === 5) {
-        const options = mapToDropdown(
-          data.datos.empresas,
-          'empr_nombre',
-          'empr_codigo',
-        );
-        setEmpresas(options);
-        setDisabled(true);
+        const arrEmpresa = data.datos.empresas;
+
+        if (arrEmpresa.length > 0) {
+          const options = mapToDropdown(
+            data.datos.empresas,
+            'empr_nombre',
+            'empr_codigo',
+          );
+          setEmpresas(options);
+          setDisabled(true);
+        } else {
+          //TODO: navegar al menu principal
+        }
       }
     },
     onError: error => {
