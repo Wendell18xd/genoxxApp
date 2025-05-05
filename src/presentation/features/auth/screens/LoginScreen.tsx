@@ -5,7 +5,6 @@ import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {useMutation} from '@tanstack/react-query';
 import CustomCheckbox from '../../../components/ui/CustomCheckbox';
-import {getLogin} from '../../../../actions/auth/auth';
 import PrimaryButton from '../../../components/ui/PrimaryButton';
 import CustomTextInput from '../../../components/ui/CustomTextInput';
 import AuthLayout from '../layout/AuthLayout';
@@ -13,6 +12,7 @@ import {Dropdown, Option} from 'react-native-paper-dropdown';
 import {mapToDropdown} from '../../../../infrastructure/mappers/mapToDropdown';
 import Toast from 'react-native-toast-message';
 import LoadingScreen from '../../../components/ui/LoadingScreen';
+import {useAuthStore} from '../../../store/auth/useAuthStore';
 
 interface LoginFormValues {
   usuario: string;
@@ -37,9 +37,10 @@ const LoginScreen = () => {
   const {colors} = useTheme();
   const [empresas, setEmpresas] = useState<Option[]>();
   const [disabled, setDisabled] = useState(false);
+  const {login} = useAuthStore();
 
   const loginMutation = useMutation({
-    mutationFn: getLogin,
+    mutationFn: login,
     onSuccess: async data => {
       const {estado} = data.datos;
 
