@@ -1,5 +1,5 @@
 import {Button, ButtonProps} from 'react-native-paper';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 
 const PrimaryButton = (props: ButtonProps) => {
   return (
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   label: {
     textTransform: 'uppercase',
-    fontWeight: '100',
+    fontWeight: Platform.OS === 'ios' ? '500' : '100',
   },
 });
 
