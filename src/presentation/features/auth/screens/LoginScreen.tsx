@@ -14,6 +14,8 @@ import Toast from 'react-native-toast-message';
 import LoadingScreen from '../../../components/ui/LoadingScreen';
 import {useAuthStore} from '../../../store/auth/useAuthStore';
 import {StorageAdapter} from '../../../../config/adapter/storage-adapter';
+import {StackScreenProps} from '@react-navigation/stack';
+import {AuthStackParam} from '../../../navigations/AuthStackNavigation';
 
 interface LoginFormValues {
   usuario: string;
@@ -34,7 +36,9 @@ const LoginSchema = Yup.object().shape({
   contrasena: Yup.string().required('Requerido'),
 });
 
-const LoginScreen = () => {
+interface Props extends StackScreenProps<AuthStackParam, 'LoginScreen'> {}
+
+const LoginScreen = ({navigation}: Props) => {
   const {colors} = useTheme();
   const [formValues, setFormValues] = useState<LoginFormValues>(initialValues);
   const [empresas, setEmpresas] = useState<Option[]>();
@@ -52,7 +56,7 @@ const LoginScreen = () => {
           type: 'success',
           text1: 'Bienvenido al sistema',
         });
-        //TODO: navegar al menu principal
+        navigateToMenu();
       } else if (estado === 0) {
         Toast.show({
           type: 'error',
@@ -85,7 +89,7 @@ const LoginScreen = () => {
           setEmpresas(options);
           setDisabled(true);
         } else {
-          //TODO: navegar al menu principal
+          navigateToMenu();
         }
       }
     },
@@ -103,6 +107,13 @@ const LoginScreen = () => {
     };
 
     loginMutation.mutate(loginData);
+  };
+
+  const navigateToMenu = () => {
+    navigation.navigate('HomeScreen');
+    setDisabled(false);
+    setEmpresas([]);
+    setFormValues({...formValues, empresa: ''});
   };
 
   useEffect(() => {
