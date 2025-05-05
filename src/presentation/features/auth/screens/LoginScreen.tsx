@@ -12,7 +12,7 @@ import AuthLayout from '../layout/AuthLayout';
 import {Dropdown, Option} from 'react-native-paper-dropdown';
 import {mapToDropdown} from '../../../../infrastructure/mappers/mapToDropdown';
 import Toast from 'react-native-toast-message';
-import Spinner from 'react-native-loading-spinner-overlay';
+import LoadingScreen from '../../../components/ui/LoadingScreen';
 
 interface LoginFormValues {
   usuario: string;
@@ -36,6 +36,7 @@ const LoginSchema = Yup.object().shape({
 const LoginScreen = () => {
   const {colors} = useTheme();
   const [empresas, setEmpresas] = useState<Option[]>();
+  const [disabled, setDisabled] = useState(false);
 
   const loginMutation = useMutation({
     mutationFn: getLogin,
@@ -46,8 +47,7 @@ const LoginScreen = () => {
         // Aquí puedes manejar el inicio de sesión exitoso, como redirigir a otra pantalla
         Toast.show({
           type: 'success',
-          text1: 'Login exitoso',
-          text2: 'Bienvenido de nuevo',
+          text1: 'Bienvenido al sistema',
         });
       } else if (estado === 0) {
         Toast.show({
@@ -76,6 +76,7 @@ const LoginScreen = () => {
           'empr_codigo',
         );
         setEmpresas(options);
+        setDisabled(true);
       }
     },
     onError: error => {
@@ -96,11 +97,7 @@ const LoginScreen = () => {
 
   return (
     <>
-      <Spinner
-        visible={loginMutation.isPending}
-        textContent={'Cargando...'}
-        textStyle={{color: '#FFF', fontSize: 18}}
-      />
+      <LoadingScreen state={loginMutation.isPending} />
       <AuthLayout>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Image
@@ -143,6 +140,7 @@ const LoginScreen = () => {
                   onBlur={handleBlur('usuario')}
                   error={touched.usuario && !!errors.usuario}
                   left={<TextInput.Icon icon="account" />}
+                  disabled={disabled}
                 />
                 {touched.usuario && errors.usuario && (
                   <Text style={{color: 'red', marginBottom: 4}}>
@@ -152,15 +150,15 @@ const LoginScreen = () => {
 
                 <CustomTextInput
                   label="Contraseña"
-                  secureTextEntry
                   mode="outlined"
                   value={values.contrasena}
                   onChangeText={handleChange('contrasena')}
                   onBlur={handleBlur('contrasena')}
                   error={touched.contrasena && !!errors.contrasena}
                   left={<TextInput.Icon icon="lock" />}
-                  right={<TextInput.Icon icon="eye" />}
+                  showPassword
                   style={{marginTop: 8}}
+                  disabled={disabled}
                 />
                 {touched.contrasena && errors.contrasena && (
                   <Text style={{color: 'red', marginBottom: 4}}>
