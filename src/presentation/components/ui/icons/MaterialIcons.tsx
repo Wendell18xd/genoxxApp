@@ -1,8 +1,7 @@
 import Icons from '@react-native-vector-icons/material-design-icons';
 import {StyleProp, TextStyle} from 'react-native';
 
-export type IonIconProns =
-  | 'cog'
+export type IonIconProns = 'cog' | 'home' | 'account';
 
 interface Props {
   name: IonIconProns;
