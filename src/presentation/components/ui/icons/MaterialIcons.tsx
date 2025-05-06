@@ -1,10 +1,10 @@
 import Icons from '@react-native-vector-icons/material-design-icons';
 import {StyleProp, TextStyle} from 'react-native';
 
-export type IonIconProns = 'cog' | 'home' | 'account';
+export type IonIconProns = 'cog' | 'home' | 'account' | 'bell';
 
 interface Props {
-  name: IonIconProns;
+  name: IonIconProns | any;
   size?: number;
   color: string;
   style?: StyleProp<TextStyle>;

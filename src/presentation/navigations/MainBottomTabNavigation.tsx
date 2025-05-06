@@ -1,13 +1,38 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import HomeScreen from '../features/main/screens/HomeScreen';
-import ProfileScreen from '../features/main/screens/ProfileScreen';
+import HomeScreen from '../features/main/screens/home/HomeScreen';
+import ProfileScreen from '../features/main/screens/profile/ProfileScreen';
 import {useTheme} from 'react-native-paper';
 import MaterialIcons from '../components/ui/icons/MaterialIcons';
+import {View} from 'react-native';
+import {MD3Colors} from 'react-native-paper/lib/typescript/types';
 
 export type MainBottomTabParam = {
   HomeScreen: undefined;
   ProfileScreen: undefined;
 };
+
+interface TabBarIconProps {
+  focused: boolean;
+  size: number;
+  name: string;
+  colors: MD3Colors;
+}
+
+const TabBarIcon = ({focused, size, colors, name}: TabBarIconProps) => (
+  <View
+    style={{
+      backgroundColor: focused ? 'white' : 'transparent',
+      borderRadius: 25,
+      paddingHorizontal: 10,
+      width: 45,
+    }}>
+    <MaterialIcons
+      name={name}
+      color={focused ? colors.secondary : 'white'}
+      size={size}
+    />
+  </View>
+);
 
 const Tab = createBottomTabNavigator<MainBottomTabParam>();
 
@@ -27,9 +52,10 @@ export const MainBottomTabNavigation = () => {
         },
         tabBarLabelStyle: {
           marginTop: 4,
+          color: 'white',
         },
-        tabBarActiveTintColor: colors.onPrimary,
-        tabBarInactiveTintColor: colors.secondary,
+        tabBarActiveTintColor: colors.secondary,
+        tabBarInactiveTintColor: 'white',
       }}
       initialRouteName="HomeScreen">
       <Tab.Screen
@@ -37,8 +63,8 @@ export const MainBottomTabNavigation = () => {
         component={HomeScreen}
         options={{
           title: 'Inicio',
-          tabBarIcon: props =>
-            MaterialIcons({name: 'home', color: props.color, size: props.size}),
+          tabBarIcon: ({focused, size}) =>
+            TabBarIcon({focused, size, colors, name: 'home'}),
         }}
       />
       <Tab.Screen
@@ -46,12 +72,8 @@ export const MainBottomTabNavigation = () => {
         component={ProfileScreen}
         options={{
           title: 'Perfil',
-          tabBarIcon: props =>
-            MaterialIcons({
-              name: 'account',
-              color: props.color,
-              size: props.size,
-            }),
+          tabBarIcon: ({focused, size}) =>
+            TabBarIcon({focused, size, colors, name: 'account'}),
         }}
       />
     </Tab.Navigator>

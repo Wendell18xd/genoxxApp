@@ -1,4 +1,4 @@
-import {User} from '../../../domain/entities/User';
+import {Menu, User} from '../../../domain/entities/User';
 
 export interface LoginResponse {
   datos: Datos;
@@ -11,7 +11,7 @@ export interface Datos {
   empresas: Empresa[];
   vehiculo: any[];
   usuario: Usuario;
-  menu: any[];
+  menu: Menu[];
 }
 
 export interface Empresa {
