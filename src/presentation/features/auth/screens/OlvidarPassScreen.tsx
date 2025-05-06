@@ -12,16 +12,16 @@ import Toast from 'react-native-toast-message';
 
 interface OlvidarPassFormValues {
   usuario: string;
-  tipo_login: string;
-  correo: string;
-  estado: string;
+  // tipo_login: string;
+  // correo: string;
+  // estado: string;
 }
 
 const initialValues: OlvidarPassFormValues = {
   usuario: '',
-  tipo_login: '',
-  correo: '',
-  estado: '',
+  // tipo_login: '',
+  // correo: '',
+  // estado: '',
 };
 
 const OlvidarPassSchema = Yup.object().shape({
