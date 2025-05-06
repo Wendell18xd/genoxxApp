@@ -12,7 +12,7 @@ import {Text, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import CurvaView from '../../../components/ui/CurvaView';
 import {useEffect, useState} from 'react';
-import MaterialIcons from '../../../components/ui/MaterialIcons';
+import MaterialIcons from '../../../components/ui/icons/MaterialIcons';
 
 interface Props {
   children?: React.ReactNode;
