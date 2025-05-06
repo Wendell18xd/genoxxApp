@@ -11,11 +11,11 @@ import AuthLayout from '../layout/AuthLayout';
 import {Dropdown, Option} from 'react-native-paper-dropdown';
 import {mapToDropdown} from '../../../../infrastructure/mappers/mapToDropdown';
 import Toast from 'react-native-toast-message';
-import LoadingScreen from '../../../components/ui/LoadingScreen';
 import {useAuthStore} from '../../../store/auth/useAuthStore';
 import {StorageAdapter} from '../../../../config/adapter/storage-adapter';
 import {StackScreenProps} from '@react-navigation/stack';
 import {AuthStackParam} from '../../../navigations/AuthStackNavigation';
+import FullScreenLoader from '../../../components/ui/loaders/FullScreenLoader';
 
 interface LoginFormValues {
   usuario: string;
@@ -142,7 +142,7 @@ const LoginScreen = ({navigation}: Props) => {
   }, []);
 
   if (loadingUser) {
-    return <LoadingScreen state={true} />;
+    return <FullScreenLoader />;
   }
 
   return (
