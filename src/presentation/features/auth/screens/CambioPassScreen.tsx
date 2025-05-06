@@ -1,82 +1,121 @@
-import React, {useState} from 'react';
-import {Image, ScrollView} from 'react-native';
-import {Text, TextInput, useTheme} from 'react-native-paper';
+import {View, ScrollView} from 'react-native';
+import {Text, useTheme} from 'react-native-paper';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
+import Toast from 'react-native-toast-message';
 import {useMutation} from '@tanstack/react-query';
-import PrimaryButton from '../../../components/ui/PrimaryButton';
+import {TextInput} from 'react-native-paper';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import {useState} from 'react';
 import CustomTextInput from '../../../components/ui/CustomTextInput';
+import {ButtonSubmit} from '../../../components/ui/ButtonSubmit';
 import AuthLayout from '../layout/AuthLayout';
-import { getLogin } from '../../../../actions/auth/auth';
+import PrimaryButton from '../../../components/ui/PrimaryButton';
 
-interface CanbioPassFormValues {
-  usuario: string;
-}
+const tipoUsuario = 'USUA';
+const usuaCodigo = '123456';
 
-const CambioPassSchema = Yup.object().shape({
-  usuario: Yup.string().required('Requerido'),
+const isPasswordValid = (password: string) => {
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
+  return regex.test(password);
+};
+
+// Formatear fecha a yyyy-MM-dd
+const formatFecha = (dateString: string) => {
+  const [day, month, year] = dateString.split('/');
+  return `${year}-${month}-${day}`;
+};
+
+// Simulación del servicio de actualización
+const updatePassword = async (_data: any) => {
+  await new Promise(resolve => setTimeout(resolve, 1500));
+  return {message: 'Contraseña actualizada con éxito'};
+};
+const validationSchema = Yup.object().shape({
+  actualPass: Yup.string(),
+  fecha_nacimiento: Yup.string(),
+  nuevoPass: Yup.string().required('Ingrese su nueva contraseña'),
+  confirPass: Yup.string().required('Confirme su nueva contraseña'),
 });
 
-export const CambioPassScreen = () => {
-  const {colors} = useTheme();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+const CambioPassScreen = () => {
+  const {colors} = useTheme(); // Obtén los colores del tema actual
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
-  const versionMutation = useMutation({
-    mutationFn: getLogin,
-    onSuccess: async data => {
-      console.log('Versión obtenida:', data);
-      // Aquí haces la siguiente llamada
-      // await loginUsuario({...});
-      setIsSubmitting(false);
+  const mutation = useMutation({
+    mutationFn: updatePassword,
+    onSuccess: data => {
+      Toast.show({type: 'success', text1: data.message});
     },
-    onError: error => {
-      console.error('Error al obtener versión:', error);
-      setIsSubmitting(false);
+    onError: () => {
+      Toast.show({type: 'error', text1: 'Error al cambiar contraseña'});
     },
   });
 
-  const startCambioPassSubmit = (values: CanbioPassFormValues) => {
-    if (isSubmitting) {
-      // evita múltiples envíos
-      return;
-    }
-    console.log('Login con:', values);
-    setIsSubmitting(true);
-    // versionMutation.mutate();
+  const initialValues = {
+    fecha_nacimiento: '',
+    actualPass: '',
+    nuevoPass: '',
+    confirPass: '',
   };
 
+  const startCambioPassSubmit = (values: typeof initialValues) => {
+    if (tipoUsuario === 'USUA' && !values.actualPass) {
+      Toast.show({type: 'error', text1: 'Ingrese su contraseña actual'});
+      return;
+    }
+
+    if (tipoUsuario !== 'USUA' && !values.fecha_nacimiento) {
+      Toast.show({type: 'error', text1: 'Ingrese su fecha de nacimiento'});
+      return;
+    }
+
+    if (!values.nuevoPass || !values.confirPass) {
+      Toast.show({
+        type: 'error',
+        text1: 'Complete los campos de nueva contraseña',
+      });
+      return;
+    }
+
+    if (!isPasswordValid(values.nuevoPass)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Contraseña inválida',
+        text2:
+          'Debe tener al menos 8 caracteres, mayúsculas, minúsculas, números y símbolos.',
+      });
+      return;
+    }
+
+    if (values.nuevoPass !== values.confirPass) {
+      Toast.show({type: 'error', text1: 'Las contraseñas no coinciden'});
+      return;
+    }
+    const data = {
+      usuaCodigo,
+      tipoLogin: tipoUsuario,
+      usuaClave: values.actualPass,
+      usuaClave2: values.nuevoPass,
+      trabFecnaci:
+        tipoUsuario !== 'USUA'
+          ? formatFecha(values.fecha_nacimiento)
+          : undefined,
+    };
+
+    mutation.mutate(data);
+  };
   return (
     <AuthLayout>
-      <ScrollView style={{flex: 1}}>
-        <Image
-          source={require('../../../../assets/images/logo.png')}
-          style={{
-            width: 100,
-            height: 100,
-            alignSelf: 'center',
-            marginBottom: 32,
-          }}
-          resizeMode="contain"
-        />
-
-        <Text
-          variant="headlineLarge"
-          style={{textAlign: 'center', marginBottom: 16}}>
-          ¿Cuál es el usuario con el que desea ingresar?
+      <ScrollView contentContainerStyle={{padding: 20}}>
+        <Text variant="titleLarge" style={{marginBottom: 16}}>
+          Cambiar contraseña
         </Text>
-        <Text
-          style={{
-            marginBottom: 16,
-            textAlign: 'center',
-            color: colors.primary,
-          }}>
-          Puede ingresar un DNI/RUT o un usuario del sistema. Se restablecera la contraseña del tipo de usuario que ingreses.
 
-        </Text>
         <Formik
-          initialValues={{usuario: '', contrasena: '', recordar: false}}
-          validationSchema={CambioPassSchema}
-          onSubmit={values => startCambioPassSubmit(values)}>
+          initialValues={initialValues}
+          onSubmit={startCambioPassSubmit}
+          validationSchema={validationSchema}>
           {({
             handleChange,
             handleBlur,
@@ -84,31 +123,86 @@ export const CambioPassScreen = () => {
             values,
             errors,
             touched,
+            setFieldValue,
           }) => (
-            <>
-              <CustomTextInput
-                label="Usuario"
-                mode="outlined"
-                autoCapitalize="characters"
-                value={values.usuario}
-                onChangeText={handleChange('usuario')}
-                onBlur={handleBlur('usuario')}
-                error={touched.usuario && !!errors.usuario}
-                left={<TextInput.Icon icon="person" />}
-              />
-              {touched.usuario && errors.usuario && (
-                <Text style={{color: 'red', marginBottom: 4}}>
-                  {errors.usuario}
-                </Text>
+            <View>
+              {tipoUsuario === 'USUA' ? (
+                <CustomTextInput
+                  label="Contraseña actual"
+                  secureTextEntry
+                  mode="outlined"
+                  value={values.actualPass}
+                  onChangeText={handleChange('actualPass')}
+                  onBlur={handleBlur('actualPass')}
+                  error={touched.actualPass && !!errors.actualPass}
+                  left={<TextInput.Icon icon="lock" />}
+                  style={{backgroundColor: colors.surface}}
+                />
+              ) : (
+                <>
+                  <CustomTextInput
+                    label="Fecha de nacimiento"
+                    placeholder="DD/MM/AAAA"
+                    mode="outlined"
+                    value={values.fecha_nacimiento}
+                    onFocus={() => setShowDatePicker(true)}
+                    error={
+                      touched.fecha_nacimiento && !!errors.fecha_nacimiento
+                    }
+                    left={<TextInput.Icon icon="calendar" />}
+                    style={{backgroundColor: colors.surface}}
+                  />
+                  <DateTimePickerModal
+                    isVisible={showDatePicker}
+                    mode="date"
+                    onConfirm={date => {
+                      const formatted = `${date
+                        .getDate()
+                        .toString()
+                        .padStart(2, '0')}/${(date.getMonth() + 1)
+                        .toString()
+                        .padStart(2, '0')}/${date.getFullYear()}`;
+                      setFieldValue('fecha_nacimiento', formatted);
+                      setShowDatePicker(false);
+                    }}
+                    onCancel={() => setShowDatePicker(false)}
+                  />
+                </>
               )}
-              <PrimaryButton
-                onPress={() => handleSubmit()}
-                loading={isSubmitting}
-                disabled={isSubmitting}
-                style={{marginTop: 32}}>
-                Enviar
-              </PrimaryButton>
-            </>
+
+              <CustomTextInput
+                label="Nueva contraseña"
+                secureTextEntry
+                mode="outlined"
+                value={values.nuevoPass}
+                onChangeText={handleChange('nuevoPass')}
+                onBlur={handleBlur('nuevoPass')}
+                error={touched.nuevoPass && !!errors.nuevoPass}
+                left={<TextInput.Icon icon="lock" />}
+                style={{backgroundColor: colors.surface}}
+              />
+
+              <CustomTextInput
+                label="Confirmar contraseña"
+                secureTextEntry
+                mode="outlined"
+                value={values.confirPass}
+                onChangeText={handleChange('confirPass')}
+                onBlur={handleBlur('confirPass')}
+                error={touched.confirPass && !!errors.confirPass}
+                left={<TextInput.Icon icon="lock-check" />}
+                style={{backgroundColor: colors.surface}}
+              />
+
+              <View style={{marginTop: 16, width: '100%'}}>
+                <PrimaryButton
+                  onPress={() => handleSubmit()}
+                  loading={mutation.isPending}
+                  disabled={mutation.isPending}>
+                  Cambiar contraseña
+                </PrimaryButton>
+              </View>
+            </View>
           )}
         </Formik>
       </ScrollView>
