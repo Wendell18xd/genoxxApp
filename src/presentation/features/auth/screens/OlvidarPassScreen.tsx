@@ -1,10 +1,12 @@
-import {View, Text} from 'react-native';
+import {Text, ScrollView} from 'react-native';
 
-const OlvidarPassScreen = () => {
+
+export const OlvidarPassScreen = () => {
   return (
-    <View>
-      <Text>OlvidarPassScreen</Text>
-    </View>
+    <ScrollView style={{flex: 1, padding: 32}}>
+      <Text>OlvidarScreen</Text>
+
+    </ScrollView>
   );
 };
 export default OlvidarPassScreen;
