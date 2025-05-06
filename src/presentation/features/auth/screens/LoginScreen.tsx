@@ -1,18 +1,21 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, ScrollView, View} from 'react-native';
 import {Text, TextInput, useTheme} from 'react-native-paper';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {useMutation} from '@tanstack/react-query';
 import CustomCheckbox from '../../../components/ui/CustomCheckbox';
-import {getLogin} from '../../../../actions/auth/auth';
 import PrimaryButton from '../../../components/ui/PrimaryButton';
 import CustomTextInput from '../../../components/ui/CustomTextInput';
 import AuthLayout from '../layout/AuthLayout';
 import {Dropdown, Option} from 'react-native-paper-dropdown';
 import {mapToDropdown} from '../../../../infrastructure/mappers/mapToDropdown';
 import Toast from 'react-native-toast-message';
-import Spinner from 'react-native-loading-spinner-overlay';
+import LoadingScreen from '../../../components/ui/LoadingScreen';
+import {useAuthStore} from '../../../store/auth/useAuthStore';
+import {StorageAdapter} from '../../../../config/adapter/storage-adapter';
+import {StackScreenProps} from '@react-navigation/stack';
+import {AuthStackParam} from '../../../navigations/AuthStackNavigation';
 
 interface LoginFormValues {
   usuario: string;
@@ -28,27 +31,38 @@ const initialValues: LoginFormValues = {
   recordar: false,
 };
 
-const LoginSchema = Yup.object().shape({
-  usuario: Yup.string().required('Requerido'),
-  contrasena: Yup.string().required('Requerido'),
-});
+interface Props extends StackScreenProps<AuthStackParam, 'LoginScreen'> {}
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}: Props) => {
   const {colors} = useTheme();
+  const [formValues, setFormValues] = useState<LoginFormValues>(initialValues);
   const [empresas, setEmpresas] = useState<Option[]>();
+  const [disabled, setDisabled] = useState(false);
+  const [loadingUser, setLoadingUser] = useState(true);
+  const {login} = useAuthStore();
+
+  const getLoginSchema = (arrEmpresas: Option[] | undefined) =>
+    Yup.object().shape({
+      usuario: Yup.string().required('Requerido'),
+      contrasena: Yup.string().required('Requerido'),
+      empresa: Yup.string().when([], {
+        is: () => arrEmpresas && arrEmpresas.length > 0,
+        then: schema => schema.required('Seleccione una empresa'),
+        otherwise: schema => schema.notRequired(),
+      }),
+    });
 
   const loginMutation = useMutation({
-    mutationFn: getLogin,
+    mutationFn: login,
     onSuccess: async data => {
       const {estado} = data.datos;
 
       if (estado === 1) {
-        // Aquí puedes manejar el inicio de sesión exitoso, como redirigir a otra pantalla
         Toast.show({
           type: 'success',
-          text1: 'Login exitoso',
-          text2: 'Bienvenido de nuevo',
+          text1: 'Bienvenido al sistema',
         });
+        navigateToMenu();
       } else if (estado === 0) {
         Toast.show({
           type: 'error',
@@ -70,12 +84,19 @@ const LoginScreen = () => {
           text2: 'No cuentas con empresa asignada',
         });
       } else if (estado === 5) {
-        const options = mapToDropdown(
-          data.datos.empresas,
-          'empr_nombre',
-          'empr_codigo',
-        );
-        setEmpresas(options);
+        const arrEmpresa = data.datos.empresas;
+
+        if (arrEmpresa.length > 0) {
+          const options = mapToDropdown(
+            data.datos.empresas,
+            'empr_nombre',
+            'empr_codigo',
+          );
+          setEmpresas(options);
+          setDisabled(true);
+        } else {
+          navigateToMenu();
+        }
       }
     },
     onError: error => {
@@ -94,13 +115,38 @@ const LoginScreen = () => {
     loginMutation.mutate(loginData);
   };
 
+  const navigateToMenu = async () => {
+    navigation.navigate('HomeScreen');
+    setDisabled(false);
+    setEmpresas([]);
+    setFormValues(initialValues);
+    loadUser();
+  };
+
+  const loadUser = async () => {
+    const user = await StorageAdapter.getItem('usuario');
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      setFormValues({
+        usuario: parsedUser.usua_codigo,
+        contrasena: parsedUser.usua_clave,
+        empresa: '',
+        recordar: parsedUser.recorded,
+      });
+    }
+    setLoadingUser(false);
+  };
+
+  useEffect(() => {
+    loadUser();
+  }, []);
+
+  if (loadingUser) {
+    return <LoadingScreen state={true} />;
+  }
+
   return (
     <>
-      <Spinner
-        visible={loginMutation.isPending}
-        textContent={'Cargando...'}
-        textStyle={{color: '#FFF', fontSize: 18}}
-      />
       <AuthLayout>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Image
@@ -121,8 +167,9 @@ const LoginScreen = () => {
           </Text>
 
           <Formik
-            initialValues={initialValues}
-            validationSchema={LoginSchema}
+            initialValues={formValues}
+            validationSchema={getLoginSchema(empresas)}
+            enableReinitialize
             onSubmit={values => startLoginSubmit(values)}>
             {({
               handleChange,
@@ -143,6 +190,7 @@ const LoginScreen = () => {
                   onBlur={handleBlur('usuario')}
                   error={touched.usuario && !!errors.usuario}
                   left={<TextInput.Icon icon="account" />}
+                  disabled={disabled}
                 />
                 {touched.usuario && errors.usuario && (
                   <Text style={{color: 'red', marginBottom: 4}}>
@@ -152,15 +200,15 @@ const LoginScreen = () => {
 
                 <CustomTextInput
                   label="Contraseña"
-                  secureTextEntry
                   mode="outlined"
                   value={values.contrasena}
                   onChangeText={handleChange('contrasena')}
                   onBlur={handleBlur('contrasena')}
                   error={touched.contrasena && !!errors.contrasena}
                   left={<TextInput.Icon icon="lock" />}
-                  right={<TextInput.Icon icon="eye" />}
+                  showPassword
                   style={{marginTop: 8}}
+                  disabled={disabled}
                 />
                 {touched.contrasena && errors.contrasena && (
                   <Text style={{color: 'red', marginBottom: 4}}>
@@ -180,6 +228,11 @@ const LoginScreen = () => {
                     />
                   </View>
                 )}
+                {touched.empresa && errors.empresa && (
+                  <Text style={{color: 'red', marginTop: 4}}>
+                    {errors.empresa}
+                  </Text>
+                )}
 
                 <View
                   style={{
@@ -191,6 +244,7 @@ const LoginScreen = () => {
                   <CustomCheckbox
                     label="Recordar"
                     onChange={checked => setFieldValue('recordar', checked)}
+                    isChecked={values.recordar}
                   />
                   <Text>¿Olvido su contraseña?</Text>
                 </View>
