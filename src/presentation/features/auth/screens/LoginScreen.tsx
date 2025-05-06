@@ -31,11 +31,6 @@ const initialValues: LoginFormValues = {
   recordar: false,
 };
 
-const LoginSchema = Yup.object().shape({
-  usuario: Yup.string().required('Requerido'),
-  contrasena: Yup.string().required('Requerido'),
-});
-
 interface Props extends StackScreenProps<AuthStackParam, 'LoginScreen'> {}
 
 const LoginScreen = ({navigation}: Props) => {
@@ -45,6 +40,17 @@ const LoginScreen = ({navigation}: Props) => {
   const [disabled, setDisabled] = useState(false);
   const [loadingUser, setLoadingUser] = useState(true);
   const {login} = useAuthStore();
+
+  const getLoginSchema = (arrEmpresas: Option[] | undefined) =>
+    Yup.object().shape({
+      usuario: Yup.string().required('Requerido'),
+      contrasena: Yup.string().required('Requerido'),
+      empresa: Yup.string().when([], {
+        is: () => arrEmpresas && arrEmpresas.length > 0,
+        then: schema => schema.required('Seleccione una empresa'),
+        otherwise: schema => schema.notRequired(),
+      }),
+    });
 
   const loginMutation = useMutation({
     mutationFn: login,
@@ -109,28 +115,29 @@ const LoginScreen = ({navigation}: Props) => {
     loginMutation.mutate(loginData);
   };
 
-  const navigateToMenu = () => {
+  const navigateToMenu = async () => {
     navigation.navigate('HomeScreen');
     setDisabled(false);
     setEmpresas([]);
-    setFormValues({...formValues, empresa: ''});
+    setFormValues(initialValues);
+    loadUser();
+  };
+
+  const loadUser = async () => {
+    const user = await StorageAdapter.getItem('usuario');
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      setFormValues({
+        usuario: parsedUser.usua_codigo,
+        contrasena: parsedUser.usua_clave,
+        empresa: '',
+        recordar: parsedUser.recorded,
+      });
+    }
+    setLoadingUser(false);
   };
 
   useEffect(() => {
-    const loadUser = async () => {
-      const user = await StorageAdapter.getItem('usuario');
-      if (user) {
-        const parsedUser = JSON.parse(user);
-        setFormValues({
-          usuario: parsedUser.usua_codigo,
-          contrasena: parsedUser.usua_clave,
-          empresa: '',
-          recordar: parsedUser.recorded,
-        });
-      }
-      setLoadingUser(false);
-    };
-
     loadUser();
   }, []);
 
@@ -161,7 +168,7 @@ const LoginScreen = ({navigation}: Props) => {
 
           <Formik
             initialValues={formValues}
-            validationSchema={LoginSchema}
+            validationSchema={getLoginSchema(empresas)}
             enableReinitialize
             onSubmit={values => startLoginSubmit(values)}>
             {({
@@ -220,6 +227,11 @@ const LoginScreen = ({navigation}: Props) => {
                       onSelect={val => setFieldValue('empresa', val)}
                     />
                   </View>
+                )}
+                {touched.empresa && errors.empresa && (
+                  <Text style={{color: 'red', marginTop: 4}}>
+                    {errors.empresa}
+                  </Text>
                 )}
 
                 <View
