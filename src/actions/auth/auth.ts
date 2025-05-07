@@ -1,9 +1,8 @@
 import {genoxxApi} from '../../config/api/genoxxApi';
 import {LoginResponse} from '../../infrastructure/interfaces/auth/auth.response';
-import {LoginRequest} from '../../infrastructure/interfaces/auth/auth.request';
+import {ForgotRequest, LoginRequest} from '../../infrastructure/interfaces/auth/auth.request';
 
 import { ForgotResponse } from '../../infrastructure/interfaces/auth/auth.response';
-import { ForgotRequest } from '../../infrastructure/interfaces/auth/auth.response';
 
 export const getLogin = async (props: LoginRequest): Promise<LoginResponse> => {
   try {
@@ -21,7 +20,6 @@ export const getLogin = async (props: LoginRequest): Promise<LoginResponse> => {
 
 export const getOlvidoClave = async (props: ForgotRequest): Promise<ForgotResponse> => {
   try {
-    // Aquí debes usar el endpoint para olvidar la contraseña
     const { data } = await genoxxApi.post<ForgotResponse>('/auth/usuario_olvido_clave', {
       txt_usua_codigo: props.usuaCodigo,
     });

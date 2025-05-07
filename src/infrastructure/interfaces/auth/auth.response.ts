@@ -1,11 +1,11 @@
 import {User} from '../../../domain/entities/User';
 
 export interface LoginResponse {
-  datos: Datos;
+  datos: LoginDatos;
   mensaje: string;
 }
 
-export interface Datos {
+export interface LoginDatos {
   estado: number;
   tipo_login: string;
   empresas: Empresa[];
@@ -22,13 +22,14 @@ export interface Empresa {
 
 export interface Usuario extends User {}
 
-export interface ForgotRequest {
-  usuaCodigo: string;  // El código de usuario que deseas utilizar
-}
-
 export interface ForgotResponse {
-  datos: Datos;
-  success: boolean;
-  message: string;
+  datos: ForgotDatos;
+  mensaje: string;
 }
 
+export interface ForgotDatos {
+  estado: number;
+  usua_correo: string;
+  tipo: string;
+  usua_tipo: string;
+}
