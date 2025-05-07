@@ -11,11 +11,19 @@ import {useAnimation} from '../../hooks/useAnimation';
 interface Props {
   uri: string;
   style?: StyleProp<ImageStyle>;
+  defaultImage?: any;
 }
 
-export const FadeInImage = ({uri, style}: Props) => {
+const fallbackImage = require('../../../assets/images/imagen_rota.jpg');
+
+export const FadeInImage = ({
+  uri,
+  style,
+  defaultImage = fallbackImage,
+}: Props) => {
   const {animatedOpacity, fadeIn} = useAnimation();
   const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   const isDisposed = useRef(false);
 
@@ -33,6 +41,11 @@ export const FadeInImage = ({uri, style}: Props) => {
     setIsLoading(false);
   };
 
+  const onError = () => {
+    setHasError(true);
+    setIsLoading(false);
+  };
+
   return (
     <View style={{justifyContent: 'center', alignItems: 'center'}}>
       {isLoading && (
@@ -44,8 +57,9 @@ export const FadeInImage = ({uri, style}: Props) => {
       )}
 
       <Animated.Image
-        source={{uri}}
+        source={hasError ? defaultImage : {uri}}
         onLoadEnd={onLoadEnd}
+        onError={onError}
         style={[style, {opacity: animatedOpacity, resizeMode: 'contain'}]}
       />
     </View>
