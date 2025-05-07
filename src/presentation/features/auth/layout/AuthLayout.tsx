@@ -14,7 +14,6 @@ import CurvaView from '../../../components/ui/CurvaView';
 import {useEffect, useState} from 'react';
 import MaterialIcons from '../../../components/ui/icons/MaterialIcons';
 import {showPromt} from '../../../adapter/prompt.adapter';
-import FullScreenLoader from '../../../components/ui/loaders/FullScreenLoader';
 import {
   API_URL,
   setApiHost,
@@ -31,12 +30,9 @@ const AuthLayout = ({children}: Props) => {
   const {colors} = useTheme();
 
   const [keyboardVisible, setKeyboardVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const handlerConfig = async () => {
-    setIsLoading(true);
     const host = await StorageAdapter.getItem('host');
-    setIsLoading(false);
 
     showPromt({
       title: 'Host',
@@ -45,9 +41,7 @@ const AuthLayout = ({children}: Props) => {
         {
           text: 'Cambiar',
           onPress: async () => {
-            setIsLoading(true);
             await toggleApiHost();
-            setIsLoading(false);
           },
         },
         {
@@ -58,9 +52,7 @@ const AuthLayout = ({children}: Props) => {
         {
           text: 'Aceptar',
           onPress: async input => {
-            setIsLoading(true);
             await setApiHost(input);
-            setIsLoading(false);
           },
         },
       ],
@@ -94,10 +86,6 @@ const AuthLayout = ({children}: Props) => {
       keyboardDidShowListener.remove();
     };
   }, []);
-
-  if (isLoading) {
-    return <FullScreenLoader />;
-  }
 
   return (
     <View style={{flex: 1, paddingTop: top, backgroundColor: colors.primary}}>
