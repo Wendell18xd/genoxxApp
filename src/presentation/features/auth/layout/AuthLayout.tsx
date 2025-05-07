@@ -13,6 +13,14 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import CurvaView from '../../../components/ui/CurvaView';
 import {useEffect, useState} from 'react';
 import MaterialIcons from '../../../components/ui/icons/MaterialIcons';
+import {showPromt} from '../../../adapter/prompt.adapter';
+import FullScreenLoader from '../../../components/ui/loaders/FullScreenLoader';
+import {
+  API_URL,
+  setApiHost,
+  toggleApiHost,
+} from '../../../../config/api/genoxxApi';
+import {StorageAdapter} from '../../../adapter/storage-adapter';
 
 interface Props {
   children?: React.ReactNode;
@@ -23,6 +31,47 @@ const AuthLayout = ({children}: Props) => {
   const {colors} = useTheme();
 
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handlerConfig = async () => {
+    setIsLoading(true);
+    const host = await StorageAdapter.getItem('host');
+    setIsLoading(false);
+
+    showPromt({
+      title: 'Host',
+      message: 'Editar host',
+      callbackOrButtons: [
+        {
+          text: 'Cambiar',
+          onPress: async () => {
+            setIsLoading(true);
+            await toggleApiHost();
+            setIsLoading(false);
+          },
+        },
+        {
+          text: 'Cancelar',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'destructive',
+        },
+        {
+          text: 'Aceptar',
+          onPress: async input => {
+            setIsLoading(true);
+            await setApiHost(input);
+            setIsLoading(false);
+          },
+        },
+      ],
+      options: {
+        type: 'plain-text',
+        cancelable: false,
+        defaultValue: host || API_URL,
+        placeholder: 'Host Name',
+      },
+    });
+  };
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -46,6 +95,10 @@ const AuthLayout = ({children}: Props) => {
     };
   }, []);
 
+  if (isLoading) {
+    return <FullScreenLoader />;
+  }
+
   return (
     <View style={{flex: 1, paddingTop: top, backgroundColor: colors.primary}}>
       <View style={styles.box}>
@@ -53,7 +106,7 @@ const AuthLayout = ({children}: Props) => {
           <Text variant="labelSmall" style={{color: 'white'}}>
             1.0.0
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handlerConfig}>
             <MaterialIcons name="cog" color="white" />
           </TouchableOpacity>
         </View>
