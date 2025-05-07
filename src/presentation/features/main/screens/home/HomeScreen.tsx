@@ -9,6 +9,9 @@ import CustomTextInput from '../../../../components/ui/CustomTextInput';
 import {useState} from 'react';
 import MenuItem from './components/MenuItem';
 import CurvaBottomView from '../../../../components/ui/CurvaBottomView';
+import {Menu} from '../../../../../domain/entities/User';
+import {normalize} from '../../../../helper/utils';
+import SinResultados from '../../../../components/ui/SinResultados';
 
 const fallbackImage = require('../../../../../assets/images/avatar3.jpg');
 
@@ -16,6 +19,21 @@ const HomeScreen = () => {
   const {user, menu} = useAuthStore();
   const {colors} = useTheme();
   const [buscar, setBuscar] = useState<string>('');
+  const [filterMenu, setFilterMenu] = useState<Menu[] | undefined>(menu);
+
+  const handlerSearch = (value: string) => {
+    setBuscar(value);
+
+    const filter = menu?.filter(item => {
+      const search = normalize(value);
+      return (
+        normalize(item.menu_nombre).includes(search) ||
+        normalize(item.menu_codigo).includes(search)
+      );
+    });
+
+    setFilterMenu(filter);
+  };
 
   return (
     <SafeAreaLayout style={{backgroundColor: colors.primary}}>
@@ -59,7 +77,7 @@ const HomeScreen = () => {
           mode="outlined"
           autoCapitalize="characters"
           value={buscar}
-          onChangeText={value => setBuscar(value)}
+          onChangeText={value => handlerSearch(value)}
           left={<TextInput.Icon icon="magnify" />}
         />
       </View>
@@ -74,10 +92,10 @@ const HomeScreen = () => {
         <View style={{position: 'absolute', width: '100%'}}>
           <CurvaBottomView />
         </View>
-        {menu && menu.length > 0 && (
+        {filterMenu && filterMenu.length > 0 ? (
           <FlatList
             style={{padding: 16}}
-            data={menu}
+            data={filterMenu}
             showsVerticalScrollIndicator={false}
             numColumns={3}
             keyExtractor={item => item.menu_codigo}
@@ -85,6 +103,8 @@ const HomeScreen = () => {
             contentContainerStyle={{gap: 16, paddingBottom: 40}}
             renderItem={({item}) => <MenuItem menu={item} />}
           />
+        ) : (
+          <SinResultados />
         )}
       </View>
     </SafeAreaLayout>
