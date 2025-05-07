@@ -3,7 +3,7 @@ import {Menu, User} from '../../../domain/entities/User';
 import {getLogin} from '../../../actions/auth/auth';
 import {LoginRequest} from '../../../infrastructure/interfaces/auth/auth.request';
 import {LoginResponse} from '../../../infrastructure/interfaces/auth/auth.response';
-import {StorageAdapter} from '../../../config/adapter/storage-adapter';
+import {StorageAdapter} from '../../adapter/storage-adapter';
 
 export interface AuthState {
   user?: User;
