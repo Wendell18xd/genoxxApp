@@ -64,23 +64,25 @@ const HomeScreen = () => {
         />
       </View>
 
-      <View style={{position: 'relative', width: '100%'}}>
-        <CurvaBottomView />
-      </View>
-
       <View
         style={{
           flex: 1,
           backgroundColor: colors.background,
+          position: 'relative',
+          marginTop: 16,
         }}>
+        <View style={{position: 'absolute', width: '100%'}}>
+          <CurvaBottomView />
+        </View>
         {menu && menu.length > 0 && (
           <FlatList
             style={{padding: 16}}
             data={menu}
+            showsVerticalScrollIndicator={false}
             numColumns={3}
             keyExtractor={item => item.menu_codigo}
             columnWrapperStyle={{gap: 16}}
-            contentContainerStyle={{gap: 16}}
+            contentContainerStyle={{gap: 16, paddingBottom: 40}}
             renderItem={({item}) => <MenuItem menu={item} />}
           />
         )}
