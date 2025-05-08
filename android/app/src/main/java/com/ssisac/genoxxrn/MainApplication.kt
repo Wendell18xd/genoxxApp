@@ -1,4 +1,4 @@
-package com.genoxxapp
+package com.ssisac.genoxxrn
 
 import android.app.Application
 import com.facebook.react.PackageList

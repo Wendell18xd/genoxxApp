@@ -25,6 +25,7 @@ const CombinedDefaultTheme = {
   colors: {
     ...merge(MD3LightTheme.colors, LightTheme.colors),
     primary: '#043767', // tu color principal claro
+    secondary: '#0090D7', // tu color secundario claro
   },
   fonts: {
     ...MD3LightTheme.fonts,
@@ -40,6 +41,7 @@ const CombinedDarkTheme = {
   colors: {
     ...merge(MD3DarkTheme.colors, DarkTheme.colors),
     primary: '#043767', // tu color principal oscuro
+    secondary: '#0090D7',
   },
   fonts: {
     ...MD3DarkTheme.fonts,

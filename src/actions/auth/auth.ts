@@ -14,7 +14,7 @@ export const getLogin = async (props: LoginRequest): Promise<LoginResponse> => {
     console.log(data);
     return data;
   } catch (error) {
-    throw new Error('Error al iniciar sesión: ' + error);
+    throw new Error(error as string);
   }
 };
 
@@ -26,7 +26,7 @@ export const getOlvidoClave = async (props: ForgotRequest): Promise<ForgotRespon
     console.log(data);
     return data;
   } catch (error) {
-    throw new Error('Error al recuperar la contraseña: ' + error);
+    throw new Error(error as string);
   }
 };
 

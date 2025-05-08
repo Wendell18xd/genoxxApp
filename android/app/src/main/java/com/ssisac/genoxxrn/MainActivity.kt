@@ -1,4 +1,4 @@
-package com.genoxxapp
+package com.ssisac.genoxxrn
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
