@@ -43,4 +43,6 @@ const genoxxApi = axios.create({
   },
 });
 
+console.log(genoxxApi.defaults.baseURL);
+
 export {genoxxApi};

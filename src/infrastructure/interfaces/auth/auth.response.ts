@@ -1,17 +1,18 @@
-import {Menu, User} from '../../../domain/entities/User';
+import {User} from '../../../domain/entities/User';
 
 export interface LoginResponse {
-  datos: Datos;
+  datos: LoginDatos;
   mensaje: string;
 }
 
-export interface Datos {
+export interface LoginDatos {
   estado: number;
   tipo_login: string;
   empresas: Empresa[];
+  correo: string;
   vehiculo: any[];
   usuario: Usuario;
-  menu: Menu[];
+  menu: any[];
 }
 
 export interface Empresa {
@@ -20,3 +21,15 @@ export interface Empresa {
 }
 
 export interface Usuario extends User {}
+
+export interface ForgotResponse {
+  datos: ForgotDatos;
+  mensaje: string;
+}
+
+export interface ForgotDatos {
+  estado: number;
+  usua_correo: string;
+  tipo: string;
+  usua_tipo: string;
+}
