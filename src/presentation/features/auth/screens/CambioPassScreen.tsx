@@ -239,14 +239,12 @@ const CambioPassScreen = () => {
                     Cambiar contraseña
                   </PrimaryButton>
                 </View>
-                {showPasswordError && (
-                  <View style={{marginTop: 16}}>
-                    <CustomCard
-                      title="La contraseña debe tener al menos 8 caracteres"
-                      content="Incluyendo mayúsculas, minúsculas, números y símbolos especiales. (#?:!@$%^&*-_)."
-                    />
-                  </View>
-                )}
+                <View style={{marginTop: 16}}>
+                  <CustomCard
+                    title="La contraseña debe tener al menos 8 caracteres"
+                    content="Incluyendo mayúsculas, minúsculas, números y símbolos especiales. (#?:!@$%^&*-_)."
+                  />
+                </View>
               </View>
             );
           }}
