@@ -47,10 +47,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Ionicons.ttf</string>
-		<string>MaterialDesignIcons.ttf</string>
-	</array>
 </dict>
 </plist>
