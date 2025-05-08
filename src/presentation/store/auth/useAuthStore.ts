@@ -61,6 +61,7 @@ export const useAuthStore = create<AuthState>()(set => ({
         usua_tipo: resp.datos.usua_tipo,
         usua_nombre: '',
         usua_perfil: '',
+        trab_documento: '',
       };
       set({user: usuario});
       return resp;
