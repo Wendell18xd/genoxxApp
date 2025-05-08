@@ -1,8 +1,20 @@
 import {create} from 'zustand';
 import {Menu, User} from '../../../domain/entities/User';
-import {getLogin, getOlvidoClave} from '../../../actions/auth/auth';
-import {ForgotRequest, LoginRequest} from '../../../infrastructure/interfaces/auth/auth.request';
-import {ForgotResponse, LoginResponse} from '../../../infrastructure/interfaces/auth/auth.response';
+import {
+  getLogin,
+  getOlvidoClave,
+  updatePassword,
+} from '../../../actions/auth/auth';
+import {
+  ForgotRequest,
+  LoginRequest,
+  UpdatePasswordRequest,
+} from '../../../infrastructure/interfaces/auth/auth.request';
+import {
+  ForgotResponse,
+  LoginResponse,
+  UpdatePasswordResponse,
+} from '../../../infrastructure/interfaces/auth/auth.response';
 import {StorageAdapter} from '../../adapter/storage-adapter';
 
 export interface AuthState {
@@ -10,6 +22,7 @@ export interface AuthState {
   menu?: Menu[];
   login: (props: LoginRequest) => Promise<LoginResponse>;
   forgot: (props: ForgotRequest) => Promise<ForgotResponse>;
+  update: (props: UpdatePasswordRequest) => Promise<UpdatePasswordResponse>;
 }
 
 export const useAuthStore = create<AuthState>()(set => ({
@@ -41,7 +54,17 @@ export const useAuthStore = create<AuthState>()(set => ({
         }
       }
 
-      set({user: resp.datos.usuario});
+      let usuario = resp.datos.usuario;
+
+      if (estado === 3) {
+        usuario = {
+          ...usuario,
+          usua_codigo: props.usuaCodigo,
+          usua_tipo: resp.datos.tipo_login,
+        };
+      }
+
+      set({user: usuario});
       set({menu: resp.datos.menu});
 
       return resp;
@@ -57,8 +80,8 @@ export const useAuthStore = create<AuthState>()(set => ({
         empr_nombre: '',
         empr_pais: '',
         empr_timezone: '',
-        usua_codigo: '',
-        usua_tipo: resp.datos.usua_tipo,
+        usua_codigo: props.usuaCodigo,
+        usua_tipo: resp.datos.tipo,
         usua_nombre: '',
         usua_perfil: '',
         trab_documento: '',
@@ -66,7 +89,15 @@ export const useAuthStore = create<AuthState>()(set => ({
       set({user: usuario});
       return resp;
     } catch (error) {
-      throw new Error('Error al recuperar la contraseña' + error);
+      throw new Error(error as string);
+    }
+  },
+  update: async (props: UpdatePasswordRequest) => {
+    try {
+      const resp = await updatePassword(props);
+      return resp;
+    } catch (error) {
+      throw new Error(error as string);
     }
   },
 }));

@@ -31,5 +31,9 @@ export interface ForgotDatos {
   estado: number;
   usua_correo: string;
   tipo: string;
-  usua_tipo: string;
+}
+
+export interface UpdatePasswordResponse {
+  datos: number;
+  mensaje: string;
 }

@@ -76,7 +76,7 @@ const LoginScreen = ({navigation}: Props) => {
           text2: 'Usuario de baja',
         });
       } else if (estado === 3) {
-        //TODO: navegar a actualizar clave
+        navigation.navigate('CambioPassScreen');
       } else if (estado === 4) {
         Toast.show({
           type: 'error',

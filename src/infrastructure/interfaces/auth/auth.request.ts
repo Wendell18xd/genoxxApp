@@ -8,3 +8,11 @@ export interface LoginRequest {
 export interface ForgotRequest {
   usuaCodigo: string;
 }
+
+export interface UpdatePasswordRequest {
+  usuaCodigo: string;
+  tipoLogin: string;
+  usuaClave: string;
+  usuaClave2: string;
+  trabFecnaci: string;
+}

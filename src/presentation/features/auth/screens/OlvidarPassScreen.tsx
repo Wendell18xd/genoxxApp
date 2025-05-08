@@ -10,6 +10,7 @@ import AuthLayout from '../layout/AuthLayout';
 import {StackScreenProps} from '@react-navigation/stack';
 import {AuthStackParam} from '../../../navigations/AuthStackNavigation';
 import {useAuthStore} from '../../../store/auth/useAuthStore';
+import Toast from 'react-native-toast-message';
 
 interface OlvidarPassFormValues {
   usuario: string;
@@ -35,51 +36,52 @@ const OlvidarPassScreen = ({navigation}: Props) => {
     onSuccess: async data => {
       const {estado, tipo, usua_correo} = data.datos;
 
-      const showAlert = (
-        title: string,
-        message: string,
-        onPressOk?: () => void,
-      ) => {
-        Alert.alert(title, message, [
-          {
-            text: 'OK',
-            onPress: onPressOk || (() => setFormValues(initialValues)),
-          },
-        ]);
-      };
-
       if (estado === 5) {
-        showAlert('Error', 'El usuario no existe');
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: 'El usuario no existe',
+        });
       } else if (estado === 1) {
         if (tipo === 'USUA') {
-          showAlert(
+          Alert.alert(
             'Contraseña temporal enviada',
             `Se ha enviado tu contraseña temporal al correo: ${usua_correo}`,
-            navigateToLogin,
+            [
+              {
+                text: 'Ir al Login',
+                onPress: () => {
+                  navigateToLogin();
+                },
+              },
+            ],
           );
         } else {
-          showAlert(
-            'Contraseña restablecida',
-            'Tu contraseña ha sido restablecida',
-            navigateToLogin,
-          );
+          navigation.navigate('CambioPassScreen');
         }
       } else if (estado === 2 && tipo === 'USUA') {
-        showAlert('Error', 'El usuario no tiene correo');
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: 'El usuario no tiene correo',
+        });
       } else {
-        showAlert('Error', 'No se pudo enviar el correo');
+        if (tipo === 'USUA') {
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: 'No se pudo enviar el correo',
+          });
+        }
       }
     },
     onError: error => {
       console.error('Error al recuperar contraseña:', error);
-      Alert.alert('Error', 'Hubo un error al recuperar la contraseña', [
-        {
-          text: 'OK',
-          onPress: () => {
-            setFormValues(initialValues);
-          },
-        },
-      ]);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: error.message,
+      });
     },
   });
 
