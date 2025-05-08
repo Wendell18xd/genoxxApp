@@ -1,4 +1,10 @@
-import {FlatList, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  BackHandler,
+  FlatList,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Text, TextInput, useTheme} from 'react-native-paper';
 import {FadeInImage} from '../../../../components/ui/FadeInImage';
 import {useAuthStore} from '../../../../store/auth/useAuthStore';
@@ -6,16 +12,18 @@ import {API_URL} from '../../../../../config/api/genoxxApi';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
 import SafeAreaLayout from '../../layout/SafeAreaLayout';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
-import {useState} from 'react';
+import {useCallback, useState} from 'react';
 import MenuItem from './components/MenuItem';
 import CurvaBottomView from '../../../../components/ui/CurvaBottomView';
 import {Menu} from '../../../../../domain/entities/User';
 import {normalize} from '../../../../helper/utils';
 import SinResultados from '../../../../components/ui/SinResultados';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
 const fallbackImage = require('../../../../../assets/images/avatar3.jpg');
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
   const {user, menu} = useAuthStore();
   const {colors} = useTheme();
   const [buscar, setBuscar] = useState<string>('');
@@ -34,6 +42,25 @@ const HomeScreen = () => {
 
     setFilterMenu(filter);
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        Alert.alert('Salir', '¿Deseas salir de la app?', [
+          {text: 'Cancelar', style: 'cancel'},
+          {text: 'Salir', onPress: () => navigation.goBack()},
+        ]);
+        return true;
+      };
+
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        onBackPress,
+      );
+
+      return () => backHandler.remove();
+    }, []),
+  );
 
   return (
     <SafeAreaLayout style={{backgroundColor: colors.primary}}>
