@@ -169,71 +169,67 @@ const CambioPassScreen = () => {
           }) => {
             return (
               <View>
-                {user?.usua_tipo === 'USUA' ? null : (
-                  <>
-                    <CustomTextInput
-                      label="Fecha de nacimiento"
-                      placeholder="DD/MM/AAAA"
-                      mode="outlined"
-                      value={values.fechaNacimiento}
-                      onChangeText={text => {
-                        const formattedText = formatFechaInput(text); // Formatea el texto mientras se escribe
-                        setFieldValue('fechaNacimiento', formattedText); // Actualiza el valor en Formik
-                      }}
-                      error={
-                        touched.fechaNacimiento && !!errors.fechaNacimiento
-                      }
-                      left={<TextInput.Icon icon="calendar" />}
-                      style={{marginBottom: 8}}
-                      keyboardType="numeric" // Asegura que el teclado numérico se muestre
-                    />
-
-                    <CustomTextInput
-                      label="Contraseña actual"
-                      showPassword
-                      mode="outlined"
-                      value={values.actualPass}
-                      onChangeText={handleChange('actualPass')}
-                      onBlur={handleBlur('actualPass')}
-                      error={touched.actualPass && !!errors.actualPass}
-                      left={<TextInput.Icon icon="lock" />}
-                      style={{marginBottom: 8}}
-                      autoComplete="off"
-                      textContentType="username"
-                      importantForAutofill="no"
-                    />
-
-                    <CustomTextInput
-                      label="Nueva contraseña"
-                      showPassword
-                      mode="outlined"
-                      value={values.nuevoPass}
-                      onChangeText={handleChange('nuevoPass')}
-                      onBlur={handleBlur('nuevoPass')}
-                      error={touched.nuevoPass && !!errors.nuevoPass}
-                      left={<TextInput.Icon icon="lock" />}
-                      style={{marginBottom: 8}}
-                      autoComplete="off"
-                      textContentType="newPassword"
-                      importantForAutofill="no"
-                    />
-
-                    <CustomTextInput
-                      label="Confirme contraseña"
-                      showPassword
-                      mode="outlined"
-                      value={values.confirPass}
-                      onChangeText={handleChange('confirPass')}
-                      onBlur={handleBlur('confirPass')}
-                      error={touched.confirPass && !!errors.confirPass}
-                      left={<TextInput.Icon icon="lock-check" />}
-                      style={{marginBottom: 8}}
-                      autoComplete="off"
-                      textContentType="none"
-                      importantForAutofill="no"
-                    />
-                  </>
+                {user?.usua_tipo === 'USUA' ? (
+                  <CustomTextInput
+                    label="Contraseña actual"
+                    showPassword
+                    mode="outlined"
+                    value={values.actualPass}
+                    onChangeText={handleChange('actualPass')}
+                    onBlur={handleBlur('actualPass')}
+                    error={touched.actualPass && !!errors.actualPass}
+                    left={<TextInput.Icon icon="lock" />}
+                    style={{marginBottom: 8}}
+                    autoComplete="off"
+                    textContentType="username"
+                    importantForAutofill="no"
+                  />
+                ) : (
+                  <CustomTextInput
+                    label="Fecha de nacimiento"
+                    placeholder="DD/MM/AAAA"
+                    mode="outlined"
+                    value={values.fechaNacimiento}
+                    onChangeText={text => {
+                      const formattedText = formatFechaInput(text); // Formatea el texto mientras se escribe
+                      setFieldValue('fechaNacimiento', formattedText); // Actualiza el valor en Formik
+                    }}
+                    error={touched.fechaNacimiento && !!errors.fechaNacimiento}
+                    left={<TextInput.Icon icon="calendar" />}
+                    style={{marginBottom: 8}}
+                    keyboardType="numeric" // Asegura que el teclado numérico se muestre
+                  />
                 )}
+
+                <CustomTextInput
+                  label="Nueva contraseña"
+                  showPassword
+                  mode="outlined"
+                  value={values.nuevoPass}
+                  onChangeText={handleChange('nuevoPass')}
+                  onBlur={handleBlur('nuevoPass')}
+                  error={touched.nuevoPass && !!errors.nuevoPass}
+                  left={<TextInput.Icon icon="lock" />}
+                  style={{marginBottom: 8}}
+                  autoComplete="off"
+                  textContentType="newPassword"
+                  importantForAutofill="no"
+                />
+
+                <CustomTextInput
+                  label="Confirme contraseña"
+                  showPassword
+                  mode="outlined"
+                  value={values.confirPass}
+                  onChangeText={handleChange('confirPass')}
+                  onBlur={handleBlur('confirPass')}
+                  error={touched.confirPass && !!errors.confirPass}
+                  left={<TextInput.Icon icon="lock-check" />}
+                  style={{marginBottom: 8}}
+                  autoComplete="off"
+                  textContentType="password"
+                  importantForAutofill="no"
+                />
 
                 <View style={{marginTop: 16, width: '100%'}}>
                   <PrimaryButton
