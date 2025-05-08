@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Image, ScrollView, View} from 'react-native';
+import {Image, ScrollView, TouchableOpacity, View} from 'react-native';
 import {Text, TextInput, useTheme} from 'react-native-paper';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
@@ -101,6 +101,11 @@ const LoginScreen = ({navigation}: Props) => {
     },
     onError: error => {
       console.error('Error al obtener versión:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Login fallido',
+        text2: error.message,
+      });
     },
   });
 
@@ -116,7 +121,7 @@ const LoginScreen = ({navigation}: Props) => {
   };
 
   const navigateToMenu = async () => {
-    navigation.navigate('HomeScreen');
+    navigation.navigate('MainBottomTabNavigation');
     setDisabled(false);
     setEmpresas([]);
     setFormValues(initialValues);
@@ -246,7 +251,12 @@ const LoginScreen = ({navigation}: Props) => {
                     onChange={checked => setFieldValue('recordar', checked)}
                     isChecked={values.recordar}
                   />
-                  <Text>¿Olvido su contraseña?</Text>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('OlvidarPassScreen')}>
+                    <Text style={{color: colors.primary}}>
+                      ¿Olvido su contraseña?
+                    </Text>
+                  </TouchableOpacity>
                 </View>
 
                 <View pointerEvents={loginMutation.isPending ? 'none' : 'auto'}>

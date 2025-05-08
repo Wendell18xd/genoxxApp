@@ -1,6 +1,8 @@
 import {genoxxApi} from '../../config/api/genoxxApi';
 import {LoginResponse} from '../../infrastructure/interfaces/auth/auth.response';
-import {LoginRequest} from '../../infrastructure/interfaces/auth/auth.request';
+import {ForgotRequest, LoginRequest} from '../../infrastructure/interfaces/auth/auth.request';
+
+import { ForgotResponse } from '../../infrastructure/interfaces/auth/auth.response';
 
 export const getLogin = async (props: LoginRequest): Promise<LoginResponse> => {
   try {
@@ -12,6 +14,21 @@ export const getLogin = async (props: LoginRequest): Promise<LoginResponse> => {
     console.log(data);
     return data;
   } catch (error) {
-    throw new Error('Error al iniciar sesión: ' + error);
+    throw new Error(error as string);
   }
 };
+
+export const getOlvidoClave = async (props: ForgotRequest): Promise<ForgotResponse> => {
+  try {
+    const { data } = await genoxxApi.post<ForgotResponse>('/auth/usuario_olvido_clave', {
+      txt_usua_codigo: props.usuaCodigo,
+    });
+    console.log(data);
+    return data;
+  } catch (error) {
+    throw new Error(error as string);
+  }
+};
+
+
+

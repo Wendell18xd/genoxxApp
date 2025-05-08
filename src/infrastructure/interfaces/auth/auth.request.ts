@@ -4,3 +4,7 @@ export interface LoginRequest {
   emprCodigo: string;
   recorded: boolean;
 }
+
+export interface ForgotRequest {
+  usuaCodigo: string;
+}
