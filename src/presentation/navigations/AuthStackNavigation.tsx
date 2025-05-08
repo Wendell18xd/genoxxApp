@@ -17,7 +17,7 @@ export const AuthStackNavigation = () => {
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="OlvidarPassScreen">
+      initialRouteName="LoginScreen">
       <Stack.Screen name="GetStartScreen" component={GetStartScreen} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="OlvidarPassScreen" component={OlvidarPassScreen} />
