@@ -45,7 +45,7 @@ export const useAuthStore = create<AuthState>()(set => ({
 
       return resp;
     } catch (error) {
-      throw new Error('Error al iniciar sesión' + error);
+      throw new Error(error as string);
     }
   },
 }));

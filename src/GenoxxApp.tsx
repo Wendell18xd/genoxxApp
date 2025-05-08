@@ -4,12 +4,18 @@ import {ThemeContextProvider} from './presentation/context/ThemeContext';
 import {StatusBar, useColorScheme} from 'react-native';
 import AppNavigation from './presentation/navigations/AppNavigation';
 import Toast from 'react-native-toast-message';
+import {useEffect} from 'react';
+import {initApi} from './config/api/genoxxApi';
 
 const queryClient = new QueryClient();
 
 const GenoxxApp = () => {
   const colorScheme = useColorScheme();
   const barStyle = colorScheme === 'dark' ? 'light-content' : 'dark-content';
+
+  useEffect(() => {
+    initApi();
+  }, []);
 
   return (
     <>
@@ -23,7 +29,7 @@ const GenoxxApp = () => {
           <AppNavigation />
         </ThemeContextProvider>
       </QueryClientProvider>
-      <Toast position="bottom"/>
+      <Toast position="bottom" />
     </>
   );
 };

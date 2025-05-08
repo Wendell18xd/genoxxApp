@@ -1,4 +1,10 @@
-import {FlatList, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  BackHandler,
+  FlatList,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Text, TextInput, useTheme} from 'react-native-paper';
 import {FadeInImage} from '../../../../components/ui/FadeInImage';
 import {useAuthStore} from '../../../../store/auth/useAuthStore';
@@ -6,16 +12,55 @@ import {API_URL} from '../../../../../config/api/genoxxApi';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
 import SafeAreaLayout from '../../layout/SafeAreaLayout';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
-import {useState} from 'react';
+import {useCallback, useState} from 'react';
 import MenuItem from './components/MenuItem';
 import CurvaBottomView from '../../../../components/ui/CurvaBottomView';
+import {Menu} from '../../../../../domain/entities/User';
+import {normalize} from '../../../../helper/utils';
+import SinResultados from '../../../../components/ui/SinResultados';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
 const fallbackImage = require('../../../../../assets/images/avatar3.jpg');
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
   const {user, menu} = useAuthStore();
   const {colors} = useTheme();
   const [buscar, setBuscar] = useState<string>('');
+  const [filterMenu, setFilterMenu] = useState<Menu[] | undefined>(menu);
+
+  const handlerSearch = (value: string) => {
+    setBuscar(value);
+
+    const filter = menu?.filter(item => {
+      const search = normalize(value);
+      return (
+        normalize(item.menu_nombre).includes(search) ||
+        normalize(item.menu_codigo).includes(search)
+      );
+    });
+
+    setFilterMenu(filter);
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        Alert.alert('Salir', '¿Deseas salir de la app?', [
+          {text: 'Cancelar', style: 'cancel'},
+          {text: 'Salir', onPress: () => navigation.goBack()},
+        ]);
+        return true;
+      };
+
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        onBackPress,
+      );
+
+      return () => backHandler.remove();
+    }, []),
+  );
 
   return (
     <SafeAreaLayout style={{backgroundColor: colors.primary}}>
@@ -59,7 +104,7 @@ const HomeScreen = () => {
           mode="outlined"
           autoCapitalize="characters"
           value={buscar}
-          onChangeText={value => setBuscar(value)}
+          onChangeText={value => handlerSearch(value)}
           left={<TextInput.Icon icon="magnify" />}
         />
       </View>
@@ -74,10 +119,10 @@ const HomeScreen = () => {
         <View style={{position: 'absolute', width: '100%'}}>
           <CurvaBottomView />
         </View>
-        {menu && menu.length > 0 && (
+        {filterMenu && filterMenu.length > 0 ? (
           <FlatList
             style={{padding: 16}}
-            data={menu}
+            data={filterMenu}
             showsVerticalScrollIndicator={false}
             numColumns={3}
             keyExtractor={item => item.menu_codigo}
@@ -85,6 +130,8 @@ const HomeScreen = () => {
             contentContainerStyle={{gap: 16, paddingBottom: 40}}
             renderItem={({item}) => <MenuItem menu={item} />}
           />
+        ) : (
+          <SinResultados />
         )}
       </View>
     </SafeAreaLayout>

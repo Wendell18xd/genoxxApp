@@ -13,6 +13,13 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import CurvaView from '../../../components/ui/CurvaView';
 import {useEffect, useState} from 'react';
 import MaterialIcons from '../../../components/ui/icons/MaterialIcons';
+import {showPromt} from '../../../adapter/prompt.adapter';
+import {
+  API_URL,
+  setApiHost,
+  toggleApiHost,
+} from '../../../../config/api/genoxxApi';
+import {StorageAdapter} from '../../../adapter/storage-adapter';
 
 interface Props {
   children?: React.ReactNode;
@@ -23,6 +30,40 @@ const AuthLayout = ({children}: Props) => {
   const {colors} = useTheme();
 
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  const handlerConfig = async () => {
+    const host = await StorageAdapter.getItem('host');
+
+    showPromt({
+      title: 'Host',
+      message: 'Editar host',
+      callbackOrButtons: [
+        {
+          text: 'Cambiar',
+          onPress: async () => {
+            await toggleApiHost();
+          },
+        },
+        {
+          text: 'Cancelar',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'destructive',
+        },
+        {
+          text: 'Aceptar',
+          onPress: async input => {
+            await setApiHost(input);
+          },
+        },
+      ],
+      options: {
+        type: 'plain-text',
+        cancelable: false,
+        defaultValue: host || API_URL,
+        placeholder: 'Host Name',
+      },
+    });
+  };
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -53,7 +94,7 @@ const AuthLayout = ({children}: Props) => {
           <Text variant="labelSmall" style={{color: 'white'}}>
             1.0.0
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handlerConfig}>
             <MaterialIcons name="cog" color="white" />
           </TouchableOpacity>
         </View>

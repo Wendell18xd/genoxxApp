@@ -12,6 +12,6 @@ export const getLogin = async (props: LoginRequest): Promise<LoginResponse> => {
     console.log(data);
     return data;
   } catch (error) {
-    throw new Error('Error al iniciar sesión: ' + error);
+    throw new Error(error as string);
   }
 };

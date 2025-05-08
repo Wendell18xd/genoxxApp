@@ -101,6 +101,11 @@ const LoginScreen = ({navigation}: Props) => {
     },
     onError: error => {
       console.error('Error al obtener versión:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Login fallido',
+        text2: error.message,
+      });
     },
   });
 
