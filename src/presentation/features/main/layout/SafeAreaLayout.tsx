@@ -7,7 +7,7 @@ interface Props {
 }
 
 const SafeAreaLayout = ({children, style}: Props) => {
-  const {top,bottom} = useSafeAreaInsets();
+  const {top} = useSafeAreaInsets();
 
   return (
     <View
@@ -15,7 +15,6 @@ const SafeAreaLayout = ({children, style}: Props) => {
         {
           flex: 1,
           paddingTop: top,
-          paddingBottom: bottom,
         },
         style,
       ]}>

@@ -46,9 +46,9 @@ const HomeScreen = () => {
   useFocusEffect(
     useCallback(() => {
       const onBackPress = () => {
-        Alert.alert('Salir', '¿Deseas salir de la app?', [
+        Alert.alert('Cerrar Sesión', '¿Deseas cerrar sesión?', [
           {text: 'Cancelar', style: 'cancel'},
-          {text: 'Salir', onPress: () => navigation.goBack()},
+          {text: 'Si, Cerrar', onPress: () => navigation.goBack()},
         ]);
         return true;
       };
