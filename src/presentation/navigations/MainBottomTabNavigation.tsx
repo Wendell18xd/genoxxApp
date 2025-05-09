@@ -5,6 +5,7 @@ import {useTheme} from 'react-native-paper';
 import MaterialIcons from '../components/ui/icons/MaterialIcons';
 import {View} from 'react-native';
 import {MD3Colors} from 'react-native-paper/lib/typescript/types';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export type MainBottomTabParam = {
   HomeScreen: undefined;
@@ -38,6 +39,7 @@ const Tab = createBottomTabNavigator<MainBottomTabParam>();
 
 export const MainBottomTabNavigation = () => {
   const {colors} = useTheme();
+  const {bottom} = useSafeAreaInsets();
 
   return (
     <Tab.Navigator
@@ -45,7 +47,7 @@ export const MainBottomTabNavigation = () => {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: colors.primary,
-          height: 65,
+          height: 65 + bottom,
         },
         tabBarItemStyle: {
           marginTop: 4,
