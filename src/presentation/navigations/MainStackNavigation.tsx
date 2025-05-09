@@ -1,0 +1,27 @@
+import {createStackNavigator} from '@react-navigation/stack';
+import {SideMenuNavigator} from './SideMenuNavigator';
+import {MainBottomTabNavigation} from './MainBottomTabNavigation';
+
+export type MainStackParam = {
+  MainBottomTabNavigation: undefined;
+  SideMenuNavigator: undefined;
+};
+
+const Stack = createStackNavigator<MainStackParam>();
+
+export const MainStackNavigation = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        // ...TransitionPresets.SlideFromRightIOS,
+      }}
+      initialRouteName="MainBottomTabNavigation">
+      <Stack.Screen
+        name="MainBottomTabNavigation"
+        component={MainBottomTabNavigation}
+      />
+      <Stack.Screen name="SideMenuNavigator" component={SideMenuNavigator} />
+    </Stack.Navigator>
+  );
+};

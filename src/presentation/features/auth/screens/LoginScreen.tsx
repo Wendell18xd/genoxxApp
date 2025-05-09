@@ -121,7 +121,7 @@ const LoginScreen = ({navigation}: Props) => {
   };
 
   const navigateToMenu = async () => {
-    navigation.navigate('MainBottomTabNavigation');
+    navigation.navigate('MainStackNavigation');
     setDisabled(false);
     setEmpresas([]);
     setFormValues(initialValues);

@@ -2,6 +2,8 @@ import {StyleSheet, View} from 'react-native';
 import {Menu} from '../../../../../../domain/entities/User';
 import {Card, Text, useTheme} from 'react-native-paper';
 import MaterialIcons from '../../../../../components/ui/icons/MaterialIcons';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {MainStackParam} from '../../../../../navigations/MainStackNavigation';
 
 interface Props {
   menu: Menu;
@@ -9,9 +11,15 @@ interface Props {
 
 const MenuItem = ({menu}: Props) => {
   const {colors} = useTheme();
+  const navigation = useNavigation<NavigationProp<MainStackParam>>();
 
   return (
-    <Card mode="elevated" onPress={() => {}} style={styles.card}>
+    <Card
+      mode="elevated"
+      onPress={() => {
+        navigation.navigate('SideMenuNavigator');
+      }}
+      style={styles.card}>
       <Card.Content style={styles.cardContent}>
         <View
           style={[
