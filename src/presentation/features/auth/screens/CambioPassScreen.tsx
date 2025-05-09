@@ -191,7 +191,6 @@ const CambioPassScreen = ({navigation}: Props) => {
                       error={
                         touched.fechaNacimiento && !!errors.fechaNacimiento
                       }
-                      maximumDate={new Date()}
                     />
                     {touched.fechaNacimiento && errors.fechaNacimiento && (
                       <Text style={{color: 'red', marginBottom: 4}}>
