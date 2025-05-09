@@ -1,5 +1,5 @@
 import {View, ScrollView, Image} from 'react-native';
-import {Portal, Text} from 'react-native-paper';
+import {Text} from 'react-native-paper';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import Toast from 'react-native-toast-message';
@@ -13,9 +13,7 @@ import CustomSimpleCard from '../../../components/ui/CustomSimpleCard';
 import {isPasswordValid} from '../../../helper/utils';
 import {StackScreenProps} from '@react-navigation/stack';
 import {AuthStackParam} from '../../../navigations/AuthStackNavigation';
-import {useState} from 'react';
-import DatePicker from 'react-native-date-picker';
-import {format, parseISO} from 'date-fns';
+import CustomDatePicker from '../../../components/ui/CustomDatePicker';
 
 interface CambioPassFormValues {
   fechaNacimiento: string;
@@ -35,7 +33,6 @@ interface Props extends StackScreenProps<AuthStackParam, 'CambioPassScreen'> {}
 
 const CambioPassScreen = ({navigation}: Props) => {
   const {user, update} = useAuthStore();
-  const [open, setOpen] = useState(false);
 
   const getValidationSchema = (tipoUsuario: string) =>
     Yup.object().shape({
@@ -186,49 +183,16 @@ const CambioPassScreen = ({navigation}: Props) => {
                   </>
                 ) : (
                   <>
-                    <CustomTextInput
+                    <CustomDatePicker
                       label="Fecha de nacimiento"
                       placeholder="Selecciona tu fecha"
-                      mode="outlined"
-                      value={
-                        values.fechaNacimiento
-                          ? format(
-                              parseISO(values.fechaNacimiento),
-                              'dd/MM/yyyy',
-                            )
-                          : ''
-                      }
-                      onPressIn={() => setOpen(true)}
+                      value={values.fechaNacimiento}
+                      onChange={val => setFieldValue('fechaNacimiento', val)}
                       error={
                         touched.fechaNacimiento && !!errors.fechaNacimiento
                       }
-                      left={<TextInput.Icon icon="calendar" />}
-                      style={{marginBottom: 8}}
-                      showSoftInputOnFocus={false}
+                      maximumDate={new Date()}
                     />
-
-                    <Portal>
-                      <DatePicker
-                        modal
-                        open={open}
-                        date={
-                          values.fechaNacimiento
-                            ? new Date(values.fechaNacimiento)
-                            : new Date()
-                        }
-                        title="Selecciona tu fecha de nacimiento"
-                        cancelText="Cancelar"
-                        confirmText="Confirmar"
-                        mode="date"
-                        locale="es"
-                        onConfirm={date => {
-                          setOpen(false);
-                          const formatted = format(date, 'yyyy-MM-dd');
-                          setFieldValue('fechaNacimiento', formatted);
-                        }}
-                        onCancel={() => setOpen(false)}
-                      />
-                    </Portal>
                     {touched.fechaNacimiento && errors.fechaNacimiento && (
                       <Text style={{color: 'red', marginBottom: 4}}>
                         {errors.fechaNacimiento}
