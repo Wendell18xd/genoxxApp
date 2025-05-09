@@ -223,7 +223,7 @@ const CambioPassScreen = ({navigation}: Props) => {
                         locale="es"
                         onConfirm={date => {
                           setOpen(false);
-                          const formatted = date.toISOString().split('T')[0];
+                          const formatted = format(date, 'yyyy-MM-dd');
                           setFieldValue('fechaNacimiento', formatted);
                         }}
                         onCancel={() => setOpen(false)}
