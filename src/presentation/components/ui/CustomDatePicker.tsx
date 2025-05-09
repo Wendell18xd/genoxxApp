@@ -4,6 +4,7 @@ import {format, parseISO} from 'date-fns';
 import {Portal, TextInput} from 'react-native-paper';
 import DatePicker from 'react-native-date-picker';
 import {parseLocalDate} from '../../helper/timeUtils';
+import {TextStyle} from 'react-native';
 
 interface Props {
   label: string;
@@ -13,6 +14,7 @@ interface Props {
   error?: boolean;
   maximumDate?: Date;
   minimumDate?: Date;
+  style?: TextStyle;
 }
 
 const CustomDatePicker: React.FC<Props> = ({
@@ -23,6 +25,7 @@ const CustomDatePicker: React.FC<Props> = ({
   error,
   maximumDate,
   minimumDate,
+  style,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -36,8 +39,8 @@ const CustomDatePicker: React.FC<Props> = ({
         onPressIn={() => setOpen(true)}
         error={error}
         left={<TextInput.Icon icon="calendar" />} // Si usas Icon como subcomponente
-        style={{marginBottom: 8}}
         showSoftInputOnFocus={false}
+        style={[style]}
       />
       <Portal>
         <DatePicker

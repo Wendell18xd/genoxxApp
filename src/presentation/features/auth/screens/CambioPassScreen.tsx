@@ -187,6 +187,7 @@ const CambioPassScreen = ({navigation}: Props) => {
                       label="Fecha de nacimiento"
                       placeholder="Selecciona tu fecha"
                       value={values.fechaNacimiento}
+                      style={{marginBottom: 8}}
                       onChange={val => setFieldValue('fechaNacimiento', val)}
                       error={
                         touched.fechaNacimiento && !!errors.fechaNacimiento
