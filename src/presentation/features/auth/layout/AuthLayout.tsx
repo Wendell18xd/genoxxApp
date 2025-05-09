@@ -1,4 +1,5 @@
 import {
+  Dimensions,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -30,6 +31,8 @@ const AuthLayout = ({children}: Props) => {
   const {colors} = useTheme();
 
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const screenHeight = Dimensions.get('window').height;
+  const calculatedMargin = keyboardVisible ? 0 : -(screenHeight * 0.08);
 
   const handlerConfig = async () => {
     const host = await StorageAdapter.getItem('host');
@@ -118,7 +121,7 @@ const AuthLayout = ({children}: Props) => {
               styles.containerChildren,
               {
                 backgroundColor: colors.background,
-                marginBottom: keyboardVisible ? 0 : -35,
+                marginBottom: calculatedMargin,
               },
             ]}>
             {children}
