@@ -7,12 +7,11 @@ import {
 import {useWindowDimensions, View} from 'react-native';
 import MaterialIcons from '../components/ui/icons/MaterialIcons';
 import {useTheme} from 'react-native-paper';
-import LiquidarMaterialesObras from '../features/gestionObras/liquidarMateriales/screen/LiquidarMaterialesObras';
-import LiquidarPartidasObras from '../features/gestionObras/liquidarPartidas/screen/LiquidarPartidasObras';
 import {useAuthStore} from '../store/auth/useAuthStore';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {MainStackParam} from './MainStackNavigation';
 import NoMenuAvailableScreen from '../features/main/screens/NoMenuAvailableScreen';
+import {drawerScreenComponents} from '../../types/drawerScreenComponents';
 
 const Drawer = createDrawerNavigator();
 
@@ -23,11 +22,6 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
 const DrawIcon = (color: string, name: string) => (
   <MaterialIcons color={color} name={name} />
 );
-
-const screenComponents: Record<string, React.ComponentType<any>> = {
-  LiquidacionMaterialesFragment: LiquidarMaterialesObras,
-  ListObrasFragment1: LiquidarPartidasObras,
-};
 
 export const SideMenuNavigator = () => {
   const {menu: menuSelected} =
@@ -41,7 +35,7 @@ export const SideMenuNavigator = () => {
   );
 
   const mapeo = menuFiltered?.menu_hijo.filter(
-    menuItem => screenComponents[menuItem.menu_fileapp],
+    menuItem => drawerScreenComponents[menuItem.menu_fileapp],
   );
 
   console.log(menuFiltered);
@@ -62,9 +56,9 @@ export const SideMenuNavigator = () => {
         drawerItemStyle: {borderRadius: 100, paddingHorizontal: 20},
       }}>
       {menuFiltered?.menu_hijo
-        .filter(menuItem => screenComponents[menuItem.menu_fileapp])
+        .filter(menuItem => drawerScreenComponents[menuItem.menu_fileapp])
         .map((menuItem, index) => {
-          const ScreenComponent = screenComponents[menuItem.menu_fileapp];
+          const ScreenComponent = drawerScreenComponents[menuItem.menu_fileapp];
           return (
             <Drawer.Screen
               key={index}
