@@ -17,7 +17,7 @@ const MenuItem = ({menu}: Props) => {
     <Card
       mode="elevated"
       onPress={() => {
-        navigation.navigate('SideMenuNavigator');
+        navigation.navigate('SideMenuNavigator', {menu});
       }}
       style={styles.card}>
       <Card.Content style={styles.cardContent}>

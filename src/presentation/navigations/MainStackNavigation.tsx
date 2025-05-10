@@ -1,10 +1,11 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import {SideMenuNavigator} from './SideMenuNavigator';
 import {MainBottomTabNavigation} from './MainBottomTabNavigation';
+import {Menu} from '../../domain/entities/User';
 
 export type MainStackParam = {
   MainBottomTabNavigation: undefined;
-  SideMenuNavigator: undefined;
+  SideMenuNavigator: {menu: Menu};
 };
 
 const Stack = createStackNavigator<MainStackParam>();
