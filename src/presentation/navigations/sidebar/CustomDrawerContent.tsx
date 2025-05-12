@@ -1,30 +1,21 @@
 import {
-  createDrawerNavigator,
   DrawerContentComponentProps,
   DrawerContentScrollView,
   DrawerItem,
 } from '@react-navigation/drawer';
-import {StyleSheet, useWindowDimensions, View} from 'react-native';
-import MaterialIcons from '../components/ui/icons/MaterialIcons';
 import {List, Text, useTheme} from 'react-native-paper';
-import {useAuthStore} from '../store/auth/useAuthStore';
+import {useAuthStore} from '../../store/auth/useAuthStore';
 import {
   RouteProp,
   useNavigationState,
   useRoute,
 } from '@react-navigation/native';
-import {MainStackParam} from './MainStackNavigation';
-import NoMenuAvailableScreen from '../features/main/screens/NoMenuAvailableScreen';
-import {drawerScreenComponents} from '../../types/drawerScreenComponents';
-import {useMainStore} from '../store/main/useMainStore';
+import {MainStackParam} from '../MainStackNavigation';
+import {StyleSheet, View} from 'react-native';
+import {drawerScreenComponents} from '../../../types/drawerScreenComponents';
+import MaterialIcons from '../../components/ui/icons/MaterialIcons';
 
-const Drawer = createDrawerNavigator();
-
-const DrawerContent = (props: DrawerContentComponentProps) => {
-  return <CustomDrawerContent {...props} />;
-};
-
-const DrawIcon = (color: string, name: string) => (
+export const DrawIcon = (color: string, name: string) => (
   <MaterialIcons color={color} name={name} />
 );
 
@@ -32,86 +23,7 @@ const ListIcon = (props: any, icon: string) => (
   <List.Icon {...props} icon={icon} />
 );
 
-export const SideMenuNavigator = () => {
-  const {menu: menuSelected} =
-    useRoute<RouteProp<MainStackParam, 'SideMenuNavigator'>>().params;
-  const dimensions = useWindowDimensions();
-  const {colors} = useTheme();
-  const {menu} = useAuthStore();
-  const {setMenuSelected} = useMainStore();
-
-  // Filtrar y recorrer todos los menús y submenús
-  const getValidMenuItems = (menuItems: any[]) => {
-    return menuItems.reduce((acc: any[], item) => {
-      // Si el item tiene pantalla asociada, agregarlo al array
-      if (drawerScreenComponents[item.menu_fileapp]) {
-        acc.push(item);
-      }
-
-      // Si tiene hijos, procesarlos recursivamente
-      if (item.menu_hijo && item.menu_hijo.length > 0) {
-        acc = [...acc, ...getValidMenuItems(item.menu_hijo)]; // Llamada recursiva
-      }
-
-      return acc;
-    }, []);
-  };
-
-  const menuFiltered = menu?.find(
-    f => f.menu_codigo === menuSelected.menu_codigo,
-  );
-
-  const validMenuItems = getValidMenuItems(menuFiltered?.menu_hijo || []);
-
-  console.log(validMenuItems);
-
-  if (validMenuItems.length === 0) {
-    return <NoMenuAvailableScreen />;
-  }
-
-  return (
-    <Drawer.Navigator
-      drawerContent={DrawerContent}
-      screenOptions={{
-        headerShown: false,
-        drawerType: dimensions.width >= 768 ? 'permanent' : 'slide',
-        drawerActiveBackgroundColor: colors.primary,
-        drawerActiveTintColor: 'white',
-        drawerInactiveTintColor: colors.primary,
-        drawerItemStyle: {borderRadius: 100, paddingHorizontal: 20},
-      }}>
-      {menuFiltered?.menu_hijo.flatMap((item, index) => {
-        const subItems = item.menu_hijo || [];
-        const allItems = [item, ...subItems];
-
-        return allItems
-          .filter(menuItem => drawerScreenComponents[menuItem.menu_fileapp])
-          .map((menuItem, subIndex) => {
-            const ScreenComponent =
-              drawerScreenComponents[menuItem.menu_fileapp];
-            return (
-              <Drawer.Screen
-                key={`${index}-${subIndex}`}
-                name={menuItem.menu_nombre}
-                component={ScreenComponent}
-                options={{
-                  drawerIcon: ({color}) =>
-                    DrawIcon(color, menuItem.menu_icoapp),
-                }}
-                listeners={{
-                  focus: () => {
-                    setMenuSelected(menuItem);
-                  },
-                }}
-              />
-            );
-          });
-      })}
-    </Drawer.Navigator>
-  );
-};
-
-const CustomDrawerContent = (props: DrawerContentComponentProps) => {
+export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const {colors} = useTheme();
   const {menu} = useAuthStore();
   const {menu: menuSelected} =
@@ -152,6 +64,15 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           Menú Principal
         </Text>
       </View>
+
+      <DrawerItem
+        label={menuSelected.menu_nombre}
+        icon={({color}) => DrawIcon(color, 'view-module')}
+        focused={currentRouteName === 'ModuleScreen'}
+        onPress={() => {
+          props.navigation.navigate('ModuleScreen');
+        }}
+      />
 
       {menuFiltered?.menu_hijo.map((item, index) => {
         const hasChildren = item.menu_hijo && item.menu_hijo.length > 0;

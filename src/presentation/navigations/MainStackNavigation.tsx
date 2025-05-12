@@ -1,5 +1,5 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import {SideMenuNavigator} from './SideMenuNavigator';
+import {SideMenuNavigator} from './sidebar/SideMenuNavigator';
 import {MainBottomTabNavigation} from './MainBottomTabNavigation';
 import {Menu} from '../../domain/entities/User';
 
