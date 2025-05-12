@@ -21,6 +21,7 @@ import {
   toggleApiHost,
 } from '../../../../config/api/genoxxApi';
 import {StorageAdapter} from '../../../adapter/storage-adapter';
+import {useNavigation} from '@react-navigation/native';
 
 interface Props {
   children?: React.ReactNode;
@@ -29,6 +30,7 @@ interface Props {
 const AuthLayout = ({children}: Props) => {
   const {top} = useSafeAreaInsets();
   const {colors} = useTheme();
+  const navigation = useNavigation();
 
   const [keyboardVisible, setKeyboardVisible] = useState(false);
   const screenHeight = Dimensions.get('window').height;
@@ -94,9 +96,16 @@ const AuthLayout = ({children}: Props) => {
     <View style={{flex: 1, paddingTop: top, backgroundColor: colors.primary}}>
       <View style={styles.box}>
         <View style={styles.boxHeader}>
-          <Text variant="labelSmall" style={{color: 'white'}}>
-            1.0.0
-          </Text>
+          <View style={{flexDirection: 'row', alignItems: 'center', gap: 20}}>
+            {navigation.canGoBack() && (
+              <TouchableOpacity onPress={navigation.goBack}>
+                <MaterialIcons name="arrow-left" color="white" />
+              </TouchableOpacity>
+            )}
+            <Text variant="labelSmall" style={{color: 'white'}}>
+              1.0.0
+            </Text>
+          </View>
           <TouchableOpacity onPress={handlerConfig}>
             <MaterialIcons name="cog" color="white" />
           </TouchableOpacity>
