@@ -4,7 +4,8 @@ import OlvidarPassScreen from '../features/auth/screens/OlvidarPassScreen';
 import GetStartScreen from '../features/auth/screens/GetStartScreen';
 import { MainBottomTabNavigation } from './MainBottomTabNavigation';
 import CambioPassScreen from '../features/auth/screens/CambioPassScreen';
-import LiquidarMaterialesScreen from '../features/gestionATC/liquidarMateriales/liquidarMaterialesScreen';
+import LiquidarMaterialesScreen from '../features/gestionATC/LiquidarMateriales/LiquidarMaterialesScreen';
+
 
 
 export type AuthStackParam = {

@@ -1,63 +1,85 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Text, TextInput } from 'react-native-gesture-handler';
-import { Badge, Button, Card } from 'react-native-paper';
+import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {Text, TextInput} from 'react-native-gesture-handler';
+import {Badge, Button, Card} from 'react-native-paper';
+import CustomDatePicker from '../../../components/ui/CustomDatePicker';
 
 export const LiquidarMaterialesScreen = () => {
-  //  const [project, setProject] = React.useState('');
-  // const [date, setDate] = React.useState('12/05/2025');
-  // const [petition, setPetition] = React.useState('');
+  const [isCollapsed, setIsCollapsed] = useState(false); // Estado para controlar si el formulario está colapsado
+  const [tipoRequerimiento, setTipoRequerimiento] = useState(''); // Estado para el tipo de requerimiento
+
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed); // Alternar entre expandido y colapsado
+  };
+
   return (
-     <View style={styles.container}>
-      <Card style={styles.card}>
-        <Card.Content>
-          <Text style={styles.label}>Proyecto</Text>
-          <TextInput
-            // mode="outlined"
-            placeholder="Seleccione un proyecto"
-            // value={project}
-            // onChangeText={setProject}
-            // right={<TextInput.Icon icon="chevron-down" />}
-            style={styles.input}
-          />
+    <View style={styles.container}>
+      {!isCollapsed && ( // Mostrar el formulario solo si no está colapsado
+        <Card style={styles.card}>
+          <Card.Content>
+            <Text style={styles.label}>Proyecto</Text>
+            <TextInput
+              placeholder="Seleccione un proyecto"
+              style={styles.input}
+            />
 
+            <Text style={styles.label}>Fecha de Liquidación</Text>
+            <CustomDatePicker
+              label="Fecha de Liquidación"
+              placeholder="Seleccione una fecha"
+              value={''} // Reemplaza con el valor correspondiente
+              style={{marginBottom: 8}}
+              onChange={() => {}} // Reemplaza con la función correspondiente
+            />
 
-          <Text style={styles.label}>Fecha de Liquidación</Text>
-          <TextInput
-            // mode="outlined"
-            // value={date}
-            // onChangeText={setDate}
-            style={styles.input}
-          />
-          <Text style={styles.label}>Tipo de requerimiento</Text>
-          <TextInput
-            // mode="outlined"
-            placeholder="Seleccione el tipo de requerimiento"
-            // value={project}
-            // onChangeText={setProject}
-            // right={<TextInput.Icon icon="chevron-down" />}
-            style={styles.input}
-          />
+            <Text style={styles.label}>Tipo de requerimiento</Text>
+            <TextInput
+              placeholder="Seleccione el tipo de requerimiento"
+              style={styles.input}
+              value={tipoRequerimiento}
+              onChangeText={setTipoRequerimiento} // Actualizar el estado al cambiar el texto
+            />
 
-          <Text style={styles.label}>Nro de Petición</Text>
-          <TextInput
-            // mode="outlined"
-            placeholder="Buscar..."
-            // value={petition}
-            // onChangeText={setPetition}
-            style={styles.input}
-          />
+            {/* Mostrar el campo solo si se seleccionó un tipo de requerimiento */}
+            {tipoRequerimiento !== '' && (
+              <>
+                <Text style={styles.label}>
+                  {tipoRequerimiento === 'Solicitud'
+                    ? 'Nro de Solicitud'
+                    : 'Nro de Petición'}
+                </Text>
+                <TextInput
+                  placeholder={
+                    tipoRequerimiento === 'Solicitud'
+                      ? 'Ingrese el número de solicitud'
+                      : 'Ingrese el número de petición'
+                  }
+                  style={styles.input}
+                />
+              </>
+            )}
 
-          <Button
-            mode="contained"
-            icon="magnify"
-            onPress={() => {}}
-            style={styles.button}
-          >
-            Buscar
-          </Button>
-        </Card.Content>
-      </Card>
+            <Button
+              mode="contained"
+              icon="magnify"
+              onPress={toggleCollapse} // Colapsar el formulario al presionar "Buscar"
+              style={styles.button}
+              buttonColor="#007bff">
+              Buscar
+            </Button>
+          </Card.Content>
+        </Card>
+      )}
+
+      {isCollapsed && ( // Mostrar el botón para expandir si el formulario está colapsado
+        <Button
+          mode="outlined"
+          icon="chevron-down"
+          onPress={toggleCollapse}
+          style={styles.expandButton}>
+          Mostrar Filtros
+        </Button>
+      )}
 
       <View style={styles.badgeContainer}>
         <Badge size={28} style={styles.badge}>
@@ -67,6 +89,7 @@ export const LiquidarMaterialesScreen = () => {
     </View>
   );
 };
+
 export default LiquidarMaterialesScreen;
 
 const styles = StyleSheet.create({
@@ -93,6 +116,10 @@ const styles = StyleSheet.create({
     marginTop: 24,
     borderRadius: 8,
     paddingVertical: 6,
+  },
+  expandButton: {
+    marginTop: 16,
+    alignSelf: 'center',
   },
   badgeContainer: {
     position: 'absolute',
