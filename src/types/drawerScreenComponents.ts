@@ -7,4 +7,7 @@ export const drawerScreenComponents: Record<
 > = {
   LiquidacionMaterialesFragment: LiquidarMaterialesObras,
   ListObrasFragment1: LiquidarPartidasObras,
+  PedidoMaterialFragment: LiquidarPartidasObras,
+  AprobacionPedidosFragment: LiquidarPartidasObras,
+  ReporteStockFragment: LiquidarPartidasObras,
 };

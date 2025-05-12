@@ -2,13 +2,17 @@ import {
   createDrawerNavigator,
   DrawerContentComponentProps,
   DrawerContentScrollView,
-  DrawerItemList,
+  DrawerItem,
 } from '@react-navigation/drawer';
 import {useWindowDimensions, View} from 'react-native';
 import MaterialIcons from '../components/ui/icons/MaterialIcons';
-import {useTheme} from 'react-native-paper';
+import {List, useTheme} from 'react-native-paper';
 import {useAuthStore} from '../store/auth/useAuthStore';
-import {RouteProp, useRoute} from '@react-navigation/native';
+import {
+  RouteProp,
+  useNavigationState,
+  useRoute,
+} from '@react-navigation/native';
 import {MainStackParam} from './MainStackNavigation';
 import NoMenuAvailableScreen from '../features/main/screens/NoMenuAvailableScreen';
 import {drawerScreenComponents} from '../../types/drawerScreenComponents';
@@ -32,17 +36,32 @@ export const SideMenuNavigator = () => {
   const {menu} = useAuthStore();
   const {setMenuSelected} = useMainStore();
 
+  // Filtrar y recorrer todos los menús y submenús
+  const getValidMenuItems = (menuItems: any[]) => {
+    return menuItems.reduce((acc: any[], item) => {
+      // Si el item tiene pantalla asociada, agregarlo al array
+      if (drawerScreenComponents[item.menu_fileapp]) {
+        acc.push(item);
+      }
+
+      // Si tiene hijos, procesarlos recursivamente
+      if (item.menu_hijo && item.menu_hijo.length > 0) {
+        acc = [...acc, ...getValidMenuItems(item.menu_hijo)]; // Llamada recursiva
+      }
+
+      return acc;
+    }, []);
+  };
+
   const menuFiltered = menu?.find(
     f => f.menu_codigo === menuSelected.menu_codigo,
   );
 
-  const mapeo = menuFiltered?.menu_hijo.filter(
-    menuItem => drawerScreenComponents[menuItem.menu_fileapp],
-  );
+  const validMenuItems = getValidMenuItems(menuFiltered?.menu_hijo || []);
 
-  console.log(menuFiltered);
+  console.log(validMenuItems);
 
-  if (mapeo?.length === 0) {
+  if (validMenuItems.length === 0) {
     return <NoMenuAvailableScreen />;
   }
 
@@ -57,35 +76,66 @@ export const SideMenuNavigator = () => {
         drawerInactiveTintColor: colors.primary,
         drawerItemStyle: {borderRadius: 100, paddingHorizontal: 20},
       }}>
-      {menuFiltered?.menu_hijo
-        .filter(menuItem => drawerScreenComponents[menuItem.menu_fileapp])
-        .map((menuItem, index) => {
-          const ScreenComponent = drawerScreenComponents[menuItem.menu_fileapp];
-          return (
-            <Drawer.Screen
-              key={index}
-              name={menuItem.menu_nombre}
-              component={ScreenComponent}
-              options={{
-                drawerIcon: ({color}) => DrawIcon(color, menuItem.menu_icoapp),
-              }}
-              listeners={{
-                focus: () => {
-                  setMenuSelected(menuItem);
-                },
-              }}
-            />
-          );
-        })}
+      {menuFiltered?.menu_hijo.flatMap((item, index) => {
+        const subItems = item.menu_hijo || [];
+        const allItems = [item, ...subItems];
+
+        return allItems
+          .filter(menuItem => drawerScreenComponents[menuItem.menu_fileapp])
+          .map((menuItem, subIndex) => {
+            const ScreenComponent =
+              drawerScreenComponents[menuItem.menu_fileapp];
+            return (
+              <Drawer.Screen
+                key={`${index}-${subIndex}`}
+                name={menuItem.menu_nombre}
+                component={ScreenComponent}
+                options={{
+                  drawerIcon: ({color}) =>
+                    DrawIcon(color, menuItem.menu_icoapp),
+                }}
+                listeners={{
+                  focus: () => {
+                    setMenuSelected(menuItem);
+                  },
+                }}
+              />
+            );
+          });
+      })}
     </Drawer.Navigator>
   );
 };
 
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const {colors} = useTheme();
+  const {menu} = useAuthStore();
+  const {menu: menuSelected} =
+    useRoute<RouteProp<MainStackParam, 'SideMenuNavigator'>>().params;
+
+  const currentRouteName = useNavigationState(state => {
+    const drawerState = state.routes.find(r => r.name === 'SideMenuNavigator');
+    if (
+      drawerState &&
+      'state' in drawerState &&
+      drawerState.state &&
+      drawerState.state.index !== undefined
+    ) {
+      const activeDrawerRoute =
+        drawerState.state.routes[drawerState.state.index];
+      return activeDrawerRoute.name;
+    }
+    return null;
+  });
+
+  console.log(currentRouteName);
+
+  const menuFiltered = menu?.find(
+    f => f.menu_codigo === menuSelected.menu_codigo,
+  );
 
   return (
-    <DrawerContentScrollView>
+    <DrawerContentScrollView {...props}>
       <View
         style={{
           height: 200,
@@ -95,7 +145,52 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
         }}
       />
 
-      <DrawerItemList {...props} />
+      {menuFiltered?.menu_hijo.map((item, index) => {
+        const hasChildren = item.menu_hijo && item.menu_hijo.length > 0;
+        const isValidParent = drawerScreenComponents[item.menu_fileapp];
+
+        if (hasChildren) {
+          return (
+            <List.Accordion
+              key={`parent-${index}`}
+              title={item.menu_nombre}
+              left={prop => DrawIcon(prop.color, item.menu_icoapp)}
+              titleStyle={{fontWeight: 'bold'}}
+              style={{paddingLeft: 10}}>
+              {item.menu_hijo
+                .filter(child => drawerScreenComponents[child.menu_fileapp])
+                .map((subItem, subIndex) => (
+                  <DrawerItem
+                    key={`sub-${index}-${subIndex}`}
+                    label={subItem.menu_nombre}
+                    icon={({color}) => DrawIcon(color, subItem.menu_icoapp)}
+                    focused={currentRouteName === subItem.menu_nombre}
+                    labelStyle={{marginLeft: 20}}
+                    onPress={() => {
+                      props.navigation.navigate(subItem.menu_nombre);
+                    }}
+                  />
+                ))}
+            </List.Accordion>
+          );
+        }
+
+        if (isValidParent) {
+          return (
+            <DrawerItem
+              key={`single-${index}`}
+              label={item.menu_nombre}
+              icon={({color}) => DrawIcon(color, item.menu_icoapp)}
+              focused={currentRouteName === item.menu_nombre}
+              onPress={() => {
+                props.navigation.navigate(item.menu_nombre);
+              }}
+            />
+          );
+        }
+
+        return null;
+      })}
     </DrawerContentScrollView>
   );
 };
