@@ -1,86 +1,184 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Card, List, Divider, FAB } from 'react-native-paper';
-
+import { ScrollView, StyleSheet, Text, View, SafeAreaView, StatusBar } from 'react-native';
+import { Card, Divider } from 'react-native-paper';
+import FABGroupBottom from '../../../components/ui/FABGroupBottom';
 
 const DetalleLiquidarMatScreen = () => {
+  const getTextColor = (backgroundColor: string) => {
+    return backgroundColor === '#E8F5E9' ? '#388E3C' : '#000';
+  };
 
   return (
-    <ScrollView style={styles.container}>
-      <Card style={styles.card}>
-        <Card.Title title="Liquidación de Materiales" />
-        <Card.Content>
-          <List.Section>
-            <List.Item title="Proyecto" description="IVTRC" />
-            <List.Item title="Unidad de Negocio" description="UN09" />
-            <List.Item title="Nro Petición" description="1-32EAAZJ4" />
-            <List.Item title="Fecha Liquidación" description="22/07/2024" />
-            <List.Item title="Hora Liquidación" description="00:00" />
-            <List.Item title="Fecha Emisión" description="01/01/1900" />
-            <List.Item title="Tipo de Orden" description="1 PLAY SIN SERVICIO" />
-            <List.Item title="Nombre del Cliente" description="ALEJANDRA VENEGAS DONAIRE" />
-            <List.Item title="Teléfono" description="-" />
-          </List.Section>
+    <SafeAreaView style={styles.safeArea}>
+      <StatusBar barStyle="dark-content" backgroundColor="#F9F9F9" />
+      <View style={styles.container} >
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          <Card style={styles.card}>
+            <Card.Title title="Liquidación de Materiales" />
+            <Card.Content>
+              <View style={styles.listContainer}>
+                <View style={styles.row}>
+                  <Text style={styles.title}>Proyecto:</Text>
+                  <Text style={styles.description}>IVTRC</Text>
+                </View>
+                <View style={styles.row}>
+                  <Text style={styles.title}>Unidad de Negocio:</Text>
+                  <Text style={styles.description}>UN09</Text>
+                </View>
+                <View style={styles.row}>
+                  <Text style={styles.title}>Nro Petición:</Text>
+                  <Text style={styles.description}>1-32EAAZJ4</Text>
+                </View>
+                <View style={styles.row}>
+                  <Text style={styles.title}>Fecha Liquidación:</Text>
+                  <Text style={styles.description}>22/07/2024</Text>
+                </View>
+                <View style={styles.row}>
+                  <Text style={styles.title}>Hora Liquidación:</Text>
+                  <Text style={styles.description}>00:00</Text>
+                </View>
+                <View style={styles.row}>
+                  <Text style={styles.title}>Fecha Emisión:</Text>
+                  <Text style={styles.description}>01/01/1900</Text>
+                </View>
+                <View style={styles.row}>
+                  <Text style={styles.title}>Tipo de Orden:</Text>
+                  <Text style={styles.description}>1 PLAY SIN SERVICIO</Text>
+                </View>
+                <View style={[styles.row, styles.nameRow]}>
+                  <Text style={styles.title}>Nombre del Cliente:</Text>
+                  <Text style={styles.description}>ALEJANDRA VENEGAS DONAIRE</Text>
+                </View>
+                <View style={styles.row}>
+                  <Text style={styles.title}>Teléfono:</Text>
+                  <Text style={styles.description}>-</Text>
+                </View>
+              </View>
 
-          <Divider style={{ marginVertical: 8 }} />
+              <Divider style={{ marginVertical: 8 }} />
 
-          <Text style={styles.titleMedium}>Estados</Text>
-          <View style={styles.statusContainer}>
-            <Text style={[styles.status, { backgroundColor: '#4CAF50' }]}>Acta: ABIERTA</Text>
-            <Text style={[styles.status, { backgroundColor: '#4CAF50' }]}>Orden: ABIERTA</Text>
-            <Text style={[styles.status, { backgroundColor: '#BDBDBD' }]}>Materiales: PENDIENTE</Text>
-          </View>
-        </Card.Content>
-      </Card>
-
-      <View style={styles.section}>
-        <Text style={[styles.titleMedium, { marginVertical: 10 }]}>
-          Materiales Liquidados
-        </Text>
+              <Text style={styles.titleMedium}>Estados</Text>
+              <View style={styles.statusContainer}>
+                <View style={[styles.statusBox, { backgroundColor: '#E8F5E9' }]}>
+                  <Text style={styles.statusTitle}>Acta:</Text>
+                  <Text style={[styles.statusValue, { color: getTextColor('#E8F5E9') }]}>ABIERTA</Text>
+                </View>
+                <View style={[styles.statusBox, { backgroundColor: '#E8F5E9' }]}>
+                  <Text style={styles.statusTitle}>Orden:</Text>
+                  <Text style={[styles.statusValue, { color: getTextColor('#E8F5E9') }]}>ABIERTA</Text>
+                </View>
+                <View style={[styles.statusBox, { backgroundColor: '#F5F5F5' }]}>
+                  <Text style={styles.statusTitle}>Materiales:</Text>
+                  <Text style={[styles.statusValue, { color: getTextColor('#F5F5F5') }]}>PENDIENTE</Text>
+                </View>
+              </View>
+            </Card.Content>
+          </Card>
+        </ScrollView>
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+        <Card style={styles.card}>
+          <Card.Title title="Materiales" />
+          <Card.Content>
+            <View style={styles.listContainer}>
+              <View style={styles.row}>
+                <Text style={styles.title}>Cod Material:</Text>
+                <Text style={styles.description}>CABLE 1X4</Text>
+              </View>
+              <View style={styles.row}>
+                <Text style={styles.title}>Nombre del material:</Text>
+                <Text style={styles.description}>100</Text>
+              </View>
+              <View style={styles.row}>
+                <Text style={styles.title}>Sku Cliente:</Text>
+                <Text style={styles.description}>MTR</Text>
+              </View>
+              <View style={styles.row}>
+                <Text style={styles.title}>Cantidad:</Text>
+                <Text style={styles.description}>MTR</Text>
+              </View>
+              <View style={styles.row}>
+                <Text style={styles.title}>Motivo:</Text>
+                <Text style={styles.description}>MTR</Text>
+              </View>
+            </View>
+          </Card.Content>
+        </Card>
+        </ScrollView>
+        <FABGroupBottom/>
       </View>
-
-      <FAB
-        icon="plus"
-        label="Agregar"
-        style={styles.fab}
-        onPress={() => console.log('Agregar material')}
-      />
-    </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#F9F9F9',
+    paddingTop: 40, // Agrega margen superior en Android
+  },
   container: {
     flex: 1,
-    padding: 12,
+    backgroundColor: '#F9F9F9',
+  },
+  scrollContent: {
+    paddingHorizontal: 16, // Espaciado horizontal para evitar que el contenido quede pegado a los bordes
+    paddingBottom: 16, // Espaciado inferior para evitar que el FAB quede pegado
   },
   card: {
     borderRadius: 12,
     elevation: 2,
     marginBottom: 20,
   },
-  statusContainer: {
-    marginTop: 10,
+  listContainer: {
+    marginBottom: 10,
   },
-  status: {
-    padding: 6,
-    borderRadius: 6,
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginVertical: 4,
-    color: 'white',
+  },
+  nameRow: {
+    marginBottom: 12,
+  },
+  title: {
     fontWeight: 'bold',
+    fontSize: 16,
+    flex: 1,
   },
-  section: {
-    paddingHorizontal: 12,
-  },
-  fab: {
-    position: 'absolute',
-    margin: 16,
-    right: 0,
-    bottom: 0,
+  description: {
+    fontSize: 16,
+    textAlign: 'right',
+    flex: 1,
   },
   titleMedium: {
     fontSize: 18,
     fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  statusContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  statusBox: {
+    width: 100,
+    height: 50,
+    padding: 8,
+    marginHorizontal: 4,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  statusTitle: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  statusValue: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 
