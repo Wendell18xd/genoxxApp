@@ -3,7 +3,7 @@ import DrawerLayout from '../../../main/layout/DrawerLayout';
 
 const LiquidarMaterialesObras = () => {
   return (
-    <DrawerLayout title="Liquidar Materiales">
+    <DrawerLayout>
       <Text>Liquidar Materiales Obras</Text>
     </DrawerLayout>
   );

@@ -1,9 +1,11 @@
-import {View, Text} from 'react-native';
+import {Text} from 'react-native';
+import DrawerLayout from '../../../main/layout/DrawerLayout';
+
 const LiquidarPartidasObras = () => {
   return (
-    <View>
-      <Text>LiquidarPartidasObras</Text>
-    </View>
+    <DrawerLayout>
+      <Text>Liquidar Partidas Obras</Text>
+    </DrawerLayout>
   );
 };
 export default LiquidarPartidasObras;

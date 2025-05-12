@@ -12,6 +12,7 @@ import {RouteProp, useRoute} from '@react-navigation/native';
 import {MainStackParam} from './MainStackNavigation';
 import NoMenuAvailableScreen from '../features/main/screens/NoMenuAvailableScreen';
 import {drawerScreenComponents} from '../../types/drawerScreenComponents';
+import {useMainStore} from '../store/main/useMainStore';
 
 const Drawer = createDrawerNavigator();
 
@@ -29,6 +30,7 @@ export const SideMenuNavigator = () => {
   const dimensions = useWindowDimensions();
   const {colors} = useTheme();
   const {menu} = useAuthStore();
+  const {setMenuSelected} = useMainStore();
 
   const menuFiltered = menu?.find(
     f => f.menu_codigo === menuSelected.menu_codigo,
@@ -66,6 +68,11 @@ export const SideMenuNavigator = () => {
               component={ScreenComponent}
               options={{
                 drawerIcon: ({color}) => DrawIcon(color, menuItem.menu_icoapp),
+              }}
+              listeners={{
+                focus: () => {
+                  setMenuSelected(menuItem);
+                },
               }}
             />
           );

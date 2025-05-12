@@ -15,15 +15,17 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {MainStackParam} from '../../../navigations/MainStackNavigation';
 import {Appbar} from 'react-native-paper';
 import {useEffect, useState} from 'react';
+import {useMainStore} from '../../../store/main/useMainStore';
 
 interface Props {
-  title: string;
+  title?: string | undefined;
   children: React.ReactNode;
 }
 
 const DrawerLayout = ({title, children}: Props) => {
-  const {top} = useSafeAreaInsets();
   const navigation = useNavigation<NavigationProp<MainStackParam>>();
+  const {top} = useSafeAreaInsets();
+  const {menuSelected} = useMainStore();
 
   const [keyboardVisible, setKeyboardVisible] = useState(false);
   const screenHeight = Dimensions.get('window').height;
@@ -58,7 +60,7 @@ const DrawerLayout = ({title, children}: Props) => {
           icon="menu"
           onPress={() => navigation.dispatch(DrawerActions.toggleDrawer)}
         />
-        <Appbar.Content title={title} />
+        <Appbar.Content title={title ? title : menuSelected?.menu_nombre} />
         <Appbar.Action icon="arrow-left" onPress={() => navigation.goBack()} />
       </Appbar.Header>
 
