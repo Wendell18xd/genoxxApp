@@ -1,39 +1,36 @@
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Menu} from '../../../../../../domain/entities/User';
 import {Card, Text, useTheme} from 'react-native-paper';
 import MaterialIcons from '../../../../../components/ui/icons/MaterialIcons';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {MainStackParam} from '../../../../../navigations/MainStackNavigation';
+import {useMainStore} from '../../../../../store/main/useMainStore';
 
 interface Props {
   menu: Menu;
 }
 
 const MenuItem = ({menu}: Props) => {
+  const navigation = useNavigation<NavigationProp<MainStackParam>>();
   const {colors} = useTheme();
+  const {setModuloSelected} = useMainStore();
+
+  const handleMenuPress = () => {
+    setModuloSelected(menu);
+    navigation.navigate('SideMenuNavigator', {menu});
+  };
 
   return (
-    <Card
-      mode="elevated"
-      onPress={() => {}}
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: 120,
-        height: 160,
-        backgroundColor: 'white',
-      }}>
-      <Card.Content
-        style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    <Card mode="elevated" onPress={handleMenuPress} style={styles.card}>
+      <Card.Content style={styles.cardContent}>
         <View
-          style={{
-            width: 70,
-            height: 70,
-            borderRadius: 35,
-            padding: 20,
-            borderWidth: 1,
-            borderColor: colors.primary,
-            backgroundColor: colors.primary + '10',
-          }}>
+          style={[
+            styles.box,
+            {
+              borderColor: colors.primary,
+              backgroundColor: colors.primary + '10',
+            },
+          ]}>
           <MaterialIcons
             name={menu.menu_icoapp}
             color={colors.primary}
@@ -43,11 +40,39 @@ const MenuItem = ({menu}: Props) => {
 
         <Text
           variant="bodyMedium"
-          style={{marginTop: 8, textAlign: 'center', color: colors.primary}}>
+          style={[styles.text, {color: colors.primary}]}>
           {menu.menu_nombre}
         </Text>
       </Card.Content>
     </Card>
   );
 };
+
+const styles = StyleSheet.create({
+  card: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 120,
+    height: 160,
+    backgroundColor: 'white',
+  },
+  cardContent: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  box: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    padding: 20,
+    borderWidth: 1,
+  },
+  text: {
+    marginTop: 8,
+    textAlign: 'center',
+  },
+});
+
 export default MenuItem;
