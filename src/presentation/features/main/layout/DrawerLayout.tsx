@@ -25,7 +25,7 @@ interface Props {
 
 const DrawerLayout = ({title, children}: Props) => {
   const navigation = useNavigation<NavigationProp<MainStackParam>>();
-  const {top} = useSafeAreaInsets();
+  const {bottom} = useSafeAreaInsets();
   const {menuSelected} = useMainStore();
 
   const [keyboardVisible, setKeyboardVisible] = useState(false);
@@ -55,7 +55,7 @@ const DrawerLayout = ({title, children}: Props) => {
   }, []);
 
   return (
-    <View style={{flex: 1, paddingTop: top}}>
+    <View style={{flex: 1}}>
       <Appbar.Header style={{position: 'relative', height: 56}}>
         <Appbar.Action
           icon="menu"
@@ -74,7 +74,7 @@ const DrawerLayout = ({title, children}: Props) => {
               styles.containerChildren,
               {
                 backgroundColor: '#f2f2f2',
-                marginBottom: calculatedMargin + 56,
+                marginBottom: calculatedMargin + bottom + 56,
               },
             ]}>
             {children}

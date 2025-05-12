@@ -11,7 +11,7 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import {MainStackParam} from '../MainStackNavigation';
-import {StyleSheet, View} from 'react-native';
+import { Platform, StyleSheet, View, useWindowDimensions } from 'react-native';
 import {drawerScreenComponents} from '../../../types/drawerScreenComponents';
 import MaterialIcons from '../../components/ui/icons/MaterialIcons';
 import DrawerHeader from '../../components/main/DrawerHeader';
@@ -28,6 +28,10 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const {menu} = useAuthStore();
   const {menu: menuSelected} =
     useRoute<RouteProp<MainStackParam, 'SideMenuNavigator'>>().params;
+    const {width: screenWidth} = useWindowDimensions();
+    const rightOffset = -(screenWidth * (Platform.OS === 'ios' ? 0.05 : 0.03));
+    const leftOffset = -(screenWidth * (Platform.OS === 'ios' ? 0.02 : 0.03));
+
 
   // Obtener la pantalla activa dentro del drawer
   const currentRouteName = useNavigationState(state => {
@@ -52,7 +56,7 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   return (
     <DrawerContentScrollView
       {...props}
-      contentContainerStyle={{paddingTop: 0, marginHorizontal: -12}}>
+      contentContainerStyle={{paddingTop: 0, marginRight: rightOffset, marginLeft: leftOffset}}>
       <DrawerHeader />
 
       <Divider style={{marginBottom: 20}} />
