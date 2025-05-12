@@ -10,7 +10,7 @@ const CurvaBottomView = () => {
   return (
     <Svg
       height={height}
-      width={width + 1}
+      width={width}
       viewBox={`0 0 ${width} ${height}`}
       style={{position: 'absolute', top: 0, left: 0}}>
       <Path
