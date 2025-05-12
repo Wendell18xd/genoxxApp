@@ -6,9 +6,7 @@ import {
   View,
 } from 'react-native';
 import {Text, TextInput, useTheme} from 'react-native-paper';
-import {FadeInImage} from '../../../../components/ui/FadeInImage';
 import {useAuthStore} from '../../../../store/auth/useAuthStore';
-import {API_URL} from '../../../../../config/api/genoxxApi';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
 import SafeAreaLayout from '../../layout/SafeAreaLayout';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
@@ -19,8 +17,7 @@ import {Menu} from '../../../../../domain/entities/User';
 import {normalize} from '../../../../helper/utils';
 import SinResultados from '../../../../components/ui/SinResultados';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
-
-const fallbackImage = require('../../../../../assets/images/avatar3.jpg');
+import {UserImage} from '../../../../components/main/UserImage';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -72,11 +69,7 @@ const HomeScreen = () => {
           marginTop: 32,
           marginHorizontal: 32,
         }}>
-        <FadeInImage
-          uri={`${API_URL}/public/dist/PERSONAL/${user?.trab_documento}.jpg?1`}
-          style={{height: 70, width: 70, borderRadius: 100}}
-          defaultImage={fallbackImage}
-        />
+        <UserImage />
         <View
           style={{
             flex: 1,

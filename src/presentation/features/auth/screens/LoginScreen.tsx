@@ -58,10 +58,10 @@ const LoginScreen = ({navigation}: Props) => {
       const {estado} = data.datos;
 
       if (estado === 1) {
-        Toast.show({
+        /* Toast.show({
           type: 'success',
           text1: 'Bienvenido al sistema',
-        });
+        }); */
         navigateToMenu();
       } else if (estado === 0) {
         Toast.show({

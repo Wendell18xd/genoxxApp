@@ -59,11 +59,13 @@ export const SideMenuNavigator = () => {
       drawerContent={DrawerContent}
       screenOptions={{
         headerShown: false,
+        drawerStyle: {
+          backgroundColor: colors.background,
+        },
         drawerType: dimensions.width >= 768 ? 'permanent' : 'slide',
         drawerActiveBackgroundColor: colors.primary,
         drawerActiveTintColor: 'white',
         drawerInactiveTintColor: colors.primary,
-        drawerItemStyle: {borderRadius: 100, paddingHorizontal: 20},
       }}>
       <Drawer.Screen
         name="ModuleScreen"

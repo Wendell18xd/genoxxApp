@@ -8,6 +8,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  StyleSheet,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
@@ -54,8 +55,8 @@ const DrawerLayout = ({title, children}: Props) => {
   }, []);
 
   return (
-    <View style={{flex: 1, marginTop: top}}>
-      <Appbar.Header>
+    <View style={{flex: 1, paddingTop: top}}>
+      <Appbar.Header style={{position: 'relative', height: 56}}>
         <Appbar.Action
           icon="menu"
           onPress={() => navigation.dispatch(DrawerActions.toggleDrawer)}
@@ -69,12 +70,13 @@ const DrawerLayout = ({title, children}: Props) => {
         style={{flex: 1}}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View
-            style={{
-              flex: 1,
-              padding: 16,
-              backgroundColor: '#f2f2f2',
-              marginBottom: calculatedMargin,
-            }}>
+            style={[
+              styles.containerChildren,
+              {
+                backgroundColor: '#f2f2f2',
+                marginBottom: calculatedMargin + 56,
+              },
+            ]}>
             {children}
           </View>
         </TouchableWithoutFeedback>
@@ -82,4 +84,14 @@ const DrawerLayout = ({title, children}: Props) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  containerChildren: {
+    flex: 1,
+    paddingTop: 32,
+    paddingHorizontal: 32,
+    paddingBottom: 32,
+  },
+});
+
 export default DrawerLayout;
