@@ -4,9 +4,9 @@ import {
   DrawerContentScrollView,
   DrawerItem,
 } from '@react-navigation/drawer';
-import {useWindowDimensions, View} from 'react-native';
+import {StyleSheet, useWindowDimensions, View} from 'react-native';
 import MaterialIcons from '../components/ui/icons/MaterialIcons';
-import {List, useTheme} from 'react-native-paper';
+import {List, Text, useTheme} from 'react-native-paper';
 import {useAuthStore} from '../store/auth/useAuthStore';
 import {
   RouteProp,
@@ -26,6 +26,10 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
 
 const DrawIcon = (color: string, name: string) => (
   <MaterialIcons color={color} name={name} />
+);
+
+const ListIcon = (props: any, icon: string) => (
+  <List.Icon {...props} icon={icon} />
 );
 
 export const SideMenuNavigator = () => {
@@ -113,6 +117,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const {menu: menuSelected} =
     useRoute<RouteProp<MainStackParam, 'SideMenuNavigator'>>().params;
 
+  // Obtener la pantalla activa dentro del drawer
   const currentRouteName = useNavigationState(state => {
     const drawerState = state.routes.find(r => r.name === 'SideMenuNavigator');
     if (
@@ -128,22 +133,25 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
     return null;
   });
 
-  console.log(currentRouteName);
-
   const menuFiltered = menu?.find(
     f => f.menu_codigo === menuSelected.menu_codigo,
   );
 
   return (
     <DrawerContentScrollView {...props}>
+      {/* Header personalizado */}
       <View
         style={{
-          height: 200,
+          height: 150,
           backgroundColor: colors.primary,
-          margin: 30,
-          borderRadius: 50,
-        }}
-      />
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: 20,
+        }}>
+        <Text variant="titleLarge" style={{color: 'white'}}>
+          Menú Principal
+        </Text>
+      </View>
 
       {menuFiltered?.menu_hijo.map((item, index) => {
         const hasChildren = item.menu_hijo && item.menu_hijo.length > 0;
@@ -154,18 +162,17 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
             <List.Accordion
               key={`parent-${index}`}
               title={item.menu_nombre}
-              left={prop => DrawIcon(prop.color, item.menu_icoapp)}
-              titleStyle={{fontWeight: 'bold'}}
-              style={{paddingLeft: 10}}>
+              left={prop => ListIcon(prop, item.menu_icoapp)}
+              style={styles.accordion}
+              theme={{colors: {background: 'transparent'}}}>
               {item.menu_hijo
-                .filter(child => drawerScreenComponents[child.menu_fileapp])
+                .filter(subItem => drawerScreenComponents[subItem.menu_fileapp])
                 .map((subItem, subIndex) => (
                   <DrawerItem
                     key={`sub-${index}-${subIndex}`}
                     label={subItem.menu_nombre}
                     icon={({color}) => DrawIcon(color, subItem.menu_icoapp)}
                     focused={currentRouteName === subItem.menu_nombre}
-                    labelStyle={{marginLeft: 20}}
                     onPress={() => {
                       props.navigation.navigate(subItem.menu_nombre);
                     }}
@@ -182,6 +189,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
               label={item.menu_nombre}
               icon={({color}) => DrawIcon(color, item.menu_icoapp)}
               focused={currentRouteName === item.menu_nombre}
+              labelStyle={{fontSize: 14}}
               onPress={() => {
                 props.navigation.navigate(item.menu_nombre);
               }}
@@ -194,3 +202,11 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
     </DrawerContentScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  accordion: {
+    backgroundColor: 'transparent',
+    marginVertical: 5,
+    borderRadius: 8,
+  },
+});
