@@ -10,4 +10,5 @@ export const drawerScreenComponents: Record<
   PedidoMaterialFragment: LiquidarPartidasObras,
   AprobacionPedidosFragment: LiquidarPartidasObras,
   ReporteStockFragment: LiquidarPartidasObras,
+  ListMaterialesATCFragment: LiquidarPartidasObras,
 };
