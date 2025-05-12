@@ -1,7 +1,8 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View, SafeAreaView, StatusBar } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, StatusBar } from 'react-native';
 import { Card, Divider } from 'react-native-paper';
 import FABGroupBottom from '../../../components/ui/FABGroupBottom';
+import DrawerLayout from '../../main/layout/DrawerLayout';
 
 const DetalleLiquidarMatScreen = () => {
   const getTextColor = (backgroundColor: string) => {
@@ -9,7 +10,7 @@ const DetalleLiquidarMatScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <DrawerLayout style={{paddingHorizontal: 16}}>
       <StatusBar barStyle="dark-content" backgroundColor="#F9F9F9" />
       <View style={styles.container} >
         <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -106,7 +107,7 @@ const DetalleLiquidarMatScreen = () => {
         </ScrollView>
         <FABGroupBottom/>
       </View>
-    </SafeAreaView>
+    </DrawerLayout>
   );
 };
 
@@ -118,11 +119,10 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#F9F9F9',
   },
   scrollContent: {
-    paddingHorizontal: 16, // Espaciado horizontal para evitar que el contenido quede pegado a los bordes
-    paddingBottom: 16, // Espaciado inferior para evitar que el FAB quede pegado
+    paddingHorizontal: 1, // Espaciado horizontal para evitar que el contenido quede pegado a los bordes
+    paddingBottom: 1, // Espaciado inferior para evitar que el FAB quede pegado
   },
   card: {
     borderRadius: 12,

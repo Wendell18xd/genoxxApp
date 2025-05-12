@@ -8,9 +8,11 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  StyleProp,
   StyleSheet,
   TouchableWithoutFeedback,
   View,
+  ViewStyle,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {MainStackParam} from '../../../navigations/MainStackNavigation';
@@ -21,9 +23,10 @@ import {useMainStore} from '../../../store/main/useMainStore';
 interface Props {
   title?: string | undefined;
   children: React.ReactNode;
+  style?: StyleProp<ViewStyle>;
 }
 
-const DrawerLayout = ({title, children}: Props) => {
+const DrawerLayout = ({title, children, style}: Props) => {
   const navigation = useNavigation<NavigationProp<MainStackParam>>();
   const {bottom} = useSafeAreaInsets();
   const {menuSelected} = useMainStore();
@@ -76,6 +79,7 @@ const DrawerLayout = ({title, children}: Props) => {
                 backgroundColor: '#f2f2f2',
                 marginBottom: calculatedMargin + bottom + 56,
               },
+              style,
             ]}>
             {children}
           </View>
