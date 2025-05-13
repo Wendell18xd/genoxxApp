@@ -16,15 +16,22 @@ import CurvaBottomView from '../../../../components/ui/CurvaBottomView';
 import {Menu} from '../../../../../domain/entities/User';
 import {normalize} from '../../../../helper/utils';
 import SinResultados from '../../../../components/ui/SinResultados';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {
+  NavigationProp,
+  useFocusEffect,
+  useNavigation,
+} from '@react-navigation/native';
 import {UserImage} from '../../../../components/main/UserImage';
+import {MainStackParam} from '../../../../navigations/MainStackNavigation';
+import {useMainStore} from '../../../../store/main/useMainStore';
 
 const HomeScreen = () => {
-  const navigation = useNavigation();
   const {user, menu} = useAuthStore();
   const {colors} = useTheme();
   const [buscar, setBuscar] = useState<string>('');
   const [filterMenu, setFilterMenu] = useState<Menu[] | undefined>(menu);
+  const navigation = useNavigation<NavigationProp<MainStackParam>>();
+  const {setModuloSelected} = useMainStore();
 
   const handlerSearch = (value: string) => {
     setBuscar(value);
@@ -38,6 +45,11 @@ const HomeScreen = () => {
     });
 
     setFilterMenu(filter);
+  };
+
+  const handleMenuPress = (menuItem: Menu) => {
+    setModuloSelected(menuItem);
+    navigation.navigate('SideMenuNavigator', {menu: menuItem});
   };
 
   useFocusEffect(
@@ -121,7 +133,9 @@ const HomeScreen = () => {
             keyExtractor={item => item.menu_codigo}
             columnWrapperStyle={{gap: 16}}
             contentContainerStyle={{gap: 16, paddingBottom: 40}}
-            renderItem={({item}) => <MenuItem menu={item} />}
+            renderItem={({item}) => (
+              <MenuItem menu={item} onPress={() => handleMenuPress(item)} />
+            )}
           />
         ) : (
           <SinResultados />

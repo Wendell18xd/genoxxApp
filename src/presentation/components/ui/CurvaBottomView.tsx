@@ -14,7 +14,7 @@ const CurvaBottomView = () => {
       height={height}
       width={adjustedWidth}
       viewBox={`0 0 ${adjustedWidth} ${height}`}
-      style={{position: 'absolute', top: 0, left: 0}}>
+      style={{position: 'absolute', top: -1, left: 0}}>
       <Path
         fill={colors.primary}
         d={`

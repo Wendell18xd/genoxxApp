@@ -16,17 +16,18 @@ import {
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {MainStackParam} from '../../../navigations/MainStackNavigation';
-import {Appbar} from 'react-native-paper';
+import {Appbar, useTheme} from 'react-native-paper';
 import {useEffect, useState} from 'react';
 import {useMainStore} from '../../../store/main/useMainStore';
 
 interface Props {
   title?: string | undefined;
+  primary?: boolean;
   children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
 }
 
-const DrawerLayout = ({title, children, style}: Props) => {
+const DrawerLayout = ({title, children, style, primary = false}: Props) => {
   const navigation = useNavigation<NavigationProp<MainStackParam>>();
   const {bottom} = useSafeAreaInsets();
   const {menuSelected} = useMainStore();
@@ -34,6 +35,7 @@ const DrawerLayout = ({title, children, style}: Props) => {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
   const screenHeight = Dimensions.get('window').height;
   const calculatedMargin = keyboardVisible ? 0 : -(screenHeight * 0.08);
+  const {colors} = useTheme();
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -59,13 +61,26 @@ const DrawerLayout = ({title, children, style}: Props) => {
 
   return (
     <View style={{flex: 1}}>
-      <Appbar.Header style={{position: 'relative', height: 56}}>
+      <Appbar.Header
+        style={{
+          position: 'relative',
+          height: 56,
+          backgroundColor: primary ? colors.primary : colors.background,
+        }}>
         <Appbar.Action
           icon="menu"
           onPress={() => navigation.dispatch(DrawerActions.toggleDrawer)}
+          color={primary ? 'white' : ''}
         />
-        <Appbar.Content title={title ? title : menuSelected?.menu_nombre} />
-        <Appbar.Action icon="arrow-left" onPress={() => navigation.goBack()} />
+        <Appbar.Content
+          title={title ? title : menuSelected?.menu_nombre}
+          color={primary ? 'white' : ''}
+        />
+        <Appbar.Action
+          icon="arrow-left"
+          onPress={() => navigation.goBack()}
+          color={primary ? 'white' : ''}
+        />
       </Appbar.Header>
 
       <KeyboardAvoidingView
