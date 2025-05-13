@@ -3,11 +3,14 @@ import {Text, useTheme} from 'react-native-paper';
 import {UserImage} from './UserImage';
 import {useAuthStore} from '../../store/auth/useAuthStore';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import PrimaryButton from '../ui/PrimaryButton';
+import {useNavigation} from '@react-navigation/native';
 
 const DrawerHeader = () => {
   const {user} = useAuthStore();
   const {colors} = useTheme();
   const {top} = useSafeAreaInsets();
+  const navigation = useNavigation();
 
   return (
     <View
@@ -26,6 +29,15 @@ const DrawerHeader = () => {
         <Text variant="labelLarge" style={[styles.subText, {color: 'white'}]}>
           {user?.empr_nombre}
         </Text>
+        <PrimaryButton
+          style={{marginTop: 16}}
+          height={40}
+          borderRadius={20}
+          onPress={() => {
+            navigation.goBack();
+          }}>
+          Ir al Inicio
+        </PrimaryButton>
       </View>
     </View>
   );
