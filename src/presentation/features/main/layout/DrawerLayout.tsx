@@ -116,7 +116,7 @@ const DrawerLayout = ({
                 <CurvaBottomView />
               </View>
             )}
-            {children}
+            <View style={styles.containerChildren2}>{children}</View>
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
@@ -127,10 +127,14 @@ const DrawerLayout = ({
 const styles = StyleSheet.create({
   containerChildren: {
     flex: 1,
+    position: 'relative',
+  },
+  containerChildren2: {
+    flex: 1,
+    position: 'relative',
     paddingTop: 32,
     paddingHorizontal: 32,
     paddingBottom: 32,
-    position: 'relative',
   },
 });
 
