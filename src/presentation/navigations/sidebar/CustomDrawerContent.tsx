@@ -92,9 +92,9 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
                       key={`sub-${index}-${subIndex}`}
                       label={subItem.menu_nombre}
                       icon={({color}) => DrawIcon(color, subItem.menu_icoapp)}
-                      focused={currentRouteName === subItem.menu_nombre}
+                      focused={currentRouteName === subItem.menu_fileapp}
                       onPress={() => {
-                        props.navigation.navigate(subItem.menu_nombre);
+                        props.navigation.navigate(subItem.menu_fileapp);
                       }}
                     />
                   ))}
@@ -108,10 +108,10 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
                 key={`single-${index}`}
                 label={item.menu_nombre}
                 icon={({color}) => DrawIcon(color, item.menu_icoapp)}
-                focused={currentRouteName === item.menu_nombre}
+                focused={currentRouteName === item.menu_fileapp}
                 labelStyle={{fontSize: 14}}
                 onPress={() => {
-                  props.navigation.navigate(item.menu_nombre);
+                  props.navigation.navigate(item.menu_fileapp);
                 }}
               />
             );

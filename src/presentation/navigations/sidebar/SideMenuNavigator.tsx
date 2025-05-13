@@ -12,6 +12,7 @@ import {drawerScreenComponents} from '../../../types/drawerScreenComponents';
 import {useMainStore} from '../../store/main/useMainStore';
 import {CustomDrawerContent, DrawIcon} from './CustomDrawerContent';
 import {ModuleScreen} from '../../features/main/screens/ModuleScreen';
+import {useEffect} from 'react';
 
 const Drawer = createDrawerNavigator();
 
@@ -25,7 +26,7 @@ export const SideMenuNavigator = () => {
   const dimensions = useWindowDimensions();
   const {colors} = useTheme();
   const {menu} = useAuthStore();
-  const {setMenuSelected} = useMainStore();
+  const {setMenuSelected, setMenusValid} = useMainStore();
 
   // Filtrar y recorrer todos los menús y submenús
   const getValidMenuItems = (menuItems: any[]) => {
@@ -50,6 +51,10 @@ export const SideMenuNavigator = () => {
 
   const validMenuItems = getValidMenuItems(menuFiltered?.menu_hijo || []);
 
+  useEffect(() => {
+    setMenusValid(validMenuItems);
+  }, []);
+
   if (validMenuItems.length === 0) {
     return <NoMenuAvailableScreen />;
   }
@@ -61,7 +66,6 @@ export const SideMenuNavigator = () => {
         headerShown: false,
         drawerStyle: {
           backgroundColor: colors.background,
-          // width: screenWidth * 0.8,
         },
         drawerType: dimensions.width >= 768 ? 'permanent' : 'slide',
         drawerActiveBackgroundColor: colors.primary,
@@ -71,6 +75,7 @@ export const SideMenuNavigator = () => {
       <Drawer.Screen
         name="ModuleScreen"
         component={ModuleScreen}
+        initialParams={{menus: validMenuItems}}
         options={{
           drawerIcon: ({color}) => DrawIcon(color, 'view-module'),
         }}
@@ -88,7 +93,7 @@ export const SideMenuNavigator = () => {
             return (
               <Drawer.Screen
                 key={`${index}-${subIndex}`}
-                name={menuItem.menu_nombre}
+                name={menuItem.menu_fileapp}
                 component={ScreenComponent}
                 options={{
                   drawerIcon: ({color}) =>
