@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text, TextInput} from 'react-native-gesture-handler';
 import {Badge, Button, Card} from 'react-native-paper';
-import CustomDatePicker from '../../../components/ui/CustomDatePicker';
+import CustomDatePicker from '../../../../components/ui/CustomDatePicker';
 
 export const LiquidarMaterialesScreen = () => {
   const [isCollapsed, setIsCollapsed] = useState(false); // Estado para controlar si el formulario está colapsado
