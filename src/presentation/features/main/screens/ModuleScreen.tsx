@@ -1,16 +1,13 @@
 import DrawerLayout from '../layout/DrawerLayout';
 import {useMainStore} from '../../../store/main/useMainStore';
-import {FlatList, View} from 'react-native';
+import {FlatList} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import MenuItem from './home/components/MenuItem';
 import SinResultados from '../../../components/ui/SinResultados';
-import {useTheme} from 'react-native-paper';
-import CurvaBottomView from '../../../components/ui/CurvaBottomView';
 
 export const ModuleScreen = () => {
   const navigation = useNavigation();
   const {moduloSelected, menusValid} = useMainStore();
-  const {colors} = useTheme();
 
   return (
     <DrawerLayout
@@ -26,35 +23,27 @@ export const ModuleScreen = () => {
           Ir al Inicio
         </PrimaryButton>
       </View> */}
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: colors.background,
-          position: 'relative',
-        }}>
-        <View style={{position: 'absolute', width: '100%'}}>
-          <CurvaBottomView />
-        </View>
-        {menusValid && menusValid.length > 0 ? (
-          <FlatList
-            style={{padding: 16}}
-            data={menusValid}
-            showsVerticalScrollIndicator={false}
-            numColumns={3}
-            keyExtractor={item => item.menu_codigo}
-            columnWrapperStyle={{gap: 16}}
-            contentContainerStyle={{gap: 16, paddingBottom: 40}}
-            renderItem={({item}) => (
-              <MenuItem
-                menu={item}
-                onPress={() => navigation.navigate(item.menu_fileapp as never)}
-              />
-            )}
-          />
-        ) : (
-          <SinResultados />
-        )}
-      </View>
+      {menusValid && menusValid.length > 0 ? (
+        <FlatList
+          style={{padding: 16}}
+          data={menusValid}
+          showsVerticalScrollIndicator={false}
+          numColumns={3}
+          keyExtractor={item => item.menu_codigo}
+          columnWrapperStyle={{gap: 16}}
+          contentContainerStyle={{gap: 16, paddingBottom: 40}}
+          renderItem={({item}) => (
+            <MenuItem
+              menu={item}
+              onPress={() => {
+                navigation.navigate(item.menu_fileapp as never);
+              }}
+            />
+          )}
+        />
+      ) : (
+        <SinResultados />
+      )}
     </DrawerLayout>
   );
 };

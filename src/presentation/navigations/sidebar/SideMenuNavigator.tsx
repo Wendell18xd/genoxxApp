@@ -66,7 +66,6 @@ export const SideMenuNavigator = () => {
         headerShown: false,
         drawerStyle: {
           backgroundColor: colors.background,
-          // width: screenWidth * 0.8,
         },
         drawerType: dimensions.width >= 768 ? 'permanent' : 'slide',
         drawerActiveBackgroundColor: colors.primary,

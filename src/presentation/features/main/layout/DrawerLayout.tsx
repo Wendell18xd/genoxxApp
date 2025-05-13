@@ -19,15 +19,23 @@ import {MainStackParam} from '../../../navigations/MainStackNavigation';
 import {Appbar, useTheme} from 'react-native-paper';
 import {useEffect, useState} from 'react';
 import {useMainStore} from '../../../store/main/useMainStore';
+import CurvaBottomView from '../../../components/ui/CurvaBottomView';
 
 interface Props {
   title?: string | undefined;
   primary?: boolean;
   children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
+  curbaHeight?: number;
 }
 
-const DrawerLayout = ({title, children, style, primary = false}: Props) => {
+const DrawerLayout = ({
+  title,
+  children,
+  style,
+  primary = false,
+  curbaHeight = 10,
+}: Props) => {
   const navigation = useNavigation<NavigationProp<MainStackParam>>();
   const {bottom} = useSafeAreaInsets();
   const {menuSelected} = useMainStore();
@@ -91,11 +99,23 @@ const DrawerLayout = ({title, children, style, primary = false}: Props) => {
             style={[
               styles.containerChildren,
               {
-                backgroundColor: '#f2f2f2',
+                backgroundColor: colors.background,
                 marginBottom: calculatedMargin + bottom + 56,
               },
               style,
             ]}>
+            {primary && (
+              <View
+                style={{
+                  position: 'absolute',
+                  width: '100%',
+                }}>
+                <View
+                  style={{backgroundColor: colors.primary, height: curbaHeight}}
+                />
+                <CurvaBottomView />
+              </View>
+            )}
             {children}
           </View>
         </TouchableWithoutFeedback>
@@ -110,6 +130,7 @@ const styles = StyleSheet.create({
     paddingTop: 32,
     paddingHorizontal: 32,
     paddingBottom: 32,
+    position: 'relative',
   },
 });
 
