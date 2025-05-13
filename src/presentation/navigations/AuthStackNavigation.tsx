@@ -4,7 +4,6 @@ import OlvidarPassScreen from '../features/auth/screens/OlvidarPassScreen';
 import GetStartScreen from '../features/auth/screens/GetStartScreen';
 import CambioPassScreen from '../features/auth/screens/CambioPassScreen';
 import {MainStackNavigation} from './MainStackNavigation';
-import DetalleLiquidarMatScreen from '../features/gestionATC/liquidarMateriales/DetalleLiquidarMatScreen';
 
 export type AuthStackParam = {
   GetStartScreen: undefined;
@@ -28,7 +27,6 @@ export const AuthStackNavigation = () => {
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="OlvidarPassScreen" component={OlvidarPassScreen} />
       <Stack.Screen name="CambioPassScreen" component={CambioPassScreen} />
-      <Stack.Screen name="DetalleLiquidarMatScreen" component={DetalleLiquidarMatScreen} />
       <Stack.Screen
         name="MainStackNavigation"
         component={MainStackNavigation}
