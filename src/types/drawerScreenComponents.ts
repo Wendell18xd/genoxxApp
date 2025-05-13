@@ -1,5 +1,4 @@
-import DetalleLiquidarMatScreen from '../presentation/features/gestionATC/LiquidarMateriales/screens/DetalleLiquidarMatScreen';
-import LiquidarMaterialesScreen from '../presentation/features/gestionATC/liquidarMateriales/screens/LiquidarMaterialesScreen';
+import DetalleLiquidarMatScreen from '../presentation/features/gestionATC/liquidarMateriales/screens/DetalleLiquidarMatScreen';
 import LiquidarMaterialesObras from '../presentation/features/gestionObras/liquidarMateriales/screen/LiquidarMaterialesObras';
 import LiquidarPartidasObras from '../presentation/features/gestionObras/liquidarPartidas/screen/LiquidarPartidasObras';
 
