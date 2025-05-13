@@ -26,7 +26,7 @@ interface Props {
   primary?: boolean;
   children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
-  curbaHeight?: number;
+  curvaHeight?: number;
 }
 
 const DrawerLayout = ({
@@ -34,7 +34,7 @@ const DrawerLayout = ({
   children,
   style,
   primary = false,
-  curbaHeight = 10,
+  curvaHeight = 10,
 }: Props) => {
   const navigation = useNavigation<NavigationProp<MainStackParam>>();
   const {bottom} = useSafeAreaInsets();
@@ -111,12 +111,12 @@ const DrawerLayout = ({
                   width: '100%',
                 }}>
                 <View
-                  style={{backgroundColor: colors.primary, height: curbaHeight}}
+                  style={{backgroundColor: colors.primary, height: curvaHeight}}
                 />
                 <CurvaBottomView />
               </View>
             )}
-            <View style={styles.containerChildren2}>{children}</View>
+            {children}
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
@@ -129,13 +129,7 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
   },
-  containerChildren2: {
-    flex: 1,
-    position: 'relative',
-    paddingTop: 32,
-    paddingHorizontal: 32,
-    paddingBottom: 32,
-  },
+
 });
 
 export default DrawerLayout;

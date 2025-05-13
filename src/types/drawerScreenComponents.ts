@@ -1,3 +1,4 @@
+import DetalleLiquidarMatScreen from '../presentation/features/gestionATC/LiquidarMateriales/screens/DetalleLiquidarMatScreen';
 import LiquidarMaterialesScreen from '../presentation/features/gestionATC/liquidarMateriales/screens/LiquidarMaterialesScreen';
 import LiquidarMaterialesObras from '../presentation/features/gestionObras/liquidarMateriales/screen/LiquidarMaterialesObras';
 import LiquidarPartidasObras from '../presentation/features/gestionObras/liquidarPartidas/screen/LiquidarPartidasObras';
@@ -11,5 +12,5 @@ export const drawerScreenComponents: Record<
   PedidoMaterialFragment: LiquidarPartidasObras,
   AprobacionPedidosFragment: LiquidarPartidasObras,
   ReporteStockFragment: LiquidarPartidasObras,
-  ListMaterialesATCFragment: LiquidarMaterialesScreen,
+  ListMaterialesATCFragment: DetalleLiquidarMatScreen,
 };

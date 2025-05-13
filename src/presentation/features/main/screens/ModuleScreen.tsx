@@ -24,7 +24,7 @@ export const ModuleScreen = () => {
       title={moduloSelected?.menu_nombre}
       style={{paddingHorizontal: 0, paddingTop: 0, paddingBottom: 0}}
       primary
-      curbaHeight={100}>
+      curvaHeight={100}>
       <View style={{marginTop: 16, marginHorizontal: 32}}>
         <CustomTextInput
           placeholder="Buscar"
