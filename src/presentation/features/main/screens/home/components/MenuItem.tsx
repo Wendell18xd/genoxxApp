@@ -2,26 +2,17 @@ import {StyleSheet, View} from 'react-native';
 import {Menu} from '../../../../../../domain/entities/User';
 import {Card, Text, useTheme} from 'react-native-paper';
 import MaterialIcons from '../../../../../components/ui/icons/MaterialIcons';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {MainStackParam} from '../../../../../navigations/MainStackNavigation';
-import {useMainStore} from '../../../../../store/main/useMainStore';
 
 interface Props {
   menu: Menu;
+  onPress?: () => void;
 }
 
-const MenuItem = ({menu}: Props) => {
-  const navigation = useNavigation<NavigationProp<MainStackParam>>();
+const MenuItem = ({menu, onPress}: Props) => {
   const {colors} = useTheme();
-  const {setModuloSelected} = useMainStore();
-
-  const handleMenuPress = () => {
-    setModuloSelected(menu);
-    navigation.navigate('SideMenuNavigator', {menu});
-  };
 
   return (
-    <Card mode="elevated" onPress={handleMenuPress} style={styles.card}>
+    <Card mode="elevated" onPress={onPress} style={styles.card}>
       <Card.Content style={styles.cardContent}>
         <View
           style={[

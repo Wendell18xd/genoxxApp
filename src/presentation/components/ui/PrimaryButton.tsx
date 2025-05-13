@@ -1,13 +1,19 @@
+import React from 'react';
 import {Button, ButtonProps} from 'react-native-paper';
 import {Platform, StyleSheet} from 'react-native';
 
-const PrimaryButton = (props: ButtonProps) => {
+interface Props extends ButtonProps {
+  height?: number;
+  borderRadius?: number;
+}
+
+const PrimaryButton = ({height = 68, borderRadius = 12, ...props}: Props) => {
   return (
     <Button
       {...props}
       mode={props.mode || 'contained'}
-      contentStyle={styles.content} // cambia alto
-      style={[styles.button, props.style]} // cambia borderRadius
+      contentStyle={[styles.content, {height}]}
+      style={[styles.button, {borderRadius}, props.style]}
       labelStyle={styles.label}
       textColor="white"
       theme={{
@@ -21,10 +27,10 @@ const PrimaryButton = (props: ButtonProps) => {
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 12, // <- Corner radius
+    borderRadius: 12, // default
   },
   content: {
-    height: 68, // <- Alto del botón
+    height: 68, // default
   },
   label: {
     textTransform: 'uppercase',

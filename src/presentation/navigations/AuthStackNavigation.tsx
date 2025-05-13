@@ -12,8 +12,6 @@ export type AuthStackParam = {
   OlvidarPassScreen: undefined;
   MainStackNavigation: undefined;
   CambioPassScreen: undefined;
-  LiquidarMaterialesScreen: undefined;
-  DetalleLiquidarMatScreen: undefined;
 };
 
 const Stack = createStackNavigator<AuthStackParam>();
@@ -25,7 +23,7 @@ export const AuthStackNavigation = () => {
         headerShown: false,
         // ...TransitionPresets.SlideFromRightIOS,
       }}
-      initialRouteName="DetalleLiquidarMatScreen">
+      initialRouteName="GetStartScreen">
       <Stack.Screen name="GetStartScreen" component={GetStartScreen} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="OlvidarPassScreen" component={OlvidarPassScreen} />

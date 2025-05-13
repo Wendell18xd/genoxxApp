@@ -2,28 +2,32 @@ import {useWindowDimensions} from 'react-native';
 import {useTheme} from 'react-native-paper';
 import Svg, {Path} from 'react-native-svg';
 
-const CurvaBottomView = () => {
+interface Props {
+  height?: number;
+}
+
+const CurvaBottomView = ({height = 80}: Props) => {
   const {colors} = useTheme();
   const {width} = useWindowDimensions();
-  const height = 80;
+  const altura = height;
 
   const adjustedWidth = width + 2;
 
   return (
     <Svg
-      height={height}
+      height={altura}
       width={adjustedWidth}
-      viewBox={`0 0 ${adjustedWidth} ${height}`}
-      style={{position: 'absolute', top: 0, left: 0}}>
+      viewBox={`0 0 ${adjustedWidth} ${altura}`}
+      style={{position: 'relative', top: -1, left: 0}}>
       <Path
         fill={colors.primary}
         d={`
           M0,0
           H${adjustedWidth}
-          V${height * 0.5}
-          C${adjustedWidth * 0.66},${height} ${
+          V${altura * 0.5}
+          C${adjustedWidth * 0.66},${altura} ${
           adjustedWidth * 0.33
-        },${height} 0,${height * 0.5}
+        },${altura} 0,${altura * 0.5}
           Z
         `}
       />

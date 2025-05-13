@@ -10,34 +10,31 @@ import {useAuthStore} from '../../../../store/auth/useAuthStore';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
 import SafeAreaLayout from '../../layout/SafeAreaLayout';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
-import {useCallback, useState} from 'react';
+import {useCallback} from 'react';
 import MenuItem from './components/MenuItem';
 import CurvaBottomView from '../../../../components/ui/CurvaBottomView';
 import {Menu} from '../../../../../domain/entities/User';
-import {normalize} from '../../../../helper/utils';
 import SinResultados from '../../../../components/ui/SinResultados';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {
+  NavigationProp,
+  useFocusEffect,
+  useNavigation,
+} from '@react-navigation/native';
 import {UserImage} from '../../../../components/main/UserImage';
+import {MainStackParam} from '../../../../navigations/MainStackNavigation';
+import {useMainStore} from '../../../../store/main/useMainStore';
+import {useFilterMenu} from '../../hooks/useFilterMenu';
 
 const HomeScreen = () => {
-  const navigation = useNavigation();
   const {user, menu} = useAuthStore();
   const {colors} = useTheme();
-  const [buscar, setBuscar] = useState<string>('');
-  const [filterMenu, setFilterMenu] = useState<Menu[] | undefined>(menu);
+  const navigation = useNavigation<NavigationProp<MainStackParam>>();
+  const {setModuloSelected} = useMainStore();
+  const {buscar, handlerSearch, filterMenu} = useFilterMenu({menus: menu});
 
-  const handlerSearch = (value: string) => {
-    setBuscar(value);
-
-    const filter = menu?.filter(item => {
-      const search = normalize(value);
-      return (
-        normalize(item.menu_nombre).includes(search) ||
-        normalize(item.menu_codigo).includes(search)
-      );
-    });
-
-    setFilterMenu(filter);
+  const handleMenuPress = (menuItem: Menu) => {
+    setModuloSelected(menuItem);
+    navigation.navigate('SideMenuNavigator', {menu: menuItem});
   };
 
   useFocusEffect(
@@ -121,7 +118,9 @@ const HomeScreen = () => {
             keyExtractor={item => item.menu_codigo}
             columnWrapperStyle={{gap: 16}}
             contentContainerStyle={{gap: 16, paddingBottom: 40}}
-            renderItem={({item}) => <MenuItem menu={item} />}
+            renderItem={({item}) => (
+              <MenuItem menu={item} onPress={() => handleMenuPress(item)} />
+            )}
           />
         ) : (
           <SinResultados />

@@ -1,8 +1,8 @@
 import React from 'react';
-import {ScrollView, StyleSheet, Text, View, StatusBar} from 'react-native';
-import {Card, Divider} from 'react-native-paper';
-import FABGroupBottom from '../../../components/ui/FABGroupBottom';
-import DrawerLayout from '../../main/layout/DrawerLayout';
+import { ScrollView, StyleSheet, Text, View, StatusBar } from 'react-native';
+import { Card, Divider } from 'react-native-paper';
+import FABGroupBottom from '../../../../components/ui/FABGroupBottom';
+import DrawerLayout from '../../../main/layout/DrawerLayout';
 
 const DetalleLiquidarMatScreen = () => {
   const getTextColor = (backgroundColor: string) => {
