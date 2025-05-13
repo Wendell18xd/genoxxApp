@@ -75,6 +75,7 @@ export const SideMenuNavigator = () => {
       <Drawer.Screen
         name="ModuleScreen"
         component={ModuleScreen}
+        initialParams={{menus: validMenuItems}}
         options={{
           drawerIcon: ({color}) => DrawIcon(color, 'view-module'),
         }}
