@@ -1,25 +1,15 @@
-import {
-  Alert,
-  BackHandler,
-  FlatList,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Alert, FlatList, TouchableOpacity, View} from 'react-native';
 import {Text, TextInput, useTheme} from 'react-native-paper';
 import {useAuthStore} from '../../../../store/auth/useAuthStore';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
 import SafeAreaLayout from '../../layout/SafeAreaLayout';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
-import {useCallback} from 'react';
+import {useEffect} from 'react';
 import MenuItem from './components/MenuItem';
 import CurvaBottomView from '../../../../components/ui/CurvaBottomView';
 import {Menu} from '../../../../../domain/entities/User';
 import SinResultados from '../../../../components/ui/SinResultados';
-import {
-  NavigationProp,
-  useFocusEffect,
-  useNavigation,
-} from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {UserImage} from '../../../../components/main/UserImage';
 import {MainStackParam} from '../../../../navigations/MainStackNavigation';
 import {useMainStore} from '../../../../store/main/useMainStore';
@@ -37,24 +27,21 @@ const HomeScreen = () => {
     navigation.navigate('SideMenuNavigator', {menu: menuItem});
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      const onBackPress = () => {
-        Alert.alert('Cerrar Sesión', '¿Deseas cerrar sesión?', [
-          {text: 'Cancelar', style: 'cancel'},
-          {text: 'Si, Cerrar', onPress: () => navigation.goBack()},
-        ]);
-        return true;
-      };
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', e => {
+      e.preventDefault(); // ✋ detenemos la navegación
 
-      const backHandler = BackHandler.addEventListener(
-        'hardwareBackPress',
-        onBackPress,
-      );
+      Alert.alert('Cerrar Sesión', '¿Deseas cerrar sesión?', [
+        {text: 'Cancelar', style: 'cancel', onPress: () => {}},
+        {
+          text: 'Sí, Cerrar',
+          onPress: () => navigation.dispatch(e.data.action), // ✅ continúa la navegación
+        },
+      ]);
+    });
 
-      return () => backHandler.remove();
-    }, []),
-  );
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <SafeAreaLayout style={{backgroundColor: colors.primary}}>
@@ -77,8 +64,8 @@ const HomeScreen = () => {
           <Text variant="bodyMedium" style={{color: 'white'}}>
             Hola, {user?.usua_nombre}
           </Text>
-          <TouchableOpacity>
-            <MaterialIcons name="bell" color="white" />
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <MaterialIcons name="exit-to-app" color="#f54949"/>
           </TouchableOpacity>
         </View>
       </View>

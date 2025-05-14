@@ -1,40 +1,79 @@
 import React from 'react';
-import {Button, ButtonProps} from 'react-native-paper';
-import {Platform, StyleSheet} from 'react-native';
-
-interface Props extends ButtonProps {
+import {
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  Text,
+  ViewStyle,
+  ActivityIndicator,
+  View,
+} from 'react-native';
+import {useTheme} from 'react-native-paper';
+interface Props {
   height?: number;
   borderRadius?: number;
+  children: React.ReactNode;
+  style?: StyleProp<ViewStyle>;
+  onPress?: () => void;
+  loading?: boolean;
+  disabled?: boolean;
 }
 
-const PrimaryButton = ({height = 68, borderRadius = 12, ...props}: Props) => {
+const PrimaryButton = ({
+  height = 68,
+  borderRadius = 12,
+  children,
+  onPress,
+  style,
+  loading = false,
+  disabled = false,
+}: Props) => {
+  const {colors} = useTheme();
+
+  const isDisabled = disabled || loading;
+
   return (
-    <Button
-      {...props}
-      mode={props.mode || 'contained'}
-      contentStyle={[styles.content, {height}]}
-      style={[styles.button, {borderRadius}, props.style]}
-      labelStyle={styles.label}
-      textColor="white"
-      theme={{
-        colors: {
-          primary: '#0090D7',
+    <Pressable
+      onPress={!isDisabled ? onPress : undefined}
+      disabled={isDisabled}
+      style={({pressed}) => [
+        styles.button,
+        {
+          opacity: pressed && !isDisabled ? 0.8 : 1,
+          backgroundColor: isDisabled ? colors.backdrop : colors.secondary,
+          height,
+          borderRadius,
         },
-      }}
-    />
+        style,
+      ]}>
+      <View style={styles.content}>
+        {loading && (
+          <ActivityIndicator
+            color="white"
+            style={{marginRight: 8}}
+          />
+        )}
+        <Text style={styles.label}>{children}</Text>
+      </View>
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 12, // default
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   content: {
-    height: 68, // default
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   label: {
     textTransform: 'uppercase',
-    fontWeight: Platform.OS === 'ios' ? '500' : '100',
+    fontWeight: '500',
+    color: 'white',
+    fontSize: 15,
   },
 });
 
