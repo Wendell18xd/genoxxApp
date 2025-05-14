@@ -4,8 +4,6 @@ import OlvidarPassScreen from '../features/auth/screens/OlvidarPassScreen';
 import GetStartScreen from '../features/auth/screens/GetStartScreen';
 import CambioPassScreen from '../features/auth/screens/CambioPassScreen';
 import {MainStackNavigation} from './MainStackNavigation';
-import LiquidarMaterialesScreen from '../features/gestionATC/liquidarMateriales/screens/LiquidarMaterialesScreen';
-
 
 export type AuthStackParam = {
   GetStartScreen: undefined;
@@ -13,7 +11,6 @@ export type AuthStackParam = {
   OlvidarPassScreen: undefined;
   MainStackNavigation: undefined;
   CambioPassScreen: undefined;
-  LiquidarMaterialesScreen: undefined;
 };
 
 const Stack = createStackNavigator<AuthStackParam>();
@@ -25,12 +22,12 @@ export const AuthStackNavigation = () => {
         headerShown: false,
         // ...TransitionPresets.SlideFromRightIOS,
       }}
-      initialRouteName="LiquidarMaterialesScreen">
+      initialRouteName="GetStartScreen">
       <Stack.Screen name="GetStartScreen" component={GetStartScreen} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="OlvidarPassScreen" component={OlvidarPassScreen} />
       <Stack.Screen name="CambioPassScreen" component={CambioPassScreen} />
-      <Stack.Screen name="LiquidarMaterialesScreen" component={LiquidarMaterialesScreen} />
+
       <Stack.Screen
         name="MainStackNavigation"
         component={MainStackNavigation}
