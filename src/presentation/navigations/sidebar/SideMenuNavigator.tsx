@@ -13,6 +13,7 @@ import {useMainStore} from '../../store/main/useMainStore';
 import {CustomDrawerContent, DrawIcon} from './CustomDrawerContent';
 import {ModuleScreen} from '../../features/main/screens/ModuleScreen';
 import {useEffect} from 'react';
+import {hexToRgba} from '../../helper/utils';
 
 const Drawer = createDrawerNavigator();
 
@@ -68,9 +69,15 @@ export const SideMenuNavigator = () => {
           backgroundColor: colors.background,
         },
         drawerType: dimensions.width >= 768 ? 'permanent' : 'slide',
-        drawerActiveBackgroundColor: colors.primary,
-        drawerActiveTintColor: 'white',
-        drawerInactiveTintColor: colors.primary,
+        // drawerItemStyle: {marginTop: -5},
+        drawerInactiveTintColor: colors.onSurface,
+        drawerActiveBackgroundColor: hexToRgba(colors.primary, 0.2),
+        drawerActiveTintColor: colors.primary,
+        drawerItemStyle: {
+          borderColor: hexToRgba(colors.primary, 0.2),
+          borderWidth: 1,
+          marginTop: 8,
+        },
       }}>
       <Drawer.Screen
         name="ModuleScreen"
@@ -78,6 +85,7 @@ export const SideMenuNavigator = () => {
         initialParams={{menus: validMenuItems}}
         options={{
           drawerIcon: ({color}) => DrawIcon(color, 'view-module'),
+          drawerLabel: menuSelected?.menu_nombre,
         }}
       />
 
@@ -98,6 +106,7 @@ export const SideMenuNavigator = () => {
                 options={{
                   drawerIcon: ({color}) =>
                     DrawIcon(color, menuItem.menu_icoapp),
+                  drawerLabel: menuItem.menu_nombre,
                 }}
                 listeners={{
                   focus: () => {

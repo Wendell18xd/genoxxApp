@@ -90,7 +90,7 @@ const HomeScreen = () => {
       </Text>
       <View style={{marginTop: 16, marginHorizontal: 32}}>
         <CustomTextInput
-          placeholder="Buscar"
+          placeholder="Buscar modulo"
           mode="outlined"
           autoCapitalize="characters"
           value={buscar}

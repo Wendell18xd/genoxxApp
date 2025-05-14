@@ -24,6 +24,7 @@ import CurvaBottomView from '../../../components/ui/CurvaBottomView';
 interface Props {
   title?: string | undefined;
   primary?: boolean;
+  isCurva?: boolean;
   children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
   curvaHeight?: number;
@@ -33,7 +34,8 @@ const DrawerLayout = ({
   title,
   children,
   style,
-  primary = false,
+  primary = true,
+  isCurva = false,
   curvaHeight = 10,
 }: Props) => {
   const navigation = useNavigation<NavigationProp<MainStackParam>>();
@@ -104,7 +106,7 @@ const DrawerLayout = ({
               },
               style,
             ]}>
-            {primary && (
+            {primary && isCurva && (
               <View
                 style={{
                   position: 'absolute',
@@ -129,7 +131,6 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
   },
-
 });
 
 export default DrawerLayout;
