@@ -1,7 +1,6 @@
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Card, Divider, Text} from 'react-native-paper';
-import FABGroupBottom from '../../../../components/ui/FABGroupBottom';
 import DrawerLayout from '../../../main/layout/DrawerLayout';
 
 const DetalleLiquidarMatScreen = () => {
@@ -11,12 +10,8 @@ const DetalleLiquidarMatScreen = () => {
 
   return (
     <DrawerLayout primary curvaHeight={80}>
-      <FABGroupBottom
-        style={{position: 'absolute'}}
-      />
-
-      <View style={styles.container}>
-        <ScrollView contentContainerStyle={styles.scrollContent}>
+      <View style={styles.wrapper}>
+        <ScrollView contentContainerStyle={styles.scrollContent} style={styles.hiddenScroll}>
           <Card style={styles.card}>
             <Card.Content>
               <View style={styles.listContainer}>
@@ -157,19 +152,18 @@ const DetalleLiquidarMatScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
+   wrapper: {
     flex: 1,
-    backgroundColor: '#F9F9F9',
-    paddingTop: 40, // Agrega margen superior en Android
-  },
-  container: {
-    flex: 1,
-    position: 'relative',
-    margin: 16,
   },
   scrollContent: {
-    paddingHorizontal: 1, // Espaciado horizontal para evitar que el contenido quede pegado a los bordes
-    paddingBottom: 1, // Espaciado inferior para evitar que el FAB quede pegado
+    padding: 16,
+    paddingBottom: 100, // para que puedas llegar hasta el final sin bloquear el scroll
+  },
+  hiddenScroll: {
+    flex: 1,
+  },
+  container: {
+    marginBottom: 20,
   },
   card: {
     borderRadius: 12,
@@ -226,11 +220,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     textAlign: 'center',
-  },
-  fabContainer: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
   },
 });
 
