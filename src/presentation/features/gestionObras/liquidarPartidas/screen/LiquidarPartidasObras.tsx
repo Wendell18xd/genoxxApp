@@ -13,7 +13,7 @@ const LiquidarPartidasObras = () => {
           alignItems: 'center',
           margin: 20,
         }}>
-        <View style={{width: '100%', marginTop: 16}}>
+        <View style={{width: '100%'}}>
           <CustomTextInput
             placeholder="Buscar opción"
             mode="outlined"
