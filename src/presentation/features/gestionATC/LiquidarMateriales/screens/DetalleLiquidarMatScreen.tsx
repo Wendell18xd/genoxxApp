@@ -75,20 +75,14 @@ const DetalleLiquidarMatScreen = () => {
                   <Text style={styles.description}>1 PLAY SIN SERVICIO</Text>
                 </View>
                 <View style={[styles.row, styles.nameRow]}>
-                  <MaterialIcons
-                    name="account"
-                    style={{marginRight: 6}}
-                  />
+                  <MaterialIcons name="account" style={{marginRight: 6}} />
                   <Text style={styles.title}>Nombre del Cliente:</Text>
                   <Text style={styles.description}>
                     ALEJANDRA VENEGAS DONAIRE
                   </Text>
                 </View>
                 <View style={styles.row}>
-                  <MaterialIcons
-                    name="phone"
-                    style={{marginRight: 6}}
-                  />
+                  <MaterialIcons name="phone" style={{marginRight: 6}} />
                   <Text style={styles.title}>Teléfono:</Text>
                   <Text style={styles.description}>-</Text>
                 </View>
@@ -144,18 +138,12 @@ const DetalleLiquidarMatScreen = () => {
                   <Text style={styles.description}>CABLE 1X4</Text>
                 </View>
                 <View style={styles.row}>
-                  <MaterialIcons
-                    name="cube"
-                    style={{marginRight: 6}}
-                  />
+                  <MaterialIcons name="cube" style={{marginRight: 6}} />
                   <Text style={styles.title}>Nombre del material:</Text>
                   <Text style={styles.description}>100</Text>
                 </View>
                 <View style={styles.row}>
-                  <MaterialIcons
-                    name="tag"
-                    style={{marginRight: 6}}
-                  />
+                  <MaterialIcons name="tag" style={{marginRight: 6}} />
                   <Text style={styles.title}>Sku Cliente:</Text>
                   <Text style={styles.description}>MTR</Text>
                 </View>
@@ -168,10 +156,7 @@ const DetalleLiquidarMatScreen = () => {
                   <Text style={styles.description}>MTR</Text>
                 </View>
                 <View style={styles.row}>
-                  <MaterialIcons
-                    name="comment-text"
-                    style={{marginRight: 6}}
-                  />
+                  <MaterialIcons name="comment-text" style={{marginRight: 6}} />
                   <Text style={styles.title}>Motivo:</Text>
                   <Text style={styles.description}>MTR</Text>
                 </View>
@@ -182,22 +167,33 @@ const DetalleLiquidarMatScreen = () => {
             <Card.Content>
               <View style={styles.listContainer}>
                 <View style={styles.row}>
+                  <MaterialIcons
+                    name="package-variant-closed"
+                    style={{marginRight: 6}}
+                  />
                   <Text style={styles.title}>Cod Material:</Text>
                   <Text style={styles.description}>CABLE 1X4</Text>
                 </View>
                 <View style={styles.row}>
+                  <MaterialIcons name="cube" style={{marginRight: 6}} />
                   <Text style={styles.title}>Nombre del material:</Text>
                   <Text style={styles.description}>100</Text>
                 </View>
                 <View style={styles.row}>
+                  <MaterialIcons name="tag" style={{marginRight: 6}} />
                   <Text style={styles.title}>Sku Cliente:</Text>
                   <Text style={styles.description}>MTR</Text>
                 </View>
                 <View style={styles.row}>
+                  <MaterialIcons
+                    name="package-variant"
+                    style={{marginRight: 6}}
+                  />
                   <Text style={styles.title}>Cantidad:</Text>
                   <Text style={styles.description}>MTR</Text>
                 </View>
                 <View style={styles.row}>
+                  <MaterialIcons name="comment-text" style={{marginRight: 6}} />
                   <Text style={styles.title}>Motivo:</Text>
                   <Text style={styles.description}>MTR</Text>
                 </View>
