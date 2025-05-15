@@ -4,7 +4,6 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import {
-  Dimensions,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -39,12 +38,10 @@ const DrawerLayout = ({
   curvaHeight = 10,
 }: Props) => {
   const navigation = useNavigation<NavigationProp<MainStackParam>>();
-  const {bottom} = useSafeAreaInsets();
+  const {bottom, top} = useSafeAreaInsets();
   const {menuSelected} = useMainStore();
 
   const [keyboardVisible, setKeyboardVisible] = useState(false);
-  const screenHeight = Dimensions.get('window').height;
-  const calculatedMargin = keyboardVisible ? 0 : -(screenHeight * 0.08);
   const {colors} = useTheme();
 
   useEffect(() => {
@@ -95,14 +92,15 @@ const DrawerLayout = ({
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}>
+        style={{flex: 1}}
+        keyboardVerticalOffset={keyboardVisible ? 0 : -(top + bottom)}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View
             style={[
               styles.containerChildren,
               {
                 backgroundColor: colors.background,
-                marginBottom: calculatedMargin + bottom + 56,
+                paddingBottom: bottom,
               },
               style,
             ]}>

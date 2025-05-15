@@ -253,7 +253,6 @@ const CambioPassScreen = ({navigation}: Props) => {
                   style={{
                     paddingVertical: 16,
                     paddingHorizontal: 1,
-                    marginBottom: 16,
                   }}>
                   <CustomSimpleCard
                     content="La contraseña debe tener al menos 8 caracteres, incluyendo mayúsculas, minúsculas, números y símbolos especiales. (#?.;!@$%^&*-_)"
