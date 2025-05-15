@@ -241,15 +241,20 @@ const CambioPassScreen = ({navigation}: Props) => {
                   </Text>
                 )}
 
-                <View style={{marginTop: 16, width: '100%'}}>
-                  <PrimaryButton
-                    onPress={() => handleSubmit()}
-                    loading={mutation.isPending}
-                    disabled={mutation.isPending}>
-                    Cambiar contraseña
-                  </PrimaryButton>
-                </View>
-                <View style={{paddingVertical: 16, paddingHorizontal: 1}}>
+                <PrimaryButton
+                  onPress={() => handleSubmit()}
+                  debounce
+                  disabled={mutation.isPending}
+                  loading={mutation.isPending}
+                  style={{marginTop: 8}}>
+                  Cambiar contraseña
+                </PrimaryButton>
+                <View
+                  style={{
+                    paddingVertical: 16,
+                    paddingHorizontal: 1,
+                    marginBottom: 16,
+                  }}>
                   <CustomSimpleCard
                     content="La contraseña debe tener al menos 8 caracteres, incluyendo mayúsculas, minúsculas, números y símbolos especiales. (#?.;!@$%^&*-_)"
                     backgroundColor="#fff3cd"
