@@ -40,7 +40,6 @@ const LoginScreen = ({navigation}: Props) => {
   const [disabled, setDisabled] = useState(false);
   const [loadingUser, setLoadingUser] = useState(true);
   const {login} = useAuthStore();
-  const [loading, setLoading] = useState(false);
 
   const getLoginSchema = (arrEmpresas: Option[] | undefined) =>
     Yup.object().shape({
@@ -56,7 +55,6 @@ const LoginScreen = ({navigation}: Props) => {
   const loginMutation = useMutation({
     mutationFn: login,
     onSuccess: async data => {
-      setLoading(false);
       const {estado} = data.datos;
 
       if (estado === 1) {
@@ -102,7 +100,6 @@ const LoginScreen = ({navigation}: Props) => {
       }
     },
     onError: error => {
-      setLoading(false);
       console.error('Error al obtener versión:', error);
       Toast.show({
         type: 'error',
@@ -120,7 +117,6 @@ const LoginScreen = ({navigation}: Props) => {
       recorded: values.recordar,
     };
 
-    setLoading(true);
     loginMutation.mutate(loginData);
   };
 
@@ -265,8 +261,9 @@ const LoginScreen = ({navigation}: Props) => {
 
                 <PrimaryButton
                   onPress={() => handleSubmit()}
-                  disabled={loading}
-                  loading={loading}
+                  debounce
+                  disabled={loginMutation.isPending}
+                  loading={loginMutation.isPending}
                   style={{marginTop: 32}}>
                   Iniciar Sesión
                 </PrimaryButton>

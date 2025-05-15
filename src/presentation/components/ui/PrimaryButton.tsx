@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {
   Pressable,
   StyleProp,
@@ -17,6 +17,7 @@ interface Props {
   onPress?: () => void;
   loading?: boolean;
   disabled?: boolean;
+  debounce?: boolean;
 }
 
 const PrimaryButton = ({
@@ -27,14 +28,33 @@ const PrimaryButton = ({
   style,
   loading = false,
   disabled = false,
+  debounce = false,
 }: Props) => {
   const {colors} = useTheme();
+  const lastPressRef = useRef<number>(0);
+  const debounceTime = 1000; // ms
 
   const isDisabled = disabled || loading;
 
+  const handlePress = () => {
+    if (!onPress) {
+      return;
+    }
+
+    if (debounce) {
+      const now = Date.now();
+      if (now - lastPressRef.current < debounceTime) {
+        return;
+      }
+      lastPressRef.current = now;
+    }
+
+    onPress();
+  };
+
   return (
     <Pressable
-      onPress={!isDisabled ? onPress : undefined}
+      onPress={!isDisabled ? handlePress : undefined}
       disabled={isDisabled}
       style={({pressed}) => [
         styles.button,
@@ -48,10 +68,7 @@ const PrimaryButton = ({
       ]}>
       <View style={styles.content}>
         {loading && (
-          <ActivityIndicator
-            color="white"
-            style={{marginRight: 8}}
-          />
+          <ActivityIndicator color="white" style={{marginRight: 8}} />
         )}
         <Text style={styles.label}>{children}</Text>
       </View>
