@@ -1,4 +1,10 @@
-import {Alert, FlatList, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Text, TextInput, useTheme} from 'react-native-paper';
 import {useAuthStore} from '../../../../store/auth/useAuthStore';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
@@ -29,13 +35,13 @@ const HomeScreen = () => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', e => {
-      e.preventDefault(); // ✋ detenemos la navegación
+      e.preventDefault(); //detenemos la navegación
 
       Alert.alert('Cerrar Sesión', '¿Deseas cerrar sesión?', [
         {text: 'Cancelar', style: 'cancel', onPress: () => {}},
         {
           text: 'Sí, Cerrar',
-          onPress: () => navigation.dispatch(e.data.action), // ✅ continúa la navegación
+          onPress: () => navigation.dispatch(e.data.action), //continúa la navegación
         },
       ]);
     });
@@ -45,27 +51,22 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaLayout style={{backgroundColor: colors.primary}}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: 15,
-          marginTop: 32,
-          marginHorizontal: 32,
-        }}>
+      <View style={styles.header}>
+        {/* Imagen de usuario */}
         <UserImage />
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
-          <Text variant="bodyMedium" style={{color: 'white'}}>
+
+        {/* Contenido derecho */}
+        <View style={styles.infoUser}>
+          <Text
+            variant="bodyMedium"
+            style={{
+              color: 'white',
+              flexShrink: 1,
+            }}>
             Hola, {user?.usua_nombre}
           </Text>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <MaterialIcons name="exit-to-app" color="#f54949"/>
+            <MaterialIcons name="exit-to-app" color="#f54949" size={24} />
           </TouchableOpacity>
         </View>
       </View>
@@ -116,4 +117,21 @@ const HomeScreen = () => {
     </SafeAreaLayout>
   );
 };
+
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 32,
+    marginHorizontal: 32,
+  },
+  infoUser: {
+    flex: 1,
+    marginLeft: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+});
+
 export default HomeScreen;

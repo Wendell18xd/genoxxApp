@@ -16,9 +16,9 @@ import {
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {MainStackParam} from '../../../navigations/MainStackNavigation';
 import {Appbar, useTheme} from 'react-native-paper';
-import {useEffect, useState} from 'react';
 import {useMainStore} from '../../../store/main/useMainStore';
 import CurvaBottomView from '../../../components/ui/CurvaBottomView';
+import {useKeyBoardVisible} from '../../../hooks/useKeyBoardVisible';
 
 interface Props {
   title?: string | undefined;
@@ -40,38 +40,14 @@ const DrawerLayout = ({
   const navigation = useNavigation<NavigationProp<MainStackParam>>();
   const {bottom, top} = useSafeAreaInsets();
   const {menuSelected} = useMainStore();
-
-  const [keyboardVisible, setKeyboardVisible] = useState(false);
   const {colors} = useTheme();
-
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      () => {
-        setKeyboardVisible(true);
-      },
-    );
-
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        setKeyboardVisible(false);
-      },
-    );
-
-    // Cleanup listeners on unmount
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    };
-  }, []);
+  const {keyboardVisible} = useKeyBoardVisible();
 
   return (
     <View style={{flex: 1}}>
       <Appbar.Header
         style={{
           position: 'relative',
-          height: 56,
           backgroundColor: primary ? colors.primary : colors.background,
         }}>
         <Appbar.Action

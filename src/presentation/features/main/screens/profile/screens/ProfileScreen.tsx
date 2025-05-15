@@ -1,14 +1,17 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {List, Text, useTheme, Divider} from 'react-native-paper';
-import SafeAreaLayout from '../../layout/SafeAreaLayout';
-import {UserImage} from '../../../../components/main/UserImage';
-import {useAuthStore} from '../../../../store/auth/useAuthStore';
-import {RenderListItemIcon} from '../../../../components/ui/icons/RenderListItemIcon';
+import SafeAreaLayout from '../../../layout/SafeAreaLayout';
+import {UserImage} from '../../../../../components/main/UserImage';
+import {useAuthStore} from '../../../../../store/auth/useAuthStore';
+import {RenderListItemIcon} from '../../../../../components/ui/icons/RenderListItemIcon';
+import {NavigationProp, StackActions, useNavigation} from '@react-navigation/native';
+import {ProfileStackParam} from '../navigations/ProfileStackNavigation';
 
 const ProfileScreen = () => {
   const {colors} = useTheme();
   const {user} = useAuthStore();
+  const navigation = useNavigation<NavigationProp<ProfileStackParam>>();
 
   return (
     <SafeAreaLayout primary isCurva curvaHeight={70} style={{flex: 1}}>
@@ -29,13 +32,13 @@ const ProfileScreen = () => {
             <List.Item
               title="Cambiar contraseña"
               left={RenderListItemIcon('lock', colors.primary)}
-              onPress={() => console.log('Cambiar contraseña')}
+              onPress={() => navigation.navigate('CambiarClaveScreen')}
             />
             <Divider />
             <List.Item
               title="Cerrar sesión"
               left={RenderListItemIcon('logout', colors.primary)}
-              onPress={() => console.log('Cerrar sesión')}
+              onPress={() => navigation.dispatch(StackActions.pop(1))}
             />
           </List.Section>
         </View>
@@ -47,7 +50,7 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 32,
+    margin: 16,
   },
   profileHeader: {
     alignItems: 'center',

@@ -1,7 +1,16 @@
-import {View, ViewStyle} from 'react-native';
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import CurvaBottomView from '../../../components/ui/CurvaBottomView';
-import {useTheme} from 'react-native-paper';
+import {Appbar, useTheme} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
+import {useKeyBoardVisible} from '../../../hooks/useKeyBoardVisible';
 
 interface Props {
   children: React.ReactNode;
@@ -9,41 +18,73 @@ interface Props {
   primary?: boolean;
   isCurva?: boolean;
   curvaHeight?: number;
+  isHeader?: boolean;
+  title?: string;
 }
 
 const SafeAreaLayout = ({
   children,
   style,
+  title = '',
   primary = false,
   isCurva = false,
-  curvaHeight = 10,
+  isHeader = false,
+  curvaHeight = 0,
 }: Props) => {
-  const {top} = useSafeAreaInsets();
+  const {top, bottom} = useSafeAreaInsets();
   const {colors} = useTheme();
+  const navigation = useNavigation();
+  const {keyboardVisible} = useKeyBoardVisible();
 
   return (
     <View
       style={[
         {
           flex: 1,
-          paddingTop: top,
         },
         style,
       ]}>
-      {primary && isCurva && (
-        <View
+      {isHeader && (
+        <Appbar.Header
           style={{
-            position: 'absolute',
-            width: '100%',
+            position: 'relative',
+            backgroundColor: primary ? colors.primary : colors.background,
           }}>
-          <View
-            style={{backgroundColor: colors.primary, height: curvaHeight}}
+          <Appbar.Action
+            icon="arrow-left"
+            onPress={() => navigation.goBack()}
+            color={primary ? 'white' : ''}
           />
-          <CurvaBottomView />
-        </View>
+          <Appbar.Content title={title} color={primary ? 'white' : ''} />
+        </Appbar.Header>
       )}
-
-      {children}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}
+        keyboardVerticalOffset={keyboardVisible ? 0 : -(top + bottom)}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View
+            style={{
+              flex: 1,
+              position: 'relative',
+              paddingTop: isHeader ? 0 : top,
+            }}>
+            {primary && isCurva && (
+              <View
+                style={{
+                  position: 'absolute',
+                  width: '100%',
+                }}>
+                <View
+                  style={{backgroundColor: colors.primary, height: curvaHeight}}
+                />
+                <CurvaBottomView />
+              </View>
+            )}
+            {children}
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </View>
   );
 };
