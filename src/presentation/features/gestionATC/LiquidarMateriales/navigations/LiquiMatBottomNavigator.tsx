@@ -1,8 +1,4 @@
-import RecuperosScreen from '../features/gestionATC/liquidarMateriales/screens/RecuperosScreen';
-import NoSeriadosScreen from '../features/gestionATC/liquidarMateriales/screens/NoSeriadosScreen';
-import SeriadosScreen from '../features/gestionATC/liquidarMateriales/screens/SeriadosScreen';
 import {useTheme} from 'react-native-paper';
-import MaterialIcons from '../components/ui/icons/MaterialIcons';
 import {
   View,
   TouchableOpacity,
@@ -13,8 +9,12 @@ import {
 } from 'react-native';
 import {MD3Colors} from 'react-native-paper/lib/typescript/types';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import DetalleLiquidarMatScreen from '../features/gestionATC/liquidarMateriales/screens/DetalleLiquidarMatScreen';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
+import SeriadosScreen from '../screens/SeriadosScreen';
+import NoSeriadosScreen from '../screens/NoSeriadosScreen';
+import RecuperosScreen from '../screens/RecuperosScreen';
+import DetalleLiquidarMatScreen from '../screens/DetalleLiquidarMatScreen';
 
 export type DetalleBottomTabParam = {
   DetalleLiquidarMatScreen: undefined;
@@ -70,7 +70,7 @@ const FinalizarOrdenButton = ({onPress, style}: Props) => (
 
 const Tab = createBottomTabNavigator<DetalleBottomTabParam>();
 
-export const DetalleBottomTabNavigation = () => {
+export const LiquiMatBottomNavigator = () => {
   const {colors} = useTheme();
   const {bottom} = useSafeAreaInsets();
 
