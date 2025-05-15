@@ -11,7 +11,7 @@ const DetalleLiquidarMatScreen = () => {
   return (
     <DrawerLayout primary curvaHeight={80}>
       <View style={styles.wrapper}>
-        <ScrollView contentContainerStyle={styles.scrollContent} style={styles.hiddenScroll}>
+        <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
           <Card style={styles.card}>
             <Card.Content>
               <View style={styles.listContainer}>
