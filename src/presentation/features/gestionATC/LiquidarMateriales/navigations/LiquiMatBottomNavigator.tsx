@@ -131,7 +131,6 @@ export const LiquiMatBottomNavigator = () => {
       />
       <Tab.Screen
         name="FinalizarOrden"
-        component={() => null}
         options={{
           tabBarLabel: 'Acción',
           tabBarIcon: ({focused, size}) =>
@@ -145,8 +144,9 @@ export const LiquiMatBottomNavigator = () => {
               style={[props.style, {alignItems: 'center'}]}
             />
           ),
-        }}
-      />
+        }}>
+        {() => null}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 };

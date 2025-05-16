@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 4,
     flexWrap: 'wrap',
-    gap: 5, // puedes ajustar esto según lo necesites
+    gap: 4, // puedes ajustar esto según lo necesites
   },
   nameRow: {
     marginBottom: 12,
