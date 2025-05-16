@@ -76,7 +76,7 @@ const DrawerLayout = ({
               styles.containerChildren,
               {
                 backgroundColor: colors.background,
-                paddingBottom: bottom,
+                // paddingBottom: bottom,
               },
               style,
             ]}>

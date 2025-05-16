@@ -288,13 +288,9 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: 16,
-    paddingBottom: 100, // para que puedas llegar hasta el final sin bloquear el scroll
   },
   hiddenScroll: {
     flex: 1,
-  },
-  container: {
-    marginBottom: 20,
   },
   card: {
     borderRadius: 12,
