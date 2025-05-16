@@ -4,7 +4,6 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import {
-  Dimensions,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -17,13 +16,14 @@ import {
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {MainStackParam} from '../../../navigations/MainStackNavigation';
 import {Appbar, useTheme} from 'react-native-paper';
-import {useEffect, useState} from 'react';
 import {useMainStore} from '../../../store/main/useMainStore';
 import CurvaBottomView from '../../../components/ui/CurvaBottomView';
+import {useKeyBoardVisible} from '../../../hooks/useKeyBoardVisible';
 
 interface Props {
   title?: string | undefined;
   primary?: boolean;
+  isCurva?: boolean;
   children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
   curvaHeight?: number;
@@ -33,46 +33,21 @@ const DrawerLayout = ({
   title,
   children,
   style,
-  primary = false,
+  primary = true,
+  isCurva = false,
   curvaHeight = 10,
 }: Props) => {
   const navigation = useNavigation<NavigationProp<MainStackParam>>();
-  const {bottom} = useSafeAreaInsets();
+  const {bottom, top} = useSafeAreaInsets();
   const {menuSelected} = useMainStore();
-
-  const [keyboardVisible, setKeyboardVisible] = useState(false);
-  const screenHeight = Dimensions.get('window').height;
-  const calculatedMargin = keyboardVisible ? 0 : -(screenHeight * 0.08);
   const {colors} = useTheme();
-
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      () => {
-        setKeyboardVisible(true);
-      },
-    );
-
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        setKeyboardVisible(false);
-      },
-    );
-
-    // Cleanup listeners on unmount
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    };
-  }, []);
+  const {keyboardVisible} = useKeyBoardVisible();
 
   return (
     <View style={{flex: 1}}>
       <Appbar.Header
         style={{
           position: 'relative',
-          height: 56,
           backgroundColor: primary ? colors.primary : colors.background,
         }}>
         <Appbar.Action
@@ -93,18 +68,19 @@ const DrawerLayout = ({
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}>
+        style={{flex: 1}}
+        keyboardVerticalOffset={keyboardVisible ? 0 : -(top + bottom)}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View
             style={[
               styles.containerChildren,
               {
                 backgroundColor: colors.background,
-                marginBottom: calculatedMargin + bottom + 56,
+                paddingBottom: bottom,
               },
               style,
             ]}>
-            {primary && (
+            {primary && isCurva && (
               <View
                 style={{
                   position: 'absolute',
@@ -129,7 +105,6 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
   },
-
 });
 
 export default DrawerLayout;

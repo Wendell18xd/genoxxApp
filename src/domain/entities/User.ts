@@ -5,6 +5,7 @@ export interface User {
   empr_timezone: string;
   usua_codigo: string;
   usua_tipo: string;
+  usua_login: string;
   usua_nombre: string;
   usua_perfil: string;
   trab_documento: string;

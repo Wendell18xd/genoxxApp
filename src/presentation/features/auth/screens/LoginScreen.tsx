@@ -259,15 +259,14 @@ const LoginScreen = ({navigation}: Props) => {
                   </TouchableOpacity>
                 </View>
 
-                <View pointerEvents={loginMutation.isPending ? 'none' : 'auto'}>
-                  <PrimaryButton
-                    onPress={() => handleSubmit()}
-                    loading={loginMutation.isPending}
-                    disabled={loginMutation.isPending}
-                    style={{marginTop: 32}}>
-                    Iniciar Sesión
-                  </PrimaryButton>
-                </View>
+                <PrimaryButton
+                  onPress={() => handleSubmit()}
+                  debounce
+                  disabled={loginMutation.isPending}
+                  loading={loginMutation.isPending}
+                  style={{marginTop: 32}}>
+                  Iniciar Sesión
+                </PrimaryButton>
 
                 <Text
                   style={{
