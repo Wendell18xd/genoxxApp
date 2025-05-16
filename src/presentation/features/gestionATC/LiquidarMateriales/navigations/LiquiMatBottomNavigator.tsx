@@ -46,27 +46,6 @@ const TabBarIcon = ({focused, size, colors, name}: TabBarIconProps) => (
     />
   </View>
 );
-interface Props {
-  onPress?: (e: GestureResponderEvent) => void;
-  style?: StyleProp<ViewStyle>;
-}
-
-const FinalizarOrdenButton = ({onPress, style}: Props) => (
-  <TouchableOpacity
-    onPress={e => {
-      Alert.alert('Acción', 'Se ejecutó una acción personalizada');
-      onPress?.(e);
-    }}
-    style={[
-      {
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex: 1,
-      },
-      style,
-    ]}
-  />
-);
 
 const Tab = createBottomTabNavigator<DetalleBottomTabParam>();
 
