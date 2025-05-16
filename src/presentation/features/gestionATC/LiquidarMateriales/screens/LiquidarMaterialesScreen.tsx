@@ -1,20 +1,18 @@
-// import React, {useState} from 'react';
-// import {StyleSheet, View} from 'react-native';
-// import {Text, TextInput} from 'react-native-gesture-handler';
-// import {Badge, Button, Card} from 'react-native-paper';
-// import CustomDatePicker from '../../../../components/ui/CustomDatePicker';
+
 
 import React, {useState} from 'react';
 import {Banner, Button, Text, TextInput, useTheme} from 'react-native-paper';
 import DrawerLayout from '../../../main/layout/DrawerLayout';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
-import {View} from 'react-native';
+import { View} from 'react-native';
 import {Dropdown} from 'react-native-paper-dropdown';
 import {ScrollView} from 'react-native-gesture-handler';
 import CustomDatePicker from '../../../../components/ui/CustomDatePicker';
 import {StackScreenProps} from '@react-navigation/stack';
 import {AuthStackParam} from '../../../../navigations/AuthStackNavigation';
 import {Formik} from 'formik';
+import PrimaryButton from '../../../../components/ui/PrimaryButton';
+import { useAuthStore } from '../../../../store/auth/useAuthStore';
 
 interface LiquidarMatFormValues {
   proyecto: string;
@@ -37,10 +35,10 @@ interface Props
 
 const LiquidarMaterialesScreen = ({navigation}: Props) => {
   const {colors} = useTheme();
-  const [formValues, setFormValues] =
-    useState<LiquidarMatFormValues>(initialValues);
+  const [formValues, setFormValues] = useState<LiquidarMatFormValues>(initialValues);
   const [disabled, setDisabled] = useState(false);
   const [visible, setVisible] = React.useState(true);
+  const {liquidar} = useAuthStore();
 
   const startLiqMatSubmit = (values: LiquidarMatFormValues) => {
     const LiqMatData = {
@@ -55,43 +53,55 @@ const LiquidarMaterialesScreen = ({navigation}: Props) => {
   };
 
   return (
-    <DrawerLayout style={{paddingHorizontal: 8, paddingTop: 8}}>
+    <DrawerLayout primary curvaHeight={80}>
       {/* <ScrollView showsVerticalScrollIndicator={false}> */}
-        {!visible && (
-          <View style={{alignItems: 'center', marginVertical: 12}}>
-            <Button
-              mode="outlined"
-              icon="chevron-down"
-              onPress={() => setVisible(true)}>
-              Mostrar Filtros
-            </Button>
-          </View>
-        )}
-        <>
-          <Banner
-            visible={visible}
-            actions={[
-              {
-                label: 'Buscar',
-                onPress: () => setVisible(false),
-                labelStyle: { color: '#007bff', fontWeight: 'bold' },
-              },
-            ]}
-            style={{paddingHorizontal: 0, paddingTop: 0, borderRadius: 8}}>
-            <Formik
-              initialValues={formValues}
-              onSubmit={values => startLiqMatSubmit(values)}>
-              {({
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                values,
-                errors,
-                touched,
-                setFieldValue,
-              }) => (
-                <View style={{padding: 12, width: '100%'}}>
-                  <Text>Filtros</Text>
+      {!visible && (
+        <View style={{alignItems: 'center', marginVertical: 12}}>
+          <Button
+            mode="elevated"
+            icon="chevron-down"
+            onPress={() => setVisible(true)}
+            style={{
+              width: '92%', // Ajusta este valor para que coincida con el ancho del Banner
+              justifyContent: 'flex-start', // Alinea el contenido a la izquierda
+              alignSelf: 'center', // Centra el botón en el contenedor
+              paddingLeft: 8, // Espacio a la izquierda para el icono y texto
+            }}
+            contentStyle={{
+              flexDirection: 'row-reverse', // Para que el icono quede a la izquierda del texto
+              justifyContent: 'flex-start',
+            }}
+            labelStyle={{
+              textAlign: 'left',
+              flex: 1,
+            }}>
+            Mostrar Filtros
+          </Button>
+        </View>
+      )}
+      <>
+        <Banner
+          visible={visible}
+          actions={[]}
+          style={{borderRadius: 32, margin: 16, paddingBottom: 0}}>
+          <Formik
+            initialValues={formValues}
+            onSubmit={values => {
+              startLiqMatSubmit(values);
+              setVisible(false);
+            }}>
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+              setFieldValue,
+            }) => (
+              <View style={{padding: 8, width: '100%'}}>
+                <Text variant="titleLarge">Filtros</Text>
+                <View style={{marginBottom: 12}}>
                   <Dropdown
                     label="Proyecto"
                     placeholder="Seleccione un proyecto"
@@ -99,18 +109,20 @@ const LiquidarMaterialesScreen = ({navigation}: Props) => {
                     options={[]}
                     value={values.proyecto}
                     onSelect={val => setFieldValue('proyecto', val)}
-                    style={{marginBottom: 8}}
                   />
+                </View>
+                <View style={{marginBottom: 12}}>
                   <CustomDatePicker
                     label="Fecha de Liquidación"
                     placeholder="Selecciona la fecha"
                     value={values.fechaLiquidacion}
-                    style={{marginBottom: 8}}
                     onChange={val => setFieldValue('fechaLiquidacion', val)}
                     error={
                       touched.fechaLiquidacion && !!errors.fechaLiquidacion
                     }
                   />
+                </View>
+                <View style={{marginBottom: 12}}>
                   <Dropdown
                     label="Tipo de Liquidación"
                     placeholder="Seleccione un tipo de liquidación"
@@ -121,9 +133,10 @@ const LiquidarMaterialesScreen = ({navigation}: Props) => {
                     ]}
                     value={values.tipoLiquidacion}
                     onSelect={val => setFieldValue('tipoLiquidacion', val)}
-                    style={{marginBottom: 8}}
                   />
-                  {values.tipoLiquidacion === 'Solicitud' && (
+                </View>
+                {values.tipoLiquidacion === 'Solicitud' && (
+                  <View style={{marginBottom: 12}}>
                     <CustomTextInput
                       label="Número de Solicitud"
                       mode="outlined"
@@ -134,10 +147,11 @@ const LiquidarMaterialesScreen = ({navigation}: Props) => {
                       error={touched.nroSolicitud && !!errors.nroSolicitud}
                       left={<TextInput.Icon icon="text-box-outline" />}
                       disabled={disabled}
-                      style={{marginBottom: 8}}
                     />
-                  )}
-                  {values.tipoLiquidacion === 'Petición' && (
+                  </View>
+                )}
+                {values.tipoLiquidacion === 'Petición' && (
+                  <View style={{marginBottom: 12}}>
                     <CustomTextInput
                       label="Número de Petición"
                       mode="outlined"
@@ -147,14 +161,25 @@ const LiquidarMaterialesScreen = ({navigation}: Props) => {
                       error={touched.nroPeticion && !!errors.nroPeticion}
                       left={<TextInput.Icon icon="text-box-outline" />}
                       disabled={disabled}
-                      style={{marginBottom: 8}}
                     />
-                  )}
-                </View>
-              )}
-            </Formik>
-          </Banner>
-        </>
+                  </View>
+                )}
+                <PrimaryButton
+                  onPress={() => {
+                    handleSubmit();
+                    setVisible(false);
+                  }}
+                  // loading={loginMutation.isPending}
+                  // disabled={loginMutation.isPending}
+                  style={{marginTop: 8}}
+                  icon="magnify">
+                  Buscar
+                </PrimaryButton>
+              </View>
+            )}
+          </Formik>
+        </Banner>
+      </>
       {/* </ScrollView> */}
     </DrawerLayout>
   );

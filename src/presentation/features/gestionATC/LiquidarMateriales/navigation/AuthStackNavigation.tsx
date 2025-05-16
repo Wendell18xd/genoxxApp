@@ -2,7 +2,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import DetalleLiquidarMatScreen from '../screens/DetalleLiquidarMatScreen';
 import { MainStackNavigation } from '../../../../navigations/MainStackNavigation';
-import { LiquidarMaterialesScreen } from '../screens/LiquidarMaterialesScreen';
+import LiquidarMaterialesScreen from '../screens/LiquidarMaterialesScreen';
 
 export type AuthStackParam = {
   LiquidarMaterialesScreen: undefined;
