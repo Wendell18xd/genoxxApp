@@ -1,22 +1,18 @@
-// import React, {useState} from 'react';
-// import {StyleSheet, View} from 'react-native';
-// import {Text, TextInput} from 'react-native-gesture-handler';
-// import {Badge, Button, Card} from 'react-native-paper';
-// import CustomDatePicker from '../../../../components/ui/CustomDatePicker';
+
 
 import React, {useState} from 'react';
 import {Banner, Button, Text, TextInput, useTheme} from 'react-native-paper';
 import DrawerLayout from '../../../main/layout/DrawerLayout';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
-import {StyleSheet, View} from 'react-native';
+import { View} from 'react-native';
 import {Dropdown} from 'react-native-paper-dropdown';
 import {ScrollView} from 'react-native-gesture-handler';
 import CustomDatePicker from '../../../../components/ui/CustomDatePicker';
 import {StackScreenProps} from '@react-navigation/stack';
 import {AuthStackParam} from '../../../../navigations/AuthStackNavigation';
 import {Formik} from 'formik';
-import CurvaView from '../../../../components/ui/CurvaView';
 import PrimaryButton from '../../../../components/ui/PrimaryButton';
+import { useAuthStore } from '../../../../store/auth/useAuthStore';
 
 interface LiquidarMatFormValues {
   proyecto: string;
@@ -39,10 +35,10 @@ interface Props
 
 const LiquidarMaterialesScreen = ({navigation}: Props) => {
   const {colors} = useTheme();
-  const [formValues, setFormValues] =
-    useState<LiquidarMatFormValues>(initialValues);
+  const [formValues, setFormValues] = useState<LiquidarMatFormValues>(initialValues);
   const [disabled, setDisabled] = useState(false);
   const [visible, setVisible] = React.useState(true);
+  const {liquidar} = useAuthStore();
 
   const startLiqMatSubmit = (values: LiquidarMatFormValues) => {
     const LiqMatData = {
@@ -87,7 +83,7 @@ const LiquidarMaterialesScreen = ({navigation}: Props) => {
         <Banner
           visible={visible}
           actions={[]}
-          style={{borderRadius: 8, margin: 16, paddingBottom: 0}}>
+          style={{borderRadius: 32, margin: 16, paddingBottom: 0}}>
           <Formik
             initialValues={formValues}
             onSubmit={values => {
@@ -104,7 +100,7 @@ const LiquidarMaterialesScreen = ({navigation}: Props) => {
               setFieldValue,
             }) => (
               <View style={{padding: 8, width: '100%'}}>
-                <Text variant="titleMedium">Filtros</Text>
+                <Text variant="titleLarge">Filtros</Text>
                 <View style={{marginBottom: 12}}>
                   <Dropdown
                     label="Proyecto"
@@ -168,16 +164,11 @@ const LiquidarMaterialesScreen = ({navigation}: Props) => {
                     />
                   </View>
                 )}
-                {/* <Button
-                  mode="contained"
-                  buttonColor={colors.primary}
-                  onPress={handleSubmit}
-                  style={{marginTop: 12}}
-                  icon="magnify">
-                  Buscar
-                </Button> */}
                 <PrimaryButton
-                  onPress={() => handleSubmit()}
+                  onPress={() => {
+                    handleSubmit();
+                    setVisible(false);
+                  }}
                   // loading={loginMutation.isPending}
                   // disabled={loginMutation.isPending}
                   style={{marginTop: 8}}
@@ -194,13 +185,6 @@ const LiquidarMaterialesScreen = ({navigation}: Props) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    position: 'relative',
-    margin: 16,
-  },
-});
 export default LiquidarMaterialesScreen;
 
 // export const LiquidarMaterialesScreen = () => {
