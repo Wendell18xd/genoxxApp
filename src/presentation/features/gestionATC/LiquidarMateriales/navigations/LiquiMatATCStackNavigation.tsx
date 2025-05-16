@@ -17,7 +17,7 @@ export const LiquiMatATCStackNavigation = () => {
         headerShown: false,
         // ...TransitionPresets.SlideFromRightIOS,
       }}
-      initialRouteName="LiquiMatBottomNavigator">
+      initialRouteName="LiquidarMaterialesScreen">
       <Stack.Screen
         name="LiquidarMaterialesScreen"
         component={LiquidarMaterialesScreen}

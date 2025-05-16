@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 import {Banner, Button, Text, TextInput, useTheme} from 'react-native-paper';
 import DrawerLayout from '../../../main/layout/DrawerLayout';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
-import { View} from 'react-native';
+import { StyleSheet, View} from 'react-native';
 import {Dropdown} from 'react-native-paper-dropdown';
 import {ScrollView} from 'react-native-gesture-handler';
 import CustomDatePicker from '../../../../components/ui/CustomDatePicker';
@@ -171,8 +171,7 @@ const LiquidarMaterialesScreen = ({navigation}: Props) => {
                   }}
                   // loading={loginMutation.isPending}
                   // disabled={loginMutation.isPending}
-                  style={{marginTop: 8}}
-                  icon="magnify">
+                  style={{marginTop: 8}}>
                   Buscar
                 </PrimaryButton>
               </View>
@@ -187,6 +186,14 @@ const LiquidarMaterialesScreen = ({navigation}: Props) => {
 
 export default LiquidarMaterialesScreen;
 
+
+const styles = StyleSheet.create({
+card: {
+    borderRadius: 12,
+    elevation: 2,
+    marginBottom: 20,
+  },
+});
 // export const LiquidarMaterialesScreen = () => {
 //   const [isCollapsed, setIsCollapsed] = useState(false); // Estado para controlar si el formulario está colapsado
 //   const [tipoRequerimiento, setTipoRequerimiento] = useState(''); // Estado para el tipo de requerimiento

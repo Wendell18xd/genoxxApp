@@ -10,7 +10,7 @@ const DetalleLiquidarMatScreen = () => {
   };
 
   return (
-    <DrawerLayout primary curvaHeight={80}>
+    <DrawerLayout title="Detalle de trabajo" primary curvaHeight={80}>
       <View style={styles.wrapper}>
         <ScrollView
           contentContainerStyle={styles.scrollContent}
