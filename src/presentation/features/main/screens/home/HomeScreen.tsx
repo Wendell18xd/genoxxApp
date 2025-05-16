@@ -1,7 +1,7 @@
 import {
   Alert,
-  BackHandler,
   FlatList,
+  StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -10,16 +10,12 @@ import {useAuthStore} from '../../../../store/auth/useAuthStore';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
 import SafeAreaLayout from '../../layout/SafeAreaLayout';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
-import {useCallback} from 'react';
+import {useEffect} from 'react';
 import MenuItem from './components/MenuItem';
 import CurvaBottomView from '../../../../components/ui/CurvaBottomView';
 import {Menu} from '../../../../../domain/entities/User';
 import SinResultados from '../../../../components/ui/SinResultados';
-import {
-  NavigationProp,
-  useFocusEffect,
-  useNavigation,
-} from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {UserImage} from '../../../../components/main/UserImage';
 import {MainStackParam} from '../../../../navigations/MainStackNavigation';
 import {useMainStore} from '../../../../store/main/useMainStore';
@@ -37,48 +33,40 @@ const HomeScreen = () => {
     navigation.navigate('SideMenuNavigator', {menu: menuItem});
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      const onBackPress = () => {
-        Alert.alert('Cerrar Sesión', '¿Deseas cerrar sesión?', [
-          {text: 'Cancelar', style: 'cancel'},
-          {text: 'Si, Cerrar', onPress: () => navigation.goBack()},
-        ]);
-        return true;
-      };
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', e => {
+      e.preventDefault(); //detenemos la navegación
 
-      const backHandler = BackHandler.addEventListener(
-        'hardwareBackPress',
-        onBackPress,
-      );
+      Alert.alert('Cerrar Sesión', '¿Deseas cerrar sesión?', [
+        {text: 'Cancelar', style: 'cancel', onPress: () => {}},
+        {
+          text: 'Sí, Cerrar',
+          onPress: () => navigation.dispatch(e.data.action), //continúa la navegación
+        },
+      ]);
+    });
 
-      return () => backHandler.remove();
-    }, []),
-  );
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <SafeAreaLayout style={{backgroundColor: colors.primary}}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: 15,
-          marginTop: 32,
-          marginHorizontal: 32,
-        }}>
+      <View style={styles.header}>
+        {/* Imagen de usuario */}
         <UserImage />
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
-          <Text variant="bodyMedium" style={{color: 'white'}}>
+
+        {/* Contenido derecho */}
+        <View style={styles.infoUser}>
+          <Text
+            variant="bodyMedium"
+            style={{
+              color: 'white',
+              flexShrink: 1,
+            }}>
             Hola, {user?.usua_nombre}
           </Text>
-          <TouchableOpacity>
-            <MaterialIcons name="bell" color="white" />
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <MaterialIcons name="exit-to-app" color="#f54949" size={24} />
           </TouchableOpacity>
         </View>
       </View>
@@ -90,7 +78,7 @@ const HomeScreen = () => {
       </Text>
       <View style={{marginTop: 16, marginHorizontal: 32}}>
         <CustomTextInput
-          placeholder="Buscar"
+          placeholder="Buscar modulo"
           mode="outlined"
           autoCapitalize="characters"
           value={buscar}
@@ -129,4 +117,21 @@ const HomeScreen = () => {
     </SafeAreaLayout>
   );
 };
+
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 32,
+    marginHorizontal: 32,
+  },
+  infoUser: {
+    flex: 1,
+    marginLeft: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+});
+
 export default HomeScreen;

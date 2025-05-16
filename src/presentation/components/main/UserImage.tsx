@@ -11,10 +11,11 @@ interface Props {
 
 export const UserImage = ({style}: Props) => {
   const {user} = useAuthStore();
+  const timestamp = new Date().getTime();
 
   return (
     <FadeInImage
-      uri={`${API_URL}/public/dist/PERSONAL/${user?.trab_documento}.jpg?1`}
+      uri={`${API_URL}/public/dist/PERSONAL/${user?.trab_documento}.jpg?${timestamp}`}
       style={[{height: 70, width: 70, borderRadius: 100}, style]}
       defaultImage={fallbackImage}
     />

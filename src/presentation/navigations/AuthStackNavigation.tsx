@@ -27,6 +27,7 @@ export const AuthStackNavigation = () => {
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="OlvidarPassScreen" component={OlvidarPassScreen} />
       <Stack.Screen name="CambioPassScreen" component={CambioPassScreen} />
+
       <Stack.Screen
         name="MainStackNavigation"
         component={MainStackNavigation}

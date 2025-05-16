@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Alert, Image, ScrollView, View} from 'react-native';
+import {Alert, Image, ScrollView} from 'react-native';
 import {Text, TextInput, useTheme} from 'react-native-paper';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
@@ -158,18 +158,14 @@ const OlvidarPassScreen = ({navigation}: Props) => {
                     {errors.usuario}
                   </Text>
                 )}
-                <View
-                  pointerEvents={
-                    forgotPassMutation.isPending ? 'none' : 'auto'
-                  }>
-                  <PrimaryButton
-                    onPress={() => handleSubmit()}
-                    loading={forgotPassMutation.isPending}
-                    disabled={forgotPassMutation.isPending}
-                    style={{marginTop: 32}}>
-                    Enviar
-                  </PrimaryButton>
-                </View>
+                <PrimaryButton
+                  onPress={() => handleSubmit()}
+                  debounce
+                  disabled={forgotPassMutation.isPending}
+                  loading={forgotPassMutation.isPending}
+                  style={{marginTop: 32}}>
+                  Enviar
+                </PrimaryButton>
               </>
             )}
           </Formik>
