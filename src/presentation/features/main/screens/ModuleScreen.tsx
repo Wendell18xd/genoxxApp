@@ -22,11 +22,12 @@ export const ModuleScreen = () => {
   return (
     <DrawerLayout
       title={moduloSelected?.menu_nombre}
+      isCurva
       primary
       curvaHeight={100}>
       <View style={{marginTop: 16, marginHorizontal: 32}}>
         <CustomTextInput
-          placeholder="Buscar"
+          placeholder="Buscar opción"
           mode="outlined"
           autoCapitalize="characters"
           value={buscar}

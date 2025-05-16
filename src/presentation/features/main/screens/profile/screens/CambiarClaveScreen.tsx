@@ -1,51 +1,37 @@
-import {View, ScrollView, Image} from 'react-native';
-import {Text} from 'react-native-paper';
+import {Image, View} from 'react-native';
+import SafeAreaLayout from '../../../layout/SafeAreaLayout';
+import {Text, TextInput} from 'react-native-paper';
 import {Formik} from 'formik';
+import {useAuthStore} from '../../../../../store/auth/useAuthStore';
+import CustomTextInput from '../../../../../components/ui/CustomTextInput';
+import PrimaryButton from '../../../../../components/ui/PrimaryButton';
+import CustomSimpleCard from '../../../../../components/ui/CustomSimpleCard';
 import * as Yup from 'yup';
+import {isPasswordValid} from '../../../../../helper/utils';
 import Toast from 'react-native-toast-message';
 import {useMutation} from '@tanstack/react-query';
-import {TextInput} from 'react-native-paper';
-import CustomTextInput from '../../../components/ui/CustomTextInput';
-import AuthLayout from '../layout/AuthLayout';
-import PrimaryButton from '../../../components/ui/PrimaryButton';
-import {useAuthStore} from '../../../store/auth/useAuthStore';
-import CustomSimpleCard from '../../../components/ui/CustomSimpleCard';
-import {isPasswordValid} from '../../../helper/utils';
-import {StackScreenProps} from '@react-navigation/stack';
-import {AuthStackParam} from '../../../navigations/AuthStackNavigation';
-import CustomDatePicker from '../../../components/ui/CustomDatePicker';
+import {ScrollView} from 'react-native-gesture-handler';
+import {useNavigation} from '@react-navigation/native';
 
 interface CambioPassFormValues {
-  fechaNacimiento: string;
   actualPass: string;
   nuevoPass: string;
   confirPass: string;
 }
 
 const initialValues: CambioPassFormValues = {
-  fechaNacimiento: '',
   actualPass: '',
   nuevoPass: '',
   confirPass: '',
 };
 
-interface Props extends StackScreenProps<AuthStackParam, 'CambioPassScreen'> {}
-
-const CambioPassScreen = ({navigation}: Props) => {
+export const CambiarClaveScreen = () => {
   const {user, update} = useAuthStore();
+  const navigation = useNavigation();
 
-  const getValidationSchema = (tipoUsuario: string) =>
+  const getValidationSchema = () =>
     Yup.object().shape({
-      actualPass: Yup.string().when([], {
-        is: () => tipoUsuario === 'USUA',
-        then: schema => schema.required('Ingrese su contraseña actual'),
-        otherwise: schema => schema.notRequired(),
-      }),
-      fechaNacimiento: Yup.string().when([], {
-        is: () => tipoUsuario !== 'USUA',
-        then: schema => schema.required('Ingrese su fecha de nacimiento'),
-        otherwise: schema => schema.notRequired(),
-      }),
+      actualPass: Yup.string().required('Ingrese su contraseña actual'),
       nuevoPass: Yup.string().required('Ingrese su nueva contraseña'),
       confirPass: Yup.string().required('Confirme su nueva contraseña'),
     });
@@ -56,23 +42,13 @@ const CambioPassScreen = ({navigation}: Props) => {
       const estado = data.datos;
 
       if (estado === 1) {
-        navigation.reset({
-          index: 0,
-          routes: [{name: 'LoginScreen'}],
-        });
         Toast.show({type: 'success', text1: 'Contraseña actualizada'});
+        navigation.goBack();
       } else if (estado === 2) {
-        if (user?.usua_tipo === 'USUA') {
-          Toast.show({
-            type: 'error',
-            text1: 'La contraseña actual es incorrecta',
-          });
-        } else {
-          Toast.show({
-            type: 'error',
-            text1: 'La fecha de nacimiento es incorrecto.',
-          });
-        }
+        Toast.show({
+          type: 'error',
+          text1: 'La contraseña actual es incorrecta',
+        });
       } else {
         Toast.show({
           type: 'error',
@@ -103,51 +79,38 @@ const CambioPassScreen = ({navigation}: Props) => {
 
     const data = {
       usuaCodigo: user?.usua_codigo || '',
-      tipoLogin: user?.usua_tipo || '',
+      tipoLogin: user?.usua_login || '',
       usuaClave: values.actualPass,
       usuaClave2: values.nuevoPass,
-      trabFecnaci: values.fechaNacimiento,
+      trabFecnaci: '',
     };
 
     mutation.mutate(data);
   };
 
   return (
-    <AuthLayout>
-      <ScrollView showsVerticalScrollIndicator={false}>
+    <SafeAreaLayout title="Cambiar contraseña" isHeader primary>
+      <ScrollView
+        contentContainerStyle={{
+          padding: 32,
+          flexGrow: 1,
+          justifyContent: 'center',
+        }}>
         <Image
-          source={require('../../../../assets/images/logo.png')}
+          source={require('../../../../../../assets/images/candado.png')}
           style={{
-            width: 100,
-            height: 100,
+            width: 150,
+            height: 150,
             alignSelf: 'center',
             marginBottom: 32,
           }}
-          resizeMode="contain"
+          resizeMode="cover"
         />
-        <Text
-          variant="headlineLarge"
-          style={{textAlign: 'center', marginBottom: 16}}>
-          Actualizar Contraseña
-        </Text>
-
-        <View>
-          <Text
-            variant="bodyMedium"
-            style={{textAlign: 'center', marginBottom: 0}}>
-            ¡Advertencia!
-          </Text>
-          <Text
-            variant="bodyMedium"
-            style={{textAlign: 'center', marginBottom: 16}}>
-            Debe cambiar su contraseña.
-          </Text>
-        </View>
 
         <Formik
           initialValues={initialValues}
           onSubmit={startCambioPassSubmit}
-          validationSchema={getValidationSchema(user?.usua_tipo || '')}>
+          validationSchema={getValidationSchema}>
           {({
             handleChange,
             handleBlur,
@@ -155,50 +118,27 @@ const CambioPassScreen = ({navigation}: Props) => {
             values,
             errors,
             touched,
-            setFieldValue,
           }) => {
             return (
               <View>
-                {user?.usua_tipo === 'USUA' ? (
-                  <>
-                    <CustomTextInput
-                      label="Contraseña actual"
-                      showPassword
-                      mode="outlined"
-                      value={values.actualPass}
-                      onChangeText={handleChange('actualPass')}
-                      onBlur={handleBlur('actualPass')}
-                      error={touched.actualPass && !!errors.actualPass}
-                      left={<TextInput.Icon icon="lock" />}
-                      style={{marginBottom: 8}}
-                      autoComplete="off"
-                      textContentType="username"
-                      importantForAutofill="no"
-                    />
-                    {touched.actualPass && errors.actualPass && (
-                      <Text style={{color: 'red', marginBottom: 4}}>
-                        {errors.actualPass}
-                      </Text>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <CustomDatePicker
-                      label="Fecha de nacimiento"
-                      placeholder="Selecciona tu fecha"
-                      value={values.fechaNacimiento}
-                      style={{marginBottom: 8}}
-                      onChange={val => setFieldValue('fechaNacimiento', val)}
-                      error={
-                        touched.fechaNacimiento && !!errors.fechaNacimiento
-                      }
-                    />
-                    {touched.fechaNacimiento && errors.fechaNacimiento && (
-                      <Text style={{color: 'red', marginBottom: 4}}>
-                        {errors.fechaNacimiento}
-                      </Text>
-                    )}
-                  </>
+                <CustomTextInput
+                  label="Contraseña actual"
+                  showPassword
+                  mode="outlined"
+                  value={values.actualPass}
+                  onChangeText={handleChange('actualPass')}
+                  onBlur={handleBlur('actualPass')}
+                  error={touched.actualPass && !!errors.actualPass}
+                  left={<TextInput.Icon icon="lock" />}
+                  style={{marginBottom: 8}}
+                  autoComplete="off"
+                  textContentType="username"
+                  importantForAutofill="no"
+                />
+                {touched.actualPass && errors.actualPass && (
+                  <Text style={{color: 'red', marginBottom: 4}}>
+                    {errors.actualPass}
+                  </Text>
                 )}
 
                 <CustomTextInput
@@ -265,8 +205,6 @@ const CambioPassScreen = ({navigation}: Props) => {
           }}
         </Formik>
       </ScrollView>
-    </AuthLayout>
+    </SafeAreaLayout>
   );
 };
-
-export default CambioPassScreen;

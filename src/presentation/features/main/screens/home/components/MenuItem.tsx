@@ -18,20 +18,20 @@ const MenuItem = ({menu, onPress}: Props) => {
           style={[
             styles.box,
             {
-              borderColor: colors.primary,
+              borderColor: colors.secondary,
               backgroundColor: colors.primary + '10',
             },
           ]}>
           <MaterialIcons
             name={menu.menu_icoapp}
-            color={colors.primary}
+            color={colors.secondary}
             size={30}
           />
         </View>
 
         <Text
           variant="bodyMedium"
-          style={[styles.text, {color: colors.primary}]}>
+          style={[styles.text, {color: colors.secondary}]}>
           {menu.menu_nombre}
         </Text>
       </Card.Content>

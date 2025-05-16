@@ -82,6 +82,7 @@ export const useAuthStore = create<AuthState>()(set => ({
         empr_timezone: '',
         usua_codigo: props.usuaCodigo,
         usua_tipo: resp.datos.tipo,
+        usua_login: '',
         usua_nombre: '',
         usua_perfil: '',
         trab_documento: '',

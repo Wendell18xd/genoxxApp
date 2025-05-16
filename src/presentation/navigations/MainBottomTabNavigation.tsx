@@ -1,15 +1,15 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../features/main/screens/home/HomeScreen';
-import ProfileScreen from '../features/main/screens/profile/ProfileScreen';
 import {useTheme} from 'react-native-paper';
 import MaterialIcons from '../components/ui/icons/MaterialIcons';
 import {View} from 'react-native';
 import {MD3Colors} from 'react-native-paper/lib/typescript/types';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { ProfileStackNavigation } from '../features/main/screens/profile/navigations/ProfileStackNavigation';
 
 export type MainBottomTabParam = {
   HomeScreen: undefined;
-  ProfileScreen: undefined;
+  ProfileStackNavigation: undefined;
 };
 
 interface TabBarIconProps {
@@ -70,8 +70,8 @@ export const MainBottomTabNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="ProfileScreen"
-        component={ProfileScreen}
+        name="ProfileStackNavigation"
+        component={ProfileStackNavigation}
         options={{
           title: 'Perfil',
           tabBarIcon: ({focused, size}) =>

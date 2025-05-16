@@ -1,5 +1,4 @@
 import {
-  Dimensions,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -28,13 +27,11 @@ interface Props {
 }
 
 const AuthLayout = ({children}: Props) => {
-  const {top} = useSafeAreaInsets();
+  const {top, bottom} = useSafeAreaInsets();
   const {colors} = useTheme();
   const navigation = useNavigation();
 
   const [keyboardVisible, setKeyboardVisible] = useState(false);
-  const screenHeight = Dimensions.get('window').height;
-  const calculatedMargin = keyboardVisible ? 0 : -(screenHeight * 0.08);
 
   const handlerConfig = async () => {
     const host = await StorageAdapter.getItem('host');
@@ -123,14 +120,15 @@ const AuthLayout = ({children}: Props) => {
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}>
+        style={{flex: 1}}
+        keyboardVerticalOffset={keyboardVisible ? 0 : -(top + bottom)}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View
             style={[
               styles.containerChildren,
               {
                 backgroundColor: colors.background,
-                marginBottom: calculatedMargin,
+                paddingBottom: bottom,
               },
             ]}>
             {children}
@@ -162,8 +160,8 @@ const styles = StyleSheet.create({
   },
   containerChildren: {
     flex: 1,
+    position: 'relative',
     paddingHorizontal: 32,
-    paddingBottom: 32,
   },
 });
 
