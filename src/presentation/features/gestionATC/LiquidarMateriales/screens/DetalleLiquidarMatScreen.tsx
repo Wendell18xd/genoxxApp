@@ -1,8 +1,8 @@
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Card, Divider, Text} from 'react-native-paper';
-import FABGroupBottom from '../../../../components/ui/FABGroupBottom';
 import DrawerLayout from '../../../main/layout/DrawerLayout';
+import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
 
 const DetalleLiquidarMatScreen = () => {
   const getTextColor = (backgroundColor: string) => {
@@ -11,52 +11,116 @@ const DetalleLiquidarMatScreen = () => {
 
   return (
     <DrawerLayout primary curvaHeight={80}>
-      <FABGroupBottom
-        style={{position: 'absolute'}}
-      />
-
-      <View style={styles.container}>
-        <ScrollView contentContainerStyle={styles.scrollContent}>
+      <View style={styles.wrapper}>
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}>
           <Card style={styles.card}>
             <Card.Content>
               <View style={styles.listContainer}>
                 <View style={styles.row}>
-                  <Text style={styles.title}>Proyecto:</Text>
-                  <Text style={styles.description}>IVTRC</Text>
+                  <MaterialIcons
+                    name="folder-text-outline"
+                    style={{marginRight: 6}}
+                  />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Proyecto:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>IVTRC</Text>
+                  </View>
                 </View>
                 <View style={styles.row}>
-                  <Text style={styles.title}>Unidad de Negocio:</Text>
-                  <Text style={styles.description}>UN09</Text>
+                  <MaterialIcons
+                    name="file-document-outline"
+                    style={{marginRight: 6}}
+                  />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Unidad de Negocio:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>UN09</Text>
+                  </View>
                 </View>
                 <View style={styles.row}>
-                  <Text style={styles.title}>Nro Petición:</Text>
-                  <Text style={styles.description}>1-32EAAZJ4</Text>
+                  <MaterialIcons
+                    name="format-list-numbered"
+                    style={{marginRight: 6}}
+                  />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Nro Petición:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>1-32EAAZJ4</Text>
+                  </View>
                 </View>
                 <View style={styles.row}>
-                  <Text style={styles.title}>Fecha Liquidación:</Text>
-                  <Text style={styles.description}>22/07/2024</Text>
+                  <MaterialIcons
+                    name="calendar-month"
+                    style={{marginRight: 6}}
+                  />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Fecha Liquidación:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>22/07/2024</Text>
+                  </View>
                 </View>
                 <View style={styles.row}>
-                  <Text style={styles.title}>Hora Liquidación:</Text>
-                  <Text style={styles.description}>00:00</Text>
+                  <MaterialIcons
+                    name="clock-time-four-outline"
+                    style={{marginRight: 6}}
+                  />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Hora Liquidación:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>00:00</Text>
+                  </View>
                 </View>
                 <View style={styles.row}>
-                  <Text style={styles.title}>Fecha Emisión:</Text>
-                  <Text style={styles.description}>01/01/1900</Text>
+                  <MaterialIcons
+                    name="calendar-check"
+                    style={{marginRight: 6}}
+                  />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Fecha Emisión:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>01/01/1900</Text>
+                  </View>
                 </View>
                 <View style={styles.row}>
-                  <Text style={styles.title}>Tipo de Orden:</Text>
-                  <Text style={styles.description}>1 PLAY SIN SERVICIO</Text>
-                </View>
-                <View style={[styles.row, styles.nameRow]}>
-                  <Text style={styles.title}>Nombre del Cliente:</Text>
-                  <Text style={styles.description}>
-                    ALEJANDRA VENEGAS DONAIRE
-                  </Text>
+                  <MaterialIcons
+                    name="clipboard-text"
+                    style={{marginRight: 6}}
+                  />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Tipo de Orden:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>1 PLAY SIN SERVICIO</Text>
+                  </View>
                 </View>
                 <View style={styles.row}>
-                  <Text style={styles.title}>Teléfono:</Text>
-                  <Text style={styles.description}>-</Text>
+                  <MaterialIcons name="account" style={{marginRight: 6}} />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Nombre del Cliente:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>
+                      ALEJANDRA VENEGAS DONAIRE
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.row}>
+                  <MaterialIcons name="phone" style={{marginRight: 6}} />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Teléfono:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>123456789</Text>
+                  </View>
                 </View>
               </View>
 
@@ -102,50 +166,112 @@ const DetalleLiquidarMatScreen = () => {
             <Card.Content>
               <View style={styles.listContainer}>
                 <View style={styles.row}>
-                  <Text style={styles.title}>Cod Material:</Text>
-                  <Text style={styles.description}>CABLE 1X4</Text>
+                  <MaterialIcons
+                    name="package-variant-closed"
+                    style={{marginRight: 6}}
+                  />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Cod Material:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>CABLE 1X4</Text>
+                  </View>
                 </View>
                 <View style={styles.row}>
-                  <Text style={styles.title}>Nombre del material:</Text>
-                  <Text style={styles.description}>100</Text>
+                  <MaterialIcons name="cube" style={{marginRight: 6}} />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Nombre del material:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>100</Text>
+                  </View>
                 </View>
                 <View style={styles.row}>
-                  <Text style={styles.title}>Sku Cliente:</Text>
-                  <Text style={styles.description}>MTR</Text>
+                  <MaterialIcons name="tag" style={{marginRight: 6}} />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Sku Cliente:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>MTR</Text>
+                  </View>
                 </View>
                 <View style={styles.row}>
-                  <Text style={styles.title}>Cantidad:</Text>
-                  <Text style={styles.description}>MTR</Text>
+                  <MaterialIcons
+                    name="package-variant"
+                    style={{marginRight: 6}}
+                  />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Cantidad:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>MTR</Text>
+                  </View>
                 </View>
                 <View style={styles.row}>
-                  <Text style={styles.title}>Motivo:</Text>
-                  <Text style={styles.description}>MTR</Text>
+                  <MaterialIcons name="comment-text" style={{marginRight: 6}} />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Motivo:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>MTR</Text>
+                  </View>
                 </View>
               </View>
             </Card.Content>
           </Card>
-          <Card style={styles.card}>
+       <Card style={styles.card}>
             <Card.Content>
               <View style={styles.listContainer}>
                 <View style={styles.row}>
-                  <Text style={styles.title}>Cod Material:</Text>
-                  <Text style={styles.description}>CABLE 1X4</Text>
+                  <MaterialIcons
+                    name="package-variant-closed"
+                    style={{marginRight: 6}}
+                  />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Cod Material:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>CABLE 1X4</Text>
+                  </View>
                 </View>
                 <View style={styles.row}>
-                  <Text style={styles.title}>Nombre del material:</Text>
-                  <Text style={styles.description}>100</Text>
+                  <MaterialIcons name="cube" style={{marginRight: 6}} />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Nombre del material:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>100</Text>
+                  </View>
                 </View>
                 <View style={styles.row}>
-                  <Text style={styles.title}>Sku Cliente:</Text>
-                  <Text style={styles.description}>MTR</Text>
+                  <MaterialIcons name="tag" style={{marginRight: 6}} />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Sku Cliente:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>MTR</Text>
+                  </View>
                 </View>
                 <View style={styles.row}>
-                  <Text style={styles.title}>Cantidad:</Text>
-                  <Text style={styles.description}>MTR</Text>
+                  <MaterialIcons
+                    name="package-variant"
+                    style={{marginRight: 6}}
+                  />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Cantidad:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>MTR</Text>
+                  </View>
                 </View>
                 <View style={styles.row}>
-                  <Text style={styles.title}>Motivo:</Text>
-                  <Text style={styles.description}>MTR</Text>
+                  <MaterialIcons name="comment-text" style={{marginRight: 6}} />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Motivo:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>MTR</Text>
+                  </View>
                 </View>
               </View>
             </Card.Content>
@@ -157,19 +283,18 @@ const DetalleLiquidarMatScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
+  wrapper: {
     flex: 1,
-    backgroundColor: '#F9F9F9',
-    paddingTop: 40, // Agrega margen superior en Android
-  },
-  container: {
-    flex: 1,
-    position: 'relative',
-    margin: 16,
   },
   scrollContent: {
-    paddingHorizontal: 1, // Espaciado horizontal para evitar que el contenido quede pegado a los bordes
-    paddingBottom: 1, // Espaciado inferior para evitar que el FAB quede pegado
+    padding: 16,
+    paddingBottom: 100, // para que puedas llegar hasta el final sin bloquear el scroll
+  },
+  hiddenScroll: {
+    flex: 1,
+  },
+  container: {
+    marginBottom: 20,
   },
   card: {
     borderRadius: 12,
@@ -182,8 +307,9 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     marginVertical: 4,
+    flexWrap: 'wrap',
+    gap: 4, // puedes ajustar esto según lo necesites
   },
   nameRow: {
     marginBottom: 12,
@@ -191,12 +317,10 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: 'bold',
     fontSize: 16,
-    flex: 1,
   },
   description: {
     fontSize: 16,
-    textAlign: 'right',
-    flex: 1,
+    textAlign: 'left',
   },
   titleMedium: {
     fontSize: 18,
@@ -227,10 +351,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  fabContainer: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
+  titleContainer: {
+    width: 170, // o el valor que mejor se ajuste al texto más largo
+  },
+  descriptionContainer: {
+    flex: 2,
   },
 });
 
