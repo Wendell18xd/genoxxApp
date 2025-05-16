@@ -1,10 +1,12 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import {CambiarClaveScreen} from '../screens/CambiarClaveScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import { AlertasScreen } from '../screens/AlertasScreen';
 
 export type ProfileStackParam = {
   ProfileScreen: undefined;
   CambiarClaveScreen: undefined;
+  AlertasScreen: undefined;
 };
 
 const Stack = createStackNavigator<ProfileStackParam>();
@@ -18,6 +20,7 @@ export const ProfileStackNavigation = () => {
       initialRouteName="ProfileScreen">
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
       <Stack.Screen name="CambiarClaveScreen" component={CambiarClaveScreen} />
+      <Stack.Screen name="AlertasScreen" component={AlertasScreen} />
     </Stack.Navigator>
   );
 };

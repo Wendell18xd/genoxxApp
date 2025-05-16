@@ -60,7 +60,7 @@ export const FadeInImage = ({
         source={hasError ? defaultImage : {uri}}
         onLoadEnd={onLoadEnd}
         onError={onError}
-        style={[style, {opacity: animatedOpacity, resizeMode: 'cover'}]}
+        style={[{opacity: animatedOpacity, resizeMode: 'cover'}, style]}
       />
     </View>
   );
