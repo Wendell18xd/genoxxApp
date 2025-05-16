@@ -5,7 +5,11 @@ import SafeAreaLayout from '../../../layout/SafeAreaLayout';
 import {UserImage} from '../../../../../components/main/UserImage';
 import {useAuthStore} from '../../../../../store/auth/useAuthStore';
 import {RenderListItemIcon} from '../../../../../components/ui/icons/RenderListItemIcon';
-import {NavigationProp, StackActions, useNavigation} from '@react-navigation/native';
+import {
+  NavigationProp,
+  StackActions,
+  useNavigation,
+} from '@react-navigation/native';
 import {ProfileStackParam} from '../navigations/ProfileStackNavigation';
 
 const ProfileScreen = () => {
