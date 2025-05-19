@@ -34,14 +34,15 @@ const materialesMock = [
 const DetalleLiquidarMatScreen = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
 
+
   const extraFieldsOpacity = scrollY.interpolate({
     inputRange: [0, 60],
-    outputRange: [1, 0],
+    outputRange: [220, 0],
     extrapolate: 'clamp',
   });
   const extraFieldsHeight = scrollY.interpolate({
     inputRange: [0, 60],
-    outputRange: [220, 0],
+    outputRange: [180, 0],
     extrapolate: 'clamp',
   });
 
