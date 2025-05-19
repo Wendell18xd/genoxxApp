@@ -10,8 +10,8 @@ export const listadoNoticiasActivas = async (
       '/master/listado_notificaciones_activas',
       {
         vl_empr_codigo: props.vl_empr_codigo,
-        vl_trab_codigo: props.vl_empr_codigo,
-        vl_is_app: props.vl_empr_codigo,
+        vl_trab_codigo: props.vl_trab_codigo,
+        vl_is_app: props.vl_is_app,
       },
     );
     console.log(data);
