@@ -1,17 +1,10 @@
-import {View} from 'react-native';
-import {Appbar, useTheme} from 'react-native-paper';
 import {CarruselNoticias} from '../components/CarruselNoticias';
+import SafeAreaLayout from '../../../layout/SafeAreaLayout';
 
 export const NoticiasScreen = () => {
-  const {colors} = useTheme();
-
   return (
-    <View style={{flex: 1, backgroundColor: colors.background}}>
-      <Appbar.Header style={{backgroundColor: colors.primary}}>
-        <Appbar.Content title="Noticias" color="white" />
-      </Appbar.Header>
-
+    <SafeAreaLayout title="Noticias" isHeader primary isBack={false}>
       <CarruselNoticias />
-    </View>
+    </SafeAreaLayout>
   );
 };

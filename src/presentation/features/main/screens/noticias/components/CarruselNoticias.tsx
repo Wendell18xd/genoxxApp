@@ -25,7 +25,7 @@ export const CarruselNoticias = () => {
   const handleDetalle = (item: NoticiaDato) => {
     console.log(item);
     navigation.navigate('DetalleNoticiaScreen', {
-      codNoticia: item.cont_correlativo,
+      noticia: item,
     });
   };
 

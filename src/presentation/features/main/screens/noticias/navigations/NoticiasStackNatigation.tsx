@@ -1,10 +1,11 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import {DetalleNoticiaScreen} from '../screens/DetalleNoticiaScreen';
 import {NoticiasScreen} from '../screens/NoticiasScreen';
+import {NoticiaDato} from '../../../../../../infrastructure/interfaces/main/main.response';
 
 export type NoticiasStackParam = {
   NoticiasScreen: undefined;
-  DetalleNoticiaScreen: {codNoticia: string};
+  DetalleNoticiaScreen: {noticia: NoticiaDato};
 };
 
 const Stack = createStackNavigator<NoticiasStackParam>();
