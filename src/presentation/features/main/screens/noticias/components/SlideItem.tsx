@@ -6,7 +6,7 @@ import {
   Pressable,
 } from 'react-native';
 import {NoticiaDato} from '../../../../../../infrastructure/interfaces/main/main.response';
-import {Text, useTheme} from 'react-native-paper';
+import {Text} from 'react-native-paper';
 import {globalStyle} from '../../../../../styles/globalStyle';
 
 interface SlideItemsProps {
@@ -16,7 +16,7 @@ interface SlideItemsProps {
 
 export const SlideItem = ({item, onPress}: SlideItemsProps) => {
   const {width, height} = useWindowDimensions();
-  const {colors} = useTheme();
+  // const {colors} = useTheme();
 
   return (
     <View style={[styles.container, {width}]}>
@@ -28,7 +28,7 @@ export const SlideItem = ({item, onPress}: SlideItemsProps) => {
               alignItems: 'center',
               width: width * 0.92,
               paddingVertical: 16,
-              backgroundColor: colors.elevation.level1,
+              // backgroundColor: colors.elevation.level1,
             },
           ]}>
           <Image
