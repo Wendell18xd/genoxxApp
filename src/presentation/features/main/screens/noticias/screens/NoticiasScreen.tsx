@@ -1,6 +1,6 @@
 import {View} from 'react-native';
 import {Appbar, useTheme} from 'react-native-paper';
-import {CarruselNoticias} from './components/CarruselNoticias';
+import {CarruselNoticias} from '../components/CarruselNoticias';
 
 export const NoticiasScreen = () => {
   const {colors} = useTheme();

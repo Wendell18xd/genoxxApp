@@ -3,9 +3,14 @@ import {IconButton, useTheme} from 'react-native-paper';
 import {useNoticiasCarousel} from '../hooks/useNoticiasCarousel';
 import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoader';
 import {SlideItem} from './SlideItem';
+import {NoticiaDato} from '../../../../../../infrastructure/interfaces/main/main.response';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {NoticiasStackParam} from '../navigations/NoticiasStackNatigation';
 
 export const CarruselNoticias = () => {
   const {colors} = useTheme();
+  const navigation = useNavigation<NavigationProp<NoticiasStackParam>>();
+
   const {
     flatListRef,
     data,
@@ -17,6 +22,13 @@ export const CarruselNoticias = () => {
     onScroll,
   } = useNoticiasCarousel();
 
+  const handleDetalle = (item: NoticiaDato) => {
+    console.log(item);
+    navigation.navigate('DetalleNoticiaScreen', {
+      codNoticia: item.cont_correlativo,
+    });
+  };
+
   if (isFetching) {
     return <FullScreenLoader />;
   }
@@ -27,7 +39,9 @@ export const CarruselNoticias = () => {
         ref={flatListRef}
         data={data?.datos}
         keyExtractor={item => item.cont_correlativo}
-        renderItem={({item}) => <SlideItem item={item} />}
+        renderItem={({item}) => (
+          <SlideItem item={item} onPress={() => handleDetalle(item)} />
+        )}
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
