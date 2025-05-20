@@ -3,9 +3,9 @@ import {IconButton, useTheme} from 'react-native-paper';
 import {useNoticiasCarousel} from '../hooks/useNoticiasCarousel';
 import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoader';
 import {SlideItem} from './SlideItem';
-import {NoticiaDato} from '../../../../../../infrastructure/interfaces/main/main.response';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {NoticiasStackParam} from '../navigations/NoticiasStackNatigation';
+import {Noticia} from '../../../../../../domain/entities/Noticia';
 
 export const CarruselNoticias = () => {
   const {colors} = useTheme();
@@ -22,11 +22,9 @@ export const CarruselNoticias = () => {
     onScroll,
   } = useNoticiasCarousel();
 
-  const handleDetalle = (item: NoticiaDato) => {
+  const handleDetalle = (item: Noticia) => {
     console.log(item);
-    navigation.navigate('DetalleNoticiaScreen', {
-      noticia: item,
-    });
+    navigation.navigate('DetalleNoticiaScreen', {noticia: item});
   };
 
   if (isFetching) {
