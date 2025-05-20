@@ -1,4 +1,4 @@
-import {Noticia} from '../../../domain/entities/Noticia';
+import {ArchivoNoticia, Noticia, VistaNoticia} from '../../../domain/entities/Noticia';
 
 export interface NoticiasResponse {
   datos: NoticiaDato[];
@@ -6,3 +6,9 @@ export interface NoticiasResponse {
 }
 
 export interface NoticiaDato extends Noticia {}
+
+export interface ArchivosNoticiaResponse {
+  archivos: ArchivoNoticia[];
+  vistas: VistaNoticia[];
+  mensaje: string;
+}
