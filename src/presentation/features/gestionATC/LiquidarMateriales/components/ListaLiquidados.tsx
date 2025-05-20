@@ -3,81 +3,105 @@ import {Animated, StyleSheet, View} from 'react-native';
 import {Card, Text} from 'react-native-paper';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
 
-interface FieldConfig<T> {
-  key: keyof T;
-  label: string;
-  icon?: string;
+interface Material {
+  id: string;
+  codMaterial: string;
+  nombre: string;
+  sku: string;
+  cantidad: string;
+  motivo: string;
 }
 
-interface Props<T extends { id: string }> {
-  data: T[];
-  fields: FieldConfig<T>[];
+interface Props {
+  data: Material[];
   scrollY?: Animated.Value;
   hideTitle?: boolean;
-  title?: string;
 }
 
-function ListaLiquidados<T extends { id: string }>({
-  data,
-  fields,
-  scrollY,
-  hideTitle,
-  title = 'Materiales Liquidados',
-}: Props<T>) {
-  return (
-    <View>
-      {!hideTitle && (
-        <Text style={styles.externalTitle}>{title}</Text>
-      )}
-      <Animated.FlatList
-        data={data}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-        scrollEventThrottle={16}
-        onScroll={
-          scrollY
-            ? Animated.event(
-                [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-                { useNativeDriver: false }
-              )
-            : undefined
-        }
-        renderItem={({ item }) => (
-          <Card style={styles.card}>
-            <Card.Content>
-              <View style={styles.listContainer}>
-                {fields.map(field => (
-                  <View style={styles.row} key={String(field.key)}>
-                    {field.icon && (
-                      <MaterialIcons
-                        name={field.icon}
-                        style={{ marginRight: 6 }}
-                      />
-                    )}
-                    <View style={styles.titleContainer}>
-                      <Text style={styles.title}>{field.label}:</Text>
-                    </View>
-                    <View style={styles.descriptionContainer}>
-                      <Text style={styles.description}>
-                        {String(item[field.key] ?? '')}
-                      </Text>
-                    </View>
-                  </View>
-                ))}
+const ListaLiquidados: FC<Props> = ({data, scrollY, hideTitle}) => (
+  <View>
+    {!hideTitle && (
+      <Text style={styles.externalTitle}>Materiales Liquidados</Text>
+    )}
+    <Animated.FlatList
+      data={data}
+      keyExtractor={item => item.id}
+      contentContainerStyle={styles.scrollContent}
+      showsVerticalScrollIndicator={false}
+      scrollEventThrottle={16}
+      onScroll={
+        scrollY
+          ? Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
+              useNativeDriver: false,
+            })
+          : undefined
+      }
+      renderItem={({item}) => (
+        <Card style={styles.card}>
+          <Card.Content>
+            <View style={styles.listContainer}>
+              <View style={styles.row}>
+                <MaterialIcons
+                  name="package-variant-closed"
+                  style={{marginRight: 6}}
+                />
+                <View style={styles.titleContainer}>
+                  <Text style={styles.title}>Cod Material:</Text>
+                </View>
+                <View style={styles.descriptionContainer}>
+                  <Text style={styles.description}>{item.codMaterial}</Text>
+                </View>
               </View>
-            </Card.Content>
-          </Card>
-        )}
-      />
-    </View>
-  );
-}
+              <View style={styles.row}>
+                <MaterialIcons name="cube" style={{marginRight: 6}} />
+                <View style={styles.titleContainer}>
+                  <Text style={styles.title}>Nombre del material:</Text>
+                </View>
+                <View style={styles.descriptionContainer}>
+                  <Text style={styles.description}>{item.nombre}</Text>
+                </View>
+              </View>
+              <View style={styles.row}>
+                <MaterialIcons name="tag" style={{marginRight: 6}} />
+                <View style={styles.titleContainer}>
+                  <Text style={styles.title}>Sku Cliente:</Text>
+                </View>
+                <View style={styles.descriptionContainer}>
+                  <Text style={styles.description}>{item.sku}</Text>
+                </View>
+              </View>
+              <View style={styles.row}>
+                <MaterialIcons
+                  name="package-variant"
+                  style={{marginRight: 6}}
+                />
+                <View style={styles.titleContainer}>
+                  <Text style={styles.title}>Cantidad:</Text>
+                </View>
+                <View style={styles.descriptionContainer}>
+                  <Text style={styles.description}>{item.cantidad}</Text>
+                </View>
+              </View>
+              <View style={styles.row}>
+                <MaterialIcons name="comment-text" style={{marginRight: 6}} />
+                <View style={styles.titleContainer}>
+                  <Text style={styles.title}>Motivo:</Text>
+                </View>
+                <View style={styles.descriptionContainer}>
+                  <Text style={styles.description}>{item.motivo}</Text>
+                </View>
+              </View>
+            </View>
+          </Card.Content>
+        </Card>
+      )}
+    />
+  </View>
+);
 
 const styles = StyleSheet.create({
   scrollContent: {
     padding: 16,
-    paddingBottom: 80,
   },
   card: {
     borderRadius: 12,
