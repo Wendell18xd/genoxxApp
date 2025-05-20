@@ -1,6 +1,5 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import LiquidarMaterialesScreen from '../screens/LiquidarMaterialesScreen';
-import DetalleLiquidarMatScreen from '../screens/DetalleLiquidarMatScreen';
+import { LiquiMatBottomNavigator } from './LiquiMatBottomNavigator';
 
 export type LiquiMatATCStackParam = {
   LiquidarMaterialesScreen: undefined;
@@ -18,12 +17,12 @@ export const LiquiMatATCStackNavigation = () => {
         headerShown: false,
         // ...TransitionPresets.SlideFromRightIOS,
       }}
-      initialRouteName="DetalleLiquidarMatScreen">
+      initialRouteName="LiquiMatBottomNavigator">
       <Stack.Screen
-        name="LiquidarMaterialesScreen"
-        component={LiquidarMaterialesScreen}
+        name="LiquiMatBottomNavigator"
+        component={LiquiMatBottomNavigator}
       />
-      <Stack.Screen name="DetalleLiquidarMatScreen" component={DetalleLiquidarMatScreen} />
+      <Stack.Screen name="DetalleLiquidarMatScreen" component={LiquiMatBottomNavigator} />
     </Stack.Navigator>
   );
 };
