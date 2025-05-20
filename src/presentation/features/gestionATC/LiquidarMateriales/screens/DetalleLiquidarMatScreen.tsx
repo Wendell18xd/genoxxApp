@@ -1,59 +1,78 @@
-import React from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import React, {useRef} from 'react';
+import {Animated, StyleSheet, View} from 'react-native';
 import {Card, Divider, Text} from 'react-native-paper';
 import DrawerLayout from '../../../main/layout/DrawerLayout';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
 
 const DetalleLiquidarMatScreen = () => {
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  const extraFieldsOpacity = scrollY.interpolate({
+    inputRange: [0, 60],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+  });
+  const extraFieldsHeight = scrollY.interpolate({
+    inputRange: [0, 60],
+    outputRange: [220, 0],
+    extrapolate: 'clamp',
+  });
+
   const getTextColor = (backgroundColor: string) => {
     return backgroundColor === '#E8F5E9' ? '#388E3C' : '#000';
   };
 
   return (
-    <DrawerLayout title="Detalle de trabajo" primary curvaHeight={80}>
+    <DrawerLayout primary curvaHeight={80}>
       <View style={styles.wrapper}>
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}>
-          <Card style={styles.card}>
-            <Card.Content>
-              <View style={styles.listContainer}>
-                <View style={styles.row}>
-                  <MaterialIcons
-                    name="folder-text-outline"
-                    style={{marginRight: 6}}
-                  />
-                  <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Proyecto:</Text>
-                  </View>
-                  <View style={styles.descriptionContainer}>
-                    <Text style={styles.description}>IVTRC</Text>
-                  </View>
+        {/* Card principal siempre visible */}
+        <Card style={[styles.card, styles.cardMain]}>
+          <Card.Content>
+            <View style={styles.listContainer}>
+              {/* Campos SIEMPRE visibles */}
+              <View style={styles.row}>
+                <MaterialIcons
+                  name="folder-text-outline"
+                  style={{marginRight: 6}}
+                />
+                <View style={styles.titleContainer}>
+                  <Text style={styles.title}>Proyecto:</Text>
                 </View>
-                <View style={styles.row}>
-                  <MaterialIcons
-                    name="file-document-outline"
-                    style={{marginRight: 6}}
-                  />
-                  <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Unidad de Negocio:</Text>
-                  </View>
-                  <View style={styles.descriptionContainer}>
-                    <Text style={styles.description}>UN09</Text>
-                  </View>
+                <View style={styles.descriptionContainer}>
+                  <Text style={styles.description}>IVTRC</Text>
                 </View>
-                <View style={styles.row}>
-                  <MaterialIcons
-                    name="format-list-numbered"
-                    style={{marginRight: 6}}
-                  />
-                  <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Nro Petición:</Text>
-                  </View>
-                  <View style={styles.descriptionContainer}>
-                    <Text style={styles.description}>1-32EAAZJ4</Text>
-                  </View>
+              </View>
+              <View style={styles.row}>
+                <MaterialIcons
+                  name="file-document-outline"
+                  style={{marginRight: 6}}
+                />
+                <View style={styles.titleContainer}>
+                  <Text style={styles.title}>Unidad de Negocio:</Text>
                 </View>
+                <View style={styles.descriptionContainer}>
+                  <Text style={styles.description}>UN09</Text>
+                </View>
+              </View>
+              <View style={styles.row}>
+                <MaterialIcons
+                  name="format-list-numbered"
+                  style={{marginRight: 6}}
+                />
+                <View style={styles.titleContainer}>
+                  <Text style={styles.title}>Nro Petición:</Text>
+                </View>
+                <View style={styles.descriptionContainer}>
+                  <Text style={styles.description}>1-32EAAZJ4</Text>
+                </View>
+              </View>
+              {/* Campos que se OCULTAN al hacer scroll */}
+              <Animated.View
+                style={{
+                  opacity: extraFieldsOpacity,
+                  height: extraFieldsHeight,
+                  overflow: 'hidden',
+                }}>
                 <View style={styles.row}>
                   <MaterialIcons
                     name="calendar-month"
@@ -66,6 +85,7 @@ const DetalleLiquidarMatScreen = () => {
                     <Text style={styles.description}>22/07/2024</Text>
                   </View>
                 </View>
+
                 <View style={styles.row}>
                   <MaterialIcons
                     name="clock-time-four-outline"
@@ -122,46 +142,57 @@ const DetalleLiquidarMatScreen = () => {
                     <Text style={styles.description}>123456789</Text>
                   </View>
                 </View>
-              </View>
+              </Animated.View>
+            </View>
 
-              <Divider style={{marginVertical: 8}} />
+            <Divider style={{marginVertical: 8}} />
 
-              <Text style={styles.titleMedium}>Estados</Text>
-              <View style={styles.statusContainer}>
-                <View style={[styles.statusBox, {backgroundColor: '#E8F5E9'}]}>
-                  <Text style={styles.statusTitle}>Acta:</Text>
-                  <Text
-                    style={[
-                      styles.statusValue,
-                      {color: getTextColor('#E8F5E9')},
-                    ]}>
-                    ABIERTA
-                  </Text>
-                </View>
-                <View style={[styles.statusBox, {backgroundColor: '#E8F5E9'}]}>
-                  <Text style={styles.statusTitle}>Orden:</Text>
-                  <Text
-                    style={[
-                      styles.statusValue,
-                      {color: getTextColor('#E8F5E9')},
-                    ]}>
-                    ABIERTA
-                  </Text>
-                </View>
-                <View style={[styles.statusBox, {backgroundColor: '#F5F5F5'}]}>
-                  <Text style={styles.statusTitle}>Materiales:</Text>
-                  <Text
-                    style={[
-                      styles.statusValue,
-                      {color: getTextColor('#F5F5F5')},
-                    ]}>
-                    PENDIENTE
-                  </Text>
-                </View>
+            <Text style={styles.titleMedium}>Estados</Text>
+            <View style={styles.statusContainer}>
+              <View style={[styles.statusBox, {backgroundColor: '#E8F5E9'}]}>
+                <Text style={styles.statusTitle}>Acta:</Text>
+                <Text
+                  style={[
+                    styles.statusValue,
+                    {color: getTextColor('#E8F5E9')},
+                  ]}>
+                  ABIERTA
+                </Text>
               </View>
-            </Card.Content>
-          </Card>
-          <Text style={styles.titleMedium}>Materiales Liquidados</Text>
+              <View style={[styles.statusBox, {backgroundColor: '#E8F5E9'}]}>
+                <Text style={styles.statusTitle}>Orden:</Text>
+                <Text
+                  style={[
+                    styles.statusValue,
+                    {color: getTextColor('#E8F5E9')},
+                  ]}>
+                  ABIERTA
+                </Text>
+              </View>
+              <View style={[styles.statusBox, {backgroundColor: '#F5F5F5'}]}>
+                <Text style={styles.statusTitle}>Materiales:</Text>
+                <Text
+                  style={[
+                    styles.statusValue,
+                    {color: getTextColor('#F5F5F5')},
+                  ]}>
+                  PENDIENTE
+                </Text>
+              </View>
+            </View>
+          </Card.Content>
+        </Card>
+        <Text style={styles.externalTitle}>Materiales Liquidados</Text>
+
+        {/* Scroll solo para los materiales */}
+        <Animated.ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+          scrollEventThrottle={16}
+          onScroll={Animated.event(
+            [{nativeEvent: {contentOffset: {y: scrollY}}}],
+            {useNativeDriver: false},
+          )}>
           <Card style={styles.card}>
             <Card.Content>
               <View style={styles.listContainer}>
@@ -219,7 +250,7 @@ const DetalleLiquidarMatScreen = () => {
               </View>
             </Card.Content>
           </Card>
-       <Card style={styles.card}>
+          <Card style={styles.card}>
             <Card.Content>
               <View style={styles.listContainer}>
                 <View style={styles.row}>
@@ -276,7 +307,64 @@ const DetalleLiquidarMatScreen = () => {
               </View>
             </Card.Content>
           </Card>
-        </ScrollView>
+          <Card style={styles.card}>
+            <Card.Content>
+              <View style={styles.listContainer}>
+                <View style={styles.row}>
+                  <MaterialIcons
+                    name="package-variant-closed"
+                    style={{marginRight: 6}}
+                  />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Cod Material:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>CABLE 1X4</Text>
+                  </View>
+                </View>
+                <View style={styles.row}>
+                  <MaterialIcons name="cube" style={{marginRight: 6}} />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Nombre del material:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>100</Text>
+                  </View>
+                </View>
+                <View style={styles.row}>
+                  <MaterialIcons name="tag" style={{marginRight: 6}} />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Sku Cliente:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>MTR</Text>
+                  </View>
+                </View>
+                <View style={styles.row}>
+                  <MaterialIcons
+                    name="package-variant"
+                    style={{marginRight: 6}}
+                  />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Cantidad:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>MTR</Text>
+                  </View>
+                </View>
+                <View style={styles.row}>
+                  <MaterialIcons name="comment-text" style={{marginRight: 6}} />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Motivo:</Text>
+                  </View>
+                  <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>MTR</Text>
+                  </View>
+                </View>
+              </View>
+            </Card.Content>
+          </Card>
+        </Animated.ScrollView>
       </View>
     </DrawerLayout>
   );
@@ -296,6 +384,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     elevation: 2,
     marginBottom: 20,
+  },
+  cardMain: {
+    marginHorizontal: 16,
+    marginTop: 16,
   },
   listContainer: {
     marginBottom: 10,
@@ -323,6 +415,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 8,
   },
+  externalTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    marginHorizontal: 16,
+  },
   statusContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -348,7 +446,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   titleContainer: {
-    width: 170, // o el valor que mejor se ajuste al texto más largo
+    width: 170,
   },
   descriptionContainer: {
     flex: 2,

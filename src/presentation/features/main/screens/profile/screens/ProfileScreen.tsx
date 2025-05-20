@@ -40,6 +40,12 @@ const ProfileScreen = () => {
             />
             <Divider />
             <List.Item
+              title="Alertas"
+              left={RenderListItemIcon('account-voice', colors.primary)}
+              onPress={() => navigation.navigate('AlertasScreen')}
+            />
+            <Divider />
+            <List.Item
               title="Cerrar sesión"
               left={RenderListItemIcon('logout', colors.primary)}
               onPress={() => navigation.dispatch(StackActions.pop(1))}

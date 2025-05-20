@@ -20,6 +20,7 @@ interface Props {
   curvaHeight?: number;
   isHeader?: boolean;
   title?: string;
+  isBack?: boolean;
 }
 
 const SafeAreaLayout = ({
@@ -29,6 +30,7 @@ const SafeAreaLayout = ({
   primary = false,
   isCurva = false,
   isHeader = false,
+  isBack = true,
   curvaHeight = 0,
 }: Props) => {
   const {top, bottom} = useSafeAreaInsets();
@@ -50,11 +52,13 @@ const SafeAreaLayout = ({
             position: 'relative',
             backgroundColor: primary ? colors.primary : colors.background,
           }}>
-          <Appbar.Action
-            icon="arrow-left"
-            onPress={() => navigation.goBack()}
-            color={primary ? 'white' : ''}
-          />
+          {navigation.canGoBack() && isBack && (
+            <Appbar.Action
+              icon="arrow-left"
+              onPress={() => navigation.goBack()}
+              color={primary ? 'white' : ''}
+            />
+          )}
           <Appbar.Content title={title} color={primary ? 'white' : ''} />
         </Appbar.Header>
       )}

@@ -5,11 +5,13 @@ import MaterialIcons from '../components/ui/icons/MaterialIcons';
 import {View} from 'react-native';
 import {MD3Colors} from 'react-native-paper/lib/typescript/types';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import { ProfileStackNavigation } from '../features/main/screens/profile/navigations/ProfileStackNavigation';
+import {ProfileStackNavigation} from '../features/main/screens/profile/navigations/ProfileStackNavigation';
+import {NoticiasStackNatigation} from '../features/main/screens/noticias/navigations/NoticiasStackNatigation';
 
 export type MainBottomTabParam = {
   HomeScreen: undefined;
   ProfileStackNavigation: undefined;
+  NoticiasStackNatigation: undefined;
 };
 
 interface TabBarIconProps {
@@ -76,6 +78,15 @@ export const MainBottomTabNavigation = () => {
           title: 'Perfil',
           tabBarIcon: ({focused, size}) =>
             TabBarIcon({focused, size, colors, name: 'account'}),
+        }}
+      />
+      <Tab.Screen
+        name="NoticiasStackNatigation"
+        component={NoticiasStackNatigation}
+        options={{
+          title: 'Noticias',
+          tabBarIcon: ({focused, size}) =>
+            TabBarIcon({focused, size, colors, name: 'newspaper'}),
         }}
       />
     </Tab.Navigator>
