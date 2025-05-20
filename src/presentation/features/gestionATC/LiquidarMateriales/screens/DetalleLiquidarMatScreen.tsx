@@ -71,6 +71,73 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
   },
+  scrollContent: {
+    padding: 16,
+  },
+  hiddenScroll: {
+    flex: 1,
+  },
+  card: {
+    borderRadius: 12,
+    elevation: 2,
+    marginBottom: 20,
+  },
+  listContainer: {
+    marginBottom: 10,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 4,
+    flexWrap: 'wrap',
+    gap: 4, // puedes ajustar esto según lo necesites
+  },
+  nameRow: {
+    marginBottom: 12,
+  },
+  title: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  description: {
+    fontSize: 16,
+    textAlign: 'left',
+  },
+  titleMedium: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  statusContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  statusBox: {
+    width: 100,
+    height: 50,
+    padding: 8,
+    marginHorizontal: 4,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  statusTitle: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  statusValue: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  titleContainer: {
+    width: 170, // o el valor que mejor se ajuste al texto más largo
+  },
+  descriptionContainer: {
+    flex: 2,
+  },
 });
 
 export default DetalleLiquidarMatScreen;

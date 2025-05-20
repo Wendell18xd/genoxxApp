@@ -6,6 +6,7 @@ export type LiquiMatATCStackParam = {
   DetalleBottomTabNavigation: undefined;
   LiquiMatBottomNavigator: undefined;
   DetalleLiquidarMatScreen: undefined;
+  DetalleLiquidarMatScreen: undefined;
 };
 
 const Stack = createStackNavigator<LiquiMatATCStackParam>();
