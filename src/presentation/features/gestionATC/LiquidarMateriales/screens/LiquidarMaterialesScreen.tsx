@@ -1,18 +1,31 @@
-
-
-import React, {useState} from 'react';
-import {Banner, Button, Text, TextInput, useTheme} from 'react-native-paper';
+import React, {useEffect, useState} from 'react';
+import {
+  Banner,
+  Button,
+  Card,
+  Text,
+  TextInput,
+  useTheme,
+} from 'react-native-paper';
 import DrawerLayout from '../../../main/layout/DrawerLayout';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
-import { StyleSheet, View} from 'react-native';
-import {Dropdown} from 'react-native-paper-dropdown';
-import {ScrollView} from 'react-native-gesture-handler';
+import {StyleSheet, View} from 'react-native';
+import {Dropdown, Option} from 'react-native-paper-dropdown';
+import {FlatList} from 'react-native-gesture-handler';
 import CustomDatePicker from '../../../../components/ui/CustomDatePicker';
-import {StackScreenProps} from '@react-navigation/stack';
-import {AuthStackParam} from '../../../../navigations/AuthStackNavigation';
+import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
 import {Formik} from 'formik';
 import PrimaryButton from '../../../../components/ui/PrimaryButton';
-import { useAuthStore } from '../../../../store/auth/useAuthStore';
+import {StackScreenProps} from '@react-navigation/stack';
+import {AuthStackParam} from '../../../../navigations/AuthStackNavigation';
+import * as Yup from 'yup';
+import {useMutation, useQuery} from '@tanstack/react-query';
+import {mapToDropdown} from '../../../../../infrastructure/mappers/mapToDropdown';
+import {LiquiMatATCStackParam} from '../navigations/LiquiMatATCStackNavigation';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {getProyecto} from '../../../../../actions/gestionATC/proyectosATC';
+import {useAuthStore} from '../../../../store/auth/useAuthStore';
+import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
 
 interface LiquidarMatFormValues {
   proyecto: string;
@@ -30,15 +43,106 @@ const initialValues: LiquidarMatFormValues = {
   nroPeticion: '',
 };
 
-interface Props
-  extends StackScreenProps<AuthStackParam, 'LiquidarMaterialesScreen'> {}
-
-const LiquidarMaterialesScreen = ({navigation}: Props) => {
-  const {colors} = useTheme();
-  const [formValues, setFormValues] = useState<LiquidarMatFormValues>(initialValues);
+const LiquidarMaterialesScreen = () => {
+  const navigation = useNavigation<NavigationProp<LiquiMatATCStackParam>>();
+  const [formValues, setFormValues] =
+    useState<LiquidarMatFormValues>(initialValues);
+  const {user} = useAuthStore();
   const [disabled, setDisabled] = useState(false);
   const [visible, setVisible] = React.useState(true);
-  const {liquidar} = useAuthStore();
+
+  const getLiquidarShema = (arrProyectos: Option[] | undefined) =>
+    Yup.object().shape({
+      proyecto: Yup.string().when([], {
+        is: () => arrProyectos && arrProyectos.length > 0,
+        then: schema => schema.required('Seleccione un proyecto'),
+        otherwise: schema => schema.notRequired(),
+      }),
+    });
+
+  const {
+    data: proyectos,
+    isFetching,
+    refetch,
+  } = useQuery({
+    queryKey: ['proyectosATC'],
+    staleTime: 1000 * 60 * 5,
+    queryFn: async () => {
+      const resp = await getProyecto({
+        vl_empr_codigo: user?.empr_codigo || '',
+      });
+      return mapToDropdown(resp.datos, 'proy_alias', 'proy_codigo');
+    },
+  });
+
+  useEffect(() => {
+    refetch();
+  }, []);
+
+  /* const LiqMatMutation = useMutation({
+    mutationFn: getProyecto,
+    onSuccess: async data => {
+      const {proy_tipo} = data.datos;
+      if (proy_tipo === 'ATC') {
+        const arrProyecto = Array.isArray(data.datos)
+          ? data.datos
+          : [data.datos];
+        if (arrProyecto.length > 0) {
+          const options = mapToDropdown(
+            arrProyecto,
+            'proy_codigo',
+            'proy_alias',
+          );
+          setProyectos(options);
+          setDisabled(true);
+        }
+      }
+    },
+  }); */
+
+  /*   const fetchProyectos = async () => {
+    setLoadingProyectos(true);
+    try {
+      const response = await getProyecto({
+        datos: [
+          {
+            proy_codigo: '',
+            proy_alias: '',
+            proy_tipo: '',
+          },
+        ],
+        mensaje: 'Consulta de Proyectos',
+      });
+      // Supón que response.datos es un array de proyectos
+      const arrProyecto = Array.isArray(response.datos)
+        ? response.datos
+        : [response.datos];
+      const options = mapToDropdown(arrProyecto, 'proy_codigo', 'proy_alias');
+      setProyectos(options);
+    } catch (error) {
+      setProyectos([]);
+    }
+    setLoadingProyectos(false);
+  }; */
+
+  const [resultados, setResultados] = useState([
+    {
+      id: 1,
+      nroPeticion: '00001',
+      nroSolicitud: '00001',
+      telefono: '999999999',
+      tipoOrden: 'MTR',
+      fechaLiq: 'Reposición',
+    },
+    {
+      id: 2,
+      nroPeticion: '00002',
+      nroSolicitud: '00002',
+      telefono: '999999999',
+      tipoOrden: 'ABC',
+      fechaLiq: '',
+    },
+  ]);
 
   const startLiqMatSubmit = (values: LiquidarMatFormValues) => {
     const LiqMatData = {
@@ -49,8 +153,12 @@ const LiquidarMaterialesScreen = ({navigation}: Props) => {
       nroPeticion: values.nroPeticion,
     };
 
-    LiqMatMutation.mutate(LiqMatData);
+    // LiqMatMutation.mutate(LiqMatData);
   };
+
+  if (isFetching) {
+    return <FullScreenLoader />;
+  }
 
   return (
     <DrawerLayout primary curvaHeight={80}>
@@ -62,13 +170,13 @@ const LiquidarMaterialesScreen = ({navigation}: Props) => {
             icon="chevron-down"
             onPress={() => setVisible(true)}
             style={{
-              width: '92%', // Ajusta este valor para que coincida con el ancho del Banner
-              justifyContent: 'flex-start', // Alinea el contenido a la izquierda
-              alignSelf: 'center', // Centra el botón en el contenedor
-              paddingLeft: 8, // Espacio a la izquierda para el icono y texto
+              width: '92%',
+              justifyContent: 'flex-start',
+              alignSelf: 'center',
+              paddingLeft: 8,
             }}
             contentStyle={{
-              flexDirection: 'row-reverse', // Para que el icono quede a la izquierda del texto
+              flexDirection: 'row-reverse',
               justifyContent: 'flex-start',
             }}
             labelStyle={{
@@ -80,10 +188,7 @@ const LiquidarMaterialesScreen = ({navigation}: Props) => {
         </View>
       )}
       <>
-        <Banner
-          visible={visible}
-          actions={[]}
-          style={{borderRadius: 32, margin: 16, paddingBottom: 0}}>
+        <Banner visible={visible} actions={[]} style={styles.card}>
           <Formik
             initialValues={formValues}
             onSubmit={values => {
@@ -102,14 +207,16 @@ const LiquidarMaterialesScreen = ({navigation}: Props) => {
               <View style={{padding: 8, width: '100%'}}>
                 <Text variant="titleLarge">Filtros</Text>
                 <View style={{marginBottom: 12}}>
-                  <Dropdown
-                    label="Proyecto"
-                    placeholder="Seleccione un proyecto"
-                    mode="outlined"
-                    options={[]}
-                    value={values.proyecto}
-                    onSelect={val => setFieldValue('proyecto', val)}
-                  />
+                  {proyectos && (
+                    <Dropdown
+                      label="Proyecto"
+                      placeholder="Seleccione un proyecto"
+                      mode="outlined"
+                      options={proyectos}
+                      value={values.proyecto}
+                      onSelect={val => setFieldValue('proyecto', val)}
+                    />
+                  )}
                 </View>
                 <View style={{marginBottom: 12}}>
                   <CustomDatePicker
@@ -179,6 +286,81 @@ const LiquidarMaterialesScreen = ({navigation}: Props) => {
           </Formik>
         </Banner>
       </>
+      <>
+        {!visible && (
+          <FlatList
+            data={resultados}
+            keyExtractor={item => item.id.toString()}
+            contentContainerStyle={{paddingHorizontal: 8, paddingBottom: 16}}
+            renderItem={({item}) => (
+              <Card style={styles.card}>
+                <Card.Content>
+                  <View style={styles.listContainer}>
+                    <View style={styles.row}>
+                      <MaterialIcons
+                        name="package-variant-closed"
+                        style={{marginRight: 6}}
+                      />
+                      <View style={styles.titleContainer}>
+                        <Text style={styles.title}>Nro Petición:</Text>
+                      </View>
+                      <View style={styles.descriptionContainer}>
+                        <Text style={styles.description}>
+                          {item.nroPeticion}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={styles.row}>
+                      <MaterialIcons name="cube" style={{marginRight: 6}} />
+                      <View style={styles.titleContainer}>
+                        <Text style={styles.title}>Nro Solicitud:</Text>
+                      </View>
+                      <View style={styles.descriptionContainer}>
+                        <Text style={styles.description}>
+                          {item.nroSolicitud}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={styles.row}>
+                      <MaterialIcons name="tag" style={{marginRight: 6}} />
+                      <View style={styles.titleContainer}>
+                        <Text style={styles.title}>Teléfono:</Text>
+                      </View>
+                      <View style={styles.descriptionContainer}>
+                        <Text style={styles.description}>{item.telefono}</Text>
+                      </View>
+                    </View>
+                    <View style={styles.row}>
+                      <MaterialIcons
+                        name="package-variant"
+                        style={{marginRight: 6}}
+                      />
+                      <View style={styles.titleContainer}>
+                        <Text style={styles.title}>Tipo Orden:</Text>
+                      </View>
+                      <View style={styles.descriptionContainer}>
+                        <Text style={styles.description}>{item.tipoOrden}</Text>
+                      </View>
+                    </View>
+                    <View style={styles.row}>
+                      <MaterialIcons
+                        name="comment-text"
+                        style={{marginRight: 6}}
+                      />
+                      <View style={styles.titleContainer}>
+                        <Text style={styles.title}>Fecha de Liquidación:</Text>
+                      </View>
+                      <View style={styles.descriptionContainer}>
+                        <Text style={styles.description}>{item.fechaLiq}</Text>
+                      </View>
+                    </View>
+                  </View>
+                </Card.Content>
+              </Card>
+            )}
+          />
+        )}
+      </>
       {/* </ScrollView> */}
     </DrawerLayout>
   );
@@ -186,141 +368,35 @@ const LiquidarMaterialesScreen = ({navigation}: Props) => {
 
 export default LiquidarMaterialesScreen;
 
-
 const styles = StyleSheet.create({
-card: {
+  card: {
     borderRadius: 12,
     elevation: 2,
-    marginBottom: 20,
+    marginTop: 16,
+    marginHorizontal: 16,
+  },
+  listContainer: {
+    marginBottom: 10,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 4,
+    flexWrap: 'wrap',
+    gap: 4, // puedes ajustar esto según lo necesites
+  },
+  title: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  description: {
+    fontSize: 16,
+    textAlign: 'left',
+  },
+  titleContainer: {
+    width: 170, // o el valor que mejor se ajuste al texto más largo
+  },
+  descriptionContainer: {
+    flex: 2,
   },
 });
-// export const LiquidarMaterialesScreen = () => {
-//   const [isCollapsed, setIsCollapsed] = useState(false); // Estado para controlar si el formulario está colapsado
-//   const [tipoRequerimiento, setTipoRequerimiento] = useState(''); // Estado para el tipo de requerimiento
-
-//   const toggleCollapse = () => {
-//     setIsCollapsed(!isCollapsed); // Alternar entre expandido y colapsado
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       {!isCollapsed && ( // Mostrar el formulario solo si no está colapsado
-//         <Card style={styles.card}>
-//           <Card.Content>
-//             <Text style={styles.label}>Proyecto</Text>
-//             <TextInput
-//               placeholder="Seleccione un proyecto"
-//               style={styles.input}
-//             />
-
-//             <Text style={styles.label}>Fecha de Liquidación</Text>
-//             <CustomDatePicker
-//               label="Fecha de Liquidación"
-//               placeholder="Seleccione una fecha"
-//               value={''} // Reemplaza con el valor correspondiente
-//               style={{marginBottom: 8}}
-//               onChange={() => {}} // Reemplaza con la función correspondiente
-//             />
-
-//             <Text style={styles.label}>Tipo de requerimiento</Text>
-//             <TextInput
-//               placeholder="Seleccione el tipo de requerimiento"
-//               style={styles.input}
-//               value={tipoRequerimiento}
-//               onChangeText={setTipoRequerimiento} // Actualizar el estado al cambiar el texto
-//             />
-
-//             {/* Mostrar el campo solo si se seleccionó un tipo de requerimiento */}
-//             {tipoRequerimiento !== '' && (
-//               <>
-//                 <Text style={styles.label}>
-//                   {tipoRequerimiento === 'Solicitud'
-//                     ? 'Nro de Solicitud'
-//                     : 'Nro de Petición'}
-//                 </Text>
-//                 <TextInput
-//                   placeholder={
-//                     tipoRequerimiento === 'Solicitud'
-//                       ? 'Ingrese el número de solicitud'
-//                       : 'Ingrese el número de petición'
-//                   }
-//                   style={styles.input}
-//                 />
-//               </>
-//             )}
-
-//             <Button
-//               mode="contained"
-//               icon="magnify"
-//               onPress={toggleCollapse} // Colapsar el formulario al presionar "Buscar"
-//               style={styles.button}
-//               buttonColor="#007bff">
-//               Buscar
-//             </Button>
-//           </Card.Content>
-//         </Card>
-//       )}
-
-//       {isCollapsed && ( // Mostrar el botón para expandir si el formulario está colapsado
-//         <Button
-//           mode="outlined"
-//           icon="chevron-down"
-//           onPress={toggleCollapse}
-//           style={styles.expandButton}>
-//           Mostrar Filtros
-//         </Button>
-//       )}
-
-//       <View style={styles.badgeContainer}>
-//         <Badge size={28} style={styles.badge}>
-//           Pendientes: 1116
-//         </Badge>
-//       </View>
-//     </View>
-//   );
-// };
-
-// export default LiquidarMaterialesScreen;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     paddingTop: 40,
-//     paddingHorizontal: 16,
-//     backgroundColor: '#f8f9fa',
-//   },
-//   card: {
-//     borderRadius: 16,
-//     elevation: 3,
-//   },
-//   label: {
-//     fontSize: 16,
-//     marginTop: 12,
-//     marginBottom: 4,
-//     fontWeight: '600',
-//   },
-//   input: {
-//     backgroundColor: 'white',
-//   },
-//   button: {
-//     marginTop: 24,
-//     borderRadius: 8,
-//     paddingVertical: 6,
-//   },
-//   expandButton: {
-//     marginTop: 16,
-//     alignSelf: 'center',
-//   },
-//   badgeContainer: {
-//     position: 'absolute',
-//     bottom: 24,
-//     right: 16,
-//   },
-//   badge: {
-//     backgroundColor: '#ffc107',
-//     color: '#000',
-//     fontWeight: 'bold',
-//     fontSize: 14,
-//     paddingHorizontal: 12,
-//   },
-// });
