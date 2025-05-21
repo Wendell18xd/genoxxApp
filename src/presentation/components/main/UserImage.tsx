@@ -11,7 +11,7 @@ interface Props {
 
 export const UserImage = ({style}: Props) => {
   const {user} = useAuthStore();
-  const timestamp = new Date().getTime();
+  const timestamp = user?.time_login;
 
   return (
     <FadeInImage

@@ -64,7 +64,7 @@ export const useAuthStore = create<AuthState>()(set => ({
         };
       }
 
-      set({user: usuario});
+      set({user: {...usuario, time_login: new Date().getTime()}});
       set({menu: resp.datos.menu});
 
       return resp;
@@ -86,6 +86,7 @@ export const useAuthStore = create<AuthState>()(set => ({
         usua_nombre: '',
         usua_perfil: '',
         trab_documento: '',
+        time_login: new Date().getTime(),
       };
       set({user: usuario});
       return resp;

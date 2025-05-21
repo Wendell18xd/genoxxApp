@@ -9,6 +9,7 @@ export interface User {
   usua_nombre: string;
   usua_perfil: string;
   trab_documento: string;
+  time_login: number;
 }
 
 export interface Menu {
