@@ -2,6 +2,7 @@ import React from 'react';
 import {Linking, View} from 'react-native';
 import {ArchivoNoticia} from '../../../../../../../domain/entities/Noticia';
 import {Card, Text, useTheme, IconButton} from 'react-native-paper';
+import {globalStyle} from '../../../../../../styles/globalStyle';
 
 interface Props {
   item: ArchivoNoticia;
@@ -37,7 +38,7 @@ export const ItemArchivoNoticia = ({item}: Props) => {
   };
 
   return (
-    <Card onPress={handlePress} style={{backgroundColor: colors.background}}>
+    <Card onPress={handlePress} style={[globalStyle.card]}>
       <Card.Content
         style={{
           flexDirection: 'row',

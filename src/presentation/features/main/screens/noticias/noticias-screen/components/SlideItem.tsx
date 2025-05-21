@@ -1,13 +1,13 @@
 import {
   useWindowDimensions,
   View,
-  Image,
   StyleSheet,
   Pressable,
 } from 'react-native';
 import {NoticiaDato} from '../../../../../../../infrastructure/interfaces/main/main.response';
 import {Text} from 'react-native-paper';
 import {globalStyle} from '../../../../../../styles/globalStyle';
+import {FadeInImage} from '../../../../../../components/ui/FadeInImage';
 
 interface SlideItemsProps {
   item: NoticiaDato;
@@ -15,7 +15,7 @@ interface SlideItemsProps {
 }
 
 export const SlideItem = ({item, onPress}: SlideItemsProps) => {
-  const {width, height} = useWindowDimensions();
+  const {width} = useWindowDimensions();
   // const {colors} = useTheme();
 
   return (
@@ -31,14 +31,12 @@ export const SlideItem = ({item, onPress}: SlideItemsProps) => {
               // backgroundColor: colors.elevation.level1,
             },
           ]}>
-          <Image
-            source={{uri: item.ruta_completa}}
-            style={[
-              styles.image,
-              {
-                height: height * 0.45,
-              },
-            ]}
+          <FadeInImage
+            uri={item.ruta_completa}
+            style={{
+              width: width - 32,
+              resizeMode: 'contain',
+            }}
           />
           <Text variant="titleMedium" style={[styles.title]}>
             {item.nombre}

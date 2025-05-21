@@ -65,7 +65,6 @@ const SafeAreaLayout = ({
             flex: 1,
             position: 'relative',
             paddingTop: isHeader ? 0 : top,
-            backgroundColor: colors.background,
           }}>
           {primary && isCurva && (
             <View

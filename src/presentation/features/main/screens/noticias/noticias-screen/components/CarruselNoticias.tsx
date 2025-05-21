@@ -20,19 +20,23 @@ export const CarruselNoticias = () => {
     currentIndex,
     scrollToIndex,
     onScroll,
+    preFetchDetalle,
+    isFetchingDetalle,
   } = useNoticiasCarousel();
 
-  const handleDetalle = (item: Noticia) => {
-    console.log(item);
-    navigation.navigate('DetalleNoticiaScreen', {noticia: item});
+  const handleDetalle = async (item: Noticia) => {
+    await preFetchDetalle(item);
+    navigation.navigate('DetalleNoticiaScreen', {
+      noticia: item,
+      onLeido: () => {
+        onRefresh();
+      },
+    });
   };
-
-  if (isFetching) {
-    return <FullScreenLoader />;
-  }
 
   return (
     <View style={{flex: 1}}>
+      {(isFetching || isFetchingDetalle) && <FullScreenLoader transparent />}
       <FlatList
         ref={flatListRef}
         data={data?.datos}

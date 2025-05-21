@@ -8,6 +8,7 @@ interface CustomFABProps {
   color?: string;
   labelColor?: string;
   style?: StyleProp<ViewStyle>;
+  loading?: boolean;
   onPress: () => void;
 }
 
@@ -18,6 +19,7 @@ export const CustomFAB: React.FC<CustomFABProps> = ({
   labelColor = '#fff',
   style,
   onPress,
+  loading = false,
 }) => {
   const lastPressRef = useRef<number>(0);
 
@@ -41,6 +43,7 @@ export const CustomFAB: React.FC<CustomFABProps> = ({
           onSecondaryContainer: labelColor,
         },
       }}
+      loading={loading}
       onPress={handlePress}
     />
   );
