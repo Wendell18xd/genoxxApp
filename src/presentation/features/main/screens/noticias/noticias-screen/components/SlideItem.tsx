@@ -5,9 +5,9 @@ import {
   StyleSheet,
   Pressable,
 } from 'react-native';
-import {NoticiaDato} from '../../../../../../infrastructure/interfaces/main/main.response';
+import {NoticiaDato} from '../../../../../../../infrastructure/interfaces/main/main.response';
 import {Text} from 'react-native-paper';
-import {globalStyle} from '../../../../../styles/globalStyle';
+import {globalStyle} from '../../../../../../styles/globalStyle';
 
 interface SlideItemsProps {
   item: NoticiaDato;

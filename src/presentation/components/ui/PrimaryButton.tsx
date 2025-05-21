@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import {useTheme} from 'react-native-paper';
+import MaterialIcons from './icons/MaterialIcons';
 interface Props {
   height?: number;
   borderRadius?: number;
@@ -18,6 +19,7 @@ interface Props {
   loading?: boolean;
   disabled?: boolean;
   debounce?: boolean;
+  icon?: string;
 }
 
 const PrimaryButton = ({
@@ -29,6 +31,7 @@ const PrimaryButton = ({
   loading = false,
   disabled = false,
   debounce = false,
+  icon = '',
 }: Props) => {
   const {colors} = useTheme();
   const lastPressRef = useRef<number>(0);
@@ -70,6 +73,9 @@ const PrimaryButton = ({
         {loading && (
           <ActivityIndicator color="white" style={{marginRight: 8}} />
         )}
+        {icon && (
+          <MaterialIcons name={icon} color="white" style={{marginEnd: 8}} />
+        )}
         <Text style={styles.label}>{children}</Text>
       </View>
     </Pressable>
@@ -80,6 +86,8 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
+    alignSelf: 'flex-start',
+    paddingHorizontal: 16,
   },
   content: {
     flexDirection: 'row',

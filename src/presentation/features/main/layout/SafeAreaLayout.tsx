@@ -1,11 +1,4 @@
-import {
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  TouchableWithoutFeedback,
-  View,
-  ViewStyle,
-} from 'react-native';
+import {KeyboardAvoidingView, Platform, View, ViewStyle} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import CurvaBottomView from '../../../components/ui/CurvaBottomView';
 import {Appbar, useTheme} from 'react-native-paper';
@@ -66,28 +59,29 @@ const SafeAreaLayout = ({
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}
         keyboardVerticalOffset={keyboardVisible ? 0 : -(top + bottom)}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View
-            style={{
-              flex: 1,
-              position: 'relative',
-              paddingTop: isHeader ? 0 : top,
-            }}>
-            {primary && isCurva && (
+        {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
+        <View
+          style={{
+            flex: 1,
+            position: 'relative',
+            paddingTop: isHeader ? 0 : top,
+            backgroundColor: colors.background,
+          }}>
+          {primary && isCurva && (
+            <View
+              style={{
+                position: 'absolute',
+                width: '100%',
+              }}>
               <View
-                style={{
-                  position: 'absolute',
-                  width: '100%',
-                }}>
-                <View
-                  style={{backgroundColor: colors.primary, height: curvaHeight}}
-                />
-                <CurvaBottomView />
-              </View>
-            )}
-            {children}
-          </View>
-        </TouchableWithoutFeedback>
+                style={{backgroundColor: colors.primary, height: curvaHeight}}
+              />
+              <CurvaBottomView />
+            </View>
+          )}
+          {children}
+        </View>
+        {/* </TouchableWithoutFeedback> */}
       </KeyboardAvoidingView>
     </View>
   );

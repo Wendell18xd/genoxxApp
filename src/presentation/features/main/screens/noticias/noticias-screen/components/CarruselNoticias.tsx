@@ -1,11 +1,11 @@
 import {FlatList, View} from 'react-native';
 import {IconButton, useTheme} from 'react-native-paper';
 import {useNoticiasCarousel} from '../hooks/useNoticiasCarousel';
-import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoader';
+import FullScreenLoader from '../../../../../../components/ui/loaders/FullScreenLoader';
 import {SlideItem} from './SlideItem';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {NoticiasStackParam} from '../navigations/NoticiasStackNatigation';
-import {Noticia} from '../../../../../../domain/entities/Noticia';
+import {NoticiasStackParam} from '../../navigations/NoticiasStackNatigation';
+import {Noticia} from '../../../../../../../domain/entities/Noticia';
 
 export const CarruselNoticias = () => {
   const {colors} = useTheme();

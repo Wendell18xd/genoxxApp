@@ -1,8 +1,8 @@
 import {useEffect, useRef, useState} from 'react';
 import {FlatList} from 'react-native';
 import {useQuery} from '@tanstack/react-query';
-import {useAuthStore} from '../../../../../store/auth/useAuthStore';
-import {listadoNoticiasActivas} from '../../../../../../actions/main/main';
+import {useAuthStore} from '../../../../../../store/auth/useAuthStore';
+import {listadoNoticiasActivas} from '../../../../../../../actions/main/main';
 
 export const useNoticiasCarousel = () => {
   const {user} = useAuthStore();

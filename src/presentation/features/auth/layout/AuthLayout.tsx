@@ -5,7 +5,6 @@ import {
   Platform,
   StyleSheet,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
@@ -122,7 +121,7 @@ const AuthLayout = ({children}: Props) => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}
         keyboardVerticalOffset={keyboardVisible ? 0 : -(top + bottom)}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
           <View
             style={[
               styles.containerChildren,
@@ -133,7 +132,7 @@ const AuthLayout = ({children}: Props) => {
             ]}>
             {children}
           </View>
-        </TouchableWithoutFeedback>
+        {/* </TouchableWithoutFeedback> */}
       </KeyboardAvoidingView>
     </View>
   );
