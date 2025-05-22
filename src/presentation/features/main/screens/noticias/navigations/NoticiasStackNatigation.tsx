@@ -1,6 +1,6 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import {DetalleNoticiaScreen} from '../screens/DetalleNoticiaScreen';
-import {NoticiasScreen} from '../screens/NoticiasScreen';
+import {DetalleNoticiaScreen} from '../screen-detalle-noticia/DetalleNoticiaScreen';
+import {NoticiasScreen} from '../screen-noticias/NoticiasScreen';
 import {Noticia} from '../../../../../../domain/entities/Noticia';
 
 export type NoticiasStackParam = {

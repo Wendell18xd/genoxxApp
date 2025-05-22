@@ -163,7 +163,7 @@ const OlvidarPassScreen = ({navigation}: Props) => {
                   debounce
                   disabled={forgotPassMutation.isPending}
                   loading={forgotPassMutation.isPending}
-                  style={{marginTop: 32}}>
+                  style={{marginTop: 32, width: '100%'}}>
                   Enviar
                 </PrimaryButton>
               </>

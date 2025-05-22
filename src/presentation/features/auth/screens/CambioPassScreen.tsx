@@ -246,7 +246,7 @@ const CambioPassScreen = ({navigation}: Props) => {
                   debounce
                   disabled={mutation.isPending}
                   loading={mutation.isPending}
-                  style={{marginTop: 8}}>
+                  style={{marginTop: 8, width: '100%'}}>
                   Cambiar contraseña
                 </PrimaryButton>
                 <View

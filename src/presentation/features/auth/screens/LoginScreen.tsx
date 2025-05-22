@@ -264,7 +264,7 @@ const LoginScreen = ({navigation}: Props) => {
                   debounce
                   disabled={loginMutation.isPending}
                   loading={loginMutation.isPending}
-                  style={{marginTop: 32}}>
+                  style={{marginTop: 32, width: '100%'}}>
                   Iniciar Sesión
                 </PrimaryButton>
 
