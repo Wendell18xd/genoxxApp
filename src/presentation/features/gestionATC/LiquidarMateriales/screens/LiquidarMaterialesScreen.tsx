@@ -1,24 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {
-  Banner,
-  Button,
-  Card,
-  Text,
-  TextInput,
-  useTheme,
-} from 'react-native-paper';
+import {Card, Text, TextInput, useTheme} from 'react-native-paper';
 import DrawerLayout from '../../../main/layout/DrawerLayout';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
 import {StyleSheet, View} from 'react-native';
-import {Dropdown, Option} from 'react-native-paper-dropdown';
+import {Dropdown} from 'react-native-paper-dropdown';
 import {FlatList} from 'react-native-gesture-handler';
 import CustomDatePicker from '../../../../components/ui/CustomDatePicker';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
 import {Formik} from 'formik';
 import PrimaryButton from '../../../../components/ui/PrimaryButton';
-import {StackScreenProps} from '@react-navigation/stack';
-import {AuthStackParam} from '../../../../navigations/AuthStackNavigation';
-import * as Yup from 'yup';
 import {useMutation, useQuery} from '@tanstack/react-query';
 import {mapToDropdown} from '../../../../../infrastructure/mappers/mapToDropdown';
 import {LiquiMatATCStackParam} from '../navigations/LiquiMatATCStackNavigation';
@@ -51,14 +41,14 @@ const LiquidarMaterialesScreen = () => {
   const [disabled, setDisabled] = useState(false);
   const [visible, setVisible] = React.useState(true);
 
-  const getLiquidarShema = (arrProyectos: Option[] | undefined) =>
-    Yup.object().shape({
-      proyecto: Yup.string().when([], {
-        is: () => arrProyectos && arrProyectos.length > 0,
-        then: schema => schema.required('Seleccione un proyecto'),
-        otherwise: schema => schema.notRequired(),
-      }),
-    });
+  // const getLiquidarShema = (arrProyectos: Option[] | undefined) =>
+  //   Yup.object().shape({
+  //     proyecto: Yup.string().when([], {
+  //       is: () => arrProyectos && arrProyectos.length > 0,
+  //       then: schema => schema.required('Seleccione un proyecto'),
+  //       otherwise: schema => schema.notRequired(),
+  //     }),
+  //   });
 
   const {
     data: proyectos,
@@ -74,10 +64,6 @@ const LiquidarMaterialesScreen = () => {
       return mapToDropdown(resp.datos, 'proy_alias', 'proy_codigo');
     },
   });
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   /* const LiqMatMutation = useMutation({
     mutationFn: getProyecto,
@@ -156,14 +142,17 @@ const LiquidarMaterialesScreen = () => {
     // LiqMatMutation.mutate(LiqMatData);
   };
 
+  useEffect(() => {
+    refetch();
+  }, []);
+
   if (isFetching) {
     return <FullScreenLoader />;
   }
 
   return (
     <DrawerLayout primary curvaHeight={80}>
-      {/* <ScrollView showsVerticalScrollIndicator={false}> */}
-      {!visible && (
+      {/* {!visible && (
         <View style={{alignItems: 'center', marginVertical: 12}}>
           <Button
             mode="elevated"
@@ -186,9 +175,9 @@ const LiquidarMaterialesScreen = () => {
             Mostrar Filtros
           </Button>
         </View>
-      )}
+      )} */}
       <>
-        <Banner visible={visible} actions={[]} style={styles.card}>
+        <Card style={styles.card}>
           <Formik
             initialValues={formValues}
             onSubmit={values => {
@@ -204,9 +193,9 @@ const LiquidarMaterialesScreen = () => {
               touched,
               setFieldValue,
             }) => (
-              <View style={{padding: 8, width: '100%'}}>
-                <Text variant="titleLarge">Filtros</Text>
-                <View style={{marginBottom: 12}}>
+              <View style={{padding: 24}}>
+                {/* <Text variant="titleLarge">Filtros</Text> */}
+                <View style={{marginTop: 12, marginBottom: 12}}>
                   {proyectos && (
                     <Dropdown
                       label="Proyecto"
@@ -229,48 +218,57 @@ const LiquidarMaterialesScreen = () => {
                     }
                   />
                 </View>
-                <View style={{marginBottom: 12}}>
-                  <Dropdown
-                    label="Tipo de Liquidación"
-                    placeholder="Seleccione un tipo de liquidación"
-                    mode="outlined"
-                    options={[
-                      {label: 'Solicitud', value: 'Solicitud'},
-                      {label: 'Petición', value: 'Petición'},
-                    ]}
-                    value={values.tipoLiquidacion}
-                    onSelect={val => setFieldValue('tipoLiquidacion', val)}
-                  />
+                {/* <View style={{marginBottom: 12}}>
+                 */}
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginBottom: 12,
+                    alignItems: 'center',
+                  }}>
+                  <View style={{flex: 1.2, marginRight: 8}}>
+                    <Dropdown
+                      label="Tipo de Liquidación"
+                      placeholder="Seleccione un tipo de liquidación"
+                      mode="outlined"
+                      options={[
+                        {label: 'Solicitud', value: 'Solicitud'},
+                        {label: 'Petición', value: 'Petición'},
+                      ]}
+                      value={values.tipoLiquidacion}
+                      onSelect={val => setFieldValue('tipoLiquidacion', val)}
+                    />
+                  </View>
+                  {values.tipoLiquidacion === 'Solicitud' && (
+                    <View style={{flex: 2}}>
+                      <CustomTextInput
+                        label="Número de Solicitud"
+                        mode="outlined"
+                        autoCapitalize="characters"
+                        value={values.nroSolicitud}
+                        onChangeText={handleChange('nroSolicitud')}
+                        onBlur={handleBlur('nroSolicitud')}
+                        error={touched.nroSolicitud && !!errors.nroSolicitud}
+                        left={<TextInput.Icon icon="text-box-outline" />}
+                        disabled={disabled}
+                      />
+                    </View>
+                  )}
+                  {values.tipoLiquidacion === 'Petición' && (
+                    <View style={{flex: 2}}>
+                      <CustomTextInput
+                        label="Número de Petición"
+                        mode="outlined"
+                        value={values.nroPeticion}
+                        onChangeText={handleChange('nroPeticion')}
+                        onBlur={handleBlur('nroPeticion')}
+                        error={touched.nroPeticion && !!errors.nroPeticion}
+                        left={<TextInput.Icon icon="text-box-outline" />}
+                        disabled={disabled}
+                      />
+                    </View>
+                  )}
                 </View>
-                {values.tipoLiquidacion === 'Solicitud' && (
-                  <View style={{marginBottom: 12}}>
-                    <CustomTextInput
-                      label="Número de Solicitud"
-                      mode="outlined"
-                      autoCapitalize="characters"
-                      value={values.nroSolicitud}
-                      onChangeText={handleChange('nroSolicitud')}
-                      onBlur={handleBlur('nroSolicitud')}
-                      error={touched.nroSolicitud && !!errors.nroSolicitud}
-                      left={<TextInput.Icon icon="text-box-outline" />}
-                      disabled={disabled}
-                    />
-                  </View>
-                )}
-                {values.tipoLiquidacion === 'Petición' && (
-                  <View style={{marginBottom: 12}}>
-                    <CustomTextInput
-                      label="Número de Petición"
-                      mode="outlined"
-                      value={values.nroPeticion}
-                      onChangeText={handleChange('nroPeticion')}
-                      onBlur={handleBlur('nroPeticion')}
-                      error={touched.nroPeticion && !!errors.nroPeticion}
-                      left={<TextInput.Icon icon="text-box-outline" />}
-                      disabled={disabled}
-                    />
-                  </View>
-                )}
                 <PrimaryButton
                   onPress={() => {
                     handleSubmit();
@@ -284,14 +282,14 @@ const LiquidarMaterialesScreen = () => {
               </View>
             )}
           </Formik>
-        </Banner>
+        </Card>
       </>
       <>
         {!visible && (
           <FlatList
             data={resultados}
             keyExtractor={item => item.id.toString()}
-            contentContainerStyle={{paddingHorizontal: 8, paddingBottom: 16}}
+            contentContainerStyle={{paddingBottom: 16}}
             renderItem={({item}) => (
               <Card style={styles.card}>
                 <Card.Content>
@@ -302,7 +300,7 @@ const LiquidarMaterialesScreen = () => {
                         style={{marginRight: 6}}
                       />
                       <View style={styles.titleContainer}>
-                        <Text style={styles.title}>Nro Petición:</Text>
+                        <Text style={styles.title}>Número de Petición:</Text>
                       </View>
                       <View style={styles.descriptionContainer}>
                         <Text style={styles.description}>
@@ -313,7 +311,7 @@ const LiquidarMaterialesScreen = () => {
                     <View style={styles.row}>
                       <MaterialIcons name="cube" style={{marginRight: 6}} />
                       <View style={styles.titleContainer}>
-                        <Text style={styles.title}>Nro Solicitud:</Text>
+                        <Text style={styles.title}>Número de Solicitud:</Text>
                       </View>
                       <View style={styles.descriptionContainer}>
                         <Text style={styles.description}>
@@ -336,7 +334,7 @@ const LiquidarMaterialesScreen = () => {
                         style={{marginRight: 6}}
                       />
                       <View style={styles.titleContainer}>
-                        <Text style={styles.title}>Tipo Orden:</Text>
+                        <Text style={styles.title}>Tipo de Orden:</Text>
                       </View>
                       <View style={styles.descriptionContainer}>
                         <Text style={styles.description}>{item.tipoOrden}</Text>
@@ -354,6 +352,30 @@ const LiquidarMaterialesScreen = () => {
                         <Text style={styles.description}>{item.fechaLiq}</Text>
                       </View>
                     </View>
+                    <View style={styles.row}>
+                      <MaterialIcons
+                        name="comment-text"
+                        style={{marginRight: 6}}
+                      />
+                      <View style={styles.titleContainer}>
+                        <Text style={styles.title}>Estado de Material:</Text>
+                      </View>
+                      <View style={styles.descriptionContainer}>
+                        <Text style={styles.description}>{item.finalizaMaterial}</Text>
+                      </View>
+                    </View>
+                    <View style={styles.row}>
+                      <MaterialIcons
+                        name="comment-text"
+                        style={{marginRight: 6}}
+                      />
+                      <View style={styles.titleContainer}>
+                        <Text style={styles.title}>Estado de Orden:</Text>
+                      </View>
+                      <View style={styles.descriptionContainer}>
+                        <Text style={styles.description}>{item.estCierre}</Text>
+                      </View>
+                    </View>
                   </View>
                 </Card.Content>
               </Card>
@@ -361,7 +383,6 @@ const LiquidarMaterialesScreen = () => {
           />
         )}
       </>
-      {/* </ScrollView> */}
     </DrawerLayout>
   );
 };
@@ -374,6 +395,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     marginTop: 16,
     marginHorizontal: 16,
+    backgroundColor: '#fff',
   },
   listContainer: {
     marginBottom: 10,
