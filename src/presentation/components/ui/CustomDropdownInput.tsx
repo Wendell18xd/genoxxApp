@@ -39,28 +39,29 @@ export const CustomDropdownInput: React.FC<Props> = ({
       value={field.value}
       onSelect={val => setFieldValue(name, val)}
       CustomDropdownInput={props =>
-        TextInputCustom(props, mode, icon, height,hasError)
+        DropdownInput({...props, error: hasError}, icon, height)
       }
     />
   );
 };
 
-const TextInputCustom = (
-  props: DropdownInputProps,
-  mode: 'outlined' | 'flat',
-  icon?: string,
-  height?: number,
-  hasError?: boolean,
+const DropdownInput = (
+  {placeholder, selectedLabel, rightIcon, error, label}: DropdownInputProps,
+  icon: string | undefined,
+  height: number,
 ) => (
   <TextInput
-    {...props}
-    mode={mode}
-    value={props.selectedLabel ?? ''}
+    mode="outlined"
+    placeholder={placeholder}
+    label={label}
+    value={selectedLabel}
     editable={false}
     pointerEvents="none"
-    style={{height: height}}
-    error={hasError}
+    error={error}
+    style={{
+      height: height,
+    }}
     left={icon ? <TextInput.Icon icon={icon} /> : undefined}
-    right={<TextInput.Icon icon="menu-down" />}
+    right={rightIcon}
   />
 );

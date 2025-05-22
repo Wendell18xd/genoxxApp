@@ -1,14 +1,15 @@
 import {LiquiMatATCStackNavigation} from '../presentation/features/gestionATC/liquidarMateriales/navigations/LiquiMatATCStackNavigation';
-import { LiquiMatObrasStackNavigation } from '../presentation/features/gestionObras/liquidarMateriales/navigation/LiquiMatObrasStackNavigation';
-import LiquidarPartidasObras from '../presentation/features/gestionObras/liquidarPartidas/screen/LiquidarPartidasObras';
+import {LiquiMatObrasStackNavigation} from '../presentation/features/gestionObras/liquidarMateriales/navigation/LiquiMatObrasStackNavigation';
 
 export const drawerScreenComponents: Record<
   string,
   React.ComponentType<any>
 > = {
-  LiquidacionMaterialesFragment: LiquiMatObrasStackNavigation,
+  //ATC
   ListMaterialesATCFragment: LiquiMatATCStackNavigation,
-  ListObrasFragment1: LiquidarPartidasObras,
+  //Obras
+  LiquidacionMaterialesFragment: LiquiMatObrasStackNavigation,
+  ListObrasFragment1: LiquiMatObrasStackNavigation,
   // PedidoMaterialFragment: LiquidarPartidasObras,
   // AprobacionPedidosFragment: LiquidarPartidasObras,
   // ReporteStockFragment: LiquidarPartidasObras,

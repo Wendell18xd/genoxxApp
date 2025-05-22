@@ -27,7 +27,7 @@ export const SideMenuNavigator = () => {
   const dimensions = useWindowDimensions();
   const {colors} = useTheme();
   const {menu} = useAuthStore();
-  const {setMenuSelected, setMenusValid} = useMainStore();
+  const {setMenuSelected, setMenusValid, setDrawerKey} = useMainStore();
 
   // Filtrar y recorrer todos los menús y submenús
   const getValidMenuItems = (menuItems: any[]) => {
@@ -100,7 +100,7 @@ export const SideMenuNavigator = () => {
               drawerScreenComponents[menuItem.menu_fileapp];
             return (
               <Drawer.Screen
-                key={`${index}-${subIndex}`}
+                key={`${index}-${subIndex}-${Date.now()}`}
                 name={menuItem.menu_fileapp}
                 component={ScreenComponent}
                 options={{
@@ -111,6 +111,7 @@ export const SideMenuNavigator = () => {
                 listeners={{
                   focus: () => {
                     setMenuSelected(menuItem);
+                    setDrawerKey(menuItem.menu_fileapp);
                   },
                 }}
               />
