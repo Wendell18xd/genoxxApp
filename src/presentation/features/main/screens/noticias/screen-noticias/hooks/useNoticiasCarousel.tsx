@@ -10,9 +10,11 @@ import {
   Noticia,
   RegistroDesdeNoticia,
 } from '../../../../../../../domain/entities/Noticia';
+import {useNoticiasStore} from '../../store/useNoticiasStore';
 
 export const useNoticiasCarousel = () => {
   const {user} = useAuthStore();
+  const {refresh, setRefresh} = useNoticiasStore();
   const flatListRef = useRef<FlatList>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -84,6 +86,13 @@ export const useNoticiasCarousel = () => {
       setIsRefreshing(false);
     }
   };
+
+  useEffect(() => {
+    if (refresh) {
+      onRefresh();
+      setRefresh(false);
+    }
+  }, [refresh]);
 
   useEffect(() => {
     const interval = setInterval(() => {

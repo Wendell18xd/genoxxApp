@@ -10,12 +10,11 @@ import {useDetalleNoticia} from './hooks/useDetalleNoticia';
 import {useTheme} from 'react-native-paper';
 
 export const DetalleNoticiaScreen = () => {
-  const {noticia, onLeido} =
+  const {noticia} =
     useRoute<RouteProp<NoticiasStackParam, 'DetalleNoticiaScreen'>>().params;
   const {colors} = useTheme();
   const {detalle, isLoading, handleMarcarLeido, mutation} = useDetalleNoticia({
     noticia,
-    onLeido,
   });
 
   return (

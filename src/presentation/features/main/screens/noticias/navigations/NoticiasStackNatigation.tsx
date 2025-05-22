@@ -5,7 +5,7 @@ import {Noticia} from '../../../../../../domain/entities/Noticia';
 
 export type NoticiasStackParam = {
   NoticiasScreen: undefined;
-  DetalleNoticiaScreen: {noticia: Noticia; onLeido: () => void};
+  DetalleNoticiaScreen: {noticia: Noticia};
 };
 
 const Stack = createStackNavigator<NoticiasStackParam>();

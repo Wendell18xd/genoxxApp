@@ -8,14 +8,15 @@ import {
   Noticia,
   RegistroDesdeNoticia,
 } from '../../../../../../../domain/entities/Noticia';
+import {useNoticiasStore} from '../../store/useNoticiasStore';
 
 interface Props {
   noticia: Noticia;
-  onLeido: () => void;
 }
 
-export const useDetalleNoticia = ({noticia, onLeido}: Props) => {
+export const useDetalleNoticia = ({noticia}: Props) => {
   const {user} = useAuthStore();
+  const {setRefresh} = useNoticiasStore();
   const navigation = useNavigation();
 
   const query = useQuery({
@@ -38,7 +39,7 @@ export const useDetalleNoticia = ({noticia, onLeido}: Props) => {
         text1: 'Noticia marcada como leída',
         text2: 'La noticia se ha marcado como leída correctamente',
       });
-      onLeido();
+      setRefresh(true);
       navigation.goBack();
     },
     onError: error => {

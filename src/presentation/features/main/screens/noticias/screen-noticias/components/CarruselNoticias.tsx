@@ -26,12 +26,7 @@ export const CarruselNoticias = () => {
 
   const handleDetalle = async (item: Noticia) => {
     await preFetchDetalle(item);
-    navigation.navigate('DetalleNoticiaScreen', {
-      noticia: item,
-      onLeido: () => {
-        onRefresh();
-      },
-    });
+    navigation.navigate('DetalleNoticiaScreen', {noticia: item});
   };
 
   return (
