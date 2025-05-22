@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Card, Text, TextInput, useTheme} from 'react-native-paper';
+import {Card, Text, TextInput} from 'react-native-paper';
 import DrawerLayout from '../../../main/layout/DrawerLayout';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
 import {StyleSheet, View} from 'react-native';
@@ -9,10 +9,10 @@ import CustomDatePicker from '../../../../components/ui/CustomDatePicker';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
 import {Formik} from 'formik';
 import PrimaryButton from '../../../../components/ui/PrimaryButton';
-import {useMutation, useQuery} from '@tanstack/react-query';
+import {useQuery} from '@tanstack/react-query';
 import {mapToDropdown} from '../../../../../infrastructure/mappers/mapToDropdown';
-import {LiquiMatATCStackParam} from '../navigations/LiquiMatATCStackNavigation';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+// import {LiquiMatATCStackParam} from '../navigations/LiquiMatATCStackNavigation';
+// import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {getProyecto} from '../../../../../actions/gestionATC/proyectosATC';
 import {useAuthStore} from '../../../../store/auth/useAuthStore';
 import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
@@ -34,11 +34,11 @@ const initialValues: LiquidarMatFormValues = {
 };
 
 const LiquidarMaterialesScreen = () => {
-  const navigation = useNavigation<NavigationProp<LiquiMatATCStackParam>>();
-  const [formValues, setFormValues] =
+  // const navigation = useNavigation<NavigationProp<LiquiMatATCStackParam>>();
+  const [formValues] =
     useState<LiquidarMatFormValues>(initialValues);
   const {user} = useAuthStore();
-  const [disabled, setDisabled] = useState(false);
+  const [disabled] = useState(false);
   const [visible, setVisible] = React.useState(true);
 
   // const getLiquidarShema = (arrProyectos: Option[] | undefined) =>
@@ -65,6 +65,11 @@ const LiquidarMaterialesScreen = () => {
     },
   });
 
+  useEffect(() => {
+    refetch();
+  }, []);
+
+
   /* const LiqMatMutation = useMutation({
     mutationFn: getProyecto,
     onSuccess: async data => {
@@ -86,32 +91,7 @@ const LiquidarMaterialesScreen = () => {
     },
   }); */
 
-  /*   const fetchProyectos = async () => {
-    setLoadingProyectos(true);
-    try {
-      const response = await getProyecto({
-        datos: [
-          {
-            proy_codigo: '',
-            proy_alias: '',
-            proy_tipo: '',
-          },
-        ],
-        mensaje: 'Consulta de Proyectos',
-      });
-      // Supón que response.datos es un array de proyectos
-      const arrProyecto = Array.isArray(response.datos)
-        ? response.datos
-        : [response.datos];
-      const options = mapToDropdown(arrProyecto, 'proy_codigo', 'proy_alias');
-      setProyectos(options);
-    } catch (error) {
-      setProyectos([]);
-    }
-    setLoadingProyectos(false);
-  }; */
-
-  const [resultados, setResultados] = useState([
+  const [resultados] = useState([
     {
       id: 1,
       nroPeticion: '00001',
@@ -130,21 +110,17 @@ const LiquidarMaterialesScreen = () => {
     },
   ]);
 
-  const startLiqMatSubmit = (values: LiquidarMatFormValues) => {
-    const LiqMatData = {
-      proyecto: values.proyecto,
-      fechaLiquidacion: values.fechaLiquidacion,
-      tipoLiquidacion: values.tipoLiquidacion,
-      nroSolicitud: values.nroSolicitud,
-      nroPeticion: values.nroPeticion,
-    };
+  const startLiqMatSubmit = () => {
+    // const LiqMatData = {
+    //   proyecto: values.proyecto,
+    //   fechaLiquidacion: values.fechaLiquidacion,
+    //   tipoLiquidacion: values.tipoLiquidacion,
+    //   nroSolicitud: values.nroSolicitud,
+    //   nroPeticion: values.nroPeticion,
+    // };
 
     // LiqMatMutation.mutate(LiqMatData);
   };
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   if (isFetching) {
     return <FullScreenLoader />;
@@ -180,8 +156,8 @@ const LiquidarMaterialesScreen = () => {
         <Card style={styles.card}>
           <Formik
             initialValues={formValues}
-            onSubmit={values => {
-              startLiqMatSubmit(values);
+            onSubmit={() => {
+              startLiqMatSubmit();
               setVisible(false);
             }}>
             {({
