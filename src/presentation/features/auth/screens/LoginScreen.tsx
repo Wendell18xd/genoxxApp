@@ -8,7 +8,7 @@ import CustomCheckbox from '../../../components/ui/CustomCheckbox';
 import PrimaryButton from '../../../components/ui/PrimaryButton';
 import CustomTextInput from '../../../components/ui/CustomTextInput';
 import AuthLayout from '../layout/AuthLayout';
-import {Dropdown, Option} from 'react-native-paper-dropdown';
+import {Option} from 'react-native-paper-dropdown';
 import {mapToDropdown} from '../../../../infrastructure/mappers/mapToDropdown';
 import Toast from 'react-native-toast-message';
 import {useAuthStore} from '../../../store/auth/useAuthStore';
@@ -16,6 +16,7 @@ import {StorageAdapter} from '../../../../config/adapter/storage-adapter';
 import {StackScreenProps} from '@react-navigation/stack';
 import {AuthStackParam} from '../../../navigations/AuthStackNavigation';
 import FullScreenLoader from '../../../components/ui/loaders/FullScreenLoader';
+import {CustomDropdownInput} from '../../../components/ui/CustomDropdownInput';
 
 interface LoginFormValues {
   usuario: string;
@@ -223,13 +224,12 @@ const LoginScreen = ({navigation}: Props) => {
 
                 {empresas && empresas.length > 0 && (
                   <View style={{marginTop: 8}}>
-                    <Dropdown
+                    <CustomDropdownInput
                       label="Empresa"
-                      placeholder="Seleccione una empresa"
-                      mode="outlined"
+                      name="empresa"
                       options={empresas}
-                      value={values.empresa} // <- valor de Formik
-                      onSelect={val => setFieldValue('empresa', val)}
+                      placeholder="Seleccione una empresa"
+                      icon="office-building-outline"
                     />
                   </View>
                 )}
