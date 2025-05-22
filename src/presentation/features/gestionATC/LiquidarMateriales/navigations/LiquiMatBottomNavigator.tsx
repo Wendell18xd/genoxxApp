@@ -3,18 +3,15 @@ import {
   View,
   TouchableOpacity,
   Alert,
-  GestureResponderEvent,
-  StyleProp,
-  ViewStyle,
 } from 'react-native';
 import {MD3Colors} from 'react-native-paper/lib/typescript/types';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
-import SeriadosScreen from '../screens/SeriadosScreen';
 import NoSeriadosScreen from '../screens/NoSeriadosScreen';
 import RecuperosScreen from '../screens/RecuperosScreen';
 import DetalleLiquidarMatScreen from '../screens/DetalleLiquidarMatScreen';
+import SeriadosScreen from '../screens/seriados/SeriadosScreen';
 
 export type DetalleBottomTabParam = {
   DetalleLiquidarMatScreen: undefined;
@@ -48,6 +45,24 @@ const TabBarIcon = ({focused, size, colors, name}: TabBarIconProps) => (
 );
 
 const Tab = createBottomTabNavigator<DetalleBottomTabParam>();
+
+const FinalizarOrdenTabBarButton = (props: any) => {
+  // Flatten the style prop to avoid passing an array
+  const style =
+    Array.isArray(props.style)
+      ? Object.assign({}, ...props.style)
+      : props.style;
+
+  return (
+    <TouchableOpacity
+      {...props}
+      onPress={() =>
+        Alert.alert('Acción', 'Se ejecutó una acción personalizada')
+      }
+      style={[style, {alignItems: 'center'}]}
+    />
+  );
+};
 
 export const LiquiMatBottomNavigator = () => {
   const {colors} = useTheme();
@@ -114,15 +129,7 @@ export const LiquiMatBottomNavigator = () => {
           tabBarLabel: 'Acción',
           tabBarIcon: ({focused, size}) =>
             TabBarIcon({focused, size, colors, name: 'close-circle'}),
-          tabBarButton: props => (
-            <TouchableOpacity
-              {...props}
-              onPress={() =>
-                Alert.alert('Acción', 'Se ejecutó una acción personalizada')
-              }
-              style={[props.style, {alignItems: 'center'}]}
-            />
-          ),
+          tabBarButton: FinalizarOrdenTabBarButton,
         }}>
         {() => null}
       </Tab.Screen>
