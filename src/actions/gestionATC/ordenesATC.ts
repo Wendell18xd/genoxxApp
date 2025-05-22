@@ -1,4 +1,5 @@
 import {genoxxApi} from '../../config/api/genoxxApi';
+import { DocumentoOrdenesResponse } from '../../infrastructure/interfaces/gestionATC/ordenes/ordenesATC.response';
 import { DocumentoOrdenesRequest } from '../../infrastructure/interfaces/gestionATC/ordenes/ordenesATC.resquest';
 
 export const getDocumentoOrdenes = async (

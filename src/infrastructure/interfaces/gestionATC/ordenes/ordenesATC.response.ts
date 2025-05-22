@@ -1,6 +1,6 @@
 import {OrdenATC} from '../../../../domain/entities/OrdenATC';
 
-export interface DocumentoResponse {
+export interface DocumentoOrdenesResponse {
   datos: OrdenATC[];
   mensaje: string;
 }

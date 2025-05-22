@@ -361,7 +361,7 @@ const LiquidarMaterialesScreen = () => {
                         <Text style={styles.title}>Estado de Material:</Text>
                       </View>
                       <View style={styles.descriptionContainer}>
-                        <Text style={styles.description}>{item.finalizaMaterial}</Text>
+                        <Text style={styles.description}>''</Text>
                       </View>
                     </View>
                     <View style={styles.row}>
@@ -373,7 +373,7 @@ const LiquidarMaterialesScreen = () => {
                         <Text style={styles.title}>Estado de Orden:</Text>
                       </View>
                       <View style={styles.descriptionContainer}>
-                        <Text style={styles.description}>{item.estCierre}</Text>
+                        <Text style={styles.description}>''</Text>
                       </View>
                     </View>
                   </View>
