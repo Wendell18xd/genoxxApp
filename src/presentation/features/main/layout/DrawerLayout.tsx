@@ -4,12 +4,10 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import {
-  Keyboard,
   KeyboardAvoidingView,
   Platform,
   StyleProp,
   StyleSheet,
-  TouchableWithoutFeedback,
   View,
   ViewStyle,
 } from 'react-native';
@@ -70,7 +68,7 @@ const DrawerLayout = ({
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}
         keyboardVerticalOffset={keyboardVisible ? 0 : -(top + bottom)}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
           <View
             style={[
               styles.containerChildren,
@@ -94,7 +92,7 @@ const DrawerLayout = ({
             )}
             {children}
           </View>
-        </TouchableWithoutFeedback>
+        {/* </TouchableWithoutFeedback> */}
       </KeyboardAvoidingView>
     </View>
   );
