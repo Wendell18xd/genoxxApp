@@ -65,6 +65,7 @@ export const useSarchObras = () => {
     data: proyectos,
     isFetching: isFetchProyecto,
     refetch: refetchProyectos,
+    error: errorProyectos,
   } = useQuery({
     queryKey: ['proyectos', 'obras'],
     queryFn: async () => {
@@ -82,6 +83,7 @@ export const useSarchObras = () => {
     data: obras,
     isFetching: isFetchObras,
     refetch: refetchObras,
+    error: errorObras,
   } = useQuery({
     queryKey: ['obrasAsignadas'],
     queryFn: async () => {
@@ -112,8 +114,10 @@ export const useSarchObras = () => {
     initialValues,
     proyectos,
     isFetchProyecto,
+    errorProyectos,
     obras,
     isFetchObras,
+    errorObras,
 
     //* Metodos
     handleSearch,

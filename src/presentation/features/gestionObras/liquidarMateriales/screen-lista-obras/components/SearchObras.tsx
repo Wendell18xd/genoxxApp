@@ -6,6 +6,8 @@ import PrimaryButton from '../../../../../components/ui/PrimaryButton';
 import {View} from 'react-native';
 import {CustomDropdownInput} from '../../../../../components/ui/CustomDropdownInput';
 import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoader';
+import {useEffect} from 'react';
+import Toast from 'react-native-toast-message';
 
 interface Props {
   onClose?: () => void;
@@ -17,9 +19,29 @@ export const SearchObras = ({onClose}: Props) => {
     initialValues,
     proyectos,
     isFetchObras,
+    isFetchProyecto,
+    errorProyectos,
     handleSearch,
     getValidationSchema,
+    refetchProyectos,
   } = useSarchObras();
+
+  useEffect(() => {
+    refetchProyectos();
+  }, []);
+
+  useEffect(() => {
+    if (errorProyectos) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error al obtener las obras',
+      });
+    }
+  }, [errorProyectos]);
+
+  if (isFetchProyecto) {
+    return <FullScreenLoader />;
+  }
 
   return (
     <View>

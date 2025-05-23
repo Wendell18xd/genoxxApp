@@ -1,5 +1,4 @@
 // ListaObrasScreen.tsx
-import React, {useEffect} from 'react';
 import {FlatList, View} from 'react-native';
 import {Text} from 'react-native-paper';
 import DrawerLayout from '../../../main/layout/DrawerLayout';
@@ -8,23 +7,25 @@ import {useSarchObras} from './hooks/useSarchObras';
 import {CustomFAB} from '../../../../components/ui/CustomFAB';
 import {SearchObras} from './components/SearchObras';
 import {useBottomSheetModal} from '../../../../hooks/useBottomSheet';
-import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
 import CustomBottomSheet from '../../../../components/ui/bottomSheetModal/CustomBottomSheet';
+import {useEffect} from 'react';
+import Toast from 'react-native-toast-message';
 
 export const ListaObrasScreen = () => {
   const {drawerKey} = useMainStore();
-  const {obras, isFetchProyecto, refetchProyectos} = useSarchObras();
+  const {obras, errorObras} = useSarchObras();
   const {ref, open, close} = useBottomSheetModal();
-
-  useEffect(() => {
-    refetchProyectos();
-  }, []);
 
   console.log(drawerKey);
 
-  if (isFetchProyecto) {
-    return <FullScreenLoader />;
-  }
+  useEffect(() => {
+    if (errorObras) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error al obtener las obras',
+      });
+    }
+  }, [errorObras]);
 
   return (
     <DrawerLayout>
