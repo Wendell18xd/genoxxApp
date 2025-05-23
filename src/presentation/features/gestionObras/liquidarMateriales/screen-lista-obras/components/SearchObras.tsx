@@ -24,7 +24,7 @@ export const SearchObras = () => {
 
   return (
     <View>
-      {/* {isFetchObras && <FullScreenLoader transparent />} */}
+      {isFetchObras && <FullScreenLoader transparent />}
       <Formik
         initialValues={initialValues}
         onSubmit={handleSearch}
@@ -33,6 +33,7 @@ export const SearchObras = () => {
           handleChange,
           handleBlur,
           handleSubmit,
+          setFieldValue,
           values,
           errors,
           touched,
@@ -42,8 +43,10 @@ export const SearchObras = () => {
               <View>
                 <CustomDropdownInput
                   label="Seleccione Proyecto"
-                  name="cbo_proy_codigo"
                   options={proyectos || []}
+                  value={values.cbo_proy_codigo}
+                  onSelect={val => setFieldValue('cbo_proy_codigo', val)}
+                  error={touched.cbo_proy_codigo && !!errors.cbo_proy_codigo}
                 />
                 {touched.cbo_proy_codigo && errors.cbo_proy_codigo && (
                   <Text style={{color: 'red', marginTop: 4}}>
@@ -55,8 +58,9 @@ export const SearchObras = () => {
                 <View style={{flex: 0.4}}>
                   <CustomDropdownInput
                     label="Tipo búsqueda"
-                    name="cbo_tipo"
                     options={tiposBusqueda}
+                    value={values.cbo_tipo}
+                    onSelect={val => setFieldValue('cbo_tipo', val)}
                   />
                 </View>
                 <View style={{flex: 0.6}}>

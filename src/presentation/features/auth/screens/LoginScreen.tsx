@@ -226,10 +226,12 @@ const LoginScreen = ({navigation}: Props) => {
                   <View style={{marginTop: 8}}>
                     <CustomDropdownInput
                       label="Empresa"
-                      name="empresa"
-                      options={empresas}
                       placeholder="Seleccione una empresa"
+                      options={empresas}
+                      value={values.empresa}
+                      onSelect={val => setFieldValue('empresa', val)}
                       icon="office-building-outline"
+                      error={touched.empresa && !!errors.empresa}
                     />
                   </View>
                 )}
