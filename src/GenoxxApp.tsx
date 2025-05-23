@@ -6,6 +6,7 @@ import AppNavigation from './presentation/navigations/AppNavigation';
 import Toast from 'react-native-toast-message';
 import {useEffect} from 'react';
 import {initApi} from './config/api/genoxxApi';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const queryClient = new QueryClient();
 
@@ -26,7 +27,9 @@ const GenoxxApp = () => {
           barStyle={barStyle}
         />
         <ThemeContextProvider>
-          <AppNavigation />
+          <GestureHandlerRootView style={{flex: 1}}>
+            <AppNavigation />
+          </GestureHandlerRootView>
         </ThemeContextProvider>
       </QueryClientProvider>
       <Toast position="bottom" />

@@ -61,7 +61,11 @@ export const useSarchObras = () => {
       cbo_proy_codigo: Yup.string().required('Seleccione un proyecto'),
     });
 
-  const {data: proyectos, isFetching: isFetchProyecto} = useQuery({
+  const {
+    data: proyectos,
+    isFetching: isFetchProyecto,
+    refetch: refetchProyectos,
+  } = useQuery({
     queryKey: ['proyectos', 'obras'],
     queryFn: async () => {
       const {datos} = await listadoProyectosObras({
@@ -71,6 +75,7 @@ export const useSarchObras = () => {
       const options = mapToDropdown(datos, 'proy_alias', 'proy_codigo');
       return options;
     },
+    enabled: false,
   });
 
   const {
@@ -86,7 +91,10 @@ export const useSarchObras = () => {
     enabled: false,
   });
 
-  const handleSearch = (values: SearchObrasFormValues) => {
+  const handleSearch = (
+    values: SearchObrasFormValues,
+    onClose?: () => void,
+  ) => {
     const nuevosFiltros: ObrasRequest = {
       ...filtrosRef.current,
       cbo_tipo_buscar_doc: values.cbo_tipo,
@@ -95,6 +103,7 @@ export const useSarchObras = () => {
     };
     filtrosRef.current = nuevosFiltros;
     refetchObras();
+    onClose?.();
   };
 
   return {
@@ -109,5 +118,6 @@ export const useSarchObras = () => {
     //* Metodos
     handleSearch,
     getValidationSchema,
+    refetchProyectos,
   };
 };

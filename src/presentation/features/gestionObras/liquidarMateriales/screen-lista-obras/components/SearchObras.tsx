@@ -7,27 +7,26 @@ import {View} from 'react-native';
 import {CustomDropdownInput} from '../../../../../components/ui/CustomDropdownInput';
 import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoader';
 
-export const SearchObras = () => {
+interface Props {
+  onClose?: () => void;
+}
+
+export const SearchObras = ({onClose}: Props) => {
   const {
     tiposBusqueda,
     initialValues,
     proyectos,
-    isFetchProyecto,
     isFetchObras,
     handleSearch,
     getValidationSchema,
   } = useSarchObras();
-
-  if (isFetchProyecto) {
-    return <FullScreenLoader />;
-  }
 
   return (
     <View>
       {isFetchObras && <FullScreenLoader transparent />}
       <Formik
         initialValues={initialValues}
-        onSubmit={handleSearch}
+        onSubmit={values => handleSearch(values, onClose)}
         validationSchema={getValidationSchema}>
         {({
           handleChange,
@@ -39,7 +38,7 @@ export const SearchObras = () => {
           touched,
         }) => {
           return (
-            <View>
+            <View style={{padding: 8}}>
               <View>
                 <CustomDropdownInput
                   label="Seleccione Proyecto"
@@ -82,7 +81,7 @@ export const SearchObras = () => {
                 icon="magnify"
                 disabled={isFetchObras}
                 loading={isFetchObras}
-                style={{marginTop: 8, width: '100%'}}
+                style={{marginTop: 16, width: '100%'}}
               />
             </View>
           );
