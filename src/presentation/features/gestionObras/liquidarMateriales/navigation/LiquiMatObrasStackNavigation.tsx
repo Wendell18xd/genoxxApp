@@ -1,10 +1,10 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import {ListaObrasScreen} from '../screen-lista-obras/ListaObrasScreen';
-import {DetalleObraScreen} from '../screen-detalle-obra/DetalleObraScreen';
+import {SegmentedButtonsDetalleObras} from './SegmentedButtonsDetalleObras';
 
 export type LiquiMatObrasStackParam = {
   ListaObrasScreen: undefined;
-  DetalleObraScreen: undefined;
+  SegmentedButtonsDetalleObras: undefined;
 };
 
 const Stack = createStackNavigator<LiquiMatObrasStackParam>();
@@ -17,7 +17,10 @@ export const LiquiMatObrasStackNavigation = () => {
       }}
       initialRouteName="ListaObrasScreen">
       <Stack.Screen name="ListaObrasScreen" component={ListaObrasScreen} />
-      <Stack.Screen name="DetalleObraScreen" component={DetalleObraScreen} />
+      <Stack.Screen
+        name="SegmentedButtonsDetalleObras"
+        component={SegmentedButtonsDetalleObras}
+      />
     </Stack.Navigator>
   );
 };

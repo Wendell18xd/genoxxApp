@@ -9,6 +9,10 @@ import {mapToDropdown} from '../../../../../../infrastructure/mappers/mapToDropd
 import {Option} from 'react-native-paper-dropdown';
 import {useRef} from 'react';
 import {ObrasRequest} from '../../../../../../infrastructure/interfaces/gestionObras/liquiMateObra.request';
+import {useLiquiMateStore} from '../../store/useLiquiMateStore';
+import {Obra} from '../../../../../../domain/entities/Obra';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {LiquiMatObrasStackParam} from '../../navigation/LiquiMatObrasStackNavigation';
 
 interface SearchObrasFormValues {
   cbo_proy_codigo: string;
@@ -47,6 +51,9 @@ const tiposBusqueda: Option[] = [
 
 export const useSarchObras = () => {
   const {user} = useAuthStore();
+  const {setObra} = useLiquiMateStore();
+  const navigation = useNavigation<NavigationProp<LiquiMatObrasStackParam>>();
+
   const filtrosRef = useRef<ObrasRequest>({
     vl_empr_codigo: user?.empr_codigo || '',
     cbo_tipo_buscar_doc: 'ORDN',
@@ -108,6 +115,11 @@ export const useSarchObras = () => {
     onClose?.();
   };
 
+  const handleSelectObra = (obra: Obra) => {
+    setObra(obra);
+    navigation.navigate('SegmentedButtonsDetalleObras');
+  };
+
   return {
     //* Propiedades
     tiposBusqueda,
@@ -123,5 +135,7 @@ export const useSarchObras = () => {
     handleSearch,
     getValidationSchema,
     refetchProyectos,
+    refetchObras,
+    handleSelectObra,
   };
 };

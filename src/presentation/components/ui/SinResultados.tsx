@@ -11,12 +11,13 @@ const SinResultados = ({message = 'No se encontraron resultados'}: Props) => {
     <View
       style={{
         flex: 1,
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 32,
+        padding: 100,
       }}>
-      <Text variant="bodyLarge">
-        <MaterialIcons name="magnify" />
+      <MaterialIcons name="magnify" style={{marginRight: 16}} size={25} />
+      <Text variant="bodyLarge" style={{textAlign: 'center'}}>
         {message}
       </Text>
     </View>
