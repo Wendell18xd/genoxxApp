@@ -17,7 +17,9 @@ const NoMenuAvailableScreen = () => {
       <Text style={styles.subtitle}>
         No se han encontrado opciones para mostrar en este módulo.
       </Text>
-      <PrimaryButton onPress={handleGoHome}>Volver al inicio</PrimaryButton>
+      <View>
+        <PrimaryButton onPress={handleGoHome}>Volver al inicio</PrimaryButton>
+      </View>
     </View>
   );
 };
