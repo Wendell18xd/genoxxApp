@@ -6,7 +6,7 @@ import { ConsultaUnidadesScreen } from '../screen-consulta-unidades/ConsultaUnid
 
 export type ConsultaUnidadesStackParam = {
   ConsultaUnidadesScreen: undefined;
-  DetalleConsultaScreen: {ConsultaUnidades: ConsultaUnidades};
+  DetalleConsultaScreen: {consulta: ConsultaUnidades};
 };
 
 const Stack = createStackNavigator<ConsultaUnidadesStackParam>();
