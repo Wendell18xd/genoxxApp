@@ -1,7 +1,7 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import { ConsultaUnidades } from '../../../../../domain/entities/ConsultaUnidades';
-import { ConsultaUnidadesScreen } from '../screen-consulta-unidades/hooks/consultaUnidadesScreen';
 import { DetalleConsultaScreen } from '../screen-detalle-consulta/DetalleConsultaScreen';
+import { ConsultaUnidadesScreen } from '../screen-consulta-unidades/ConsultaUnidadesScreen';
 
 
 export type ConsultaUnidadesStackParam = {
