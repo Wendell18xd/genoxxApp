@@ -5,6 +5,7 @@ import {
 } from 'react-native-paper-dropdown';
 import {TextInput} from 'react-native-paper';
 import {useField, useFormikContext} from 'formik';
+import {useMemo} from 'react';
 
 interface Props {
   height?: number;
@@ -30,6 +31,25 @@ export const CustomDropdownInput: React.FC<Props> = ({
 
   const hasError = Boolean(meta.touched && meta.error);
 
+  const DropdownInput = useMemo(() => {
+    return ({selectedLabel, rightIcon}: DropdownInputProps) => (
+      <TextInput
+        mode="outlined"
+        placeholder={placeholder}
+        label={label}
+        value={selectedLabel}
+        editable={false}
+        pointerEvents="none"
+        error={hasError}
+        style={{
+          height: height,
+        }}
+        left={icon ? <TextInput.Icon icon={icon} /> : undefined}
+        right={rightIcon}
+      />
+    );
+  }, [icon, height, mode, hasError, label]);
+
   return (
     <Dropdown
       label={label}
@@ -38,30 +58,7 @@ export const CustomDropdownInput: React.FC<Props> = ({
       options={options}
       value={field.value}
       onSelect={val => setFieldValue(name, val)}
-      CustomDropdownInput={props =>
-        DropdownInput({...props, error: hasError}, icon, height)
-      }
+      CustomDropdownInput={DropdownInput}
     />
   );
 };
-
-const DropdownInput = (
-  {placeholder, selectedLabel, rightIcon, error, label}: DropdownInputProps,
-  icon: string | undefined,
-  height: number,
-) => (
-  <TextInput
-    mode="outlined"
-    placeholder={placeholder}
-    label={label}
-    value={selectedLabel}
-    editable={false}
-    pointerEvents="none"
-    error={error}
-    style={{
-      height: height,
-    }}
-    left={icon ? <TextInput.Icon icon={icon} /> : undefined}
-    right={rightIcon}
-  />
-);
