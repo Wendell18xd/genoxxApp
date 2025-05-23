@@ -1,3 +1,4 @@
+import { ConsultaUnidadesStackNatigation } from '../presentation/features/flota/consultaUnidades/navigations/ConsultaUnidadesStackNatigation';
 import { LiquiMatATCStackNavigation } from '../presentation/features/gestionATC/liquidarMateriales/navigations/LiquiMatATCStackNavigation';
 import LiquidarMaterialesObras from '../presentation/features/gestionObras/liquidarMateriales/screen/LiquidarMaterialesObras';
 import LiquidarPartidasObras from '../presentation/features/gestionObras/liquidarPartidas/screen/LiquidarPartidasObras';
@@ -12,4 +13,6 @@ export const drawerScreenComponents: Record<
   AprobacionPedidosFragment: LiquidarPartidasObras,
   ReporteStockFragment: LiquidarPartidasObras,
   ListMaterialesATCFragment: LiquiMatATCStackNavigation,
+
+  ListaUnidadesFragment: ConsultaUnidadesStackNatigation,
 };
