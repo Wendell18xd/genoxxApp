@@ -11,7 +11,7 @@ export type ConsultaUnidadesStackParam = {
 
 const Stack = createStackNavigator<ConsultaUnidadesStackParam>();
 
-export const ConsultaUnidadesStackNatigation = () => {
+export const ConsultaUnidadesStackNavigation = () => {
   return (
     <Stack.Navigator
       screenOptions={{
