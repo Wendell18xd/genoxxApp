@@ -26,7 +26,7 @@ export const useMateObras = () => {
           vl_nro_orden: obra?.nro_orden || '',
         },
       );
-      return {materiales, cierre};
+      return {materiales: materiales.datos, cierre};
     },
     enabled: false,
   });

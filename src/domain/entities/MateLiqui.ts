@@ -9,4 +9,6 @@ export interface MateLiqui {
   guia_numero: string;
   codi_perfil: string;
   nom_perfil: string;
+  cont_correlativo: string;
+  mate_skucliente: string;
 }
