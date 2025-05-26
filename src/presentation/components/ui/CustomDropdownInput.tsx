@@ -55,6 +55,9 @@ export const CustomDropdownInput: React.FC<Props> = ({
       value={value}
       onSelect={onSelect}
       CustomDropdownInput={DropdownInput}
+      menuContentStyle={{
+        backgroundColor: '#f5f5f5',
+      }}
     />
   );
 };

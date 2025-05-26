@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import DrawerLayout from '../../../main/layout/DrawerLayout';
 import {useLiquiMateStore} from '../store/useLiquiMateStore';
 import {useEffect, useState} from 'react';
@@ -51,9 +51,31 @@ export const SegmentedButtonsDetalleObras = () => {
           ]}
         />
       </View>
-      {value === '1' && <DetalleObraScreen />}
-      {value === '2' && <MaterialesObraScreen />}
-      {value === '3' && <FotosObraScreen />}
+
+      {/* Todas las pantallas montadas siempre */}
+      <View style={styles.screenContainer}>
+        <View style={[styles.screen, value !== '1' && styles.hidden]}>
+          <DetalleObraScreen />
+        </View>
+        <View style={[styles.screen, value !== '2' && styles.hidden]}>
+          <MaterialesObraScreen />
+        </View>
+        <View style={[styles.screen, value !== '3' && styles.hidden]}>
+          <FotosObraScreen />
+        </View>
+      </View>
     </DrawerLayout>
   );
 };
+
+const styles = StyleSheet.create({
+  screenContainer: {
+    flex: 1,
+  },
+  screen: {
+    flex: 1,
+  },
+  hidden: {
+    display: 'none',
+  },
+});

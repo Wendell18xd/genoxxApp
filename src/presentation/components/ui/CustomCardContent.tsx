@@ -31,7 +31,7 @@ export const CustomCardContent = ({
         <TouchableRipple
           onPress={onPress}
           borderless={false}
-          rippleColor="rgba(0, 0, 0, 0.3)"
+          rippleColor="rgba(0, 0, 0, 0.1)"
           style={{borderRadius: rippleRadius}}>
           {content}
         </TouchableRipple>

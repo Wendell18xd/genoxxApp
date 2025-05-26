@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     flexWrap: 'wrap',
     position: 'relative',
+    paddingVertical: 4,
   },
   footerItem: {
     flexDirection: 'row',

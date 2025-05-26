@@ -6,3 +6,14 @@ export interface ObrasRequest {
   txt_codi_ejecuta: string;
   txt_cod_negocio: string;
 }
+
+export interface MateLiquiRequest {
+  vl_empr_codigo: string;
+  vl_reg_codigo: string;
+  vl_regularizar: string;
+}
+
+export interface ValidaCierreObraRequest {
+  vl_empr_codigo: string;
+  vl_nro_orden: string;
+}

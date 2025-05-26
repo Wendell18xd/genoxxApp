@@ -26,6 +26,7 @@ export const DetalleObraScreen = () => {
   return (
     <ScrollView contentContainerStyle={{padding: 16}}>
       <CustomCardContent mode="contained">
+        <LabelValueRow label="Cod Registro" value={obra?.regi_codigo} />
         <LabelValueRow label="Nro Orden" value={obra?.nro_orden} />
         <LabelValueRow label="Nro Orden 2" value={obra?.nro_orden2} />
         <LabelValueRow label="Proyecto" value={obra?.proy_nombre} />
