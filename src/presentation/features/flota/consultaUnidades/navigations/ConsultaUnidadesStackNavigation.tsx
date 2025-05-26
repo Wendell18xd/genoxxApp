@@ -1,0 +1,28 @@
+import {createStackNavigator} from '@react-navigation/stack';
+import { ConsultaUnidades } from '../../../../../domain/entities/ConsultaUnidades';
+import { DetalleConsultaScreen } from '../screen-detalle-consulta/DetalleConsultaScreen';
+import { ConsultaUnidadesScreen } from '../screen-consulta-unidades/ConsultaUnidadesScreen';
+
+
+export type ConsultaUnidadesStackParam = {
+  ConsultaUnidadesScreen: undefined;
+  DetalleConsultaScreen: {consulta: ConsultaUnidades};
+};
+
+const Stack = createStackNavigator<ConsultaUnidadesStackParam>();
+
+export const ConsultaUnidadesStackNavigation = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      initialRouteName="ConsultaUnidadesScreen">
+      <Stack.Screen name="ConsultaUnidadesScreen" component={ConsultaUnidadesScreen} />
+      <Stack.Screen
+        name="DetalleConsultaScreen"
+        component={DetalleConsultaScreen}
+      />
+    </Stack.Navigator>
+  );
+};
