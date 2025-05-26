@@ -1,7 +1,6 @@
 import { ConsultaUnidadesStackNavigation } from '../presentation/features/flota/consultaUnidades/navigations/ConsultaUnidadesStackNavigation';
 import { LiquiMatATCStackNavigation } from '../presentation/features/gestionATC/liquidarMateriales/navigations/LiquiMatATCStackNavigation';
-import LiquidarMaterialesObras from '../presentation/features/gestionObras/liquidarMateriales/screen/LiquidarMaterialesObras';
-import LiquidarPartidasObras from '../presentation/features/gestionObras/liquidarPartidas/screen/LiquidarPartidasObras';
+import { LiquiMatObrasStackNavigation } from '../presentation/features/gestionObras/liquidarMateriales/navigation/LiquiMatObrasStackNavigation';
 
 export const drawerScreenComponents: Record<
   string,
@@ -15,6 +14,6 @@ export const drawerScreenComponents: Record<
   // PedidoMaterialFragment: LiquidarPartidasObras,
   // AprobacionPedidosFragment: LiquidarPartidasObras,
   // ReporteStockFragment: LiquidarPartidasObras,
-
+  //Flota
   ListaUnidadesFragment: ConsultaUnidadesStackNavigation,
 };
