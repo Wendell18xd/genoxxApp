@@ -4,7 +4,7 @@ import {ConsultaUnidadesStackParam} from '../navigations/ConsultaUnidadesStackNa
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
 import {ScrollView} from 'react-native-gesture-handler';
 import {format, parseISO} from 'date-fns';
-import {Alert} from 'react-native';
+import {Alert, View} from 'react-native';
 import {useEffect} from 'react';
 
 export const DetalleConsultaScreen = () => {
@@ -70,7 +70,7 @@ export const DetalleConsultaScreen = () => {
       value: formatearFecha(consulta.licencia_conducir_vencimiento),
     },
     {label: 'Proyecto del trabajador', value: consulta.proy_trabajador},
-    {label: 'Unidade de Negocio del trabajador', value: consulta.unidad_trab},
+    {label: 'Unidad de Negocio del trabajador', value: consulta.unidad_trab},
     {label: 'Contrata', value: consulta.nom_contrata},
     {
       label: 'Estado',
@@ -172,19 +172,39 @@ export const DetalleConsultaScreen = () => {
 
   return (
     <DrawerLayout>
-      <ScrollView contentContainerStyle={{padding: 16}}>
-        {campos.map((campo, index) => {
-          return (
-            <CustomTextInput
-              key={index}
-              label={campo.label}
-              value={campo.value ?? ''}
-              mode="outlined"
-              disabled
-              style={{marginBottom: 12}}
-            />
-          );
-        })}
+      <ScrollView contentContainerStyle={{padding: 16}} showsVerticalScrollIndicator={false}>
+        <View
+          style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+          }}>
+          {campos.map((campo, index) => {
+            const longitudValor = (campo.value ?? '').length;
+            const longitudLabel = (campo.label ?? '').length;
+            const isLargo = longitudValor > 25 || longitudLabel > 20;
+
+            return (
+              <View
+                key={index}
+                style={{
+                  flexGrow: 1,
+                  flexShrink: 1,
+                  flexBasis: isLargo ? '100%' : '30%', // 3 por fila si hay espacio
+                  minWidth: isLargo ? '100%' : '45%', // mínimo para que se acomode a 2 si no entran 3
+                  marginBottom: 12,
+                  paddingRight: 8,
+                }}>
+                <CustomTextInput
+                  label={campo.label}
+                  value={campo.value ?? ''}
+                  mode="outlined"
+                  editable={false}
+                />
+              </View>
+            );
+          })}
+        </View>
       </ScrollView>
     </DrawerLayout>
   );
