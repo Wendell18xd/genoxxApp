@@ -1,50 +1,85 @@
 // ListaObrasScreen.tsx
-import React, {useEffect} from 'react';
-import {FlatList, View} from 'react-native';
-import {Text} from 'react-native-paper';
+import {FlatList} from 'react-native';
 import DrawerLayout from '../../../main/layout/DrawerLayout';
 import {useMainStore} from '../../../../store/main/useMainStore';
 import {useSarchObras} from './hooks/useSarchObras';
 import {CustomFAB} from '../../../../components/ui/CustomFAB';
 import {SearchObras} from './components/SearchObras';
 import {useBottomSheetModal} from '../../../../hooks/useBottomSheet';
-import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
 import CustomBottomSheet from '../../../../components/ui/bottomSheetModal/CustomBottomSheet';
+import {useEffect, useState} from 'react';
+import Toast from 'react-native-toast-message';
+import {useQueryClient} from '@tanstack/react-query';
+import {ItemObra} from '../components/ItemObra';
+import SinResultados from '../../../../components/ui/SinResultados';
+import {Searchbar} from 'react-native-paper';
 
 export const ListaObrasScreen = () => {
   const {drawerKey} = useMainStore();
-  const {obras, isFetchProyecto, refetchProyectos} = useSarchObras();
+  const {obras, errorObras, isFetchObras, refetchObras, handleSelectObra} = useSarchObras();
   const {ref, open, close} = useBottomSheetModal();
-
-  useEffect(() => {
-    refetchProyectos();
-  }, []);
+  const queryClient = useQueryClient();
+  const [searchQuery, setSearchQuery] = useState('');
 
   console.log(drawerKey);
 
-  if (isFetchProyecto) {
-    return <FullScreenLoader />;
-  }
+  useEffect(() => {
+    if (errorObras) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error al obtener las obras',
+      });
+    }
+  }, [errorObras]);
+
+  useEffect(() => {
+    queryClient.removeQueries({
+      queryKey: ['obrasAsignadas'],
+    });
+  }, []);
 
   return (
-    <DrawerLayout>
-      <View style={{flex: 1, padding: 16}}>
-        <FlatList
-          data={obras}
-          keyExtractor={item => item.regi_codigo}
-          renderItem={() => <Text>ListaObrasScreen</Text>}
-        />
+    <DrawerLayout title="Lista de Obras">
+      {obras && obras.length > 0 ? (
+        <>
+          <Searchbar
+            placeholder="Filtrar por nro de orden"
+            onChangeText={setSearchQuery}
+            value={searchQuery}
+            style={{marginHorizontal: 16, marginTop: 16}}
+          />
+          <FlatList
+            data={obras?.filter(obra =>
+              obra.nro_orden?.toLowerCase().includes(searchQuery.toLowerCase()),
+            )}
+            keyExtractor={item => item.regi_codigo}
+            contentContainerStyle={{gap: 16, padding: 16}}
+            refreshing={isFetchObras}
+            onRefresh={refetchObras}
+            showsVerticalScrollIndicator={false}
+            renderItem={({item}) => (
+              <ItemObra
+                obra={item}
+                onPress={() => {
+                  handleSelectObra(item);
+                }}
+              />
+            )}
+          />
+        </>
+      ) : (
+        <SinResultados message="No se encontraron obras, use la lupa para buscar" />
+      )}
 
-        <CustomFAB
-          icon="magnify"
-          onPress={open}
-          style={{bottom: 16, right: 16}}
-        />
+      <CustomFAB
+        icon="magnify"
+        onPress={open}
+        style={{bottom: 16, right: 16, marginBottom: 16}}
+      />
 
-        <CustomBottomSheet ref={ref}>
-          <SearchObras onClose={close} />
-        </CustomBottomSheet>
-      </View>
+      <CustomBottomSheet ref={ref}>
+        <SearchObras onClose={close} />
+      </CustomBottomSheet>
     </DrawerLayout>
   );
 };
