@@ -18,4 +18,12 @@ export const globalStyle = StyleSheet.create({
     backgroundColor: '#FF9800',
     color: '#000',
   },
+  card: {
+    backgroundColor: '#fff',
+    elevation: 4, // Android
+    shadowColor: '#000', // iOS
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+  },
 });

@@ -1,7 +1,7 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import {CambiarClaveScreen} from '../screens/CambiarClaveScreen';
-import ProfileScreen from '../screens/ProfileScreen';
-import { AlertasScreen } from '../screens/AlertasScreen';
+import {CambiarClaveScreen} from '../screen-cambiar-clave/CambiarClaveScreen';
+import ProfileScreen from '../screen-profile/ProfileScreen';
+import { AlertasScreen } from '../screen-alertas/AlertasScreen';
 
 export type ProfileStackParam = {
   ProfileScreen: undefined;

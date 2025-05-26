@@ -1,4 +1,4 @@
-import {CarruselNoticias} from '../components/CarruselNoticias';
+import {CarruselNoticias} from './components/CarruselNoticias';
 import SafeAreaLayout from '../../../layout/SafeAreaLayout';
 
 export const NoticiasScreen = () => {

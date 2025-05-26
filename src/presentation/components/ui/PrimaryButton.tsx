@@ -9,30 +9,36 @@ import {
   View,
 } from 'react-native';
 import {useTheme} from 'react-native-paper';
+import MaterialIcons from './icons/MaterialIcons';
+
 interface Props {
   height?: number;
   borderRadius?: number;
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  label?: string;
   style?: StyleProp<ViewStyle>;
   onPress?: () => void;
   loading?: boolean;
   disabled?: boolean;
   debounce?: boolean;
+  icon?: string;
 }
 
 const PrimaryButton = ({
   height = 68,
   borderRadius = 12,
   children,
+  label,
   onPress,
   style,
   loading = false,
   disabled = false,
   debounce = false,
+  icon = '',
 }: Props) => {
   const {colors} = useTheme();
   const lastPressRef = useRef<number>(0);
-  const debounceTime = 1000; // ms
+  const debounceTime = 1000;
 
   const isDisabled = disabled || loading;
 
@@ -70,7 +76,12 @@ const PrimaryButton = ({
         {loading && (
           <ActivityIndicator color="white" style={{marginRight: 8}} />
         )}
-        <Text style={styles.label}>{children}</Text>
+        {icon && !loading && (
+          <MaterialIcons name={icon} color="white" style={{marginEnd: 8}} />
+        )}
+        {(children || label) && (
+          <Text style={styles.label}>{children ?? label}</Text>
+        )}
       </View>
     </Pressable>
   );
@@ -80,6 +91,8 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
+    alignSelf: 'flex-start',
+    paddingHorizontal: 16,
   },
   content: {
     flexDirection: 'row',
