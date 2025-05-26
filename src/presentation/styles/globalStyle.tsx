@@ -1,5 +1,10 @@
 import {StyleSheet} from 'react-native';
 
+export const globalColors = {
+  success: '#4CAF50',
+  warning: '#FF9800',
+};
+
 export const globalStyle = StyleSheet.create({
   container: {
     flex: 1,

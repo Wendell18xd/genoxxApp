@@ -7,12 +7,14 @@ export const drawerScreenComponents: Record<
   string,
   React.ComponentType<any>
 > = {
-  LiquidacionMaterialesFragment: LiquidarMaterialesObras,
-  ListObrasFragment1: LiquidarPartidasObras,
-  PedidoMaterialFragment: LiquidarPartidasObras,
-  AprobacionPedidosFragment: LiquidarPartidasObras,
-  ReporteStockFragment: LiquidarPartidasObras,
+  //ATC
   ListMaterialesATCFragment: LiquiMatATCStackNavigation,
+  //Obras
+  LiquidacionMaterialesFragment: LiquiMatObrasStackNavigation,
+  ListObrasFragment1: LiquiMatObrasStackNavigation,
+  // PedidoMaterialFragment: LiquidarPartidasObras,
+  // AprobacionPedidosFragment: LiquidarPartidasObras,
+  // ReporteStockFragment: LiquidarPartidasObras,
 
   ListaUnidadesFragment: ConsultaUnidadesStackNavigation,
 };

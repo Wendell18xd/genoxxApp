@@ -6,6 +6,8 @@ import AppNavigation from './presentation/navigations/AppNavigation';
 import Toast from 'react-native-toast-message';
 import {useEffect} from 'react';
 import {initApi} from './config/api/genoxxApi';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+// import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 const queryClient = new QueryClient();
 
@@ -17,6 +19,11 @@ const GenoxxApp = () => {
     initApi();
   }, []);
 
+  // Despues revisar afecta a la posision del dropdown
+  /* useEffect(() => {
+    changeNavigationBarColor('transparent', true, false);
+  }, []); */
+
   return (
     <>
       <QueryClientProvider client={queryClient}>
@@ -26,7 +33,9 @@ const GenoxxApp = () => {
           barStyle={barStyle}
         />
         <ThemeContextProvider>
-          <AppNavigation />
+          <GestureHandlerRootView style={{flex: 1}}>
+            <AppNavigation />
+          </GestureHandlerRootView>
         </ThemeContextProvider>
       </QueryClientProvider>
       <Toast position="bottom" />

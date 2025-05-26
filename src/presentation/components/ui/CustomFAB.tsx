@@ -1,6 +1,6 @@
 import React, {useRef} from 'react';
 import {StyleProp, StyleSheet, ViewStyle} from 'react-native';
-import {FAB} from 'react-native-paper';
+import {FAB, useTheme} from 'react-native-paper';
 
 interface CustomFABProps {
   icon: string;
@@ -15,12 +15,13 @@ interface CustomFABProps {
 export const CustomFAB: React.FC<CustomFABProps> = ({
   icon,
   label,
-  color = '#6200ee',
+  color = '',
   labelColor = '#fff',
   style,
   onPress,
   loading = false,
 }) => {
+  const {colors} = useTheme();
   const lastPressRef = useRef<number>(0);
 
   const handlePress = () => {
@@ -36,13 +37,14 @@ export const CustomFAB: React.FC<CustomFABProps> = ({
     <FAB
       icon={icon}
       label={label}
-      style={[styles.fab, {backgroundColor: color}, style]}
+      style={[styles.fab, {backgroundColor: color || colors.secondary}, style]}
       color={labelColor}
       theme={{
         colors: {
           onSecondaryContainer: labelColor,
         },
       }}
+      rippleColor="rgba(255,255,255,0.3)"
       loading={loading}
       onPress={handlePress}
     />
