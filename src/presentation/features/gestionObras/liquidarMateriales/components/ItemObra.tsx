@@ -3,6 +3,7 @@ import {Text, useTheme, IconButton, Divider} from 'react-native-paper';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
 import {Obra} from '../../../../../domain/entities/Obra';
 import {CustomCardContent} from '../../../../components/ui/CustomCardContent';
+import {globalColors} from '../../../../styles/globalStyle';
 
 interface Props {
   obra: Obra;
@@ -36,10 +37,25 @@ export const ItemObra = ({obra, onPress}: Props) => {
 
       {/* Etiqueta inferior */}
       <View style={styles.footer}>
-        <Text variant="bodySmall" style={{marginRight: 4}}>
-          Dirección:
-        </Text>
-        <Text variant="bodySmall">{obra.direccion}</Text>
+        <View style={styles.footerItem}>
+          <Text variant="bodySmall" style={{marginRight: 4}}>
+            Dirección:
+          </Text>
+          <Text variant="bodySmall">{obra.direccion}</Text>
+        </View>
+
+        {/* GPS */}
+        {obra.coordenada_x !== '' && (
+          <View style={styles.gpsContainer}>
+            <IconButton
+              icon="map-marker"
+              iconColor={globalColors.success}
+              onPress={() => {
+                console.log(obra.coordenada_x, obra.coordenada_y);
+              }}
+            />
+          </View>
+        )}
       </View>
     </CustomCardContent>
   );
@@ -63,8 +79,20 @@ const styles = StyleSheet.create({
   },
   footer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 8,
     flexWrap: 'wrap',
+    position: 'relative',
+  },
+  footerItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  gpsContainer: {
+    position: 'absolute',
+    right: 0,
+    top: -17,
   },
 });

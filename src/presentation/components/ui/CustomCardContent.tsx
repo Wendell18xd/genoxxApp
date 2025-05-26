@@ -20,11 +20,9 @@ export const CustomCardContent = ({
   const rippleRadius = 12;
 
   const content = (
-    <View style={[styles.rippleWrapper, {borderRadius: rippleRadius}]}>
-      <Card.Content style={[styles.pressableContent, styleContent]}>
-        {children}
-      </Card.Content>
-    </View>
+    <Card.Content style={[styles.pressableContent, styleContent]}>
+      <View style={[styles.rippleWrapper]}>{children}</View>
+    </Card.Content>
   );
 
   return (

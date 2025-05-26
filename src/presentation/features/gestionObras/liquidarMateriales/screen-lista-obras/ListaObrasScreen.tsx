@@ -16,7 +16,7 @@ import {Searchbar} from 'react-native-paper';
 
 export const ListaObrasScreen = () => {
   const {drawerKey} = useMainStore();
-  const {obras, errorObras, refetchObras, handleSelectObra} = useSarchObras();
+  const {obras, errorObras, isFetchObras, refetchObras, handleSelectObra} = useSarchObras();
   const {ref, open, close} = useBottomSheetModal();
   const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState('');
@@ -43,7 +43,7 @@ export const ListaObrasScreen = () => {
       {obras && obras.length > 0 ? (
         <>
           <Searchbar
-            placeholder="Buscar número de orden"
+            placeholder="Filtrar por nro de orden"
             onChangeText={setSearchQuery}
             value={searchQuery}
             style={{marginHorizontal: 16, marginTop: 16}}
@@ -54,7 +54,7 @@ export const ListaObrasScreen = () => {
             )}
             keyExtractor={item => item.regi_codigo}
             contentContainerStyle={{gap: 16, padding: 16}}
-            refreshing={false}
+            refreshing={isFetchObras}
             onRefresh={refetchObras}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => (
