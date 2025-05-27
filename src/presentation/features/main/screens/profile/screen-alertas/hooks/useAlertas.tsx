@@ -91,11 +91,15 @@ export const useAlertas = () => {
   };
 
   return {
+    //* Propiedades
     formValues,
     tipos,
     isFetching,
-    startAlertaSubmit,
     initialValues,
+    mutation,
+
+    //* Metodos
+    startAlertaSubmit,
     getAlertValidationSchema,
   };
 };
