@@ -45,36 +45,32 @@ export const ItemMateLiqui = ({mate, onPress}: Props) => {
 
       {/* Etiqueta inferior */}
       <View style={styles.footer}>
-        <View style={styles.footerItem}>
-          <Text variant="bodySmall" style={styles.info}>
-            Guia:
-          </Text>
-          <Text variant="bodySmall">
-            {mate.guia_codigo} - {mate.guia_numero}
-          </Text>
-        </View>
-        <View style={styles.footerItem}>
-          <Text variant="bodySmall" style={styles.info}>
-            Sku Cliente:
-          </Text>
-          <Text variant="bodySmall">{mate.mate_skucliente}</Text>
-        </View>
-        <View style={styles.footerItem}>
-          <Text variant="bodySmall" style={styles.info}>
-            Fecha Liquidación:
-          </Text>
-          <Text variant="bodySmall">{mate.fecha_liquidacion}</Text>
-        </View>
-        <View style={styles.footerItem}>
-          <Text variant="bodySmall" style={styles.info}>
-            Liquidado por:
-          </Text>
-          <Text variant="bodySmall">{mate.nom_perfil}</Text>
-        </View>
+        {mate.guia_codigo && (
+          <ItemInferior
+            label="Guia"
+            value={`${mate.guia_codigo} - ${mate.guia_numero}`}
+          />
+        )}
+
+        <ItemInferior label="Sku Cliente" value={mate.mate_skucliente} />
+        <ItemInferior
+          label="Fecha Liquidación"
+          value={mate.fecha_liquidacion}
+        />
+        <ItemInferior label="Liquidado por" value={mate.nom_perfil} />
       </View>
     </CustomCardContent>
   );
 };
+
+const ItemInferior = ({value, label}: {value: string; label: string}) => (
+  <View style={styles.footerItem}>
+    <Text variant="bodySmall" style={styles.info}>
+      {label}:
+    </Text>
+    <Text variant="bodySmall">{value}</Text>
+  </View>
+);
 
 const styles = StyleSheet.create({
   container: {

@@ -1,8 +1,7 @@
 import {FlatList, StyleSheet, View} from 'react-native';
 import {globalStyle} from '../../../../styles/globalStyle';
-import {Divider, Text} from 'react-native-paper';
 import CustomSwitch from '../../../../components/ui/CustomSwitch';
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {useMateObras} from './hooks/useMateObras';
 import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
 import Toast from 'react-native-toast-message';
@@ -11,12 +10,13 @@ import {ItemMateLiqui} from './components/ItemMateLiqui';
 import {CustomFAB} from '../../../../components/ui/CustomFAB';
 
 export const MaterialesObraScreen = () => {
-  const [isRegulariza, setIsRegulariza] = useState(false);
   const {
     dataMateriales,
     isFetchMateriales,
     errorMateriales,
+    isRegulariza,
     refetchMateriales,
+    handleRegularizarMateriales,
   } = useMateObras();
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export const MaterialesObraScreen = () => {
         {/* <Divider style={styles.divider} /> */}
         <CustomSwitch
           isOn={isRegulariza}
-          onChange={value => setIsRegulariza(value)}
+          onChange={value => handleRegularizarMateriales(value)}
           text="Regularizar materiales"
         />
         <View style={{marginVertical: 8}} />
@@ -64,11 +64,7 @@ export const MaterialesObraScreen = () => {
         )}
       </View>
 
-      <CustomFAB
-        icon="plus"
-        onPress={() => {}}
-        style={styles.fab}
-      />
+      <CustomFAB icon="plus" onPress={() => {}} style={styles.fab} />
     </View>
   );
 };
