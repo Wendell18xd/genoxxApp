@@ -6,6 +6,7 @@ import {getAlertas} from '../../../../../../../actions/profile/Alertas';
 import {enviarAlerta} from '../../../../../../../infrastructure/interfaces/profile/alert/alertas.request';
 import {mapToDropdown} from '../../../../../../../infrastructure/mappers/mapToDropdown';
 import {useAuthStore} from '../../../../../../store/auth/useAuthStore';
+import * as Yup from 'yup';
 
 interface AlertasFromValues {
   tipo: string;
@@ -18,6 +19,13 @@ const initialValues: AlertasFromValues = {
   telefono: '',
   comentario: '',
 };
+
+export const getAlertValidationSchema = Yup.object().shape({
+  tipo: Yup.string().required('Seleccione un tipo de alerta'),
+  telefono: Yup.string()
+    .required('Ingrese un número de teléfono'),
+  comentario: Yup.string().required('Ingrese un comentario'),
+});
 
 export const useAlertas = () => {
   const navigation = useNavigation();
@@ -35,6 +43,7 @@ export const useAlertas = () => {
       const resp = await getAlertas();
       return mapToDropdown(resp.datos, 'nom_para', 'cod_para');
     },
+    enabled: false,
   });
 
   useEffect(() => {
@@ -62,21 +71,6 @@ export const useAlertas = () => {
     values: AlertasFromValues,
     resetForm: () => void,
   ) => {
-    if (!values.tipo || !values.telefono || !values.comentario) {
-      Toast.show({
-        type: 'error',
-        text1: 'Complete todos los campos',
-      });
-      return;
-    }
-    if (values.telefono.length !== 9) {
-      Toast.show({
-        type: 'error',
-        text1: 'El número de teléfono debe tener al menos 9 dígitos',
-      });
-      return;
-    }
-
     const data = {
       vg_empr_codigo: user?.empr_codigo || '',
       vg_usua_codigo: user?.usua_codigo || '',
@@ -103,5 +97,6 @@ export const useAlertas = () => {
     isFetching,
     startAlertaSubmit,
     initialValues,
+    getAlertValidationSchema,
   };
 };
