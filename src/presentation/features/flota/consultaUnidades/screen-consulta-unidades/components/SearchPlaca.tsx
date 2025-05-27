@@ -12,10 +12,6 @@ interface Props {
 export const SearchPlaca = ({onClose}: Props) => {
   const {initialValues, isFetchConsulta, handleSearch} = useSearchConsulta();
 
-  if (isFetchConsulta) {
-    return <FullScreenLoader />;
-  }
-
   return (
     <View>
       {isFetchConsulta && <FullScreenLoader transparent />}

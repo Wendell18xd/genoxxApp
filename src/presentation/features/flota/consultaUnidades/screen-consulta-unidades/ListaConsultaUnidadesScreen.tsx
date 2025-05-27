@@ -1,45 +1,47 @@
-
 import DrawerLayout from '../../../main/layout/DrawerLayout';
 import {useEffect, useState} from 'react';
-import { FlatList } from 'react-native-gesture-handler';
-import { useMainStore } from '../../../../store/main/useMainStore';
-import { useSearchConsulta } from './hooks/useSearchConsulta';
+import {FlatList} from 'react-native-gesture-handler';
+import {useSearchConsulta} from './hooks/useSearchConsulta';
 import {useBottomSheetModal} from '../../../../hooks/useBottomSheet';
-import { useQueryClient } from '@tanstack/react-query';
+import {useQueryClient} from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
-import { Searchbar } from 'react-native-paper';
+import {Searchbar} from 'react-native-paper';
 import SinResultados from '../../../../components/ui/SinResultados';
-import { CustomFAB } from '../../../../components/ui/CustomFAB';
-import { ItemConsulta } from './components/ItemConsulta';
+import {CustomFAB} from '../../../../components/ui/CustomFAB';
+import {ItemConsulta} from './components/ItemConsulta';
 import CustomBottomSheet from '../../../../components/ui/bottomSheetModal/CustomBottomSheet';
-import { SearchPlaca } from './components/SearchPlaca';
+import {SearchPlaca} from './components/SearchPlaca';
 
 export const ListaConsultaUnidadesScreen = () => {
-
-  const {drawerKey} = useMainStore();
-  const {consulta, errorConsulta, isFetchConsulta, refetchConsulta, handleSelectConsulta} = useSearchConsulta();
-   const { ref, open, close } = useBottomSheetModal();
-   const queryClient = useQueryClient();
+  const {
+    consulta,
+    errorConsulta,
+    isFetchConsulta,
+    refetchConsulta,
+    handleSelectConsulta,
+  } = useSearchConsulta();
+  const {ref, open, close} = useBottomSheetModal();
+  const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState('');
 
-   console.log(drawerKey);
+  useEffect(() => {
+    if (errorConsulta) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error al obtener la consulta',
+      });
+    }
+  }, [errorConsulta]);
 
-    useEffect(() => {
-      if (errorConsulta) {
-        Toast.show({
-          type: 'error',
-          text1: 'Error al obtener la consulta',
-        });
-      }
-    }, [errorConsulta]);
-
-    useEffect(() => {
+  useEffect(() => {
+    return () => {
       queryClient.removeQueries({
         queryKey: ['consultaUnidades'],
       });
-    }, []);
+    };
+  }, []);
 
-    return (
+  return (
     <DrawerLayout title="Consulta de Unidades">
       {consulta && consulta.length > 0 ? (
         <>

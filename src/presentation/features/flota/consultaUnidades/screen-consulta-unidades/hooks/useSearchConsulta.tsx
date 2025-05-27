@@ -3,9 +3,9 @@ import {ConsultaUnidadesStackParam} from '../../navigations/ConsultaUnidadesStac
 import {useAuthStore} from '../../../../../store/auth/useAuthStore';
 import {useRef} from 'react';
 import {ConsultaUnidadesRequest} from '../../../../../../infrastructure/interfaces/flota/consultaUnidades/consultaUnidades.request';
-import { getConsultaUnidades } from '../../../../../../actions/flota/consultaUnidades';
-import { useQuery } from '@tanstack/react-query';
-import { ConsultaUnidades } from '../../../../../../domain/entities/ConsultaUnidades';
+import {getConsultaUnidades} from '../../../../../../actions/flota/consultaUnidades';
+import {useQuery} from '@tanstack/react-query';
+import {ConsultaUnidades} from '../../../../../../domain/entities/ConsultaUnidades';
 
 interface SearchUnidadesFormValues {
   nro_placa: string;
@@ -23,12 +23,6 @@ export const useSearchConsulta = () => {
   const filtrosRef = useRef<ConsultaUnidadesRequest>({
     vl_empr_codigo: user?.empr_codigo || '',
     txt_nro_placa: '',
-    cbo_bus_estado: '',
-    cbo_tipo_vehiculo: '',
-    cbo_bus_proyectos: '',
-    cbo_bus_unid_obra: '',
-    txt_cod_destinatario: '',
-    txt_bus_fechas: '',
   });
 
   const {
@@ -46,23 +40,23 @@ export const useSearchConsulta = () => {
   });
 
   const handleSearch = (
-      values: SearchUnidadesFormValues,
-      onClose?: () => void,
-    ) => {
-      const nuevosFiltros: ConsultaUnidadesRequest = {
-        ...filtrosRef.current,
-        txt_nro_placa: values.nro_placa.trim().toUpperCase(),
-      };
-      filtrosRef.current = nuevosFiltros;
-      refetchConsulta();
-      onClose?.();
+    values: SearchUnidadesFormValues,
+    onClose?: () => void,
+  ) => {
+    const nuevosFiltros: ConsultaUnidadesRequest = {
+      ...filtrosRef.current,
+      txt_nro_placa: values.nro_placa.trim().toUpperCase(),
     };
+    filtrosRef.current = nuevosFiltros;
+    refetchConsulta();
+    onClose?.();
+  };
 
-    const handleSelectConsulta = (item: ConsultaUnidades) => {
+  const handleSelectConsulta = (item: ConsultaUnidades) => {
     navigation.navigate('DetalleConsultaScreen', {consulta: item});
   };
 
-   return {
+  return {
     //* Propiedades
     initialValues,
     consulta,

@@ -1,31 +1,14 @@
 import {useRoute, RouteProp, useFocusEffect} from '@react-navigation/native';
 import {useCallback, useMemo} from 'react';
 import {Alert} from 'react-native';
-import {parseISO, format} from 'date-fns';
 import { ConsultaUnidadesStackParam } from '../../navigations/ConsultaUnidadesStackNavigation';
+import { formatearFecha } from '../../../../../helper/timeUtils';
 
 
 export const useDetalleConsulta = () => {
   const {consulta} =
     useRoute<RouteProp<ConsultaUnidadesStackParam, 'DetalleConsultaScreen'>>()
       .params;
-
-  // utils
-  const formatearFecha = (fechaString?: string | null): string => {
-    if (!fechaString) {
-      return '';
-    }
-    if (fechaString.includes('1900')) {
-      return '';
-    }
-
-    try {
-      const fecha = parseISO(fechaString);
-      return format(fecha, 'dd/MM/yyyy');
-    } catch (error) {
-      return '';
-    }
-  };
 
   const obtenerMesFormateado = (mes?: number | string | null) => {
     if (!mes) {
