@@ -1,6 +1,4 @@
-import {genoxxApi} from '../../../../config/api/genoxxApi';
-
-interface EnviarAlertaResponse {
+export interface EnviarAlertaResponse {
   vg_empr_codigo: string;
   vg_usua_codigo: string;
   txt_trab_codigo: string;
@@ -9,12 +7,4 @@ interface EnviarAlertaResponse {
   txt_comentario: string;
 }
 
-export const enviarAlerta = async (payload: EnviarAlertaResponse) => {
-  try {
-    console.log('Enviando alerta:', payload);
-    const {data} = await genoxxApi.post('/master/grabar_alertas', payload);
-    return data;
-  } catch (error: any) {
-    throw new Error(error?.response?.data?.mensaje || 'Error al enviar alerta');
-  }
-};
+

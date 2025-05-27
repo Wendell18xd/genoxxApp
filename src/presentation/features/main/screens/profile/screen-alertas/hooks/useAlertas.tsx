@@ -2,11 +2,10 @@ import {useNavigation} from '@react-navigation/native';
 import {useQuery, useMutation} from '@tanstack/react-query';
 import {useState, useEffect} from 'react';
 import Toast from 'react-native-toast-message';
-import {getAlertas} from '../../../../../../../actions/profile/Alertas';
-import {enviarAlerta} from '../../../../../../../infrastructure/interfaces/profile/alert/alertas.request';
 import {mapToDropdown} from '../../../../../../../infrastructure/mappers/mapToDropdown';
 import {useAuthStore} from '../../../../../../store/auth/useAuthStore';
 import * as Yup from 'yup';
+import { enviarAlerta, getAlertas } from '../../../../../../../actions/profile/Alertas/Alertas';
 
 interface AlertasFromValues {
   tipo: string;
