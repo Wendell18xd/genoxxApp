@@ -39,7 +39,7 @@ export const CustomDropdownInput: React.FC<Props> = ({
         editable={false}
         pointerEvents="none"
         error={error}
-        style={{height}}
+        style={{height, backgroundColor: 'transparent'}}
         left={icon ? <TextInput.Icon icon={icon} /> : undefined}
         right={rightIcon}
       />

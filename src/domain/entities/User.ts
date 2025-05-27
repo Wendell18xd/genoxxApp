@@ -1,15 +1,21 @@
-export interface User {
-  empr_codigo: string;
-  empr_nombre: string;
-  empr_pais: string;
-  empr_timezone: string;
-  usua_codigo: string;
-  usua_tipo: string;
-  usua_login: string;
-  usua_nombre: string;
-  usua_perfil: string;
-  trab_documento: string;
-  time_login: number;
+export class User {
+  constructor(
+    public empr_codigo: string,
+    public empr_nombre: string,
+    public empr_pais: string,
+    public empr_timezone: string,
+    public usua_codigo: string,
+    public usua_tipo: string,
+    public usua_login: string,
+    public usua_nombre: string,
+    public usua_perfil: string,
+    public trab_documento: string,
+    public time_login: number,
+  ) {}
+
+  get usua_tipoopera(): 'IPER' | 'ISCO' {
+    return this.usua_tipo === 'PERS' ? 'IPER' : 'ISCO';
+  }
 }
 
 export interface Menu {

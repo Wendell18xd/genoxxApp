@@ -1,5 +1,3 @@
-import {User} from '../../../domain/entities/User';
-
 export interface LoginResponse {
   datos: LoginDatos;
   mensaje: string;
@@ -20,7 +18,19 @@ export interface Empresa {
   empr_nombre: string;
 }
 
-export interface Usuario extends User {}
+export interface Usuario {
+  empr_codigo: string;
+  empr_nombre: string;
+  empr_pais: string;
+  empr_timezone: string;
+  usua_codigo: string;
+  usua_tipo: string;
+  usua_login: string;
+  usua_nombre: string;
+  usua_perfil: string;
+  trab_documento: string;
+  time_login: number;
+}
 
 export interface ForgotResponse {
   datos: ForgotDatos;

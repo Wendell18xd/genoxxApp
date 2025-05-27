@@ -27,6 +27,7 @@ export const ModuleScreen = () => {
       curvaHeight={100}>
       <View style={{marginTop: 16, marginHorizontal: 32}}>
         <CustomTextInput
+          isWhite
           placeholder="Buscar opción"
           mode="outlined"
           autoCapitalize="characters"

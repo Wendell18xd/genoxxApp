@@ -8,8 +8,11 @@ import Toast from 'react-native-toast-message';
 import SinResultados from '../../../../components/ui/SinResultados';
 import {ItemMateLiqui} from './components/ItemMateLiqui';
 import {CustomFAB} from '../../../../components/ui/CustomFAB';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {LiquiMatObrasStackParam} from '../navigation/LiquiMatObrasStackNavigation';
 
 export const MaterialesObraScreen = () => {
+  const navigation = useNavigation<NavigationProp<LiquiMatObrasStackParam>>();
   const {
     dataMateriales,
     isFetchMateriales,
@@ -64,7 +67,15 @@ export const MaterialesObraScreen = () => {
         )}
       </View>
 
-      <CustomFAB icon="plus" onPress={() => {}} style={styles.fab} />
+      <CustomFAB
+        icon="plus"
+        onPress={() => {
+          navigation.navigate('LiquiMatObrasScreen', {
+            isRegulariza: isRegulariza,
+          });
+        }}
+        style={styles.fab}
+      />
     </View>
   );
 };
