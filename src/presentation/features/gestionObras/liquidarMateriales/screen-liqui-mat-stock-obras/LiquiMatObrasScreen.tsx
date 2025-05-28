@@ -8,6 +8,7 @@ import ListaStockMateObras from './components/ListaStockMateObras';
 import {useEffect} from 'react';
 import {useQueryClient} from '@tanstack/react-query';
 import {useLiquiMateStore} from '../store/useLiquiMateStore';
+import {CustomFAB} from '../../../../components/ui/CustomFAB';
 
 export const LiquiMatObrasScreen = () => {
   const {isRegulariza} =
@@ -28,13 +29,21 @@ export const LiquiMatObrasScreen = () => {
     <DrawerLayout>
       <View style={[globalStyle.container, globalStyle.padding]}>
         {/* Formik */}
-        <FormLiquiMateObras />
+        <FormLiquiMateObras isRegulariza={isRegulariza}/>
 
         {/* Lista de stock de materiales */}
-        <View style={{flex: 1, marginTop: 16}}>
+        <View style={{flex: 1}}>
           <ListaStockMateObras isRegulariza={isRegulariza} />
         </View>
       </View>
+
+      {/* FAB Button grabar */}
+
+      <CustomFAB
+        icon="content-save"
+        onPress={() => {}}
+        style={{bottom: 32, right: 16}}
+      />
     </DrawerLayout>
   );
 };

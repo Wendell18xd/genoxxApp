@@ -7,7 +7,8 @@ import {AccessDeniedScreen} from '../../../../components/AccessDeniedScreen';
 import {useMainStore} from '../../../../store/main/useMainStore';
 import {Menu} from '../../../../../types/menus';
 import {useRoute} from '@react-navigation/native';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
+import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
 
 export type LiquiMatObrasStackParam = {
   ListaObrasScreen: undefined;
@@ -19,18 +20,21 @@ const Stack = createStackNavigator<LiquiMatObrasStackParam>();
 
 export const LiquiMatObrasStackNavigation = () => {
   const {user} = useAuthStore();
-  const {setDrawerKey, resetDrawerKey, drawerKey: storeKey} = useMainStore();
+  const {setDrawerKey, resetDrawerKey} = useMainStore();
   const {drawerKey} = useRoute().params as {drawerKey: string};
+  const [isReady, setIsReady] = useState(false);
 
   //* SETEO EL DRAWER KEY
-  if (storeKey !== drawerKey) {
-    setDrawerKey(drawerKey);
-  }
-
-  //* RESET DEL DRAWER KEY
   useEffect(() => {
+    //* Lo seteamos una sola vez
+    setDrawerKey(drawerKey);
+    setIsReady(true); //* Ahora sí puede renderizar
     return () => resetDrawerKey();
-  }, []);
+  }, [drawerKey]);
+
+  if (!isReady) {
+    return <FullScreenLoader />;
+  }
 
   if (!user) {
     return (

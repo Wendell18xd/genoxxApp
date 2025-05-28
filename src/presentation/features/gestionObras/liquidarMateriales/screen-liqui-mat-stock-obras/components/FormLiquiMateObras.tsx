@@ -3,8 +3,15 @@ import CustomDatePicker from '../../../../../components/ui/CustomDatePicker';
 import {View} from 'react-native';
 import {useFormLiquiMateObras} from '../hooks/useFormLiquiMateObras';
 import {Text} from 'react-native-paper';
+import {useLiquiMateStore} from '../../store/useLiquiMateStore';
+import {CustomDropdownInput} from '../../../../../components/ui/CustomDropdownInput';
 
-export const FormLiquiMateObras = () => {
+interface Props {
+  isRegulariza: boolean;
+}
+
+export const FormLiquiMateObras = ({isRegulariza}: Props) => {
+  const {guias, setGuiaSeleccionada} = useLiquiMateStore();
   const {initialValues, getValidationSchema, handleSaveLiquidacion} =
     useFormLiquiMateObras();
 
@@ -13,7 +20,7 @@ export const FormLiquiMateObras = () => {
       initialValues={initialValues}
       onSubmit={values => handleSaveLiquidacion(values)}
       validationSchema={getValidationSchema}>
-      {({handleSubmit, setFieldValue, values, errors, touched}) => {
+      {({setFieldValue, values, errors, touched}) => {
         return (
           <View>
             <CustomDatePicker
@@ -26,6 +33,17 @@ export const FormLiquiMateObras = () => {
             />
             {touched.fecha && errors.fecha && (
               <Text style={{color: 'red', marginTop: 4}}>{errors.fecha}</Text>
+            )}
+            {guias && !isRegulariza && (
+              <CustomDropdownInput
+                label="Seleccione Guía"
+                options={guias}
+                value={values.guia}
+                onSelect={val => {
+                  setFieldValue('guia', val);
+                  setGuiaSeleccionada(val || 'TODOS');
+                }}
+              />
             )}
           </View>
         );

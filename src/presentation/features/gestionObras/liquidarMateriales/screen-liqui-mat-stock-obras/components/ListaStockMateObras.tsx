@@ -5,6 +5,7 @@ import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoader';
 import SinResultados from '../../../../../components/ui/SinResultados';
 import {ItemStockMateObras} from './items/ItemStockMateObras';
+import {useLiquiMateStore} from '../../store/useLiquiMateStore';
 
 interface Props {
   isRegulariza: boolean;
@@ -13,6 +14,12 @@ interface Props {
 const ListaStockMateObras = ({isRegulariza}: Props) => {
   const {dataStock, isFetchingStock, errorStock, handleListarStock} =
     useLiquiMatObras();
+  const {guiaSeleccionada} = useLiquiMateStore();
+
+  const filteredStock =
+    guiaSeleccionada === 'TODOS'
+      ? dataStock
+      : dataStock?.filter(item => item.guia_codigo === guiaSeleccionada);
 
   useEffect(() => {
     if (errorStock) {
@@ -27,7 +34,7 @@ const ListaStockMateObras = ({isRegulariza}: Props) => {
     handleListarStock(isRegulariza);
   }, []);
 
-  if (!dataStock && isFetchingStock) {
+  if (!dataStock) {
     return <FullScreenLoader />;
   }
 
@@ -35,20 +42,22 @@ const ListaStockMateObras = ({isRegulariza}: Props) => {
     <View style={{flex: 1}}>
       {isFetchingStock && dataStock && <FullScreenLoader transparent />}
 
-      <FlatList
-        data={dataStock}
-        renderItem={({item}) => <ItemStockMateObras item={item} />}
-        keyExtractor={item =>
-          item.mate_codigo + item.guia_codigo + item.guia_numero
-        }
-        refreshing={isFetchingStock}
-        onRefresh={() => handleListarStock(isRegulariza)}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{gap: 16}}
-        ListEmptyComponent={
-          <SinResultados message="No hay materiales en stock" />
-        }
-      />
+      {filteredStock && filteredStock.length > 0 ? (
+        <FlatList
+          data={filteredStock}
+          renderItem={({item}) => <ItemStockMateObras item={item} />}
+          keyExtractor={item =>
+            item.mate_codigo + item.guia_codigo + item.guia_numero
+          }
+          refreshing={isFetchingStock}
+          onRefresh={() => handleListarStock(isRegulariza)}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{gap: 16}}
+          style={{marginTop: 16}}
+        />
+      ) : (
+        <SinResultados message="No hay materiales en stock" />
+      )}
     </View>
   );
 };

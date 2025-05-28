@@ -1,10 +1,12 @@
 import * as Yup from 'yup';
 interface InitialValues {
   fecha: string;
+  guia: string;
 }
 
 const initialValues: InitialValues = {
   fecha: new Date().toISOString().slice(0, 10),
+  guia: 'TODOS',
 };
 
 export const useFormLiquiMateObras = () => {
