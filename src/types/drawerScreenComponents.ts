@@ -1,3 +1,4 @@
+import { ConsultaHistoricaPatenteStackNavigation } from '../presentation/features/flota/consultaHistoricaPatente/navigations/ConsultaHistoricaPatenteStackNavigation';
 import { ConsultaUnidadesStackNavigation } from '../presentation/features/flota/consultaUnidades/navigations/ConsultaUnidadesStackNavigation';
 import { LiquiMatATCStackNavigation } from '../presentation/features/gestionATC/liquidarMateriales/navigations/LiquiMatATCStackNavigation';
 import { LiquiMatObrasStackNavigation } from '../presentation/features/gestionObras/liquidarMateriales/navigation/LiquiMatObrasStackNavigation';
@@ -16,4 +17,5 @@ export const drawerScreenComponents: Record<
   // ReporteStockFragment: LiquidarPartidasObras,
   //Flota
   ListaUnidadesFragment: ConsultaUnidadesStackNavigation,
+  ConsultaHistoricaPatenteFragment: ConsultaHistoricaPatenteStackNavigation,
 };
