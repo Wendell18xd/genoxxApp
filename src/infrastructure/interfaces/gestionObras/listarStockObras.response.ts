@@ -5,19 +5,27 @@ export interface ListarStockObrasResponse {
 }
 
 export interface MateStockObra {
+  mate_codigo: string;
   guia_codigo: string;
   guia_numero: string;
-  tipo_perfil: string;
-  mate_medida: string;
-  codi_perfil: string;
-  nom_perfil: string;
-  mate_codigo: string;
   mate_nombre: string;
-  mate_controllote: string;
-  mate_cantidad: number;
   mate_skucliente: string;
-  mate_saldo: number;
+  mate_medida: string;
   mate_lote: string;
+  mate_precio: number;
+  stock: number;
+  reserva: number;
+  alma_reserva: number;
+  disponible: number;
+  stock_tecnico: number;
+  tope_tecnico: number;
+  mate_controllote: string;
+  mate_controlserie: string;
+  mate_categoria: string;
+  mate_grupofamilia: string;
+  mate_requiereobra: string;
+  mate_saldo: number;
+  mate_cantidad: number;
 }
 
 export interface MateGenericoObra {

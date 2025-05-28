@@ -1,9 +1,10 @@
-import {View, Text, FlatList} from 'react-native';
+import {View, FlatList} from 'react-native';
 import {useLiquiMatObras} from '../hooks/useLiquiMatObras';
 import {useEffect} from 'react';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoader';
 import SinResultados from '../../../../../components/ui/SinResultados';
+import {ItemStockMateObras} from './items/ItemStockMateObras';
 
 interface Props {
   isRegulariza: boolean;
@@ -31,13 +32,17 @@ const ListaStockMateObras = ({isRegulariza}: Props) => {
   }
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       {isFetchingStock && dataStock && <FullScreenLoader transparent />}
 
       <FlatList
         data={dataStock}
-        renderItem={({item}) => <Text>{item.mate_codigo}</Text>}
-        keyExtractor={item => item.mate_codigo}
+        renderItem={({item}) => <ItemStockMateObras item={item} />}
+        keyExtractor={item =>
+          item.mate_codigo + item.guia_codigo + item.guia_numero
+        }
+        refreshing={isFetchingStock}
+        onRefresh={() => handleListarStock(isRegulariza)}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{gap: 16}}
         ListEmptyComponent={

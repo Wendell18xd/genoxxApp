@@ -29,6 +29,7 @@ export interface Usuario {
   usua_nombre: string;
   usua_perfil: string;
   trab_documento: string;
+  trab_estado: string;
   time_login: number;
 }
 

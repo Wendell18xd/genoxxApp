@@ -154,7 +154,9 @@ const LoginScreen = ({navigation}: Props) => {
   return (
     <>
       <AuthLayout>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingBottom: 32}}>
           <Image
             source={require('../../../../assets/images/logo.png')}
             style={{

@@ -13,6 +13,8 @@ import {useLiquiMateStore} from '../../store/useLiquiMateStore';
 import {Obra} from '../../../../../../domain/entities/Obra';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {LiquiMatObrasStackParam} from '../../navigation/LiquiMatObrasStackNavigation';
+import {useMainStore} from '../../../../../store/main/useMainStore';
+import {Menu} from '../../../../../../types/menus';
 
 interface SearchObrasFormValues {
   cbo_proy_codigo: string;
@@ -51,8 +53,14 @@ const tiposBusqueda: Option[] = [
 
 export const useSarchObras = () => {
   const {user} = useAuthStore();
+  const {drawerKey} = useMainStore();
   const {setObra} = useLiquiMateStore();
   const navigation = useNavigation<NavigationProp<LiquiMatObrasStackParam>>();
+
+  const proy_tipo =
+    drawerKey === Menu.LIQUIDACION_MATERIALES_OBRAS_ENERGIA
+      ? 'ENERGIA'
+      : 'OBRAS';
 
   const filtrosRef = useRef<ObrasRequest>({
     vl_empr_codigo: user?.empr_codigo || '',
@@ -74,11 +82,11 @@ export const useSarchObras = () => {
     refetch: refetchProyectos,
     error: errorProyectos,
   } = useQuery({
-    queryKey: ['proyectos', 'obras'],
+    queryKey: ['proyectos', 'liquidacion', 'materiales'],
     queryFn: async () => {
       const {datos} = await listadoProyectosObras({
         vl_empr_codigo: user?.empr_codigo || '',
-        vl_proy_tipo: 'OBRAS',
+        vl_proy_tipo: proy_tipo,
       });
       const options = mapToDropdown(datos, 'proy_alias', 'proy_codigo');
       return options;

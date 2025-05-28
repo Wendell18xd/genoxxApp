@@ -10,6 +10,7 @@ export interface MainState {
   setMenuSelected: (menu: Menu) => void;
   setMenusValid: (menus: Menu[]) => void;
   setDrawerKey: (drawerKey: string) => void;
+  resetDrawerKey: () => void;
 }
 
 export const useMainStore = create<MainState>()(set => ({
@@ -21,4 +22,5 @@ export const useMainStore = create<MainState>()(set => ({
   setMenuSelected: (menu: Menu) => set({menuSelected: menu}),
   setMenusValid: (menu: Menu[]) => set({menusValid: menu}),
   setDrawerKey: (drawerKey: string) => set({drawerKey: drawerKey}),
+  resetDrawerKey: () => set({drawerKey: ''}),
 }));

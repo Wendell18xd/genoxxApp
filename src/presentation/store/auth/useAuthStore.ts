@@ -75,6 +75,7 @@ export const useAuthStore = create<AuthState>()(set => ({
         usuario.usua_nombre,
         usuario.usua_perfil,
         usuario.trab_documento,
+        usuario.trab_estado,
         new Date().getTime(),
       );
 
@@ -96,6 +97,7 @@ export const useAuthStore = create<AuthState>()(set => ({
         '',
         props.usuaCodigo,
         resp.datos.tipo,
+        '',
         '',
         '',
         '',

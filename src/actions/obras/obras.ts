@@ -8,6 +8,7 @@ export const listadoProyectosObras = async (
   props: ProyectosObrasRequest,
 ): Promise<ProyectosObrasResponse> => {
   try {
+    console.log(props);
     const {data} = await genoxxApi.post<ProyectosObrasResponse>(
       '/obras/listar_proyectos_obras',
       {

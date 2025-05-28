@@ -32,7 +32,7 @@ export const ItemMateLiqui = ({mate, onPress}: Props) => {
           </Text>
         </View>
 
-        {/* FLECHA */}
+        {/* CANTIDAD */}
         <Text variant="bodyLarge">
           {formatearNumero({
             valor: mate.can_material,

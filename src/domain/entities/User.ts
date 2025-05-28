@@ -10,6 +10,7 @@ export class User {
     public usua_nombre: string,
     public usua_perfil: string,
     public trab_documento: string,
+    public trab_estado: string,
     public time_login: number,
   ) {}
 
