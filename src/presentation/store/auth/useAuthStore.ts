@@ -64,7 +64,22 @@ export const useAuthStore = create<AuthState>()(set => ({
         };
       }
 
-      set({user: {...usuario, time_login: new Date().getTime()}});
+      const userInstance = new User(
+        usuario.empr_codigo,
+        usuario.empr_nombre,
+        usuario.empr_pais,
+        usuario.empr_timezone,
+        usuario.usua_codigo,
+        usuario.usua_tipo,
+        usuario.usua_login,
+        usuario.usua_nombre,
+        usuario.usua_perfil,
+        usuario.trab_documento,
+        usuario.trab_estado,
+        new Date().getTime(),
+      );
+
+      set({user: userInstance});
       set({menu: resp.datos.menu});
 
       return resp;
@@ -75,19 +90,20 @@ export const useAuthStore = create<AuthState>()(set => ({
   forgot: async (props: ForgotRequest) => {
     try {
       const resp = await getOlvidoClave(props);
-      const usuario: User = {
-        empr_codigo: '',
-        empr_nombre: '',
-        empr_pais: '',
-        empr_timezone: '',
-        usua_codigo: props.usuaCodigo,
-        usua_tipo: resp.datos.tipo,
-        usua_login: '',
-        usua_nombre: '',
-        usua_perfil: '',
-        trab_documento: '',
-        time_login: new Date().getTime(),
-      };
+      const usuario: User = new User(
+        '',
+        '',
+        '',
+        '',
+        props.usuaCodigo,
+        resp.datos.tipo,
+        '',
+        '',
+        '',
+        '',
+        '',
+        new Date().getTime(),
+      );
       set({user: usuario});
       return resp;
     } catch (error) {

@@ -8,10 +8,11 @@ export const listadoProyectosObras = async (
   props: ProyectosObrasRequest,
 ): Promise<ProyectosObrasResponse> => {
   try {
+    console.log(props);
     const {data} = await genoxxApi.post<ProyectosObrasResponse>(
       '/obras/listar_proyectos_obras',
       {
-        vl_empr_codigo: props.vl_empr_codigo,
+        vg_empr_codigo: props.vl_empr_codigo,
         vl_proy_tipo: props.vl_proy_tipo,
       },
     );
@@ -29,7 +30,7 @@ export const listadoObrasAsiganadas = async (
     const {data} = await genoxxApi.post<ObrasResponse>(
       '/obras/consultar_documento_orden',
       {
-        vl_empr_codigo: props.vl_empr_codigo,
+        vg_empr_codigo: props.vl_empr_codigo,
         cbo_tipo_buscar_doc: props.cbo_tipo_buscar_doc,
         txt_nro_buscar_doc: props.txt_nro_buscar_doc,
         txt_proy_codigo: props.txt_proy_codigo,

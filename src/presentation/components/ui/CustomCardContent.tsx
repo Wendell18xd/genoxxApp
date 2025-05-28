@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleProp, StyleSheet, ViewStyle, View} from 'react-native';
+import {StyleProp, StyleSheet, ViewStyle} from 'react-native';
 import {Card, TouchableRipple} from 'react-native-paper';
 
 interface Props {
@@ -21,7 +21,7 @@ export const CustomCardContent = ({
 
   const content = (
     <Card.Content style={[styles.pressableContent, styleContent]}>
-      <View style={[styles.rippleWrapper]}>{children}</View>
+      {children}
     </Card.Content>
   );
 

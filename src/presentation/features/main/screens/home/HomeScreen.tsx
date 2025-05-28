@@ -78,6 +78,7 @@ const HomeScreen = () => {
       </Text>
       <View style={{marginTop: 16, marginHorizontal: 32}}>
         <CustomTextInput
+          isWhite
           placeholder="Buscar modulo"
           mode="outlined"
           autoCapitalize="characters"

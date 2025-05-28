@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   profileHeader: {
     alignItems: 'center',
     marginBottom: 24,
-    marginTop: 10,
+    marginTop: 40,
   },
   name: {
     fontSize: 20,
