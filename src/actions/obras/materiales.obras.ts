@@ -2,11 +2,11 @@ import {genoxxApi} from '../../config/api/genoxxApi';
 import {
   MateLiquiRequest,
   ValidaCierreObraRequest,
-} from '../../infrastructure/interfaces/gestionObras/liquiMateObra.request';
+} from '../../infrastructure/interfaces/gestionObras/liquidar-materiales/liquiMateObra.request';
 import {
   MateLiquiObrasResponse,
   ValidaCierreObrasResponse,
-} from '../../infrastructure/interfaces/gestionObras/liquiMateObra.response';
+} from '../../infrastructure/interfaces/gestionObras/liquidar-materiales/liquiMateObra.response';
 
 export const listadoMaterialesObra = async (
   mateProps: MateLiquiRequest,

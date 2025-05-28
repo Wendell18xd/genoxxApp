@@ -1,6 +1,6 @@
 import {genoxxApi} from '../../config/api/genoxxApi';
-import {ObrasRequest} from '../../infrastructure/interfaces/gestionObras/liquiMateObra.request';
-import {ObrasResponse} from '../../infrastructure/interfaces/gestionObras/liquiMateObra.response';
+import {ObrasRequest} from '../../infrastructure/interfaces/gestionObras/liquidar-materiales/liquiMateObra.request';
+import {ObrasResponse} from '../../infrastructure/interfaces/gestionObras/liquidar-materiales/liquiMateObra.response';
 import {ProyectosObrasRequest} from '../../infrastructure/interfaces/gestionObras/obras.request';
 import {ProyectosObrasResponse} from '../../infrastructure/interfaces/gestionObras/obras.response';
 

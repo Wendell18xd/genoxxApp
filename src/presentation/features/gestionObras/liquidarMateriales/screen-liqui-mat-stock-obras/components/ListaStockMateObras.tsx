@@ -6,6 +6,7 @@ import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoa
 import SinResultados from '../../../../../components/ui/SinResultados';
 import {ItemStockMateObras} from './items/ItemStockMateObras';
 import {useLiquiMateStore} from '../../store/useLiquiMateStore';
+import {FormLiquiMateObras} from './FormLiquiMateObras';
 
 interface Props {
   isRegulariza: boolean;
@@ -53,7 +54,9 @@ const ListaStockMateObras = ({isRegulariza}: Props) => {
           onRefresh={() => handleListarStock(isRegulariza)}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{gap: 16}}
-          style={{marginTop: 16}}
+          ListHeaderComponent={
+            <FormLiquiMateObras isRegulariza={isRegulariza} />
+          }
         />
       ) : (
         <SinResultados message="No hay materiales en stock" />

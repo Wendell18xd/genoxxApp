@@ -67,7 +67,7 @@ const DrawerLayout = ({
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}
-        keyboardVerticalOffset={keyboardVisible ? 0 : -(top + bottom)}>
+        keyboardVerticalOffset={keyboardVisible ? -16 : -(top + bottom)}>
         {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
           <View
             style={[

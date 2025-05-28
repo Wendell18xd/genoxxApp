@@ -3,7 +3,6 @@ import DrawerLayout from '../../../main/layout/DrawerLayout';
 import {globalStyle} from '../../../../styles/globalStyle';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {LiquiMatObrasStackParam} from '../navigation/LiquiMatObrasStackNavigation';
-import {FormLiquiMateObras} from './components/FormLiquiMateObras';
 import ListaStockMateObras from './components/ListaStockMateObras';
 import {useEffect} from 'react';
 import {useQueryClient} from '@tanstack/react-query';
@@ -17,7 +16,7 @@ export const LiquiMatObrasScreen = () => {
   const {obra} = useLiquiMateStore();
   const queryClient = useQueryClient();
 
-  useEffect(() => {
+   useEffect(() => {
     return () => {
       queryClient.removeQueries({
         queryKey: ['listadoStockMaterilesObras', obra],
@@ -27,10 +26,7 @@ export const LiquiMatObrasScreen = () => {
 
   return (
     <DrawerLayout>
-      <View style={[globalStyle.container, globalStyle.padding]}>
-        {/* Formik */}
-        <FormLiquiMateObras isRegulariza={isRegulariza}/>
-
+      <View style={[globalStyle.container, globalStyle.margin]}>
         {/* Lista de stock de materiales */}
         <View style={{flex: 1}}>
           <ListaStockMateObras isRegulariza={isRegulariza} />

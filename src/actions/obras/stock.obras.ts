@@ -1,6 +1,6 @@
 import {genoxxApi} from '../../config/api/genoxxApi';
-import {ListarStockObrasRequest} from '../../infrastructure/interfaces/gestionObras/listarStockObras.request';
-import {ListarStockObrasResponse} from '../../infrastructure/interfaces/gestionObras/listarStockObras.response';
+import {ListarStockObrasRequest} from '../../infrastructure/interfaces/gestionObras/liquidar-materiales/listarStockObras.request';
+import {ListarStockObrasResponse} from '../../infrastructure/interfaces/gestionObras/liquidar-materiales/listarStockObras.response';
 
 export const listadoStockMaterilesObras = async (
   props: ListarStockObrasRequest,

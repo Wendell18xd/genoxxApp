@@ -38,7 +38,7 @@ const GenoxxApp = () => {
           </GestureHandlerRootView>
         </ThemeContextProvider>
       </QueryClientProvider>
-      <Toast position="bottom" />
+      <Toast position="top" />
     </>
   );
 };
