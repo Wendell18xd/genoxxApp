@@ -14,6 +14,7 @@ import Toast from 'react-native-toast-message';
 import GuardarBottom from '../Components/GuardarBottom';
 import {enviarAlerta} from '../../../../../../infrastructure/interfaces/profile/alert/alertas.request';
 import {useNavigation} from '@react-navigation/native';
+import { useAuthStore } from '../../../../../store/auth/useAuthStore';
 
 interface AlertasFromValues {
   tipo: string;
@@ -29,6 +30,7 @@ const initialValues: AlertasFromValues = {
 
 export const AlertasScreen = () => {
   const navigation = useNavigation();
+  const {user} = useAuthStore();
   const [formValues] = useState<AlertasFromValues>(initialValues);
 
   const {
@@ -89,6 +91,9 @@ export const AlertasScreen = () => {
     }
 
     const data = {
+      vg_empr_codigo: user?.empr_codigo || '',
+      vg_usua_codigo: user?.usua_codigo || '',
+      txt_trab_codigo: user?.usua_perfil || '',
       txt_tipo: values.tipo,
       txt_telefono: values.telefono,
       txt_comentario: values.comentario,

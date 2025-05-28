@@ -1,3 +1,4 @@
+import { ConsultaUnidadesStackNavigation } from '../presentation/features/flota/consultaUnidades/navigations/ConsultaUnidadesStackNavigation';
 import {LiquiMatATCStackNavigation} from '../presentation/features/gestionATC/liquidarMateriales/navigations/LiquiMatATCStackNavigation';
 import {LiquiMatObrasStackNavigation} from '../presentation/features/gestionObras/liquidarMateriales/navigation/LiquiMatObrasStackNavigation';
 import {Menu} from './menus';
@@ -11,8 +12,6 @@ export const drawerScreenComponents: Record<
   //Obras
   [Menu.LIQUIDACION_MATERIALES_OBRAS]: LiquiMatObrasStackNavigation, //NORMAL
   [Menu.LIQUIDACION_MATERIALES_OBRAS_ENERGIA]: LiquiMatObrasStackNavigation, //ENERGIA
-  // ListObrasFragment1: LiquiMatObrasStackNavigation,
-  // PedidoMaterialFragment: LiquidarPartidasObras,
-  // AprobacionPedidosFragment: LiquidarPartidasObras,
-  // ReporteStockFragment: LiquidarPartidasObras,
+  //Flota
+  [Menu.CONSULTA_UNIDADES_FLOTA]: ConsultaUnidadesStackNavigation,
 };

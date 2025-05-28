@@ -1,6 +1,6 @@
 import {genoxxApi} from '../../config/api/genoxxApi';
+import { ProyectoRequest } from '../../infrastructure/interfaces/gestionATC/proyecto/proyectoATC.request';
 import { ProyectoResponse } from '../../infrastructure/interfaces/gestionATC/proyecto/proyectoATC.response';
-import {ProyectoRequest} from '../../infrastructure/interfaces/gestionATC/proyecto/proyectoATC.resquest';
 
 export const getProyecto = async (
   props: ProyectoRequest,
