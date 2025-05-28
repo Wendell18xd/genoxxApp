@@ -69,6 +69,7 @@ export const useAlertas = () => {
   const startAlertaSubmit = (
     values: AlertasFromValues,
     resetForm: () => void,
+    audioBase64?: string,
   ) => {
     const data = {
       vg_empr_codigo: user?.empr_codigo || '',
@@ -76,6 +77,7 @@ export const useAlertas = () => {
       txt_trab_codigo: user?.usua_perfil || '',
       txt_tipo: values.tipo,
       txt_telefono: values.telefono,
+      nom_audio: audioBase64 || '',
       txt_comentario: values.comentario,
     };
     mutation.mutate(data, {

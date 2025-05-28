@@ -9,6 +9,7 @@ import {CustomDropdownInput} from '../../../../../components/ui/CustomDropdownIn
 import {CustomFAB} from '../../../../../components/ui/CustomFAB';
 import CustomBottomSheet from '../../../../../components/ui/bottomSheetModal/CustomBottomSheet';
 import {useBottomSheetModal} from '../../../../../hooks/useBottomSheet';
+import { useAudioRecorder } from './hooks/useAudioRecorder';
 
 export const AlertasScreen = () => {
   const {
@@ -20,13 +21,14 @@ export const AlertasScreen = () => {
     mutation,
   } = useAlertas();
   const {ref, open, close} = useBottomSheetModal();
+  const {onStartRecord, onStopRecord, onStartPlay} = useAudioRecorder();
 
   if (isFetching) {
     return null;
   }
 
   return (
-    <SafeAreaLayout  title="Alertas" isHeader primary>
+    <SafeAreaLayout title="Alertas" isHeader primary>
       <View style={{flex: 1, padding: 16, position: 'relative'}}>
         <Formik
           initialValues={formValues}
@@ -100,7 +102,9 @@ export const AlertasScreen = () => {
                   label="Enviar"
                   icon="content-save"
                   style={{marginTop: 16, width: '100%'}}
-                  onPress={handleSubmit}
+                  onPress={() => {
+                    handleSubmit();
+                  }}
                   disabled={mutation.isPending}
                   loading={mutation.isPending}
                 />
@@ -122,21 +126,21 @@ export const AlertasScreen = () => {
                 size={40}
                 containerColor="#4CAF50"
                 iconColor="#fff"
-                onPress={() => console.log('Grabar audio')}
+                onPress={onStartRecord}
               />
               <IconButton
                 icon="stop-circle"
                 size={40}
                 containerColor="#F44336"
                 iconColor="#fff"
-                onPress={() => console.log('Parar grabación')}
+                onPress={onStopRecord}
               />
               <IconButton
                 icon="play-circle"
                 size={40}
                 containerColor="#2196F3"
                 iconColor="#fff"
-                onPress={() => console.log('Reproducir audio')}
+                onPress={onStartPlay}
               />
             </View>
 
@@ -161,7 +165,6 @@ export const AlertasScreen = () => {
             </View>
           </View>
         </CustomBottomSheet>
-
       </View>
     </SafeAreaLayout>
   );
