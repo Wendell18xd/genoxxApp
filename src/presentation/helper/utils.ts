@@ -27,3 +27,10 @@ export function ToastNativo(mensaje: string, titulo: string = 'Info') {
     console.log('Toast:', mensaje);
   }
 }
+
+export function mostrarSiNoCero(valor: number | string): string {
+  if (valor === 0 || valor === '0') {
+    return '';
+  }
+  return valor.toString();
+}

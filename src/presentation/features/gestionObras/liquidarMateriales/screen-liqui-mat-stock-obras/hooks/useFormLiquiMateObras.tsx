@@ -1,31 +1,33 @@
 import * as Yup from 'yup';
 import {useLiquiMateStore} from '../../store/useLiquiMateStore';
 import {Alert} from 'react-native';
+import {MaterialesLiquiRequest} from '../../../../../../infrastructure/interfaces/gestionObras/liquidar-materiales/saveLiquiMateObra.request';
 interface InitialValues {
   fecha: string;
   guia: string;
+  materiales: MaterialesLiquiRequest[];
 }
 
 const initialValues: InitialValues = {
   fecha: new Date().toISOString().slice(0, 10),
   guia: 'TODOS',
+  materiales: [],
 };
 
 export const useFormLiquiMateObras = () => {
-  const {
-    guias,
-    setGuiaSeleccionada: setGuiaSeleccionadaStore,
-    materialesSeleccionados,
-    setMaterialesSeleccionados,
-  } = useLiquiMateStore();
+  const {guias, setGuiaSeleccionada} = useLiquiMateStore();
 
   const getValidationSchema = () =>
     Yup.object().shape({
       fecha: Yup.string().required('Seleccione una fecha'),
     });
 
-  const handleSaveLiquidacion = (values: InitialValues) => {
+  const handleSaveLiquidacion = (
+    values: InitialValues,
+    resetForm: () => void,
+  ) => {
     console.log(values);
+    resetForm();
   };
 
   const handleIntentoCambioGuia = (
@@ -33,11 +35,17 @@ export const useFormLiquiMateObras = () => {
     setFormikValue: (field: string, value: any) => void,
     setLocalGuia: (value: string) => void,
     guiaActualFormik: string,
+    materiales: MaterialesLiquiRequest[],
+    handleReset: () => void,
   ) => {
-    // Cambia visualmente para mostrar lo seleccionado
     setLocalGuia(nuevaGuia || 'TODOS');
 
-    if (materialesSeleccionados.length > 0) {
+    // Verificar si hay algún material con cantidad > 0
+    const hayMaterialesSeleccionados = materiales.some(
+      m => parseFloat(m.vl_mate_cantidad.toString()) > 0,
+    );
+
+    if (hayMaterialesSeleccionados) {
       Alert.alert(
         'No se puede cambiar el filtro de guía',
         'Tienes materiales seleccionados, si cambias el filtro se perderán los datos',
@@ -55,8 +63,8 @@ export const useFormLiquiMateObras = () => {
             onPress: () => {
               const val = nuevaGuia || 'TODOS';
               setFormikValue('guia', val);
-              setGuiaSeleccionadaStore(val);
-              setMaterialesSeleccionados([]);
+              setGuiaSeleccionada(val);
+              handleReset(); // Reiniciar formulario
             },
           },
         ],
@@ -64,7 +72,7 @@ export const useFormLiquiMateObras = () => {
     } else {
       const val = nuevaGuia || 'TODOS';
       setFormikValue('guia', val);
-      setGuiaSeleccionadaStore(val);
+      setGuiaSeleccionada(val);
     }
   };
 

@@ -6,30 +6,31 @@ import {Divider, Text, useTheme} from 'react-native-paper';
 import {formatearNumero} from '../../../../../../helper/moneyUtils';
 import CustomTextInput from '../../../../../../components/ui/CustomTextInput';
 import {useItemStockMateObras} from '../../hooks/useItemStockMateObras';
-import {useEffect} from 'react';
+import {FormikValues} from 'formik';
+import {mostrarSiNoCero} from '../../../../../../helper/utils';
 
 interface Props {
   item: MateStockObra;
+  index: number;
+  values: FormikValues;
+  setFieldValue: (field: string, value: any) => void;
 }
-export const ItemStockMateObras = ({item}: Props) => {
-  const {colors} = useTheme();
-  const {
-    user,
-    obra,
-    cantidad,
-    observacion,
-    materialesSeleccionados,
-    handleChangeCantidad,
-    handleChangeObservacion,
-    handleSaveMaterial,
-  } = useItemStockMateObras({item});
 
-  useEffect(() => {
-    if (materialesSeleccionados.length === 0) {
-      handleChangeCantidad('');
-      handleChangeObservacion('');
-    }
-  }, [materialesSeleccionados]);
+export const ItemStockMateObras = ({
+  item,
+  index,
+  values,
+  setFieldValue,
+}: Props) => {
+  const {colors} = useTheme();
+  const {user, obra, handleChangeCantidad} = useItemStockMateObras({item});
+
+  const material = values.materiales[index];
+
+  // Protege el acceso con una verificación
+  if (!material) {
+    return null;
+  }
 
   return (
     <CustomCardContent mode="outlined">
@@ -112,10 +113,13 @@ export const ItemStockMateObras = ({item}: Props) => {
         <CustomTextInput
           label="Cantidad"
           keyboardType="decimal-pad"
-          value={cantidad}
+          value={
+            mostrarSiNoCero(
+              values.materiales[index].vl_mate_cantidad?.toString(),
+            ) || ''
+          }
           height={40}
-          onChangeText={handleChangeCantidad}
-          onBlur={() => handleSaveMaterial(cantidad, observacion)}
+          onChangeText={val => handleChangeCantidad(val, setFieldValue, index)}
         />
         <CustomTextInput
           label="Observación"
@@ -123,9 +127,10 @@ export const ItemStockMateObras = ({item}: Props) => {
           height={80}
           multiline
           numberOfLines={3}
-          value={observacion}
-          onChangeText={handleChangeObservacion}
-          onBlur={() => handleSaveMaterial(cantidad, observacion)}
+          value={values.materiales[index].vl_mate_observacion}
+          onChangeText={val =>
+            setFieldValue(`materiales[${index}].vl_mate_observacion`, val)
+          }
         />
       </View>
     </CustomCardContent>
