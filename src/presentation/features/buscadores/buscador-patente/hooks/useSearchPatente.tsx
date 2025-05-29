@@ -1,18 +1,19 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {useAuthStore} from '../../../../store/auth/useAuthStore';
-import {ConsultaHistoricaPatenteStackParam} from '../../../flota/consultaHistoricaPatente/navigations/ConsultaHistoricaPatenteStackNavigation';
-import {ConsultaHistoricaPatenteRequest} from '../../../../../infrastructure/interfaces/flota/consultaHistoricaPatente/consultaHistoricaPatente.request';
+
 import {useRef} from 'react';
 import {useQuery} from '@tanstack/react-query';
-import {getConsultaHistoricaPatente} from '../../../../../actions/flota/consultaHistoricaPatente';
-import {ConsultaHistoricaPatente} from '../../../../../domain/entities/ConsultaHistoricaPatente';
+import { ConsultaHistoricaPatenteStackParam } from '../../../flota/consultaHistoricaPatente/navigations/ConsultaHistoricaPatenteStackNavigation';
+import { ConsultaUnidadesRequest } from '../../../../../infrastructure/interfaces/flota/consultaUnidades/consultaUnidades.request';
+import { useAuthStore } from '../../../../store/auth/useAuthStore';
+import { getConsultaUnidades } from '../../../../../actions/flota/consultaUnidades';
+import { ConsultaUnidades } from '../../../../../domain/entities/ConsultaUnidades';
 
-interface SearchPatenteFormValues {
-  txt_codigo: string;
+interface SearchUnidadesFormValues {
+  nro_placa: string;
 }
 
-const initialValues: SearchPatenteFormValues = {
-  txt_codigo: '',
+const initialValues: SearchUnidadesFormValues = {
+  nro_placa: '',
 };
 
 export const useSearchPatente = () => {
@@ -20,54 +21,52 @@ export const useSearchPatente = () => {
   const navigation =
     useNavigation<NavigationProp<ConsultaHistoricaPatenteStackParam>>();
 
-  const filtrosRef = useRef<ConsultaHistoricaPatenteRequest>({
+  const filtrosRef = useRef<ConsultaUnidadesRequest>({
     vl_empr_codigo: user?.empr_codigo || '',
-    txt_codigo: '',
-    cbo_bus_tipo: '',
-    txt_cod_destinatario: '',
+    txt_nro_placa: '',
   });
 
   const {
-    data: consultaPatente,
-    isFetching: isFetchConsultaPatente,
-    refetch: refetchConsultaPatente,
-    error: errorConsultaPatente,
+    data: patente,
+    isFetching: isFetchPatente,
+    refetch: refetchPatente,
+    error: errorPatente,
   } = useQuery({
-    queryKey: ['consultaPatente'],
+    queryKey: ['consultaPatentes'],
     queryFn: async () => {
-      const {datos} = await getConsultaHistoricaPatente(filtrosRef.current);
+      const {datos} = await getConsultaUnidades(filtrosRef.current);
       return datos;
     },
     enabled: false,
   });
 
   const handleSearch = (
-    values: SearchPatenteFormValues,
+    values: SearchUnidadesFormValues,
     onClose?: () => void,
   ) => {
-    const nuevosFiltros: ConsultaHistoricaPatenteRequest = {
+    const nuevosFiltros: ConsultaUnidadesRequest = {
       ...filtrosRef.current,
-      txt_codigo: values.txt_codigo.trim().toUpperCase(),
+      txt_nro_placa: values.nro_placa.trim().toUpperCase(),
     };
     filtrosRef.current = nuevosFiltros;
-    refetchConsultaPatente();
+    refetchPatente();
     onClose?.();
   };
 
-  const handleSelectConsultaPatente = (item: ConsultaHistoricaPatente) => {
-    navigation.navigate('ListaConsultaHistoricaPatente', {consultaHistoricaPatente: item});
+  const handleSelectPatente = (item: ConsultaUnidades) => {
+    navigation.navigate('ListaConsultaHistoricaPatenteScreen', {patente: item});
   };
 
   return {
     //* Propiedades
     initialValues,
-    consultaPatente,
-    isFetchConsultaPatente,
-    errorConsultaPatente,
+    patente,
+    isFetchPatente,
+    errorPatente,
 
     //* Metodos
     handleSearch,
-    refetchConsultaPatente,
-    handleSelectConsultaPatente,
+    refetchPatente,
+    handleSelectPatente,
   };
 };

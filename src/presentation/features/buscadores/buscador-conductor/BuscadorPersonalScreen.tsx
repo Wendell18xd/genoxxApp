@@ -3,54 +3,54 @@ import {useEffect} from 'react';
 import Toast from 'react-native-toast-message';
 import DrawerLayout from '../../main/layout/DrawerLayout';
 import {FlatList} from 'react-native-gesture-handler';
-import {useSearchPatente} from './hooks/useSearchPatente';
-import { SearchPatente } from './components/SearchPatente';
-import { ItemPatente } from './components/ItemPatente';
+import { useSearchPersonal } from './hooks/useSearchPersonal';
+import { SearchPersonal } from './components/SearchPersonal';
+import { ItemConductor } from './components/ItemConductor';
 
-export const BuscadorPatenteScreen = () => {
+export const BuscadorPersonalScreen = () => {
   const {
-    patente,
-    errorPatente,
-    isFetchPatente,
-    refetchPatente,
-    handleSelectPatente,
-  } = useSearchPatente();
+    personal,
+    errorPersonal,
+    isFetchPersonal,
+    refetchPersonal,
+    handleSelectPersonal,
+  } = useSearchPersonal();
 
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (errorPatente) {
+    if (errorPersonal) {
       Toast.show({
         type: 'error',
         text1: 'Error al obtener la consulta',
       });
     }
-  }, [errorPatente]);
+  }, [errorPersonal]);
 
   useEffect(() => {
     return () => {
       queryClient.removeQueries({
-        queryKey: ['consultaPatentes'],
+        queryKey: ['consultaPersonal'],
       });
     };
   }, []);
 
   return (
-    <DrawerLayout title="Búsqueda de Patente">
+    <DrawerLayout title="Búsqueda de Personal">
         <>
-          <SearchPatente/>
+          <SearchPersonal/>
           <FlatList
-            data={patente}
-            keyExtractor={item => item.nro_placa}
+            data={personal}
+            keyExtractor={item => item.nom_para}
             contentContainerStyle={{gap: 16, padding: 16}}
-            refreshing={isFetchPatente}
-            onRefresh={refetchPatente}
+            refreshing={isFetchPersonal}
+            onRefresh={refetchPersonal}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => (
-              <ItemPatente
-                patente={item}
+              <ItemConductor
+                personal={item}
                 onPress={() => {
-                  handleSelectPatente(item);
+                  handleSelectPersonal(item);
                 }}
               />
             )}

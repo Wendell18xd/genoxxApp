@@ -1,13 +1,14 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import { ConsultaHistoricaPatente } from '../../../../../domain/entities/ConsultaHistoricaPatente';
 import { ListaConsultaHistoricaPatenteScreen } from '../screen-consulta-historica-patente/ListaConsultaHistoricaPatenteScreen';
-import { BuscadorConductorScreen } from '../../../buscadores/buscador-conductor/BuscadorConductorScreen';
+import { BuscadorPersonalScreen } from '../../../buscadores/buscador-conductor/BuscadorPersonalScreen';
 import { BuscadorPatenteScreen } from '../../../buscadores/buscador-patente/BuscadorPatenteScreen';
+import { ConsultaUnidades } from '../../../../../domain/entities/ConsultaUnidades';
+import { Personal } from '../../../../../domain/entities/Personal';
 
 export type ConsultaHistoricaPatenteStackParam = {
-  ListaConsultaHistoricaPatenteScreen: undefined;
-  BuscadorPatenteScreen: {consultaHistoricaPatente: ConsultaHistoricaPatente};
-  BuscadorConductorScreen: {consultaHistoricaPatente: ConsultaHistoricaPatente};
+  ListaConsultaHistoricaPatenteScreen:  {patente?: ConsultaUnidades; personal?: Personal};
+  BuscadorPatenteScreen: undefined;
+  BuscadorPersonalScreen: undefined;
 };
 
 const Stack = createStackNavigator<ConsultaHistoricaPatenteStackParam>();
@@ -25,8 +26,8 @@ export const ConsultaHistoricaPatenteStackNavigation = () => {
         component={BuscadorPatenteScreen}
       />
       <Stack.Screen
-        name="BuscadorConductorScreen"
-        component={BuscadorConductorScreen}
+        name="BuscadorPersonalScreen"
+        component={BuscadorPersonalScreen}
       />
     </Stack.Navigator>
   );

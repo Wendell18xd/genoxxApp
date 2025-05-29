@@ -3,19 +3,19 @@ import {View} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
-import { useSearchPatente } from '../hooks/useSearchPatente';
+import { useSearchPersonal } from '../hooks/useSearchPersonal';
 
 interface Props {
   onClose?: () => void;
 }
 
-export const SearchPatente = ({onClose}: Props) => {
-  const {initialValues, isFetchPatente, handleSearch} =
-    useSearchPatente();
+export const SearchPersonal = ({onClose}: Props) => {
+  const {initialValues, isFetchPersonal, handleSearch} =
+    useSearchPersonal();
 
   return (
     <View>
-      {isFetchPatente && <FullScreenLoader transparent />}
+      {isFetchPersonal && <FullScreenLoader transparent />}
       <Formik
         initialValues={initialValues}
         onSubmit={values => handleSearch(values, onClose)}>
@@ -32,9 +32,9 @@ export const SearchPatente = ({onClose}: Props) => {
               <CustomTextInput
                 label="Buscar"
                 mode="outlined"
-                value={values.nro_placa}
-                onChangeText={handleChange('nro_placa')}
-                onBlur={handleBlur('nro_placa')}
+                value={values.nom_para}
+                onChangeText={handleChange('cod_para')}
+                onBlur={handleBlur('cod_para')}
                 right={
                   <TextInput.Icon
                     icon="magnify"
@@ -42,7 +42,7 @@ export const SearchPatente = ({onClose}: Props) => {
                     onPress={() => handleSubmit()}
                   />
                 }
-                error={touched.nro_placa && !!errors.nro_placa}
+                error={touched.nom_para && !!errors.nom_para}
               />
             </View>
           );
