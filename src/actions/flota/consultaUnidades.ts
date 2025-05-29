@@ -14,8 +14,6 @@ export const getConsultaUnidades = async (
         txt_nro_placa: props.txt_nro_placa,
       },
     );
-    console.log(data);
-
     return data;
   } catch (error) {
     throw new Error(error as string);

@@ -18,7 +18,6 @@ export const getLogin = async (props: LoginRequest): Promise<LoginResponse> => {
       txt_usua_clave: props.usuaClave,
       cbo_empr_codigo: props.emprCodigo,
     });
-    console.log(data);
     return data;
   } catch (error) {
     throw new Error(error as string);
@@ -35,7 +34,6 @@ export const getOlvidoClave = async (
         txt_usua_codigo: props.usuaCodigo,
       },
     );
-    console.log(data);
     return data;
   } catch (error) {
     throw new Error(error as string);
@@ -56,7 +54,6 @@ export const updatePassword = async (
         txt_trab_fecnaci: props.trabFecnaci,
       },
     );
-    console.log(data);
 
     return data;
   } catch (error) {

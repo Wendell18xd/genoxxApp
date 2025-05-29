@@ -27,9 +27,6 @@ export const listadoMaterialesObra = async (
       ),
       validaCierreObra(cierreProps),
     ]);
-
-    console.log(materiales, cierre);
-
     return {
       materiales,
       cierre,
@@ -50,7 +47,6 @@ export const validaCierreObra = async (
         vl_nro_orden: props.vl_nro_orden,
       },
     );
-    console.log(data);
     return data;
   } catch (error) {
     throw new Error(error as string);

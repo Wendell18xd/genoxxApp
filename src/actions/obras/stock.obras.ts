@@ -24,7 +24,6 @@ export const listadoStockMaterilesObras = async (
         tipomovi: props.tipomovi,
       },
     );
-    console.log(data);
     return data;
   } catch (error) {
     throw new Error(error as string);

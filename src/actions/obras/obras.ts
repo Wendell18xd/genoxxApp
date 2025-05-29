@@ -16,7 +16,6 @@ export const listadoProyectosObras = async (
         vl_proy_tipo: props.vl_proy_tipo,
       },
     );
-    console.log(data);
     return data;
   } catch (error) {
     throw new Error(error as string);
@@ -38,7 +37,6 @@ export const listadoObrasAsiganadas = async (
         txt_cod_negocio: props.txt_cod_negocio,
       },
     );
-    console.log(data);
     return data;
   } catch (error) {
     throw new Error(error as string);
