@@ -1,3 +1,5 @@
+import {Alert, Platform, ToastAndroid} from 'react-native';
+
 export const normalize = (str: string) =>
   str
     .normalize('NFD')
@@ -15,3 +17,13 @@ export const hexToRgba = (hex: string, alpha: number) => {
   const b = parseInt(hex.slice(5, 7), 16);
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
+
+export function ToastNativo(mensaje: string, titulo: string = 'Info') {
+  if (Platform.OS === 'android') {
+    ToastAndroid.show(mensaje, ToastAndroid.SHORT);
+  } else if (Platform.OS === 'ios') {
+    Alert.alert(titulo, mensaje);
+  } else {
+    console.log('Toast:', mensaje);
+  }
+}

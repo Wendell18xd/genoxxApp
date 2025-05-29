@@ -1,5 +1,5 @@
-import React, {useRef} from 'react';
-import {StyleProp, StyleSheet, ViewStyle} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Keyboard, StyleProp, StyleSheet, ViewStyle} from 'react-native';
 import {FAB, useTheme} from 'react-native-paper';
 
 interface CustomFABProps {
@@ -22,15 +22,36 @@ export const CustomFAB: React.FC<CustomFABProps> = ({
   loading = false,
 }) => {
   const {colors} = useTheme();
+  const [tecladoAbierto, setTecladoAbierto] = useState(false);
   const lastPressRef = useRef<number>(0);
+
+  useEffect(() => {
+    const showListener = Keyboard.addListener('keyboardDidShow', () => {
+      setTecladoAbierto(true);
+    });
+    const hideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setTecladoAbierto(false);
+    });
+
+    return () => {
+      showListener.remove();
+      hideListener.remove();
+    };
+  }, []);
 
   const handlePress = () => {
     const now = Date.now();
     if (now - lastPressRef.current < 1000) {
       return;
-    } // debounce: 1 segundo
+    }
     lastPressRef.current = now;
-    onPress();
+
+    if (tecladoAbierto) {
+      Keyboard.dismiss(); // solo cierro teclado
+      return; // no ejecuto onPress
+    }
+
+    onPress(); // teclado cerrado, ejecuto onPress
   };
 
   return (
@@ -44,7 +65,9 @@ export const CustomFAB: React.FC<CustomFABProps> = ({
           onSecondaryContainer: labelColor,
         },
       }}
-      rippleColor="rgba(255,255,255,0.3)"
+      rippleColor={
+        tecladoAbierto ? 'rgba(255,255,255,0.0)' : 'rgba(255,255,255,0.3)'
+      }
       loading={loading}
       onPress={handlePress}
     />

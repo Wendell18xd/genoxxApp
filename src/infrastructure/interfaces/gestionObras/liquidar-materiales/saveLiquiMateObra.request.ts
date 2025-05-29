@@ -6,6 +6,9 @@ export interface SaveLiquiMateObraRequest {
 }
 
 export interface MaterialesLiquiRequest {
-  vl_mate_cantidad: string;
+  vl_guia_codigo: string;
+  vl_guia_numero: string;
+  vl_mate_codigo: string;
+  vl_mate_cantidad: number;
   vl_mate_observacion: string;
 }

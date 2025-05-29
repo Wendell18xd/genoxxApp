@@ -4,68 +4,32 @@ import {CustomCardContent} from '../../../../../../components/ui/CustomCardConte
 import MaterialIcons from '../../../../../../components/ui/icons/MaterialIcons';
 import {Divider, Text, useTheme} from 'react-native-paper';
 import {formatearNumero} from '../../../../../../helper/moneyUtils';
-import {useAuthStore} from '../../../../../../store/auth/useAuthStore';
-import {useState} from 'react';
 import CustomTextInput from '../../../../../../components/ui/CustomTextInput';
-import {sanitizarDecimalInput} from '../../../../../../helper/inputUtils';
-import Toast from 'react-native-toast-message';
-import {useLiquiMateStore} from '../../../store/useLiquiMateStore';
-import {useMainStore} from '../../../../../../store/main/useMainStore';
-import {Menu} from '../../../../../../../types/menus';
+import {useItemStockMateObras} from '../../hooks/useItemStockMateObras';
+import {useEffect} from 'react';
 
 interface Props {
   item: MateStockObra;
 }
 export const ItemStockMateObras = ({item}: Props) => {
   const {colors} = useTheme();
-  const {user} = useAuthStore();
-  const {obra} = useLiquiMateStore();
-  const [cantidad, setCantidad] = useState('');
-  const [observacion, setObservacion] = useState('');
-  const {drawerKey} = useMainStore();
-  const tipo =
-    drawerKey === Menu.LIQUIDACION_MATERIALES_OBRAS_ENERGIA ? 'ENERGIA' : '';
+  const {
+    user,
+    obra,
+    cantidad,
+    observacion,
+    materialesSeleccionados,
+    handleChangeCantidad,
+    handleChangeObservacion,
+    handleSaveMaterial,
+  } = useItemStockMateObras({item});
 
-  const handleChangeCantidad = (text: string) => {
-    const valorLimpio = sanitizarDecimalInput(text, 2); // hasta 2 decimales
-    setCantidad(valorLimpio);
-
-    if (parseFloat(valorLimpio) > parseFloat(item.mate_cantidad.toString())) {
-      Toast.show({
-        type: 'info',
-        text1: 'La cantidad no puede ser mayor al stock',
-        text2: `Cantidad: ${formatearNumero({
-          valor: parseFloat(valorLimpio),
-          pais: user?.empr_pais,
-        })}, Stock: ${formatearNumero({
-          valor: parseFloat(item.mate_cantidad.toString()),
-          pais: user?.empr_pais,
-        })}`,
-      });
-      setCantidad('');
+  useEffect(() => {
+    if (materialesSeleccionados.length === 0) {
+      handleChangeCantidad('');
+      handleChangeObservacion('');
     }
-
-    if (tipo === 'ENERGIA') {
-      if (obra?.valida_proyectado === '1') {
-        if (parseFloat(valorLimpio) > parseFloat(item.mate_saldo.toString())) {
-          Toast.show({
-            type: 'info',
-            text1: 'La cantidad no puede ser mayor al saldo',
-            text2: `Cantidad: ${formatearNumero({
-              valor: parseFloat(valorLimpio),
-              pais: user?.empr_pais,
-            })}, Saldo: ${formatearNumero({
-              valor: parseFloat(item.mate_saldo.toString()),
-              pais: user?.empr_pais,
-            })}`,
-          });
-          setCantidad('');
-        }
-      }
-    }
-
-    //TODO Validar el tope liquidaciones
-  };
+  }, [materialesSeleccionados]);
 
   return (
     <CustomCardContent mode="outlined">
@@ -151,6 +115,7 @@ export const ItemStockMateObras = ({item}: Props) => {
           value={cantidad}
           height={40}
           onChangeText={handleChangeCantidad}
+          onBlur={() => handleSaveMaterial(cantidad, observacion)}
         />
         <CustomTextInput
           label="Observación"
@@ -159,7 +124,8 @@ export const ItemStockMateObras = ({item}: Props) => {
           multiline
           numberOfLines={3}
           value={observacion}
-          onChangeText={setObservacion}
+          onChangeText={handleChangeObservacion}
+          onBlur={() => handleSaveMaterial(cantidad, observacion)}
         />
       </View>
     </CustomCardContent>

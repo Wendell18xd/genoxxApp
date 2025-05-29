@@ -3,17 +3,23 @@ import CustomDatePicker from '../../../../../components/ui/CustomDatePicker';
 import {View} from 'react-native';
 import {useFormLiquiMateObras} from '../hooks/useFormLiquiMateObras';
 import {Text} from 'react-native-paper';
-import {useLiquiMateStore} from '../../store/useLiquiMateStore';
 import {CustomDropdownInput} from '../../../../../components/ui/CustomDropdownInput';
+import {useState} from 'react';
 
 interface Props {
   isRegulariza: boolean;
 }
 
 export const FormLiquiMateObras = ({isRegulariza}: Props) => {
-  const {guias, setGuiaSeleccionada} = useLiquiMateStore();
-  const {initialValues, getValidationSchema, handleSaveLiquidacion} =
-    useFormLiquiMateObras();
+  const {
+    guias,
+    initialValues,
+    getValidationSchema,
+    handleSaveLiquidacion,
+    handleIntentoCambioGuia,
+  } = useFormLiquiMateObras();
+
+  const [localGuia, setLocalGuia] = useState('TODOS');
 
   return (
     <Formik
@@ -38,11 +44,15 @@ export const FormLiquiMateObras = ({isRegulariza}: Props) => {
               <CustomDropdownInput
                 label="Seleccione Guía"
                 options={guias}
-                value={values.guia}
-                onSelect={val => {
-                  setFieldValue('guia', val);
-                  setGuiaSeleccionada(val || 'TODOS');
-                }}
+                value={localGuia}
+                onSelect={val =>
+                  handleIntentoCambioGuia(
+                    val,
+                    setFieldValue,
+                    setLocalGuia,
+                    values.guia || 'TODOS',
+                  )
+                }
               />
             )}
           </View>

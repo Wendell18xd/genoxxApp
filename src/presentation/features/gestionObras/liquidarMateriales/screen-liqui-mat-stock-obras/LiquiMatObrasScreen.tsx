@@ -6,27 +6,29 @@ import {LiquiMatObrasStackParam} from '../navigation/LiquiMatObrasStackNavigatio
 import ListaStockMateObras from './components/ListaStockMateObras';
 import {useEffect} from 'react';
 import {useQueryClient} from '@tanstack/react-query';
-import {useLiquiMateStore} from '../store/useLiquiMateStore';
 import {CustomFAB} from '../../../../components/ui/CustomFAB';
+import {useSaveLiquiMateObras} from './hooks/useSaveLiquiMateObras';
 
 export const LiquiMatObrasScreen = () => {
   const {isRegulariza} =
     useRoute<RouteProp<LiquiMatObrasStackParam, 'LiquiMatObrasScreen'>>()
       .params;
-  const {obra} = useLiquiMateStore();
   const queryClient = useQueryClient();
+  const {obra, handleSaveLiquidacion, setMaterialesSeleccionados} =
+    useSaveLiquiMateObras();
 
-   useEffect(() => {
+  useEffect(() => {
     return () => {
       queryClient.removeQueries({
         queryKey: ['listadoStockMaterilesObras', obra],
       });
+      setMaterialesSeleccionados([]);
     };
   }, []);
 
   return (
     <DrawerLayout>
-      <View style={[globalStyle.container, globalStyle.margin]}>
+      <View style={[globalStyle.container, globalStyle.padding]}>
         {/* Lista de stock de materiales */}
         <View style={{flex: 1}}>
           <ListaStockMateObras isRegulariza={isRegulariza} />
@@ -37,7 +39,7 @@ export const LiquiMatObrasScreen = () => {
 
       <CustomFAB
         icon="content-save"
-        onPress={() => {}}
+        onPress={() => handleSaveLiquidacion()}
         style={{bottom: 32, right: 16}}
       />
     </DrawerLayout>
