@@ -1,67 +1,149 @@
-import {useRef, useState} from 'react';
+import {useEffect, useState} from 'react';
+import AudioRecorderPlayer, {
+  AVEncoderAudioQualityIOSType,
+  AVEncodingOption,
+  AudioEncoderAndroidType,
+  AudioSet,
+  AudioSourceAndroidType,
+} from 'react-native-audio-recorder-player';
 import {PermissionsAndroid, Platform} from 'react-native';
-import AudioRecorderPlayer from 'react-native-audio-recorder-player';
-import RNFS from 'react-native-fs';
+
+const audioRecorderPlayer = new AudioRecorderPlayer();
 
 export const useAudioRecorder = () => {
-  const recorderPlayer = useRef(new AudioRecorderPlayer());
+  const [isRecording, setIsRecording] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [audioPath, setAudioPath] = useState('');
-  const [base64Audio, setBase64Audio] = useState('');
-
-  const requestPermitions = async () => {
-    if (Platform.OS === 'android') {
-      const granted = await PermissionsAndroid.requestMultiple([
-        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-      ]);
-      return granted[PermissionsAndroid.PERMISSIONS.RECORD_AUDIO] === 'granted';
-    }
-    return true;
-  };
+  const [recordVolume, setRecordVolume] = useState(-160);
+  const [playbackPosition, setPlaybackPosition] = useState(0);
 
   const onStartRecord = async () => {
-    const hasPermission = await requestPermitions();
-    if (!hasPermission) {
-      console.warn('Permisos denegados');
-      return;
-    }
-
     try {
-      const fileName = Platform.select({
-        ios: 'recording.m4a',
-        android: 'recording.3gp',
-      });
-      const path = `${RNFS.DocumentDirectoryPath}/${fileName}`;
-      setAudioPath(path);
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+        );
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+          console.warn('Permiso de micrófono denegado');
+          return;
+        }
+      }
 
-      await recorderPlayer.current.startRecorder(path);
+      const path = Platform.select({
+        ios: 'alerta.m4a',
+        android: 'sdcard/alerta.mp4',
+      });
+
+      const audioSet: AudioSet = {
+        AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
+        AudioSourceAndroid: AudioSourceAndroidType.MIC,
+        AVEncoderAudioQualityKeyIOS: AVEncoderAudioQualityIOSType.high,
+        AVNumberOfChannelsKeyIOS: 2,
+        AVFormatIDKeyIOS: AVEncodingOption.aac,
+      };
+
+      await audioRecorderPlayer.startRecorder(path, audioSet);
+      setIsRecording(true);
+
+      audioRecorderPlayer.addRecordBackListener(e => {
+        if (Platform.OS === 'android' && typeof e.currentMetering === 'number') {
+          setRecordVolume(e.currentMetering);
+        } else {
+          setRecordVolume(-100);
+        }
+        return;
+      });
+
+      setAudioPath(path ?? '');
     } catch (error) {
-      console.error(error);
+      console.error('Error al iniciar grabación', error);
     }
   };
 
   const onStopRecord = async () => {
-    const result = await recorderPlayer.current.stopRecorder();
-    recorderPlayer.current.removeRecordBackListener();
-    const base64 = await RNFS.readFile(result, 'base64');
-    setBase64Audio(base64);
-    console.log(base64);
-    console.log('Grabación detenida:', result);
-    return result;
+    try {
+      const result = await audioRecorderPlayer.stopRecorder();
+      audioRecorderPlayer.removeRecordBackListener();
+      setIsRecording(false);
+      setAudioPath(result);
+      setPlaybackPosition(0);
+    } catch (error) {
+      console.error('Error al detener grabación', error);
+    }
   };
 
   const onStartPlay = async () => {
-    console.log('Iniciando reproducción de:', audioPath);
-    if (!audioPath) {
-      return;
+    try {
+      if (!audioPath) {return;}
+
+      await audioRecorderPlayer.startPlayer(audioPath);
+      await audioRecorderPlayer.seekToPlayer(playbackPosition);
+      setIsPlaying(true);
+
+      audioRecorderPlayer.addPlayBackListener(e => {
+        setPlaybackPosition(e.currentPosition);
+        if (e.currentPosition >= e.duration) {
+          setIsPlaying(false);
+          setPlaybackPosition(0);
+          audioRecorderPlayer.stopPlayer();
+        }
+        return;
+      });
+    } catch (error) {
+      console.error('Error al reproducir audio', error);
     }
-    await recorderPlayer.current.startPlayer(audioPath);
   };
+
+  const onPausePlay = async () => {
+    try {
+      await audioRecorderPlayer.pausePlayer();
+      setIsPlaying(false);
+    } catch (error) {
+      console.error('Error al pausar reproducción', error);
+    }
+  };
+
+  const togglePlayPause = async () => {
+    if (isPlaying) {
+      await onPausePlay();
+    } else {
+      await onStartPlay();
+    }
+  };
+
+  const deleteAudio = async () => {
+    await audioRecorderPlayer.stopPlayer();
+    audioRecorderPlayer.removePlayBackListener();
+    setAudioPath('');
+    setPlaybackPosition(0);
+    setIsPlaying(false);
+  };
+
+  const resetRecorder = async () => {
+    if (isRecording) {
+      await onStopRecord();
+    }
+    await deleteAudio();
+  };
+
+  useEffect(() => {
+    return () => {
+      audioRecorderPlayer.stopPlayer();
+      audioRecorderPlayer.removePlayBackListener();
+      audioRecorderPlayer.removeRecordBackListener();
+    };
+  }, []);
 
   return {
     onStartRecord,
     onStopRecord,
     onStartPlay,
+    onPausePlay,
+    togglePlayPause,
+    isRecording,
+    isPlaying,
     audioPath,
-    base64Audio,
+    recordVolume,
+    resetRecorder,
   };
 };

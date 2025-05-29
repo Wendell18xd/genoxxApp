@@ -1,8 +1,5 @@
-//
-//  AudioSessionManager.m
-//  genoxxApp
-//
-//  Created by Erick Pereyra on 29/05/25.
-//
+#import <React/RCTBridgeModule.h>
 
-#import <Foundation/Foundation.h>
+@interface RCT_EXTERN_MODULE(AudioSessionManager, NSObject)
+RCT_EXTERN_METHOD(activateSession)
+@end
