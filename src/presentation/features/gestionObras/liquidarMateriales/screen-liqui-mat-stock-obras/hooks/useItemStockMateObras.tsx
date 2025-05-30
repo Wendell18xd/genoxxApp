@@ -25,17 +25,20 @@ export const useItemStockMateObras = ({item}: Props) => {
     let valorLimpio = sanitizarDecimalInput(text, 2); // hasta 2 decimales
 
     if (parseFloat(valorLimpio) > parseFloat(item.mate_cantidad.toString())) {
-      ToastNativo('La cantidad ingresada no puede ser mayor al stock', 'Error');
+      ToastNativo({
+        mensaje: 'La cantidad ingresada no puede ser mayor al stock',
+        titulo: 'Error',
+      });
       valorLimpio = '';
     }
 
     if (tipo === 'ENERGIA') {
       if (obra?.valida_proyectado === '1') {
         if (parseFloat(valorLimpio) > parseFloat(item.mate_saldo.toString())) {
-          ToastNativo(
-            'La cantidad ingresada no puede ser mayor al saldo',
-            'Error',
-          );
+          ToastNativo({
+            mensaje: 'La cantidad ingresada no puede ser mayor al saldo',
+            titulo: 'Error',
+          });
           valorLimpio = '';
         }
       }

@@ -82,6 +82,7 @@ export const grabarMaterialesObras = async (
         vl_usua_tipo: props.vl_usua_tipo,
         vl_regi_codigo: props.vl_regi_codigo,
         vl_fecha_liquidacion: props.vl_fecha_liquidacion,
+        vl_maneja_stock_guia: props.vl_maneja_stock_guia,
         vl_materiales: props.vl_materiales,
       },
     );

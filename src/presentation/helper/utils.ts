@@ -18,10 +18,18 @@ export const hexToRgba = (hex: string, alpha: number) => {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
-export function ToastNativo(mensaje: string, titulo: string = 'Info') {
-  if (Platform.OS === 'android') {
+export function ToastNativo({
+  mensaje,
+  titulo = 'Info',
+  isAlert = false,
+}: {
+  mensaje: string;
+  titulo?: string;
+  isAlert?: boolean;
+}) {
+  if (Platform.OS === 'android' && !isAlert) {
     ToastAndroid.show(mensaje, ToastAndroid.SHORT);
-  } else if (Platform.OS === 'ios') {
+  } else if (Platform.OS === 'ios' || isAlert) {
     Alert.alert(titulo, mensaje);
   } else {
     console.log('Toast:', mensaje);

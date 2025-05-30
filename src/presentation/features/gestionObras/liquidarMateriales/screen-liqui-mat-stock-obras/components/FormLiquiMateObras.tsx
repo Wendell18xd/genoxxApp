@@ -22,9 +22,12 @@ export const FormLiquiMateObras = ({isRegulariza}: Props) => {
   const {
     guias,
     initialValues,
+    mutation,
+    refetchStock,
     getValidationSchema,
     handleSaveLiquidacion,
     handleIntentoCambioGuia,
+    setRefetchStock,
   } = useFormLiquiMateObras();
 
   const [localGuia, setLocalGuia] = useState('TODOS');
@@ -60,100 +63,109 @@ export const FormLiquiMateObras = ({isRegulariza}: Props) => {
   }, [errorStock]);
 
   useEffect(() => {
-    handleListarStock(isRegulariza);
-  }, []);
+    if (refetchStock) {
+      handleListarStock(isRegulariza);
+      setRefetchStock(false);
+    }
+  }, [refetchStock]);
 
   if (!dataStock) {
     return <FullScreenLoader />;
   }
 
   return (
-    <Formik
-      enableReinitialize
-      initialValues={{
-        ...initialValues,
-        materiales: materialesFormik ?? [],
-      }}
-      onSubmit={(values, {resetForm}) => {
-        handleSaveLiquidacion(values, resetForm);
-      }}
-      validationSchema={getValidationSchema}>
-      {({
-        handleSubmit,
-        handleReset,
-        setFieldValue,
-        values,
-        errors,
-        touched,
-      }) => {
-        return (
-          <View style={{flex: 1, position: 'relative'}}>
-            {isFetchingStock && dataStock && <FullScreenLoader transparent />}
+    <>
+      {mutation.isPending && (
+        <FullScreenLoader transparent />
+      )}
+      <Formik
+        enableReinitialize
+        initialValues={{
+          ...initialValues,
+          materiales: materialesFormik ?? [],
+        }}
+        onSubmit={(values, {resetForm}) => {
+          handleSaveLiquidacion(values, resetForm, setLocalGuia);
+        }}
+        validationSchema={getValidationSchema}>
+        {({
+          handleSubmit,
+          handleReset,
+          setFieldValue,
+          values,
+          errors,
+          touched,
+        }) => {
+          return (
+            <View style={{flex: 1, position: 'relative'}}>
+              {isFetchingStock && dataStock && <FullScreenLoader transparent />}
 
-            {filteredStock && filteredStock.length > 0 ? (
-              <FlatList
-                data={filteredStock}
-                renderItem={({item, index}) => (
-                  <ItemStockMateObras
-                    item={item}
-                    index={index}
-                    values={values}
-                    setFieldValue={setFieldValue}
-                  />
-                )}
-                keyExtractor={item =>
-                  item.mate_codigo + item.guia_codigo + item.guia_numero
-                }
-                refreshing={isFetchingStock}
-                onRefresh={() => handleListarStock(isRegulariza)}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{gap: 16}}
-                ListHeaderComponent={
-                  <View>
-                    <CustomDatePicker
-                      label="Fecha Liquidación"
-                      placeholder="Selecciona una fecha de liquidación"
-                      value={values.fecha}
-                      style={{marginBottom: 8}}
-                      onChange={val => setFieldValue('fecha', val)}
-                      error={touched.fecha && !!errors.fecha}
+              {filteredStock && filteredStock.length > 0 ? (
+                <FlatList
+                  data={filteredStock}
+                  renderItem={({item, index}) => (
+                    <ItemStockMateObras
+                      item={item}
+                      index={index}
+                      values={values}
+                      setFieldValue={setFieldValue}
                     />
-                    {touched.fecha && errors.fecha && (
-                      <Text style={{color: 'red', marginTop: 4}}>
-                        {errors.fecha}
-                      </Text>
-                    )}
-                    {guias && !isRegulariza && (
-                      <CustomDropdownInput
-                        label="Seleccione Guía"
-                        options={guias}
-                        value={localGuia}
-                        onSelect={val =>
-                          handleIntentoCambioGuia(
-                            val,
-                            setFieldValue,
-                            setLocalGuia,
-                            localGuia || 'TODOS',
-                            values.materiales,
-                            handleReset,
-                          )
-                        }
+                  )}
+                  keyExtractor={item =>
+                    item.mate_codigo + item.guia_codigo + item.guia_numero
+                  }
+                  refreshing={isFetchingStock}
+                  onRefresh={() => handleListarStock(isRegulariza)}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{gap: 16}}
+                  ListHeaderComponent={
+                    <View>
+                      <CustomDatePicker
+                        label="Fecha Liquidación"
+                        placeholder="Selecciona una fecha de liquidación"
+                        value={values.fecha}
+                        style={{marginBottom: 8}}
+                        onChange={val => setFieldValue('fecha', val)}
+                        error={touched.fecha && !!errors.fecha}
                       />
-                    )}
-                  </View>
-                }
+                      {touched.fecha && errors.fecha && (
+                        <Text style={{color: 'red', marginTop: 4}}>
+                          {errors.fecha}
+                        </Text>
+                      )}
+                      {guias && !isRegulariza && (
+                        <CustomDropdownInput
+                          label="Seleccione Guía"
+                          options={guias}
+                          value={localGuia}
+                          onSelect={val =>
+                            handleIntentoCambioGuia(
+                              val,
+                              setFieldValue,
+                              setLocalGuia,
+                              localGuia || 'TODOS',
+                              values.materiales,
+                              handleReset,
+                            )
+                          }
+                        />
+                      )}
+                    </View>
+                  }
+                />
+              ) : (
+                <SinResultados message="No hay materiales en stock" />
+              )}
+              <CustomFAB
+                icon="content-save"
+                onPress={() => handleSubmit()}
+                style={{bottom: 8, right: 8}}
+                loading={mutation.isPending}
               />
-            ) : (
-              <SinResultados message="No hay materiales en stock" />
-            )}
-            <CustomFAB
-              icon="content-save"
-              onPress={() => handleSubmit()}
-              style={{bottom: 8, right: 8}}
-            />
-          </View>
-        );
-      }}
-    </Formik>
+            </View>
+          );
+        }}
+      </Formik>
+    </>
   );
 };

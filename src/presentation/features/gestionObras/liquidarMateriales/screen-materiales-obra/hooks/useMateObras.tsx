@@ -6,7 +6,8 @@ import {useRef, useState} from 'react';
 
 export const useMateObras = () => {
   const {user} = useAuthStore();
-  const {obra} = useLiquiMateStore();
+  const {obra, isRefetchLiquidacion, setIsRefetchLiquidacion} =
+    useLiquiMateStore();
   const [isRegulariza, setIsRegulariza] = useState(false);
   const isRegularizaRef = useRef(false);
 
@@ -46,8 +47,11 @@ export const useMateObras = () => {
     isFetchMateriales,
     errorMateriales,
     isRegulariza,
+    isRefetchLiquidacion,
+
     //* Metodos,
     refetchMateriales,
     handleRegularizarMateriales,
+    setIsRefetchLiquidacion,
   };
 };
