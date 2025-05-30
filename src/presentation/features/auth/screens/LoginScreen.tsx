@@ -12,11 +12,11 @@ import {Option} from 'react-native-paper-dropdown';
 import {mapToDropdown} from '../../../../infrastructure/mappers/mapToDropdown';
 import Toast from 'react-native-toast-message';
 import {useAuthStore} from '../../../store/auth/useAuthStore';
-import {StorageAdapter} from '../../../../config/adapter/storage-adapter';
 import {StackScreenProps} from '@react-navigation/stack';
 import {AuthStackParam} from '../../../navigations/AuthStackNavigation';
 import FullScreenLoader from '../../../components/ui/loaders/FullScreenLoader';
 import {CustomDropdownInput} from '../../../components/ui/CustomDropdownInput';
+import { StorageAdapter } from '../../../adapter/storage-adapter';
 
 interface LoginFormValues {
   usuario: string;
