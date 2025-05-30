@@ -74,7 +74,7 @@ const DrawerLayout = ({
               styles.containerChildren,
               {
                 backgroundColor: colors.background,
-                paddingBottom: bottom,
+                paddingBottom: keyboardVisible ? 0 : bottom,
               },
               style,
             ]}>
