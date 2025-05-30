@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 import { enviarAlerta, getAlertas } from '../../../../../../../actions/profile/Alertas/Alertas';
 
 interface AlertasFromValues {
+  nom_audio: string;
   tipo: string;
   telefono: string;
   comentario: string;
@@ -17,6 +18,7 @@ const initialValues: AlertasFromValues = {
   tipo: '',
   telefono: '',
   comentario: '',
+  nom_audio: '',
 };
 
 export const getAlertValidationSchema = Yup.object().shape({
@@ -77,7 +79,7 @@ export const useAlertas = () => {
       txt_trab_codigo: user?.usua_perfil || '',
       txt_tipo: values.tipo,
       txt_telefono: values.telefono,
-      nom_audio: audioBase64 || '',
+      txt_audio: audioBase64 || '',
       txt_comentario: values.comentario,
     };
     mutation.mutate(data, {

@@ -5,7 +5,7 @@ export interface EnviarAlertaResponse {
   txt_tipo: string;
   txt_telefono: string;
   txt_comentario: string;
-  nom_audio: string;
+  txt_audio: string;
 }
 
 

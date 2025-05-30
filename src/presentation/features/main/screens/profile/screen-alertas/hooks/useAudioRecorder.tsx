@@ -7,6 +7,7 @@ import AudioRecorderPlayer, {
   AudioSourceAndroidType,
 } from 'react-native-audio-recorder-player';
 import {PermissionsAndroid, Platform} from 'react-native';
+import RNFS from 'react-native-fs';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -14,6 +15,7 @@ export const useAudioRecorder = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioPath, setAudioPath] = useState('');
+  const [audioBase64, setAudioBase64] = useState('');
   const [recordVolume, setRecordVolume] = useState(-160);
   const [playbackPosition, setPlaybackPosition] = useState(0);
 
@@ -67,6 +69,10 @@ export const useAudioRecorder = () => {
       setIsRecording(false);
       setAudioPath(result);
       setPlaybackPosition(0);
+
+      // Leer archivo grabado y convertirlo a base64
+      const base64Audio = await RNFS.readFile(result, 'base64');
+      setAudioBase64(base64Audio);
     } catch (error) {
       console.error('Error al detener grabación', error);
     }
@@ -74,7 +80,9 @@ export const useAudioRecorder = () => {
 
   const onStartPlay = async () => {
     try {
-      if (!audioPath) {return;}
+      if (!audioPath) {
+        return;
+      }
 
       await audioRecorderPlayer.startPlayer(audioPath);
       await audioRecorderPlayer.seekToPlayer(playbackPosition);
@@ -117,6 +125,7 @@ export const useAudioRecorder = () => {
     setAudioPath('');
     setPlaybackPosition(0);
     setIsPlaying(false);
+    setAudioBase64(''); // Limpiar base64 cuando se elimina audio
   };
 
   const resetRecorder = async () => {
@@ -143,7 +152,9 @@ export const useAudioRecorder = () => {
     isRecording,
     isPlaying,
     audioPath,
+    audioBase64,
     recordVolume,
     resetRecorder,
   };
 };
+

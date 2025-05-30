@@ -31,6 +31,7 @@ export const AlertasScreen = () => {
     isRecording,
     isPlaying,
     audioPath,
+    audioBase64,
     recordVolume,
     resetRecorder,
   } = useAudioRecorder();
@@ -55,7 +56,7 @@ export const AlertasScreen = () => {
           initialValues={formValues}
           validationSchema={getAlertValidationSchema}
           onSubmit={(values, {resetForm}) => {
-            startAlertaSubmit(values, resetForm);
+            startAlertaSubmit(values, resetForm, audioBase64);
           }}>
           {({values, setFieldValue, handleSubmit, touched, errors}) => (
             <View style={{flex: 1}}>
@@ -158,16 +159,17 @@ export const AlertasScreen = () => {
               <IconButton
                 icon="microphone"
                 size={40}
-                containerColor="#4CAF50"
+                containerColor={isRecording || isPlaying ? '#9E9E9E' : '#4CAF50'}
                 iconColor="#fff"
                 onPress={onStartRecord}
                 disabled={isRecording || isPlaying}
+                loading={mutation.isPending}
               />
 
               <IconButton
                 icon="stop-circle"
                 size={40}
-                containerColor="#F44336"
+                containerColor= {isRecording ? '#F44336' : '#9E9E9E'}
                 iconColor="#fff"
                 onPress={onStopRecord}
                 disabled={!isRecording}
@@ -176,7 +178,7 @@ export const AlertasScreen = () => {
               <IconButton
                 icon={isPlaying ? 'pause-circle' : 'play-circle'}
                 size={40}
-                containerColor="#2196F3"
+                containerColor= {isRecording || !audioPath ? '#9E9E9E' : '#2196F3'}
                 iconColor="#fff"
                 onPress={togglePlayPause}
                 disabled={isRecording || !audioPath}
