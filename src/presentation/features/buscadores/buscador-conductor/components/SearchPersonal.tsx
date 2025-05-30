@@ -30,11 +30,11 @@ export const SearchPersonal = ({onClose}: Props) => {
           return (
             <View style={{padding: 16}}>
               <CustomTextInput
-                label="Buscar"
+                label="Buscar personal"
                 mode="outlined"
-                value={values.nom_para}
-                onChangeText={handleChange('cod_para')}
-                onBlur={handleBlur('cod_para')}
+                value={values.txt_buscar}
+                onChangeText={handleChange('txt_buscar')}
+                onBlur={handleBlur('txt_buscar')}
                 right={
                   <TextInput.Icon
                     icon="magnify"
@@ -42,7 +42,7 @@ export const SearchPersonal = ({onClose}: Props) => {
                     onPress={() => handleSubmit()}
                   />
                 }
-                error={touched.nom_para && !!errors.nom_para}
+                error={touched.txt_buscar && !!errors.txt_buscar}
               />
             </View>
           );

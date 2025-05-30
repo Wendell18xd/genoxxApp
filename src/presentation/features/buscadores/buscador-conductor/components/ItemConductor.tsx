@@ -1,4 +1,4 @@
-import {Divider, Text, useTheme} from 'react-native-paper';
+import { Text, useTheme} from 'react-native-paper';
 import {CustomCardContent} from '../../../../components/ui/CustomCardContent';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
 import {StyleSheet, View} from 'react-native';
@@ -22,16 +22,16 @@ export const ItemConductor = ({personal, onPress}: Props) => {
           <Text variant="titleMedium" style={styles.title}>
             {personal.nom_para}
           </Text>
-          {/* <Text variant="bodySmall" style={styles.subtitle}>
+          <Text variant="bodySmall" style={styles.subtitle}>
             {personal.cod_para}
-          </Text> */}
+          </Text>
         </View>
 
         {/* FLECHA */}
         {/* <IconButton icon="chevron-right" size={24} iconColor={colors.primary} /> */}
       </View>
 
-      <Divider />
+      {/* <Divider /> */}
 
       {/* Etiqueta inferior */}
       {/* <View style={styles.footer}>

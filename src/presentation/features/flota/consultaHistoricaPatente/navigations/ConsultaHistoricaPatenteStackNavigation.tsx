@@ -7,8 +7,8 @@ import { Personal } from '../../../../../domain/entities/Personal';
 
 export type ConsultaHistoricaPatenteStackParam = {
   ListaConsultaHistoricaPatenteScreen:  {patente?: ConsultaUnidades; personal?: Personal};
-  BuscadorPatenteScreen: undefined;
-  BuscadorPersonalScreen: undefined;
+  BuscadorPatenteScreen: { onSelect?: (patente: any) => void } | undefined;
+  BuscadorPersonalScreen: { onSelect?: (personal: any) => void } | undefined;
 };
 
 const Stack = createStackNavigator<ConsultaHistoricaPatenteStackParam>();

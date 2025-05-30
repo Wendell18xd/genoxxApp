@@ -41,7 +41,7 @@ export const BuscadorPersonalScreen = () => {
           <SearchPersonal/>
           <FlatList
             data={personal}
-            keyExtractor={item => item.nom_para}
+            keyExtractor={item => item.cod_para}
             contentContainerStyle={{gap: 16, padding: 16}}
             refreshing={isFetchPersonal}
             onRefresh={refetchPersonal}

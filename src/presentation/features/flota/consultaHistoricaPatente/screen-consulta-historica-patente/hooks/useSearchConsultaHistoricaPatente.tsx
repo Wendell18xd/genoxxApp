@@ -1,5 +1,5 @@
 
-import {useRef} from 'react';
+import {useRef, useState} from 'react';
 import {useAuthStore} from '../../../../../store/auth/useAuthStore';
 import {ConsultaHistoricaPatenteRequest} from '../../../../../../infrastructure/interfaces/flota/consultaHistoricaPatente/consultaHistoricaPatente.request';
 import {useQuery} from '@tanstack/react-query';
@@ -41,6 +41,8 @@ export const useSearchConsultaHistoricaPatente = () => {
     txt_cod_destinatario: '',
   });
 
+  const [codDestinatario, setCodDestinatario] = useState('');
+
   const {
     data: consultaHistoricaPatente,
     isFetching: isFetchConsultaHistoricaPatente,
@@ -61,10 +63,17 @@ export const useSearchConsultaHistoricaPatente = () => {
   ) => {
     const nuevosFiltros: ConsultaHistoricaPatenteRequest = {
       ...filtrosRef.current,
-      txt_codigo: values.txt_codigo,
       cbo_bus_tipo: values.cbo_bus_tipo,
-      txt_cod_destinatario: values.txt_cod_destinatario,
+      txt_codigo: '',
+      txt_cod_destinatario: '',
     };
+
+   if (values.cbo_bus_tipo === 'PERS') {
+  nuevosFiltros.txt_cod_destinatario = codDestinatario.trim();
+} else if (values.cbo_bus_tipo === 'PLACA') {
+  nuevosFiltros.txt_cod_destinatario = codDestinatario.trim();
+}
+
     filtrosRef.current = nuevosFiltros;
     refetchConsultaHistoricaPatente();
     onClose?.();
@@ -77,9 +86,11 @@ export const useSearchConsultaHistoricaPatente = () => {
     consultaHistoricaPatente,
     isFetchConsultaHistoricaPatente,
     errorConsultaHistoricaPatente,
+    codDestinatario,
 
     //* Metodos
     handleSearch,
     refetchConsultaHistoricaPatente,
+    setCodDestinatario,
   };
 };

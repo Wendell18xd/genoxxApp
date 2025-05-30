@@ -1,5 +1,5 @@
 import {StyleSheet, View } from 'react-native';
-import {Divider, IconButton, Text, useTheme} from 'react-native-paper';
+import {Divider, Text, useTheme} from 'react-native-paper';
 import MaterialIcons from '../../../../../components/ui/icons/MaterialIcons';
 import { CustomCardContent } from '../../../../../components/ui/CustomCardContent';
 import { ConsultaHistoricaPatente } from '../../../../../../domain/entities/ConsultaHistoricaPatente';
@@ -26,9 +26,6 @@ export const ItemConsultaHistoricaPatente = ({consultaHistoricaPatente, onPress}
             {consultaHistoricaPatente.nom_perfil}
           </Text>
         </View>
-
-        {/* FLECHA */}
-        <IconButton icon="chevron-right" size={24} iconColor={colors.primary} />
       </View>
 
       <Divider />

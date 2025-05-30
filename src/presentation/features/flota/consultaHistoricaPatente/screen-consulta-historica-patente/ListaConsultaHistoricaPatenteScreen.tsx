@@ -44,16 +44,16 @@ export const ListaConsultaHistoricaPatenteScreen = () => {
       {consultaHistoricaPatente && consultaHistoricaPatente.length > 0 ? (
         <>
           <Searchbar
-            placeholder="Filtrar por número de placa"
+            placeholder="Filtrar"
             onChangeText={setSearchQuery}
             value={searchQuery}
             style={{marginHorizontal: 16, marginTop: 16}}
           />
           <FlatList
             data={consultaHistoricaPatente?.filter(item =>
-              item.nro_placa?.toLowerCase().includes(searchQuery.toLowerCase()),
+              item.cod_registro?.toLowerCase().includes(searchQuery.toLowerCase()),
             )}
-            keyExtractor={item => item.nro_placa}
+            keyExtractor={item => item.cod_registro}
             contentContainerStyle={{gap: 16, padding: 16}}
             refreshing={isFetchConsultaHistoricaPatente}
             onRefresh={refetchConsultaHistoricaPatente}

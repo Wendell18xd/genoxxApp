@@ -2,24 +2,26 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 
 import {useRef} from 'react';
 import {useQuery} from '@tanstack/react-query';
-import { ConsultaHistoricaPatenteStackParam } from '../../../flota/consultaHistoricaPatente/navigations/ConsultaHistoricaPatenteStackNavigation';
-import { useAuthStore } from '../../../../store/auth/useAuthStore';
-import { PersonalRequest } from '../../../../../infrastructure/interfaces/flota/personal/personal.request';
-import { getPersonal } from '../../../../../actions/personal/personal';
-import { Personal } from '../../../../../domain/entities/Personal';
+import {ConsultaHistoricaPatenteStackParam} from '../../../flota/consultaHistoricaPatente/navigations/ConsultaHistoricaPatenteStackNavigation';
+import {useAuthStore} from '../../../../store/auth/useAuthStore';
+import {PersonalRequest} from '../../../../../infrastructure/interfaces/flota/personal/personal.request';
+import {getPersonal} from '../../../../../actions/personal/personal';
+import {Personal} from '../../../../../domain/entities/Personal';
+import {usePersonalStore} from '../store/usePersonal';
 
 interface SearchPersonalFormValues {
-  nom_para: string;
+  txt_buscar: string;
 }
 
 const initialValues: SearchPersonalFormValues = {
-  nom_para: '',
+  txt_buscar: '',
 };
 
 export const useSearchPersonal = () => {
   const {user} = useAuthStore();
   const navigation =
     useNavigation<NavigationProp<ConsultaHistoricaPatenteStackParam>>();
+  const onSelect = usePersonalStore(state => state.onSelect);
 
   const filtrosRef = useRef<PersonalRequest>({
     vl_empr_codigo: user?.empr_codigo || '',
@@ -47,15 +49,16 @@ export const useSearchPersonal = () => {
   ) => {
     const nuevosFiltros: PersonalRequest = {
       ...filtrosRef.current,
-      txt_cod_trabajador: values.nom_para.trim().toUpperCase(),
+      txt_buscar: values.txt_buscar.trim().toUpperCase(),
     };
     filtrosRef.current = nuevosFiltros;
     refetchPersonal();
     onClose?.();
   };
 
-  const handleSelectPersonal = (item: Personal) => {
-    navigation.navigate('ListaConsultaHistoricaPatenteScreen', {personal: item});
+  const handleSelectPersonal = (selectedPersonal: Personal) => {
+    onSelect?.(selectedPersonal);
+    navigation.goBack();
   };
 
   return {
