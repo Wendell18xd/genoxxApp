@@ -1,6 +1,6 @@
 import {genoxxApi} from '../../config/api/genoxxApi';
-import {ObrasRequest} from '../../infrastructure/interfaces/gestionObras/liquiMateObra.request';
-import {ObrasResponse} from '../../infrastructure/interfaces/gestionObras/liquiMateObra.response';
+import {ObrasRequest} from '../../infrastructure/interfaces/gestionObras/liquidar-materiales/liquiMateObra.request';
+import {ObrasResponse} from '../../infrastructure/interfaces/gestionObras/liquidar-materiales/liquiMateObra.response';
 import {ProyectosObrasRequest} from '../../infrastructure/interfaces/gestionObras/obras.request';
 import {ProyectosObrasResponse} from '../../infrastructure/interfaces/gestionObras/obras.response';
 
@@ -8,14 +8,14 @@ export const listadoProyectosObras = async (
   props: ProyectosObrasRequest,
 ): Promise<ProyectosObrasResponse> => {
   try {
+    console.log(props);
     const {data} = await genoxxApi.post<ProyectosObrasResponse>(
       '/obras/listar_proyectos_obras',
       {
-        vl_empr_codigo: props.vl_empr_codigo,
+        vg_empr_codigo: props.vl_empr_codigo,
         vl_proy_tipo: props.vl_proy_tipo,
       },
     );
-    console.log(data);
     return data;
   } catch (error) {
     throw new Error(error as string);
@@ -29,7 +29,7 @@ export const listadoObrasAsiganadas = async (
     const {data} = await genoxxApi.post<ObrasResponse>(
       '/obras/consultar_documento_orden',
       {
-        vl_empr_codigo: props.vl_empr_codigo,
+        vg_empr_codigo: props.vl_empr_codigo,
         cbo_tipo_buscar_doc: props.cbo_tipo_buscar_doc,
         txt_nro_buscar_doc: props.txt_nro_buscar_doc,
         txt_proy_codigo: props.txt_proy_codigo,
@@ -37,7 +37,6 @@ export const listadoObrasAsiganadas = async (
         txt_cod_negocio: props.txt_cod_negocio,
       },
     );
-    console.log(data);
     return data;
   } catch (error) {
     throw new Error(error as string);

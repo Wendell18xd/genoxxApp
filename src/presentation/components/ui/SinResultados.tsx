@@ -1,26 +1,46 @@
-import {View} from 'react-native';
-import MaterialIcons from './icons/MaterialIcons';
-import {Text} from 'react-native-paper';
+import {View, StyleSheet} from 'react-native';
+import LottieView from 'lottie-react-native';
+import {Text, useTheme} from 'react-native-paper';
 
 interface Props {
   message?: string;
 }
 
 const SinResultados = ({message = 'No se encontraron resultados'}: Props) => {
+  const {colors} = useTheme();
+
   return (
-    <View
-      style={{
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 100,
-      }}>
-      <MaterialIcons name="magnify" style={{marginRight: 16}} size={25} />
-      <Text variant="bodyLarge" style={{textAlign: 'center'}}>
+    <View style={styles.container}>
+      <LottieView
+        source={require('../../../assets/lotties/no-result-animation.json')}
+        autoPlay
+        loop
+        style={styles.animation}
+      />
+      <Text
+        variant="titleMedium"
+        style={[styles.message, {color: colors.onSurfaceVariant}]}>
         {message}
       </Text>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 32,
+  },
+  animation: {
+    width: 180,
+    height: 180,
+    marginBottom: 16,
+  },
+  message: {
+    textAlign: 'center',
+  },
+});
+
 export default SinResultados;

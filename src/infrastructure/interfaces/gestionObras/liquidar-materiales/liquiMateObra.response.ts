@@ -1,5 +1,5 @@
-import {MateLiqui} from '../../../domain/entities/MateLiqui';
-import {Obra} from '../../../domain/entities/Obra';
+import {MateLiqui} from '../../../../domain/entities/MateLiqui';
+import {Obra} from '../../../../domain/entities/Obra';
 
 export interface ObrasResponse {
   datos: Obra[];

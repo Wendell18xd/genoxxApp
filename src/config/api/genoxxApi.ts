@@ -43,6 +43,44 @@ const genoxxApi = axios.create({
   },
 });
 
+// 👉 INTERCEPTORES DE LOGUEO
+genoxxApi.interceptors.request.use(
+  config => {
+    console.log('[GENOXX][Request]');
+    console.log('URL:', config.url);
+    console.log('Method:', config.method);
+    console.log('Headers:', config.headers);
+    console.log('Data:', config.data);
+    return config;
+  },
+  error => {
+    console.log('[GENOXX][Request Error]', error);
+    return Promise.reject(error);
+  }
+);
+
+genoxxApi.interceptors.response.use(
+  response => {
+    console.log('[GENOXX][Response]');
+    console.log('Status:', response.status);
+    console.log('Data:', response.data);
+    return response;
+  },
+  error => {
+    if (error.response) {
+      console.log('[GENOXX][Response Error]');
+      console.log('Status:', error.response.status);
+      console.log('Data:', error.response.data);
+    } else if (error.request) {
+      console.log('[GENOXX][No Response]');
+      console.log('Request:', error.request);
+    } else {
+      console.log('[GENOXX][Error]', error.message);
+    }
+    return Promise.reject(error);
+  }
+);
+
 console.log(genoxxApi.defaults.baseURL);
 
 export {genoxxApi};

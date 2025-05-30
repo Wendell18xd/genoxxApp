@@ -8,6 +8,7 @@ import {CustomDropdownInput} from '../../../../../components/ui/CustomDropdownIn
 import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoader';
 import {useEffect} from 'react';
 import Toast from 'react-native-toast-message';
+import {useQueryClient} from '@tanstack/react-query';
 
 interface Props {
   onClose?: () => void;
@@ -19,15 +20,24 @@ export const SearchObras = ({onClose}: Props) => {
     initialValues,
     proyectos,
     isFetchObras,
-    isFetchProyecto,
     errorProyectos,
     handleSearch,
     getValidationSchema,
     refetchProyectos,
   } = useSarchObras();
 
+  const queryClient = useQueryClient();
+
   useEffect(() => {
     refetchProyectos();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      queryClient.removeQueries({
+        queryKey: ['proyectos', 'liquidacion', 'materiales'],
+      });
+    };
   }, []);
 
   useEffect(() => {
@@ -39,7 +49,7 @@ export const SearchObras = ({onClose}: Props) => {
     }
   }, [errorProyectos]);
 
-  if (isFetchProyecto) {
+  if (!proyectos) {
     return <FullScreenLoader />;
   }
 

@@ -1,15 +1,34 @@
 package com.ssisac.genoxxrn
 
+import android.os.Build
+import android.os.Bundle
+import android.graphics.Color
+import android.view.View
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
-import android.os.Bundle;
 
 class MainActivity : ReactActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
       super.onCreate(null)
+      
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+          window.apply {
+              // Hace la barra de navegación transparente
+              navigationBarColor = Color.TRANSPARENT
+  
+              // Oculta el fondo sólido y permite que la vista se dibuje detrás
+              decorView.systemUiVisibility =
+                  View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                  View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+  
+              // Opcional: Si también quieres ocultar la barra de estado
+              // decorView.systemUiVisibility = decorView.systemUiVisibility or
+              //     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+          }
+      }
     }
 
   /**

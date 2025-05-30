@@ -1,63 +1,93 @@
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {ScrollView, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import {useLiquiMateStore} from '../store/useLiquiMateStore';
-import {CustomCardContent} from '../../../../components/ui/CustomCardContent';
-import {Text} from 'react-native-paper';
-import {formatearNumero} from '../../../../helper/moneyUtils';
-import {useAuthStore} from '../../../../store/auth/useAuthStore';
+import {Divider, Text} from 'react-native-paper';
+import {globalColors} from '../../../../styles/globalStyle';
 
 interface Props {
   label: string;
   value?: string | number;
+  style?: StyleProp<ViewStyle>;
 }
 
-const LabelValueRow = ({label, value}: Props) => {
+const LabelValueRow = ({label, value, style}: Props) => {
   return (
-    <View style={styles.row}>
-      <Text style={styles.label}>{label}</Text>
-      <Text style={styles.value}>{value || '-'}</Text>
+    <View style={[styles.row, style]}>
+      <View style={{flex: 0.4}}>
+        <Text
+          variant="bodyMedium"
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          style={{color: globalColors.secondary}}>
+          {label}
+        </Text>
+      </View>
+      <View style={{flex: 0.6}}>
+        <Text variant="bodyMedium" numberOfLines={1} adjustsFontSizeToFit>
+          {value}
+        </Text>
+      </View>
     </View>
   );
 };
 
 export const DetalleObraScreen = () => {
   const {obra} = useLiquiMateStore();
-  const {user} = useAuthStore();
 
   return (
-    <ScrollView contentContainerStyle={{padding: 16}}>
-      <CustomCardContent mode="contained">
-        <LabelValueRow label="Cod Registro" value={obra?.regi_codigo} />
-        <LabelValueRow label="Nro Orden" value={obra?.nro_orden} />
-        <LabelValueRow label="Nro Orden 2" value={obra?.nro_orden2} />
-        <LabelValueRow label="Proyecto" value={obra?.proy_nombre} />
-        <LabelValueRow label="Tipo Obra" value={obra?.tipo_obra} />
-        <LabelValueRow label="Nombre" value={obra?.nombre} />
-        <LabelValueRow label="Dirección" value={obra?.direccion} />
-        <LabelValueRow label="Distrito" value={obra?.distrito} />
-        <LabelValueRow label="Supervisor" value={obra?.nom_supervisor} />
-        <LabelValueRow label="Observación" value={obra?.observacion} />
-        <LabelValueRow
-          label="MO Ejecutado"
-          value={formatearNumero({
-            valor: obra?.mo_ejecutado || 0,
-            pais: user?.empr_pais,
-          })}
-        />
-        <LabelValueRow
-          label="MA Ejecutado"
-          value={formatearNumero({
-            valor: obra?.ma_ejecutado || 0,
-            pais: user?.empr_pais,
-          })}
-        />
-        <LabelValueRow
-          label="Facturado"
-          value={formatearNumero({
-            valor: obra?.total_facturado || 0,
-            pais: user?.empr_pais,
-          })}
-        />
-      </CustomCardContent>
+    <ScrollView contentContainerStyle={{padding: 32}}>
+      <Text variant="titleLarge" style={{fontWeight: 'bold'}}>
+        Información de la obra
+      </Text>
+
+      <Divider style={{marginVertical: 16}} />
+
+      <LabelValueRow label="Codigo Registro" value={obra?.regi_codigo} />
+
+      <Divider style={{marginVertical: 16}} />
+
+      <LabelValueRow label="Nro Orden" value={obra?.nro_orden} />
+
+      <Divider style={{marginVertical: 16}} />
+
+      <LabelValueRow label="Nro Orden 2" value={obra?.nro_orden2} />
+
+      <Divider style={{marginVertical: 16}} />
+
+      <LabelValueRow
+        label="Proyecto"
+        value={obra?.proy_nombre}
+        style={{marginBottom: 40}}
+      />
+
+      <Text variant="titleLarge" style={{fontWeight: 'bold'}}>
+        Detalle de trabajo
+      </Text>
+
+      <Divider style={{marginVertical: 16}} />
+
+      <LabelValueRow label="Tipo Obra" value={obra?.tipo_obra} />
+
+      <Divider style={{marginVertical: 16}} />
+      <LabelValueRow label="Nombre" value={obra?.nombre} />
+
+      <Divider style={{marginVertical: 16}} />
+      <LabelValueRow label="Dirección" value={obra?.direccion} />
+
+      <Divider style={{marginVertical: 16}} />
+      <LabelValueRow label="Distrito" value={obra?.distrito} />
+
+      <Divider style={{marginVertical: 16}} />
+      <LabelValueRow
+        label="Supervisor"
+        value={obra?.nom_supervisor}
+        style={{marginBottom: 40}}
+      />
+
+      <Text variant="titleLarge" style={{fontWeight: 'bold', marginBottom: 16}}>
+        Observación
+      </Text>
+
+      <Text variant="bodyMedium">{obra?.observacion}</Text>
     </ScrollView>
   );
 };
@@ -65,17 +95,6 @@ export const DetalleObraScreen = () => {
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 8,
-  },
-  label: {
-    fontWeight: '600',
-    color: '#555',
-    flex: 1,
-  },
-  value: {
-    color: '#111',
-    flex: 1,
-    textAlign: 'right',
+    justifyContent: 'flex-start',
   },
 });
