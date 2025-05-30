@@ -1,9 +1,31 @@
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
+import {CustomFAB} from '../../../../components/ui/CustomFAB';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {LiquiMatObrasStackParam} from '../navigation/LiquiMatObrasStackNavigation';
 
 export const FotosObraScreen = () => {
+  const navigation = useNavigation<NavigationProp<LiquiMatObrasStackParam>>();
+
+  const handleCamera = () => {
+    navigation.navigate('CustomCameraScreen');
+  };
+
   return (
-    <View>
-      <Text>FotosObraScreen</Text>
+    <View style={styles.container}>
+      <Text>Lista de fotos enviadas por el usuario</Text>
+      <CustomFAB icon="camera" onPress={handleCamera} style={styles.fab} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    position: 'relative',
+    padding: 16,
+  },
+  fab: {
+    bottom: 16,
+    right: 16,
+  },
+});

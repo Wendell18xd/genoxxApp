@@ -9,10 +9,12 @@ import {Menu} from '../../../../../types/menus';
 import {useRoute} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
 import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
+import { CustomCameraScreen } from '../../../../components/CustomCameraScreen';
 
 export type LiquiMatObrasStackParam = {
   ListaObrasScreen: undefined;
   SegmentedButtonsDetalleObras: undefined;
+  CustomCameraScreen: undefined;
   LiquiMatObrasScreen: {isRegulariza: boolean};
 };
 
@@ -79,6 +81,10 @@ export const LiquiMatObrasStackNavigation = () => {
       <Stack.Screen
         name="LiquiMatObrasScreen"
         component={LiquiMatObrasScreen}
+      />
+      <Stack.Screen
+        name="CustomCameraScreen"
+        component={CustomCameraScreen}
       />
     </Stack.Navigator>
   );

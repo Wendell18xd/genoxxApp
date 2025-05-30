@@ -1,5 +1,5 @@
 // ListaObrasScreen.tsx
-import {FlatList} from 'react-native';
+import {FlatList, View} from 'react-native';
 import DrawerLayout from '../../../main/layout/DrawerLayout';
 import {useSarchObras} from './hooks/useSarchObras';
 import {CustomFAB} from '../../../../components/ui/CustomFAB';
@@ -39,46 +39,50 @@ export const ListaObrasScreen = () => {
 
   return (
     <DrawerLayout title="Lista de Obras">
-      {obras && obras.length > 0 ? (
-        <>
-          <Searchbar
-            placeholder="Filtrar por nro de orden"
-            onChangeText={setSearchQuery}
-            value={searchQuery}
-            style={{marginHorizontal: 16, marginTop: 16}}
-          />
-          <FlatList
-            data={obras?.filter(obra =>
-              obra.nro_orden?.toLowerCase().includes(searchQuery.toLowerCase()),
-            )}
-            keyExtractor={item => item.regi_codigo}
-            contentContainerStyle={{gap: 16, padding: 16}}
-            refreshing={isFetchObras}
-            onRefresh={refetchObras}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item}) => (
-              <ItemObra
-                obra={item}
-                onPress={() => {
-                  handleSelectObra(item);
-                }}
-              />
-            )}
-          />
-        </>
-      ) : (
-        <SinResultados message="No se encontraron obras, use la lupa para buscar" />
-      )}
+      <View style={{flex: 1}}>
+        {obras && obras.length > 0 ? (
+          <>
+            <Searchbar
+              placeholder="Filtrar por nro de orden"
+              onChangeText={setSearchQuery}
+              value={searchQuery}
+              style={{marginHorizontal: 16, marginTop: 16}}
+            />
+            <FlatList
+              data={obras?.filter(obra =>
+                obra.nro_orden
+                  ?.toLowerCase()
+                  .includes(searchQuery.toLowerCase()),
+              )}
+              keyExtractor={item => item.regi_codigo}
+              contentContainerStyle={{gap: 16, padding: 16}}
+              refreshing={isFetchObras}
+              onRefresh={refetchObras}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item}) => (
+                <ItemObra
+                  obra={item}
+                  onPress={() => {
+                    handleSelectObra(item);
+                  }}
+                />
+              )}
+            />
+          </>
+        ) : (
+          <SinResultados message="No se encontraron obras, use la lupa para buscar" />
+        )}
 
-      <CustomFAB
-        icon="magnify"
-        onPress={open}
-        style={{bottom: 16, right: 16, marginBottom: 16}}
-      />
+        <CustomFAB
+          icon="magnify"
+          onPress={open}
+          style={{bottom: 16, right: 16}}
+        />
 
-      <CustomBottomSheet ref={ref}>
-        <SearchObras onClose={close} />
-      </CustomBottomSheet>
+        <CustomBottomSheet ref={ref}>
+          <SearchObras onClose={close} />
+        </CustomBottomSheet>
+      </View>
     </DrawerLayout>
   );
 };
