@@ -133,7 +133,7 @@ export const FormLiquiMateObras = ({isRegulariza}: Props) => {
                             val,
                             setFieldValue,
                             setLocalGuia,
-                            values.guia || 'TODOS',
+                            localGuia || 'TODOS',
                             values.materiales,
                             handleReset,
                           )
