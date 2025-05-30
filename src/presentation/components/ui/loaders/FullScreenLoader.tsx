@@ -1,5 +1,5 @@
-import {useEffect, useState} from 'react';
-import {BackHandler, StyleSheet, View} from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {BackHandler, StyleSheet, View, Animated} from 'react-native';
 import {ActivityIndicator, Text, useTheme, Portal} from 'react-native-paper';
 
 interface Props {
@@ -12,25 +12,48 @@ const FullScreenLoader = ({
   transparent = false,
 }: Props) => {
   const {colors} = useTheme();
-  const [dotCount, setDotCount] = useState(0);
+
+  const dot1 = useRef(new Animated.Value(0)).current;
+  const dot2 = useRef(new Animated.Value(0)).current;
+  const dot3 = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
       () => true,
     );
-
     return () => backHandler.remove();
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setDotCount(prev => (prev + 1) % 4); // ciclo de 0 a 3 puntos
-    }, 500);
-    return () => clearInterval(interval);
-  }, []);
+    const animateDot = (dot: Animated.Value, delay: number) => {
+      return Animated.loop(
+        Animated.sequence([
+          Animated.delay(delay),
+          Animated.timing(dot, {
+            toValue: 1,
+            duration: 300,
+            useNativeDriver: true,
+          }),
+          Animated.timing(dot, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: true,
+          }),
+        ]),
+      );
+    };
 
-  const animatedMessage = `${message} ${'.'.repeat(dotCount)}`;
+    const animations = [
+      animateDot(dot1, 0),
+      animateDot(dot2, 200),
+      animateDot(dot3, 400),
+    ];
+
+    animations.forEach(anim => anim.start());
+
+    return () => animations.forEach(anim => anim.stop());
+  }, []);
 
   return (
     <Portal>
@@ -51,10 +74,23 @@ const FullScreenLoader = ({
               borderColor: colors.outline,
             },
           ]}>
-          <ActivityIndicator animating color={colors.onSurface} size={36} />
-          <Text style={[styles.message, {color: colors.onSurface}]}>
-            {animatedMessage}
-          </Text>
+          <View style={{transform: [{scale: 1.5}]}}>
+            <ActivityIndicator animating color={colors.onSurface} />
+          </View>
+          <View style={styles.messageContainer}>
+            <Text style={[styles.message, {color: colors.onSurface}]}>
+              {message}
+            </Text>
+            <View style={styles.dots}>
+              {[dot1, dot2, dot3].map((dot, i) => (
+                <Animated.Text
+                  key={i}
+                  style={[styles.dot, {opacity: dot, color: colors.onSurface}]}>
+                  .
+                </Animated.Text>
+              ))}
+            </View>
+          </View>
         </View>
       </View>
     </Portal>
@@ -69,7 +105,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loaderBox: {
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingTop: 32,
+    paddingBottom: 16,
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
@@ -79,10 +117,22 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
   },
+  messageContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 16,
+  },
   message: {
     fontSize: 18,
-    marginTop: 16,
     textAlign: 'center',
+  },
+  dots: {
+    flexDirection: 'row',
+    marginLeft: 4,
+  },
+  dot: {
+    fontSize: 18,
+    marginHorizontal: 1,
   },
 });
 

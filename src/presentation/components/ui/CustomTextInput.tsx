@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {cloneElement, isValidElement, useState} from 'react';
 import {TextInput, TextInputProps} from 'react-native-paper';
 
 interface CustomTextInputProps extends TextInputProps {
   height?: number;
   showPassword?: boolean;
+  isWhite?: boolean;
 }
 
 const CustomTextInput: React.FC<CustomTextInputProps> = ({
@@ -11,19 +12,30 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
   style,
   showPassword = false,
   secureTextEntry,
+  left,
+  isWhite = false,
   ...props
 }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
+  const modifiedLeft =
+    isWhite && isValidElement(left) && left.type === TextInput.Icon
+      ? cloneElement(left as any, {color: 'white'})
+      : left;
+
   return (
     <TextInput
       mode="outlined"
-      style={[{height}, style]}
+      style={[{height, backgroundColor: 'transparent'}, style]}
       secureTextEntry={
         showPassword && !passwordVisible ? true : secureTextEntry
       }
+      outlineColor={isWhite ? 'white' : undefined}
+      activeOutlineColor={isWhite ? 'white' : undefined}
+      placeholderTextColor={isWhite ? 'white' : undefined}
+      textColor={isWhite ? 'white' : undefined}
       {...props}
-      left={props.left}
+      left={modifiedLeft}
       right={
         showPassword ? (
           <TextInput.Icon

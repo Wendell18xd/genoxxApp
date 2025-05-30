@@ -1,11 +1,11 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import { ConsultaUnidades } from '../../../../../domain/entities/ConsultaUnidades';
 import { DetalleConsultaScreen } from '../screen-detalle-consulta/DetalleConsultaScreen';
-import { ConsultaUnidadesScreen } from '../screen-consulta-unidades/ConsultaUnidadesScreen';
+import { ListaConsultaUnidadesScreen } from '../screen-consulta-unidades/ListaConsultaUnidadesScreen';
 
 
 export type ConsultaUnidadesStackParam = {
-  ConsultaUnidadesScreen: undefined;
+  ListaConsultaUnidadesScreen: undefined;
   DetalleConsultaScreen: {consulta: ConsultaUnidades};
 };
 
@@ -17,8 +17,8 @@ export const ConsultaUnidadesStackNavigation = () => {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName="ConsultaUnidadesScreen">
-      <Stack.Screen name="ConsultaUnidadesScreen" component={ConsultaUnidadesScreen} />
+      initialRouteName="ListaConsultaUnidadesScreen">
+      <Stack.Screen name="ListaConsultaUnidadesScreen" component={ListaConsultaUnidadesScreen} />
       <Stack.Screen
         name="DetalleConsultaScreen"
         component={DetalleConsultaScreen}

@@ -1,7 +1,6 @@
 // ListaObrasScreen.tsx
 import {FlatList} from 'react-native';
 import DrawerLayout from '../../../main/layout/DrawerLayout';
-import {useMainStore} from '../../../../store/main/useMainStore';
 import {useSarchObras} from './hooks/useSarchObras';
 import {CustomFAB} from '../../../../components/ui/CustomFAB';
 import {SearchObras} from './components/SearchObras';
@@ -15,13 +14,11 @@ import SinResultados from '../../../../components/ui/SinResultados';
 import {Searchbar} from 'react-native-paper';
 
 export const ListaObrasScreen = () => {
-  const {drawerKey} = useMainStore();
-  const {obras, errorObras, isFetchObras, refetchObras, handleSelectObra} = useSarchObras();
+  const {obras, errorObras, isFetchObras, refetchObras, handleSelectObra} =
+    useSarchObras();
   const {ref, open, close} = useBottomSheetModal();
   const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState('');
-
-  console.log(drawerKey);
 
   useEffect(() => {
     if (errorObras) {
@@ -33,9 +30,11 @@ export const ListaObrasScreen = () => {
   }, [errorObras]);
 
   useEffect(() => {
-    queryClient.removeQueries({
-      queryKey: ['obrasAsignadas'],
-    });
+    return () => {
+      queryClient.removeQueries({
+        queryKey: ['obrasAsignadas'],
+      });
+    };
   }, []);
 
   return (

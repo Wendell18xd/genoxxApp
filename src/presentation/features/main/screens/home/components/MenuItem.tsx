@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, useWindowDimensions, View} from 'react-native';
 import {Menu} from '../../../../../../domain/entities/User';
 import {Card, Text, useTheme} from 'react-native-paper';
 import MaterialIcons from '../../../../../components/ui/icons/MaterialIcons';
@@ -10,9 +10,11 @@ interface Props {
 
 const MenuItem = ({menu, onPress}: Props) => {
   const {colors} = useTheme();
+  const {width} = useWindowDimensions();
+  const itemWidth = (width - 16 * 2 - 16 * 2) / 3;
 
   return (
-    <Card mode="elevated" onPress={onPress} style={styles.card}>
+    <Card mode="elevated" onPress={onPress} style={[styles.card, {width: itemWidth}]}>
       <Card.Content style={styles.cardContent}>
         <View
           style={[
@@ -41,10 +43,10 @@ const MenuItem = ({menu, onPress}: Props) => {
 
 const styles = StyleSheet.create({
   card: {
-    flex: 1,
+    // flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    width: 120,
+    // width: 120,
     height: 160,
     backgroundColor: 'white',
   },

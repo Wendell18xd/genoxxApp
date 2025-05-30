@@ -2,11 +2,11 @@ import {genoxxApi} from '../../config/api/genoxxApi';
 import {
   MateLiquiRequest,
   ValidaCierreObraRequest,
-} from '../../infrastructure/interfaces/gestionObras/liquiMateObra.request';
+} from '../../infrastructure/interfaces/gestionObras/liquidar-materiales/liquiMateObra.request';
 import {
   MateLiquiObrasResponse,
   ValidaCierreObrasResponse,
-} from '../../infrastructure/interfaces/gestionObras/liquiMateObra.response';
+} from '../../infrastructure/interfaces/gestionObras/liquidar-materiales/liquiMateObra.response';
 
 export const listadoMaterialesObra = async (
   mateProps: MateLiquiRequest,
@@ -20,16 +20,13 @@ export const listadoMaterialesObra = async (
       genoxxApi.post<MateLiquiObrasResponse>(
         '/obras/listar_liquidacion_enviadas_obras',
         {
-          vl_empr_codigo: mateProps.vl_empr_codigo,
+          vg_empr_codigo: mateProps.vl_empr_codigo,
           vl_reg_codigo: mateProps.vl_reg_codigo,
           vl_regularizar: mateProps.vl_regularizar,
         },
       ),
       validaCierreObra(cierreProps),
     ]);
-
-    console.log(materiales, cierre);
-
     return {
       materiales,
       cierre,
@@ -46,11 +43,10 @@ export const validaCierreObra = async (
     const {data} = await genoxxApi.post<ValidaCierreObrasResponse>(
       '/obras/get_valida_cierre_obra',
       {
-        vl_empr_codigo: props.vl_empr_codigo,
+        vg_empr_codigo: props.vl_empr_codigo,
         vl_nro_orden: props.vl_nro_orden,
       },
     );
-    console.log(data);
     return data;
   } catch (error) {
     throw new Error(error as string);
