@@ -5,9 +5,10 @@ import {useAuthStore} from '../../../../../store/auth/useAuthStore';
 import {useRef} from 'react';
 import {useMainStore} from '../../../../../store/main/useMainStore';
 import {Menu} from '../../../../../../types/menus';
+import {Option} from 'react-native-paper-dropdown';
 
 export const useLiquiMatObras = () => {
-  const {obra} = useLiquiMateStore();
+  const {obra, setGuias} = useLiquiMateStore();
   const {user} = useAuthStore();
   const {drawerKey} = useMainStore();
   const isRegulariza = useRef('0');
@@ -50,6 +51,26 @@ export const useLiquiMatObras = () => {
             f.mate_categoria !== 'EPIS ASIGNABLES',
         );
       }
+
+      // Agrupamos los elementos por guia_numero y guia_codigo
+      const agrupados: any = {};
+
+      filter.forEach(item => {
+        const key = `${item.guia_numero}-${item.guia_codigo}`;
+        if (!agrupados[key]) {
+          agrupados[key] = {
+            value: item.guia_codigo,
+            label: item.guia_numero,
+          };
+        }
+      });
+
+      // Agregamos la opción por defecto al inicio
+      const resultadoAgrupado: Option[] = [
+        {value: 'TODOS', label: '(TODOS)'},
+        ...(Object.values(agrupados) as any),
+      ];
+      setGuias(resultadoAgrupado);
 
       return filter;
     },

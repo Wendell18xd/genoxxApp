@@ -20,7 +20,6 @@ export const listadoNoticiasActivas = async (
         vl_is_app: props.vl_is_app,
       },
     );
-    console.log(data);
     return data;
   } catch (error) {
     throw new Error(error as string);
@@ -41,7 +40,6 @@ export const listadoArchivosNoticia = async (
         vl_is_visto: props.vl_is_visto,
       },
     );
-    console.log(data);
     return data;
   } catch (error) {
     throw new Error(error as string);

@@ -1,14 +1,14 @@
 import {FlatList, StyleSheet, View} from 'react-native';
 import {globalStyle} from '../../../../styles/globalStyle';
 import CustomSwitch from '../../../../components/ui/CustomSwitch';
-import {useEffect} from 'react';
+import {useCallback, useEffect} from 'react';
 import {useMateObras} from './hooks/useMateObras';
 import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
 import Toast from 'react-native-toast-message';
 import SinResultados from '../../../../components/ui/SinResultados';
 import {ItemMateLiqui} from './components/ItemMateLiqui';
 import {CustomFAB} from '../../../../components/ui/CustomFAB';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {NavigationProp, useFocusEffect, useNavigation} from '@react-navigation/native';
 import {LiquiMatObrasStackParam} from '../navigation/LiquiMatObrasStackNavigation';
 
 export const MaterialesObraScreen = () => {
@@ -18,13 +18,20 @@ export const MaterialesObraScreen = () => {
     isFetchMateriales,
     errorMateriales,
     isRegulariza,
+    isRefetchLiquidacion,
     refetchMateriales,
     handleRegularizarMateriales,
+    setIsRefetchLiquidacion,
   } = useMateObras();
 
-  useEffect(() => {
-    refetchMateriales();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      if (isRefetchLiquidacion) {
+        refetchMateriales();
+        setIsRefetchLiquidacion(false);
+      }
+    }, [isRefetchLiquidacion]),
+  );
 
   useEffect(() => {
     if (errorMateriales) {
@@ -40,17 +47,12 @@ export const MaterialesObraScreen = () => {
       {isFetchMateriales && <FullScreenLoader transparent />}
 
       <View style={[globalStyle.padding, {flex: 1}]}>
-        {/* <Text variant="titleLarge" style={styles.title}>
-          Materiales Liquidados
-        </Text> */}
-        {/* <Divider style={styles.divider} /> */}
         <CustomSwitch
           isOn={isRegulariza}
           onChange={value => handleRegularizarMateriales(value)}
           text="Regularizar materiales"
         />
         <View style={{marginVertical: 8}} />
-        {/* <Divider style={styles.divider} /> */}
 
         {dataMateriales?.materiales && dataMateriales.materiales.length > 0 ? (
           <FlatList

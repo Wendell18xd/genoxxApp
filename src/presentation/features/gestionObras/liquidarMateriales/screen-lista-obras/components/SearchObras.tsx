@@ -20,7 +20,6 @@ export const SearchObras = ({onClose}: Props) => {
     initialValues,
     proyectos,
     isFetchObras,
-    isFetchProyecto,
     errorProyectos,
     handleSearch,
     getValidationSchema,
@@ -50,7 +49,7 @@ export const SearchObras = ({onClose}: Props) => {
     }
   }, [errorProyectos]);
 
-  if (!proyectos && isFetchProyecto) {
+  if (!proyectos) {
     return <FullScreenLoader />;
   }
 

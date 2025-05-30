@@ -1,17 +1,36 @@
 import {StyleSheet, View} from 'react-native';
-import {MateStockObra} from '../../../../../../../infrastructure/interfaces/gestionObras/listarStockObras.response';
+import {MateStockObra} from '../../../../../../../infrastructure/interfaces/gestionObras/liquidar-materiales/listarStockObras.response';
 import {CustomCardContent} from '../../../../../../components/ui/CustomCardContent';
 import MaterialIcons from '../../../../../../components/ui/icons/MaterialIcons';
 import {Divider, Text, useTheme} from 'react-native-paper';
 import {formatearNumero} from '../../../../../../helper/moneyUtils';
-import {useAuthStore} from '../../../../../../store/auth/useAuthStore';
+import CustomTextInput from '../../../../../../components/ui/CustomTextInput';
+import {useItemStockMateObras} from '../../hooks/useItemStockMateObras';
+import {FormikValues} from 'formik';
+import {mostrarSiNoCero} from '../../../../../../helper/utils';
 
 interface Props {
   item: MateStockObra;
+  index: number;
+  values: FormikValues;
+  setFieldValue: (field: string, value: any) => void;
 }
-export const ItemStockMateObras = ({item}: Props) => {
+
+export const ItemStockMateObras = ({
+  item,
+  index,
+  values,
+  setFieldValue,
+}: Props) => {
   const {colors} = useTheme();
-  const {user} = useAuthStore();
+  const {user, obra, handleChangeCantidad} = useItemStockMateObras({item});
+
+  const material = values.materiales[index];
+
+  // Protege el acceso con una verificación
+  if (!material) {
+    return null;
+  }
 
   return (
     <CustomCardContent mode="outlined">
@@ -72,7 +91,47 @@ export const ItemStockMateObras = ({item}: Props) => {
             U.Med:
           </Text>
           <Text variant="bodySmall">{item.mate_medida}</Text>
+
+          {obra?.valida_proyectado === '1' && (
+            <>
+              <Text variant="bodySmall" style={[styles.info, {marginLeft: 16}]}>
+                Saldo:
+              </Text>
+              <Text variant="bodySmall">
+                {formatearNumero({
+                  valor: item.mate_saldo,
+                  pais: user?.empr_pais,
+                })}
+              </Text>
+            </>
+          )}
         </View>
+      </View>
+
+      {/* NUEVOS INPUTS */}
+      <View style={styles.inputsContainer}>
+        <CustomTextInput
+          label="Cantidad"
+          keyboardType="decimal-pad"
+          value={
+            mostrarSiNoCero(
+              values.materiales[index].vl_mate_cantidad?.toString(),
+            ) || ''
+          }
+          height={40}
+          onChangeText={val => handleChangeCantidad(val, setFieldValue, index)}
+        />
+        <CustomTextInput
+          label="Observación"
+          autoCapitalize="characters"
+          height={80}
+          multiline
+          numberOfLines={3}
+          value={values.materiales[index].vl_mate_observacion}
+          onChangeText={val =>
+            setFieldValue(`materiales[${index}].vl_mate_observacion`, val)
+          }
+        />
       </View>
     </CustomCardContent>
   );
@@ -114,5 +173,9 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     color: '#888',
+  },
+  inputsContainer: {
+    marginTop: 8,
+    gap: 8,
   },
 });

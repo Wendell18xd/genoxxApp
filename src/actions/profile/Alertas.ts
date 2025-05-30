@@ -6,8 +6,6 @@ export const getAlertas = async (): Promise<AlertaResponse> => {
     const {data} = await genoxxApi.post<AlertaResponse>(
       '/master/listar_tipos_alertas',
     );
-    console.log(data);
-
     return data;
   } catch (error) {
     throw new Error(error as string);
