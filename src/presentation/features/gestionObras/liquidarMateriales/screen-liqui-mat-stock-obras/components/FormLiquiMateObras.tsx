@@ -43,6 +43,7 @@ export const FormLiquiMateObras = ({isRegulariza}: Props) => {
       vl_mate_codigo: item.mate_codigo,
       vl_guia_codigo: item.guia_codigo,
       vl_guia_numero: item.guia_numero,
+      vl_mate_lote: item.mate_lote,
       vl_mate_cantidad: 0, // valor editable
       vl_mate_observacion: '', // valor editable
     }));
