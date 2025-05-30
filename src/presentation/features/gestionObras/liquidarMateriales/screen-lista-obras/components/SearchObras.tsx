@@ -49,7 +49,7 @@ export const SearchObras = ({onClose}: Props) => {
     }
   }, [errorProyectos]);
 
-  if (!proyectos) {
+  if (!proyectos && isFetchObras) {
     return <FullScreenLoader />;
   }
 
