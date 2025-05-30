@@ -64,7 +64,7 @@ export const ListaConsultaHistoricaPatenteScreen = () => {
           />
         </>
       ) : (
-        <SinResultados message="No se encontraron unidades, use la lupa para buscar" />
+        <SinResultados message="No se encontraron resultados, use la lupa para buscar" />
       )}
 
       <CustomFAB

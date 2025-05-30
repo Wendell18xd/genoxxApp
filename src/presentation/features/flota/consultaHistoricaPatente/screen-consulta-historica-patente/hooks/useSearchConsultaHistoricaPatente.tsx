@@ -5,6 +5,7 @@ import {ConsultaHistoricaPatenteRequest} from '../../../../../../infrastructure/
 import {useQuery} from '@tanstack/react-query';
 import {getConsultaHistoricaPatente} from '../../../../../../actions/flota/consultaHistoricaPatente';
 import { Option } from 'react-native-paper-dropdown';
+import { usePersonalStore } from '../../../../buscadores/buscador-conductor/store/usePersonal';
 
 
 interface SearchConsultaHistoricaFormValues {
@@ -15,7 +16,7 @@ interface SearchConsultaHistoricaFormValues {
 
 const initialValues: SearchConsultaHistoricaFormValues = {
   txt_codigo: '',
-  cbo_bus_tipo: '',
+  cbo_bus_tipo: 'PERS',
   txt_cod_destinatario: '',
 };
 
@@ -33,6 +34,7 @@ const tiposBusqueda: Option[] = [
 export const useSearchConsultaHistoricaPatente = () => {
 
   const {user} = useAuthStore();
+  const {setOnSelect} = usePersonalStore();
 
   const filtrosRef = useRef<ConsultaHistoricaPatenteRequest>({
     vl_empr_codigo: user?.empr_codigo || '',
@@ -92,5 +94,6 @@ export const useSearchConsultaHistoricaPatente = () => {
     handleSearch,
     refetchConsultaHistoricaPatente,
     setCodDestinatario,
+    setOnSelect,
   };
 };

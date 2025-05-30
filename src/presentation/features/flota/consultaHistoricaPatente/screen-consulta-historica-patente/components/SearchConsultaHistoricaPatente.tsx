@@ -8,7 +8,6 @@ import {TextInput} from 'react-native-paper';
 import {CustomDropdownInput} from '../../../../../components/ui/CustomDropdownInput';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ConsultaHistoricaPatenteStackParam} from '../../navigations/ConsultaHistoricaPatenteStackNavigation';
-import {usePersonalStore} from '../../../../buscadores/buscador-conductor/store/usePersonal';
 import {usePatenteStore} from '../../../../buscadores/buscador-patente/store/usePatente';
 
 interface Props {
@@ -22,6 +21,7 @@ export const SearchConsultaHistoricaPatente = ({onClose}: Props) => {
     isFetchConsultaHistoricaPatente,
     handleSearch,
     setCodDestinatario,
+    setOnSelect,
   } = useSearchConsultaHistoricaPatente();
 
   const navigation =
@@ -67,8 +67,8 @@ export const SearchConsultaHistoricaPatente = ({onClose}: Props) => {
                   <TextInput.Icon
                     icon="magnify"
                     onPress={() => {
-                      if (values.cbo_bus_tipo === 'PERS') {
-                        usePersonalStore.getState().setOnSelect(personal => {
+                      if (values.cbo_bus_tipo === 'PERS' || values.cbo_bus_tipo === undefined) {
+                        setOnSelect(personal => {
                           setFieldValue(
                             'txt_cod_destinatario',
                             `${personal.cod_para} - ${personal.nom_para}`,
@@ -80,7 +80,7 @@ export const SearchConsultaHistoricaPatente = ({onClose}: Props) => {
                         usePatenteStore.getState().setOnSelect(patente => {
                           setFieldValue(
                             'txt_cod_destinatario',
-                            `${patente.nro_placa}`,
+                            `${patente.nro_placa} - ${patente.nom_marca}`,
                           );
                           setCodDestinatario(patente.nro_placa);
                         });
