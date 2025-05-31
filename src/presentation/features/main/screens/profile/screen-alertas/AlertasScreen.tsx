@@ -10,7 +10,10 @@ import {CustomFAB} from '../../../../../components/ui/CustomFAB';
 import CustomBottomSheet from '../../../../../components/ui/bottomSheetModal/CustomBottomSheet';
 import {useBottomSheetModal} from '../../../../../hooks/useBottomSheet';
 import {useAudioRecorder} from './hooks/useAudioRecorder';
-import {useEffect} from 'react';
+import {useEffect, useRef, useState} from 'react';
+import Icon from '@react-native-vector-icons/material-design-icons';
+import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoader';
+import { useNavigation } from '@react-navigation/native';
 
 export const AlertasScreen = () => {
   const {
@@ -22,7 +25,23 @@ export const AlertasScreen = () => {
     mutation,
   } = useAlertas();
 
-  const {ref, open, close} = useBottomSheetModal();
+  const [showLoader, setShowLoader] = useState(false);
+  const {ref, open: openModal, close: closeModal} = useBottomSheetModal();
+  const isSheetOpenRef = useRef(false);
+  const navigation = useNavigation();
+
+  const open = () => {
+    isSheetOpenRef.current = true;
+    openModal();
+  };
+
+  const close = () => {
+    isSheetOpenRef.current = false;
+    if (isRecording) {
+      onStopRecord();
+    }
+    closeModal();
+  };
 
   const {
     onStartRecord,
@@ -32,8 +51,9 @@ export const AlertasScreen = () => {
     isPlaying,
     audioPath,
     audioBase64,
-    recordVolume,
     resetRecorder,
+    recordTime,
+    playTime,
   } = useAudioRecorder();
 
   useEffect(() => {
@@ -44,10 +64,14 @@ export const AlertasScreen = () => {
 
   const handleCancel = () => {
     resetRecorder();
-    close();
   };
 
-  if (isFetching) {return null;}
+  if (isFetching) {
+    return null;
+  }
+    if (showLoader) {
+    return <FullScreenLoader />;
+  }
 
   return (
     <SafeAreaLayout title="Alertas" isHeader primary>
@@ -55,8 +79,13 @@ export const AlertasScreen = () => {
         <Formik
           initialValues={formValues}
           validationSchema={getAlertValidationSchema}
-          onSubmit={(values, {resetForm}) => {
-            startAlertaSubmit(values, resetForm, audioBase64);
+          onSubmit={async (values, {resetForm}) => {
+            setShowLoader(true);
+            await startAlertaSubmit(values, resetForm, audioBase64);
+            setTimeout(() => {
+              setShowLoader(false);
+              navigation.goBack();
+            }, 1500);
           }}>
           {({values, setFieldValue, handleSubmit, touched, errors}) => (
             <View style={{flex: 1}}>
@@ -70,7 +99,9 @@ export const AlertasScreen = () => {
                   error={touched.tipo && !!errors.tipo}
                 />
                 {touched.tipo && errors.tipo && (
-                  <Text style={{color: 'red', marginTop: 4}}>{errors.tipo}</Text>
+                  <Text style={{color: 'red', marginTop: 4}}>
+                    {errors.tipo}
+                  </Text>
                 )}
               </View>
 
@@ -88,7 +119,9 @@ export const AlertasScreen = () => {
                   error={touched.telefono && !!errors.telefono}
                 />
                 {touched.telefono && errors.telefono && (
-                  <Text style={{color: 'red', marginTop: 4}}>{errors.telefono}</Text>
+                  <Text style={{color: 'red', marginTop: 4}}>
+                    {errors.telefono}
+                  </Text>
                 )}
               </View>
 
@@ -103,11 +136,15 @@ export const AlertasScreen = () => {
                   style={{height: 150}}
                   error={touched.comentario && !!errors.comentario}
                   placeholderTextColor={
-                    touched.comentario && !!errors.comentario ? '#A72626' : '#5A5261'
+                    touched.comentario && !!errors.comentario
+                      ? '#A72626'
+                      : '#5A5261'
                   }
                 />
                 {touched.comentario && errors.comentario && (
-                  <Text style={{color: 'red', marginTop: 4}}>{errors.comentario}</Text>
+                  <Text style={{color: 'red', marginTop: 4}}>
+                    {errors.comentario}
+                  </Text>
                 )}
               </View>
 
@@ -124,42 +161,54 @@ export const AlertasScreen = () => {
           )}
         </Formik>
 
-        <CustomFAB icon="plus" style={{bottom: 16, right: 16}} onPress={open} />
+        <View style={{position: 'absolute', bottom: 16, right: 16}}>
+          <CustomFAB icon="microphone" onPress={open} />
+
+          {audioPath && (
+            <View
+              style={{
+                position: 'relative',
+                bottom: 40,
+                width: 20,
+                height: 20,
+                borderRadius: 10,
+                backgroundColor: 'red',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Icon name="play" size={15} color="white" />
+            </View>
+          )}
+        </View>
 
         <CustomBottomSheet ref={ref}>
           <View style={{padding: 24, alignItems: 'center'}}>
             <Text style={{fontSize: 18, fontWeight: 'bold', marginBottom: 24}}>
               Grabar Audio
             </Text>
-
-            {isRecording && (
-              <View
-                style={{
-                  width: '100%',
-                  height: 20,
-                  backgroundColor: '#E0E0E0',
-                  borderRadius: 10,
-                  overflow: 'hidden',
-                  marginBottom: 16,
-                }}>
-                <View
-                  style={{
-                    width: `${Math.min(
-                      Math.max(((recordVolume + 160) / 160) * 100, 5),
-                      100,
-                    )}%`,
-                    height: '100%',
-                    backgroundColor: '#4CAF50',
-                  }}
-                />
-              </View>
-            )}
+            <Text
+              style={{
+                fontSize: 24,
+                fontWeight: 'bold',
+                color: isRecording ? 'red' : isPlaying ? 'green' : 'black',
+                marginBottom: 12,
+              }}>
+              {isRecording
+                ? `Grabando: ${recordTime}`
+                : isPlaying
+                ? `Reproduciendo: ${playTime}`
+                : audioPath
+                ? `Duración: ${recordTime}`
+                : 'Listo para grabar'}
+            </Text>
 
             <View style={{flexDirection: 'row', gap: 20, marginBottom: 24}}>
               <IconButton
                 icon="microphone"
                 size={40}
-                containerColor={isRecording || isPlaying ? '#9E9E9E' : '#4CAF50'}
+                containerColor={
+                  isRecording || isPlaying ? '#9E9E9E' : '#4CAF50'
+                }
                 iconColor="#fff"
                 onPress={onStartRecord}
                 disabled={isRecording || isPlaying}
@@ -169,7 +218,7 @@ export const AlertasScreen = () => {
               <IconButton
                 icon="stop-circle"
                 size={40}
-                containerColor= {isRecording ? '#F44336' : '#9E9E9E'}
+                containerColor={isRecording ? '#F44336' : '#9E9E9E'}
                 iconColor="#fff"
                 onPress={onStopRecord}
                 disabled={!isRecording}
@@ -178,14 +227,21 @@ export const AlertasScreen = () => {
               <IconButton
                 icon={isPlaying ? 'pause-circle' : 'play-circle'}
                 size={40}
-                containerColor= {isRecording || !audioPath ? '#9E9E9E' : '#2196F3'}
+                containerColor={
+                  isRecording || !audioPath ? '#9E9E9E' : '#2196F3'
+                }
                 iconColor="#fff"
                 onPress={togglePlayPause}
                 disabled={isRecording || !audioPath}
               />
             </View>
 
-            <View style={{flexDirection: 'row', width: '100%', justifyContent: 'space-between'}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '100%',
+                justifyContent: 'space-between',
+              }}>
               <PrimaryButton
                 label="CANCELAR"
                 onPress={handleCancel}
