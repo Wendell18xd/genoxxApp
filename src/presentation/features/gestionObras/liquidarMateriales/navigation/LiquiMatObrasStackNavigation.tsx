@@ -9,7 +9,7 @@ import {Menu} from '../../../../../types/menus';
 import {useRoute} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
 import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
-import { CustomCameraScreen } from '../../../../components/CustomCameraScreen';
+import { CustomCameraScreen } from '../../../foto/screens/CustomCameraScreen';
 
 export type LiquiMatObrasStackParam = {
   ListaObrasScreen: undefined;
