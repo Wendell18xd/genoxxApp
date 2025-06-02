@@ -1,6 +1,6 @@
 import { ConsultaUnidadesStackNavigation } from '../presentation/features/flota/consultaUnidades/navigations/ConsultaUnidadesStackNavigation';
 import {LiquiMatATCStackNavigation} from '../presentation/features/gestion-atc/liquidarMateriales/navigations/LiquiMatATCStackNavigation';
-import {LiquiMatObrasStackNavigation} from '../presentation/features/gestion-obras/liquidar-materiales/navigation/LiquiMatObrasStackNavigation';
+import {LiquiMatObrasStackNavigation} from '../presentation/features/gestion-obras/liquidar-materiales/navigations/LiquiMatObrasStackNavigation';
 import {Menu} from './menus';
 
 export const drawerScreenComponents: Record<
@@ -12,6 +12,8 @@ export const drawerScreenComponents: Record<
   //Obras
   [Menu.LIQUIDACION_MATERIALES_OBRAS]: LiquiMatObrasStackNavigation, //NORMAL
   [Menu.LIQUIDACION_MATERIALES_OBRAS_ENERGIA]: LiquiMatObrasStackNavigation, //ENERGIA
+  [Menu.LIQUIDACION_PARTIDAS_OBRAS]: LiquiMatObrasStackNavigation, //NORMAL
+  [Menu.LIQUIDACION_PARTIDAS_OBRAS_ENERGIA]: LiquiMatObrasStackNavigation, //ENERGIA
   //Flota
   [Menu.CONSULTA_UNIDADES_FLOTA]: ConsultaUnidadesStackNavigation,
 };

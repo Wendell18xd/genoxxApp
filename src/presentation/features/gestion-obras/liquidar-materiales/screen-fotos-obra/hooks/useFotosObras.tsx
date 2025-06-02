@@ -1,5 +1,5 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {LiquiMatObrasStackParam} from '../../navigation/LiquiMatObrasStackNavigation';
+import {LiquiMatObrasStackParam} from '../../navigations/LiquiMatObrasStackNavigation';
 import {useFotosStore} from '../../../../foto/store/useFotosStore';
 import {Foto} from '../../../../../../domain/entities/Foto';
 import {useMutation} from '@tanstack/react-query';

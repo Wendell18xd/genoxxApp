@@ -9,7 +9,7 @@ import SinResultados from '../../../../components/ui/SinResultados';
 import {ItemMateLiqui} from './components/ItemMateLiqui';
 import {CustomFAB} from '../../../../components/ui/CustomFAB';
 import {NavigationProp, useFocusEffect, useNavigation} from '@react-navigation/native';
-import {LiquiMatObrasStackParam} from '../navigation/LiquiMatObrasStackNavigation';
+import {LiquiMatObrasStackParam} from '../navigations/LiquiMatObrasStackNavigation';
 
 export const MaterialesObraScreen = () => {
   const navigation = useNavigation<NavigationProp<LiquiMatObrasStackParam>>();
