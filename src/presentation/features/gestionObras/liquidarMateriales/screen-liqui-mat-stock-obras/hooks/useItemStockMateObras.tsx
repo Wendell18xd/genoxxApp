@@ -3,7 +3,7 @@ import {useLiquiMateStore} from '../../store/useLiquiMateStore';
 import {useMainStore} from '../../../../../store/main/useMainStore';
 import {Menu} from '../../../../../../types/menus';
 import {sanitizarDecimalInput} from '../../../../../helper/inputUtils';
-import {MateStockObra} from '../../../../../../infrastructure/interfaces/gestionObras/liquidar-materiales/listarStockObras.response';
+import {MateStockObra} from '../../../../../../infrastructure/interfaces/obras/liquidar-materiales/listarStockObras.response';
 import {ToastNativo} from '../../../../../helper/utils';
 
 interface Props {

@@ -9,6 +9,7 @@ import {ItemCamera} from '../components/ItemCamera';
 import {useCamera} from '../hooks/useCamera';
 import {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import FullScreenLoader from '../../../components/ui/loaders/FullScreenLoader';
 
 export const CustomCameraScreen = () => {
   const navigation = useNavigation();
@@ -16,6 +17,9 @@ export const CustomCameraScreen = () => {
     fotos,
     maxFotos,
     countFotos,
+    isSave,
+    isLoading,
+    isRendering,
     handleCamera,
     handleGallery,
     handleCancel,
@@ -40,6 +44,9 @@ export const CustomCameraScreen = () => {
 
   return (
     <SafeAreaLayout title="Fotos" primary isHeader isSafeBottom>
+      {isLoading && <FullScreenLoader message="Grabando fotos" transparent />}
+      {isRendering && <FullScreenLoader message="Cargando fotos" transparent />}
+
       <View style={styles.container}>
         {fotos.length > 0 ? (
           <>
@@ -84,18 +91,21 @@ export const CustomCameraScreen = () => {
 
         {fotos.length > 0 && (
           <>
-            <CustomFAB
-              icon="content-save"
-              onPress={handleSave}
-              style={{bottom: 16, left: 16}}
-            />
+            {isSave && (
+              <CustomFAB
+                icon="content-save"
+                onPress={handleSave}
+                style={{bottom: 16, left: 16}}
+                loading={isLoading}
+              />
+            )}
 
-            <CustomFAB
+            {/* <CustomFAB
               icon="close"
               onPress={() => handleCancel(true)}
               style={{bottom: 85, left: 16}}
               color="gray"
-            />
+            /> */}
           </>
         )}
       </View>

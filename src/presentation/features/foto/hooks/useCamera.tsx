@@ -7,11 +7,13 @@ import {CameraAdapter} from '../../../adapter/camera-adapter';
 export const useCamera = () => {
   const {
     fotos,
-    initialParams: {maxFotos, onSave},
+    initialParams: {maxFotos, isSave, onSave},
     setFotos,
     onReset,
   } = useFotosStore();
-  const [countFotos, setCountFotos] = useState(0);
+  const [countFotos, setCountFotos] = useState(fotos.length);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRendering, setIsRendering] = useState(false);
   const navigation = useNavigation();
 
   const handleCamera = async () => {
@@ -26,6 +28,7 @@ export const useCamera = () => {
       return;
     }
 
+    setIsRendering(true);
     const photos = await CameraAdapter.takePicture();
     setFotos([
       ...fotos,
@@ -34,6 +37,7 @@ export const useCamera = () => {
     if (photos.length > 0) {
       setCountFotos(countFotos + 1);
     }
+    setIsRendering(false);
   };
 
   const handleGallery = async () => {
@@ -48,12 +52,14 @@ export const useCamera = () => {
       return;
     }
 
+    setIsRendering(true);
     const photos = await CameraAdapter.getPictureFromLibrary(count);
     setFotos([
       ...fotos,
       ...photos.map(photo => ({foto: photo, comentario: ''})),
     ]);
     setCountFotos(countFotos + photos.length);
+    setIsRendering(false);
   };
 
   const handleDelete = (index: number) => {
@@ -62,15 +68,19 @@ export const useCamera = () => {
   };
 
   const handleCancel = (isBack = false) => {
-    onReset();
-    setCountFotos(0);
+    if (isSave) {
+      onReset();
+      setCountFotos(0);
+    }
     if (isBack) {
       navigation.goBack();
     }
   };
 
-  const handleSave = () => {
-    onSave(fotos);
+  const handleSave = async () => {
+    setIsLoading(true);
+    await onSave(fotos);
+    setIsLoading(false);
   };
 
   return {
@@ -78,6 +88,9 @@ export const useCamera = () => {
     fotos,
     countFotos,
     maxFotos,
+    isSave,
+    isLoading,
+    isRendering,
 
     //* Metodos
     handleCamera,

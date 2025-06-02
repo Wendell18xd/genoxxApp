@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import {useLiquiMateStore} from '../../store/useLiquiMateStore';
 import {Alert} from 'react-native';
-import {MaterialesLiquiRequest} from '../../../../../../infrastructure/interfaces/gestionObras/liquidar-materiales/saveLiquiMateObra.request';
+import {MaterialesLiquiRequest} from '../../../../../../infrastructure/interfaces/obras/liquidar-materiales/saveLiquiMateObra.request';
 import {useMutation} from '@tanstack/react-query';
 import {grabarMaterialesObras} from '../../../../../../actions/obras/stock.obras';
 import Toast from 'react-native-toast-message';

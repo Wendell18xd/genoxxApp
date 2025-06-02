@@ -8,7 +8,7 @@ import {useAuthStore} from '../../../../../store/auth/useAuthStore';
 import {mapToDropdown} from '../../../../../../infrastructure/mappers/mapToDropdown';
 import {Option} from 'react-native-paper-dropdown';
 import {useRef} from 'react';
-import {ObrasRequest} from '../../../../../../infrastructure/interfaces/gestionObras/liquidar-materiales/liquiMateObra.request';
+import {ObrasRequest} from '../../../../../../infrastructure/interfaces/obras/liquidar-materiales/liquiMateObra.request';
 import {useLiquiMateStore} from '../../store/useLiquiMateStore';
 import {Obra} from '../../../../../../domain/entities/Obra';
 import {NavigationProp, useNavigation} from '@react-navigation/native';

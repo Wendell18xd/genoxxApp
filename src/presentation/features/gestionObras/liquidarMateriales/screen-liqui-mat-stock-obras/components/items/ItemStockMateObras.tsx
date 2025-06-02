@@ -1,5 +1,5 @@
 import {StyleSheet, View} from 'react-native';
-import {MateStockObra} from '../../../../../../../infrastructure/interfaces/gestionObras/liquidar-materiales/listarStockObras.response';
+import {MateStockObra} from '../../../../../../../infrastructure/interfaces/obras/liquidar-materiales/listarStockObras.response';
 import {CustomCardContent} from '../../../../../../components/ui/CustomCardContent';
 import MaterialIcons from '../../../../../../components/ui/icons/MaterialIcons';
 import {Divider, Text, useTheme} from 'react-native-paper';
