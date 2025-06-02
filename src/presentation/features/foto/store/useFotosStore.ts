@@ -1,11 +1,32 @@
 import {create} from 'zustand';
+import {Foto, ParamsFoto} from '../../../../domain/entities/Foto';
 
 interface useFotosState {
-  fotos: string[];
-  setFotos: (value: string[]) => void;
+  initialParams: ParamsFoto;
+  fotos: Foto[];
+  setInitialParams: (value: ParamsFoto) => void;
+  setFotos: (value: Foto[]) => void;
+  onReset: () => void;
 }
 
 export const useFotosStore = create<useFotosState>()(set => ({
   fotos: [],
-  setFotos: (value: string[]) => set({fotos: value}),
+  initialParams: {
+    maxFotos: 0,
+    minFotos: 0,
+    isComentario: false,
+    onSave: () => {},
+  },
+  setInitialParams: (value: ParamsFoto) => set({initialParams: value}),
+  setFotos: (value: Foto[]) => set({fotos: value}),
+  onReset: () =>
+    set({
+      fotos: [],
+      initialParams: {
+        maxFotos: 0,
+        minFotos: 0,
+        isComentario: false,
+        onSave: () => {},
+      },
+    }),
 }));

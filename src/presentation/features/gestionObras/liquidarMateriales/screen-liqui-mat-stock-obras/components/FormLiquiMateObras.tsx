@@ -69,7 +69,7 @@ export const FormLiquiMateObras = ({isRegulariza}: Props) => {
     }
   }, [refetchStock]);
 
-  if (!dataStock) {
+  if (!dataStock && isFetchingStock) {
     return <FullScreenLoader />;
   }
 
@@ -159,7 +159,7 @@ export const FormLiquiMateObras = ({isRegulariza}: Props) => {
               <CustomFAB
                 icon="content-save"
                 onPress={() => handleSubmit()}
-                style={{bottom: 8, right: 8}}
+                style={{bottom: 0, right: 0}}
                 loading={mutation.isPending}
               />
             </View>

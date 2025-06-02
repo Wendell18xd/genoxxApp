@@ -1,74 +1,42 @@
-import {Pressable, StyleSheet, useWindowDimensions, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import SafeAreaLayout from '../../main/layout/SafeAreaLayout';
 import {globalColors} from '../../../styles/globalStyle';
-import {CameraAdapter} from '../../../adapter/camera-adapter';
 import {FlatList} from 'react-native-gesture-handler';
-import {FadeInImage} from '../../../components/ui/FadeInImage';
-import {useFotosStore} from '../store/useFotosStore';
-import {ToastNativo} from '../../../helper/utils';
-import {useNavigation} from '@react-navigation/native';
 import SinResultados from '../../../components/ui/SinResultados';
 import {Text} from 'react-native-paper';
-import {useState} from 'react';
 import {CustomFAB} from '../../../components/ui/CustomFAB';
+import {ItemCamera} from '../components/ItemCamera';
+import {useCamera} from '../hooks/useCamera';
+import {useEffect} from 'react';
+import {useNavigation} from '@react-navigation/native';
 
 export const CustomCameraScreen = () => {
-  const {fotos, setFotos} = useFotosStore();
-  const maxFotos = 10;
-  const [countFotos, setCountFotos] = useState(0);
   const navigation = useNavigation();
+  const {
+    fotos,
+    maxFotos,
+    countFotos,
+    handleCamera,
+    handleGallery,
+    handleCancel,
+    handleDelete,
+    handleSave,
+  } = useCamera();
 
-  const handleCamera = async () => {
-    const count = maxFotos - countFotos;
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', e => {
+      // Prevenir la navegación mientras hacemos la limpieza
+      e.preventDefault();
 
-    if (count === 0) {
-      ToastNativo({
-        titulo: 'Limite de fotos',
-        mensaje: `Limite de fotos alcanzado solo se puede seleccionar ${maxFotos} fotos`,
-        isAlert: true,
-      });
-      return;
-    }
+      // Ejecutamos la lógica de cancelación
+      handleCancel();
 
-    const photos = await CameraAdapter.takePicture();
-    setFotos([...fotos, ...photos]);
-    if (photos.length > 0) {
-      setCountFotos(countFotos + 1);
-    }
-  };
+      // Luego de limpiar, permitimos la navegación manualmente
+      navigation.dispatch(e.data.action);
+    });
 
-  const handleGallery = async () => {
-    const count = maxFotos - countFotos;
-
-    if (count === 0) {
-      ToastNativo({
-        titulo: 'Limite de fotos',
-        mensaje: `Limite de fotos alcanzado solo se puede seleccionar ${maxFotos} fotos`,
-        isAlert: true,
-      });
-      return;
-    }
-
-    const photos = await CameraAdapter.getPictureFromLibrary(count);
-    setFotos([...fotos, ...photos]);
-    setCountFotos(countFotos + photos.length);
-  };
-
-  const handleDelete = (index: number) => {
-    setFotos(fotos.filter((_, i) => i !== index));
-    setCountFotos(countFotos - 1);
-  };
-
-  const handleCancel = () => {
-    setFotos([]);
-    setCountFotos(0);
-    navigation.goBack();
-  };
-
-  const {width: screenWidth} = useWindowDimensions();
-  const spacing = 16;
-  const numColumns = 2;
-  const imageSize = (screenWidth - spacing * (numColumns + 1)) / numColumns;
+    return unsubscribe;
+  }, [navigation, handleCancel]);
 
   return (
     <SafeAreaLayout title="Fotos" primary isHeader isSafeBottom>
@@ -82,18 +50,17 @@ export const CustomCameraScreen = () => {
             </Text>
             <FlatList
               data={fotos}
-              keyExtractor={item => item}
+              keyExtractor={item => item.foto}
               showsVerticalScrollIndicator={false}
               numColumns={2}
               columnWrapperStyle={{gap: 16}}
               contentContainerStyle={{gap: 16}}
               renderItem={({item, index}) => (
-                <Pressable onLongPress={() => handleDelete(index)}>
-                  <FadeInImage
-                    uri={item}
-                    style={{width: imageSize, height: imageSize}}
-                  />
-                </Pressable>
+                <ItemCamera
+                  item={item}
+                  index={index}
+                  handleDelete={handleDelete}
+                />
               )}
             />
           </>
@@ -119,13 +86,13 @@ export const CustomCameraScreen = () => {
           <>
             <CustomFAB
               icon="content-save"
-              onPress={() => {}}
+              onPress={handleSave}
               style={{bottom: 16, left: 16}}
             />
 
             <CustomFAB
               icon="close"
-              onPress={handleCancel}
+              onPress={() => handleCancel(true)}
               style={{bottom: 85, left: 16}}
               color="gray"
             />

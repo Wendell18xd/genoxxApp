@@ -16,7 +16,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {AuthStackParam} from '../../../navigations/AuthStackNavigation';
 import FullScreenLoader from '../../../components/ui/loaders/FullScreenLoader';
 import {CustomDropdownInput} from '../../../components/ui/CustomDropdownInput';
-import { StorageAdapter } from '../../../adapter/storage-adapter';
+import {StorageAdapter} from '../../../adapter/storage-adapter';
 
 interface LoginFormValues {
   usuario: string;
@@ -88,13 +88,21 @@ const LoginScreen = ({navigation}: Props) => {
         const arrEmpresa = data.datos.empresas;
 
         if (arrEmpresa.length > 0) {
-          const options = mapToDropdown(
-            data.datos.empresas,
-            'empr_nombre',
-            'empr_codigo',
-          );
-          setEmpresas(options);
-          setDisabled(true);
+          if (arrEmpresa.length === 1) {
+            setFormValues({
+              ...formValues,
+              empresa: arrEmpresa[0].empr_codigo,
+            });
+            startLoginSubmit(formValues);
+          } else {
+            const options = mapToDropdown(
+              data.datos.empresas,
+              'empr_nombre',
+              'empr_codigo',
+            );
+            setEmpresas(options);
+            setDisabled(true);
+          }
         } else {
           navigateToMenu();
         }
