@@ -7,6 +7,7 @@ export const FotosObraScreen = () => {
 
   return (
     <View style={styles.container}>
+      {/* TODO: Mostrar lista de fotos enviadas por el usuario */}
       <Text>Lista de fotos enviadas por el usuario</Text>
       <CustomFAB icon="camera" onPress={handleCamera} style={styles.fab} />
     </View>
