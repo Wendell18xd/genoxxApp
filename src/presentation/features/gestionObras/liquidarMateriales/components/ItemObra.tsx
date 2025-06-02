@@ -1,5 +1,5 @@
 import {StyleSheet, View} from 'react-native';
-import {Text, useTheme, IconButton, Divider} from 'react-native-paper';
+import {Text, useTheme, IconButton} from 'react-native-paper';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
 import {Obra} from '../../../../../domain/entities/Obra';
 import {CustomCardContent} from '../../../../components/ui/CustomCardContent';
@@ -33,16 +33,16 @@ export const ItemObra = ({obra, onPress}: Props) => {
         <IconButton icon="chevron-right" size={24} iconColor={colors.primary} />
       </View>
 
-      <Divider />
+      {/* <Divider /> */}
 
       {/* Etiqueta inferior */}
       <View style={styles.footer}>
-        <View style={styles.footerItem}>
+        {/* <View style={styles.footerItem}>
           <Text variant="bodySmall" style={{marginRight: 4}}>
             Dirección:
           </Text>
           <Text variant="bodySmall">{obra.direccion}</Text>
-        </View>
+        </View> */}
 
         {/* GPS */}
         {obra.coordenada_x !== '' && (
@@ -94,6 +94,6 @@ const styles = StyleSheet.create({
   gpsContainer: {
     position: 'absolute',
     right: 0,
-    top: -17,
+    top: -28,
   },
 });

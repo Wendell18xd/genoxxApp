@@ -5,6 +5,7 @@ import {Menu} from '../../../../../../types/menus';
 import {sanitizarDecimalInput} from '../../../../../helper/inputUtils';
 import {MateStockObra} from '../../../../../../infrastructure/interfaces/obras/liquidar-materiales/listarStockObras.response';
 import {ToastNativo} from '../../../../../helper/utils';
+import {useState} from 'react';
 
 interface Props {
   item: MateStockObra;
@@ -14,6 +15,7 @@ export const useItemStockMateObras = ({item}: Props) => {
   const {user} = useAuthStore();
   const {obra} = useLiquiMateStore();
   const {drawerKey} = useMainStore();
+  const [vermas, setVermas] = useState(false);
   const tipo =
     drawerKey === Menu.LIQUIDACION_MATERIALES_OBRAS_ENERGIA ? 'ENERGIA' : '';
 
@@ -55,8 +57,10 @@ export const useItemStockMateObras = ({item}: Props) => {
     //* Propiedades
     user,
     obra,
+    vermas,
 
     //* Metodos
     handleChangeCantidad,
+    setVermas,
   };
 };

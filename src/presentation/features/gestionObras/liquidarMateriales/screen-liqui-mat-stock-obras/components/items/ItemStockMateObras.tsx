@@ -23,7 +23,8 @@ export const ItemStockMateObras = ({
   setFieldValue,
 }: Props) => {
   const {colors} = useTheme();
-  const {user, obra, handleChangeCantidad} = useItemStockMateObras({item});
+  const {user, obra, vermas, setVermas, handleChangeCantidad} =
+    useItemStockMateObras({item});
 
   const material = values.materiales[index];
 
@@ -121,17 +122,31 @@ export const ItemStockMateObras = ({
           height={40}
           onChangeText={val => handleChangeCantidad(val, setFieldValue, index)}
         />
-        <CustomTextInput
-          label="Observación"
-          autoCapitalize="characters"
-          height={80}
-          multiline
-          numberOfLines={3}
-          value={values.materiales[index].vl_mate_observacion}
-          onChangeText={val =>
-            setFieldValue(`materiales[${index}].vl_mate_observacion`, val)
-          }
-        />
+
+        <Text
+          onPress={() => setVermas(!vermas)}
+          variant="bodySmall"
+          style={{
+            color: colors.primary,
+            textDecorationLine: 'underline',
+            textAlign: 'right',
+          }}>
+          {vermas ? 'Ocultar' : 'Ver más'}
+        </Text>
+
+        {vermas && (
+          <CustomTextInput
+            label="Observación"
+            autoCapitalize="characters"
+            height={80}
+            multiline
+            numberOfLines={3}
+            value={values.materiales[index].vl_mate_observacion}
+            onChangeText={val =>
+              setFieldValue(`materiales[${index}].vl_mate_observacion`, val)
+            }
+          />
+        )}
       </View>
     </CustomCardContent>
   );
