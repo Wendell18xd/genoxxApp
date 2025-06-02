@@ -1,5 +1,3 @@
-import {UseMutationResult} from '@tanstack/react-query';
-
 export interface Foto {
   foto: string;
   comentario: string;
@@ -11,5 +9,4 @@ export interface ParamsFoto {
   isComentario: boolean;
   isSave: boolean;
   onSave: (fotos: Foto[]) => Promise<void>;
-  mutation?: UseMutationResult<any, any, any, any>;
 }
