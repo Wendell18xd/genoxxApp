@@ -1,9 +1,9 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import { ListaConsultaHistoricaPatenteScreen } from '../screen-consulta-historica-patente/ListaConsultaHistoricaPatenteScreen';
-import { BuscadorPersonalScreen } from '../../../buscadores/buscador-conductor/BuscadorPersonalScreen';
 import { BuscadorPatenteScreen } from '../../../buscadores/buscador-patente/BuscadorPatenteScreen';
 import { ConsultaUnidades } from '../../../../../domain/entities/ConsultaUnidades';
 import { Personal } from '../../../../../domain/entities/Personal';
+import { BuscadorPersonalScreen } from '../../../buscadores/buscador-personal/BuscadorPersonalScreen';
 
 export type ConsultaHistoricaPatenteStackParam = {
   ListaConsultaHistoricaPatenteScreen:  {patente?: ConsultaUnidades; personal?: Personal};

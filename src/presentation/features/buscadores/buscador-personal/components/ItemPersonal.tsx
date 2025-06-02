@@ -9,7 +9,7 @@ interface Props {
   onPress?: () => void;
 }
 
-export const ItemConductor = ({personal, onPress}: Props) => {
+export const ItemPersonal = ({personal, onPress}: Props) => {
   const {colors} = useTheme();
   return (
     <CustomCardContent onPress={onPress} mode="outlined">
@@ -27,21 +27,8 @@ export const ItemConductor = ({personal, onPress}: Props) => {
           </Text>
         </View>
 
-        {/* FLECHA */}
-        {/* <IconButton icon="chevron-right" size={24} iconColor={colors.primary} /> */}
       </View>
 
-      {/* <Divider /> */}
-
-      {/* Etiqueta inferior */}
-      {/* <View style={styles.footer}>
-        <View style={styles.footerItem}>
-          <Text variant="bodySmall" style={{marginRight: 4}}>
-            Estado:
-          </Text>
-          <Text variant="bodySmall"> {personal.nom_cargo}</Text>
-        </View>
-      </View> */}
     </CustomCardContent>
   );
 };

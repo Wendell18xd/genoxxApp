@@ -7,7 +7,8 @@ import {useAuthStore} from '../../../../store/auth/useAuthStore';
 import {PersonalRequest} from '../../../../../infrastructure/interfaces/flota/personal/personal.request';
 import {getPersonal} from '../../../../../actions/personal/personal';
 import {Personal} from '../../../../../domain/entities/Personal';
-import {usePersonalStore} from '../store/usePersonal';
+import {usePersonalStore} from '../store/usePersonalStore';
+import * as Yup from 'yup';
 
 interface SearchPersonalFormValues {
   txt_buscar: string;
@@ -28,6 +29,11 @@ export const useSearchPersonal = () => {
     txt_buscar: '',
     txt_cod_trabajador: '',
   });
+
+  const getValidationSchema = () =>
+    Yup.object().shape({
+      txt_buscar: Yup.string().required('Buscar personal'),
+    });
 
   const {
     data: personal,
@@ -70,6 +76,7 @@ export const useSearchPersonal = () => {
 
     //* Metodos
     handleSearch,
+    getValidationSchema,
     refetchPersonal,
     handleSelectPersonal,
   };
