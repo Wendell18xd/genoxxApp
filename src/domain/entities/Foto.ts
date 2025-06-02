@@ -8,5 +8,5 @@ export interface ParamsFoto {
   minFotos: number;
   isComentario: boolean;
   isSave: boolean;
-  onSave: (fotos: Foto[]) => Promise<void>;
+  onSave?: (fotos: Foto[]) => Promise<void>;
 }

@@ -16,7 +16,7 @@ export const useFotosStore = create<useFotosState>()(set => ({
     minFotos: 0,
     isComentario: false,
     isSave: false,
-    onSave: async () => {},
+    onSave: undefined,
   },
   setInitialParams: (value: ParamsFoto) => set({initialParams: value}),
   setFotos: (value: Foto[]) => set({fotos: value}),
@@ -28,7 +28,7 @@ export const useFotosStore = create<useFotosState>()(set => ({
         minFotos: 0,
         isComentario: false,
         isSave: false,
-        onSave: async () => {},
+        onSave: undefined,
       },
     }),
 }));

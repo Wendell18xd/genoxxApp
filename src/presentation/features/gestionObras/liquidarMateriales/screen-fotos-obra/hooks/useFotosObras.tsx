@@ -14,7 +14,6 @@ export const useFotosObras = () => {
   const {user} = useAuthStore();
   const {obra} = useLiquiMateStore();
 
-  //* Definir primero para que se comparta el mutacion con la pantalla de la camara
   const fotoMutation = useMutation({
     mutationFn: grabarFotosMaterialesObras,
     onSuccess: data => {
@@ -56,7 +55,6 @@ export const useFotosObras = () => {
       onSave: async (_fotos: Foto[]) => {
         await handleSave(_fotos);
       },
-      mutation: fotoMutation,
     });
     navigation.navigate('CustomCameraScreen');
   };

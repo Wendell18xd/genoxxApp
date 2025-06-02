@@ -7,7 +7,7 @@ import {CameraAdapter} from '../../../adapter/camera-adapter';
 export const useCamera = () => {
   const {
     fotos,
-    initialParams: {maxFotos, isSave, onSave},
+    initialParams: {minFotos, maxFotos, isSave, onSave},
     setFotos,
     onReset,
   } = useFotosStore();
@@ -79,7 +79,17 @@ export const useCamera = () => {
 
   const handleSave = async () => {
     setIsLoading(true);
-    await onSave(fotos);
+    if (onSave) {
+      if (fotos.length < minFotos) {
+        ToastNativo({
+          titulo: 'Faltan fotos',
+          mensaje: `Se requiere minimo ${minFotos} fotos`,
+        });
+        return;
+      }
+
+      await onSave(fotos);
+    }
     setIsLoading(false);
   };
 
