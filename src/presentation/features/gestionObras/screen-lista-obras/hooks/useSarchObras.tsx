@@ -1,20 +1,20 @@
+import {useNavigation, NavigationProp} from '@react-navigation/native';
 import {useQuery} from '@tanstack/react-query';
-import * as Yup from 'yup';
-import {
-  listadoObrasAsiganadas,
-  listadoProyectosObras,
-} from '../../../../../../actions/obras/obras';
-import {useAuthStore} from '../../../../../store/auth/useAuthStore';
-import {mapToDropdown} from '../../../../../../infrastructure/mappers/mapToDropdown';
-import {Option} from 'react-native-paper-dropdown';
 import {useRef} from 'react';
-import {ObrasRequest} from '../../../../../../infrastructure/interfaces/obras/liquidar-materiales/liquiMateObra.request';
-import {useLiquiMateStore} from '../../store/useLiquiMateStore';
-import {Obra} from '../../../../../../domain/entities/Obra';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {LiquiMatObrasStackParam} from '../../navigation/LiquiMatObrasStackNavigation';
-import {useMainStore} from '../../../../../store/main/useMainStore';
-import {Menu} from '../../../../../../types/menus';
+import {Option} from 'react-native-paper-dropdown';
+import {
+  listadoProyectosObras,
+  listadoObrasAsiganadas,
+} from '../../../../../actions/obras/obras';
+import {Obra} from '../../../../../domain/entities/Obra';
+import {ObrasRequest} from '../../../../../infrastructure/interfaces/obras/liquidar-materiales/liquiMateObra.request';
+import {mapToDropdown} from '../../../../../infrastructure/mappers/mapToDropdown';
+import {useAuthStore} from '../../../../store/auth/useAuthStore';
+import {useMainStore} from '../../../../store/main/useMainStore';
+import {LiquiMatObrasStackParam} from '../../liquidarMateriales/navigation/LiquiMatObrasStackNavigation';
+import { Menu } from '../../../../../types/menus';
+import * as Yup from 'yup';
+import { useObrasStore } from '../../store/useObrasStore';
 
 interface SearchObrasFormValues {
   cbo_proy_codigo: string;
@@ -54,7 +54,7 @@ const tiposBusqueda: Option[] = [
 export const useSarchObras = () => {
   const {user} = useAuthStore();
   const {drawerKey} = useMainStore();
-  const {setObra} = useLiquiMateStore();
+  const {setObra} = useObrasStore();
   const navigation = useNavigation<NavigationProp<LiquiMatObrasStackParam>>();
 
   const proy_tipo =

@@ -1,11 +1,11 @@
 import {useAuthStore} from '../../../../../store/auth/useAuthStore';
-import {useLiquiMateStore} from '../../store/useLiquiMateStore';
 import {useMainStore} from '../../../../../store/main/useMainStore';
 import {Menu} from '../../../../../../types/menus';
 import {sanitizarDecimalInput} from '../../../../../helper/inputUtils';
 import {MateStockObra} from '../../../../../../infrastructure/interfaces/obras/liquidar-materiales/listarStockObras.response';
 import {ToastNativo} from '../../../../../helper/utils';
 import {useState} from 'react';
+import { useObrasStore } from '../../../store/useObrasStore';
 
 interface Props {
   item: MateStockObra;
@@ -13,7 +13,7 @@ interface Props {
 
 export const useItemStockMateObras = ({item}: Props) => {
   const {user} = useAuthStore();
-  const {obra} = useLiquiMateStore();
+  const {obra} = useObrasStore();
   const {drawerKey} = useMainStore();
   const [vermas, setVermas] = useState(false);
   const tipo =

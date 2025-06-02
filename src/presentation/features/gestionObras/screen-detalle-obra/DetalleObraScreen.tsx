@@ -1,7 +1,7 @@
 import {ScrollView, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
-import {useLiquiMateStore} from '../store/useLiquiMateStore';
 import {Divider, Text} from 'react-native-paper';
-import {globalColors} from '../../../../styles/globalStyle';
+import {globalColors} from '../../../styles/globalStyle';
+import {useObrasStore} from '../store/useObrasStore';
 
 interface Props {
   label: string;
@@ -31,7 +31,7 @@ const LabelValueRow = ({label, value, style}: Props) => {
 };
 
 export const DetalleObraScreen = () => {
-  const {obra} = useLiquiMateStore();
+  const {obra} = useObrasStore();
 
   return (
     <ScrollView contentContainerStyle={{padding: 32}}>

@@ -3,11 +3,12 @@ import {listadoMaterialesObra} from '../../../../../../actions/obras/materiales.
 import {useAuthStore} from '../../../../../store/auth/useAuthStore';
 import {useLiquiMateStore} from '../../store/useLiquiMateStore';
 import {useRef, useState} from 'react';
+import {useObrasStore} from '../../../store/useObrasStore';
 
 export const useMateObras = () => {
   const {user} = useAuthStore();
-  const {obra, isRefetchLiquidacion, setIsRefetchLiquidacion} =
-    useLiquiMateStore();
+  const {isRefetchLiquidacion, setIsRefetchLiquidacion} = useLiquiMateStore();
+  const {obra} = useObrasStore();
   const [isRegulariza, setIsRegulariza] = useState(false);
   const isRegularizaRef = useRef(false);
 

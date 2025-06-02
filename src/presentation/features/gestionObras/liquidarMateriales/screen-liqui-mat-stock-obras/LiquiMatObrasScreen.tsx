@@ -6,16 +6,16 @@ import {LiquiMatObrasStackParam} from '../navigation/LiquiMatObrasStackNavigatio
 import {useEffect} from 'react';
 import {useQueryClient} from '@tanstack/react-query';
 import {FormLiquiMateObras} from './components/FormLiquiMateObras';
-import { useLiquiMateStore } from '../store/useLiquiMateStore';
+import {useObrasStore} from '../../store/useObrasStore';
 
 export const LiquiMatObrasScreen = () => {
   const {isRegulariza} =
     useRoute<RouteProp<LiquiMatObrasStackParam, 'LiquiMatObrasScreen'>>()
       .params;
   const queryClient = useQueryClient();
-  const {obra} = useLiquiMateStore();
+  const {obra} = useObrasStore();
 
-   useEffect(() => {
+  useEffect(() => {
     return () => {
       queryClient.removeQueries({
         queryKey: ['listadoStockMaterilesObras', obra],

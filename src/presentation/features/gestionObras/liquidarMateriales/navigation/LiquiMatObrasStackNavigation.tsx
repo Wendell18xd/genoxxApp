@@ -1,5 +1,4 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import {ListaObrasScreen} from '../screen-lista-obras/ListaObrasScreen';
 import {SegmentedButtonsDetalleObras} from './SegmentedButtonsDetalleObras';
 import {LiquiMatObrasScreen} from '../screen-liqui-mat-stock-obras/LiquiMatObrasScreen';
 import {useAuthStore} from '../../../../store/auth/useAuthStore';
@@ -10,6 +9,7 @@ import {useRoute} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
 import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
 import { CustomCameraScreen } from '../../../foto/screens/CustomCameraScreen';
+import { ListaObrasScreen } from '../../screen-lista-obras/ListaObrasScreen';
 
 export type LiquiMatObrasStackParam = {
   ListaObrasScreen: undefined;

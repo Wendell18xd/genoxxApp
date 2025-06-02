@@ -3,18 +3,21 @@ import DrawerLayout from '../../../main/layout/DrawerLayout';
 import {useLiquiMateStore} from '../store/useLiquiMateStore';
 import {useEffect, useState} from 'react';
 import {SegmentedButtons, useTheme} from 'react-native-paper';
-import {DetalleObraScreen} from '../screen-detalle-obra/DetalleObraScreen';
+import {DetalleObraScreen} from '../../screen-detalle-obra/DetalleObraScreen';
 import {MaterialesObraScreen} from '../screen-materiales-obra/MaterialesObraScreen';
 import {FotosObraScreen} from '../screen-fotos-obra/FotosObraScreen';
+import {useObrasStore} from '../../store/useObrasStore';
 
 export const SegmentedButtonsDetalleObras = () => {
-  const {reset} = useLiquiMateStore();
+  const {reset: resetLiquiMate} = useLiquiMateStore();
+  const {reset: resetObras} = useObrasStore();
   const [value, setValue] = useState('1');
   const {colors} = useTheme();
 
   useEffect(() => {
     return () => {
-      reset();
+      resetLiquiMate();
+      resetObras();
     };
   }, []);
 

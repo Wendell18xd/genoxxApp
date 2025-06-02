@@ -8,6 +8,7 @@ import Toast from 'react-native-toast-message';
 import {ToastNativo} from '../../../../../helper/utils';
 import {useAuthStore} from '../../../../../store/auth/useAuthStore';
 import {useRef, useState} from 'react';
+import {useObrasStore} from '../../../store/useObrasStore';
 interface InitialValues {
   fecha: string;
   guia: string;
@@ -21,8 +22,9 @@ const initialValues: InitialValues = {
 };
 
 export const useFormLiquiMateObras = () => {
-  const {obra, guias, setGuiaSeleccionada, setIsRefetchLiquidacion} =
+  const {guias, setGuiaSeleccionada, setIsRefetchLiquidacion} =
     useLiquiMateStore();
+  const {obra} = useObrasStore();
   const [refetchStock, setRefetchStock] = useState(true);
   const {user} = useAuthStore();
   const resetFormRef = useRef<(() => void) | null>(null);

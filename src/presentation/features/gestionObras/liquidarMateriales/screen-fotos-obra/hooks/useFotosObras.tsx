@@ -6,13 +6,13 @@ import {useMutation} from '@tanstack/react-query';
 import {grabarFotosMaterialesObras} from '../../../../../../actions/obras/fotos.obras';
 import Toast from 'react-native-toast-message';
 import {useAuthStore} from '../../../../../store/auth/useAuthStore';
-import {useLiquiMateStore} from '../../store/useLiquiMateStore';
+import {useObrasStore} from '../../../store/useObrasStore';
 
 export const useFotosObras = () => {
   const navigation = useNavigation<NavigationProp<LiquiMatObrasStackParam>>();
   const {setInitialParams} = useFotosStore();
   const {user} = useAuthStore();
-  const {obra} = useLiquiMateStore();
+  const {obra} = useObrasStore();
 
   const fotoMutation = useMutation({
     mutationFn: grabarFotosMaterialesObras,

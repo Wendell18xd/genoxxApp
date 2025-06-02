@@ -6,9 +6,11 @@ import {useRef} from 'react';
 import {useMainStore} from '../../../../../store/main/useMainStore';
 import {Menu} from '../../../../../../types/menus';
 import {Option} from 'react-native-paper-dropdown';
+import {useObrasStore} from '../../../store/useObrasStore';
 
 export const useLiquiMatObras = () => {
-  const {obra, setGuias} = useLiquiMateStore();
+  const {setGuias} = useLiquiMateStore();
+  const {obra} = useObrasStore();
   const {user} = useAuthStore();
   const {drawerKey} = useMainStore();
   const isRegulariza = useRef('0');

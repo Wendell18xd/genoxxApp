@@ -1,17 +1,17 @@
 // ListaObrasScreen.tsx
 import {FlatList, View} from 'react-native';
-import DrawerLayout from '../../../main/layout/DrawerLayout';
 import {useSarchObras} from './hooks/useSarchObras';
-import {CustomFAB} from '../../../../components/ui/CustomFAB';
 import {SearchObras} from './components/SearchObras';
-import {useBottomSheetModal} from '../../../../hooks/useBottomSheet';
-import CustomBottomSheet from '../../../../components/ui/bottomSheetModal/CustomBottomSheet';
 import {useEffect, useState} from 'react';
 import Toast from 'react-native-toast-message';
 import {useQueryClient} from '@tanstack/react-query';
-import {ItemObra} from '../components/ItemObra';
-import SinResultados from '../../../../components/ui/SinResultados';
 import {Searchbar} from 'react-native-paper';
+import DrawerLayout from '../../main/layout/DrawerLayout';
+import {ItemObra} from '../components/ItemObra';
+import SinResultados from '../../../components/ui/SinResultados';
+import {CustomFAB} from '../../../components/ui/CustomFAB';
+import CustomBottomSheet from '../../../components/ui/bottomSheetModal/CustomBottomSheet';
+import {useBottomSheetModal} from '../../../hooks/useBottomSheet';
 
 export const ListaObrasScreen = () => {
   const {obras, errorObras, isFetchObras, refetchObras, handleSelectObra} =
