@@ -1,6 +1,6 @@
 import { ConsultaUnidadesStackNavigation } from '../presentation/features/flota/consultaUnidades/navigations/ConsultaUnidadesStackNavigation';
-import {LiquiMatATCStackNavigation} from '../presentation/features/gestionATC/liquidarMateriales/navigations/LiquiMatATCStackNavigation';
-import {LiquiMatObrasStackNavigation} from '../presentation/features/gestionObras/liquidarMateriales/navigation/LiquiMatObrasStackNavigation';
+import {LiquiMatATCStackNavigation} from '../presentation/features/gestion-atc/liquidarMateriales/navigations/LiquiMatATCStackNavigation';
+import {LiquiMatObrasStackNavigation} from '../presentation/features/gestion-obras/liquidar-materiales/navigation/LiquiMatObrasStackNavigation';
 import {Menu} from './menus';
 
 export const drawerScreenComponents: Record<

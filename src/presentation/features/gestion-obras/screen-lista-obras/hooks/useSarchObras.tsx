@@ -11,7 +11,7 @@ import {ObrasRequest} from '../../../../../infrastructure/interfaces/obras/liqui
 import {mapToDropdown} from '../../../../../infrastructure/mappers/mapToDropdown';
 import {useAuthStore} from '../../../../store/auth/useAuthStore';
 import {useMainStore} from '../../../../store/main/useMainStore';
-import {LiquiMatObrasStackParam} from '../../liquidarMateriales/navigation/LiquiMatObrasStackNavigation';
+import {LiquiMatObrasStackParam} from '../../liquidar-materiales/navigation/LiquiMatObrasStackNavigation';
 import { Menu } from '../../../../../types/menus';
 import * as Yup from 'yup';
 import { useObrasStore } from '../../store/useObrasStore';
