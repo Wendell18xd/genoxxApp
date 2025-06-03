@@ -10,12 +10,14 @@ import {CustomCameraScreen} from '../../../foto/screens/CustomCameraScreen';
 import {ListaObrasScreen} from '../../screen-lista-obras/ListaObrasScreen';
 import {LiquiPartObrasScreen} from '../screen-liqui-part-obras/LiquiPartObrasScreen';
 import {SegmentedButtonsDetalleObras} from '../../navigations/SegmentedButtonsDetalleObras';
+import {BuscadorActividadPartidaScreen} from '../../../buscadores/buscador-actividad-partida/BuscadorActividadPartidaScreen';
 
 export type LiquiPartObrasStackParam = {
   ListaObrasScreen: undefined;
   SegmentedButtonsDetalleObras: undefined;
   CustomCameraScreen: undefined;
   LiquiPartObrasScreen: undefined;
+  BuscadorActividadPartidaScreen: undefined;
 };
 
 const Stack = createStackNavigator<LiquiPartObrasStackParam>();
@@ -92,6 +94,10 @@ export const LiquiPartObrasStackNavigation = () => {
         component={LiquiPartObrasScreen}
       />
       <Stack.Screen name="CustomCameraScreen" component={CustomCameraScreen} />
+      <Stack.Screen
+        name="BuscadorActividadPartidaScreen"
+        component={BuscadorActividadPartidaScreen}
+      />
     </Stack.Navigator>
   );
 };
