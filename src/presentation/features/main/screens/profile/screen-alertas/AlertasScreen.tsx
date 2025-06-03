@@ -178,7 +178,7 @@ export const AlertasScreen = () => {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                <Icon name="play" size={15} color="white" />
+                <Icon name="play" size={40} color="white" />
               </View>
             )}
           </View>
