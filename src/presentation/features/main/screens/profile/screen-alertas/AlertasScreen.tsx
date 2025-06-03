@@ -76,7 +76,7 @@ export const AlertasScreen = () => {
   }
 
   return (
-    <SafeAreaLayout title="Alertas" isHeader primary>
+  <SafeAreaLayout title="Alertas" isHeader primary>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={{flex: 1, padding: 16, position: 'relative'}}>
           <Formik
@@ -218,6 +218,7 @@ export const AlertasScreen = () => {
                   containerColor={isRecording ? '#F44336' : '#9E9E9E'}
                   onPress={onStopRecord}
                   debounce
+                  disabled={!isRecording}
                   loading={mutation.isPending}
                 />
                 <CustomIconBottom
