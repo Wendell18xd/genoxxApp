@@ -84,11 +84,13 @@ export const LiquiPartObrasScreen = () => {
                 label="Observación"
                 value={values.observacion}
                 style={{marginTop: 8}}
+                textAlignVertical="top"
                 onChangeText={handleChange('observacion')}
                 error={touched.observacion && !!errors.observacion}
                 autoCapitalize="characters"
                 multiline
-                numberOfLines={4}
+                height={150}
+                numberOfLines={5}
               />
               {touched.observacion && errors.observacion && (
                 <Text style={{color: 'red', marginBottom: 4}}>

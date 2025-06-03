@@ -1,7 +1,7 @@
 import {View, StyleSheet} from 'react-native';
 import DrawerLayout from '../../main/layout/DrawerLayout';
 import {useLiquiMateStore} from '../liquidar-materiales/store/useLiquiMateStore';
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {SegmentedButtons, useTheme} from 'react-native-paper';
 import {DetalleObraScreen} from '../screen-detalle-obra/DetalleObraScreen';
 import {MaterialesObraScreen} from '../liquidar-materiales/screen-materiales-obra/MaterialesObraScreen';
