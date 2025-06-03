@@ -1,4 +1,4 @@
-import {Divider, Text, useTheme} from 'react-native-paper';
+import {Text, useTheme} from 'react-native-paper';
 import {CustomCardContent} from '../../../../components/ui/CustomCardContent';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
 import {StyleSheet, View} from 'react-native';
@@ -11,8 +11,13 @@ interface Props {
 
 export const ItemPatente = ({patente, onPress}: Props) => {
   const {colors} = useTheme();
+  const isDeBaja = patente.situacion === 'DEVP';
+
   return (
-    <CustomCardContent onPress={onPress} mode="outlined">
+    <CustomCardContent
+      onPress={onPress}
+      mode="outlined"
+      style={isDeBaja ? {borderColor: '#FF4D4D', borderWidth: 1} : {}}>
       <View style={styles.container}>
         {/* ICONO */}
         <MaterialIcons name="car-side" size={28} color={colors.primary} />
@@ -27,29 +32,14 @@ export const ItemPatente = ({patente, onPress}: Props) => {
           </Text>
         </View>
 
-        {/* FLECHA */}
-        {/* <IconButton icon="chevron-right" size={24} iconColor={colors.primary} /> */}
-      </View>
-
-      <Divider />
-
-      {/* Etiqueta inferior */}
-      <View style={styles.footer}>
-        <View
-          style={[
-            styles.badge,
-            {
-              backgroundColor:
-                patente.situacion === 'DEVP' ? '#FF4D4D' : '#4CAF50',
-            }, // rojo o verde
-          ]}>
-          {/* <Text variant="bodySmall" style={{marginRight: 4}}>
-            Estado:
-          </Text> */}
-          <Text style={styles.badgeText}>
-            {patente.situacion === 'DEVP' ? 'DE BAJA' : 'ACTIVO'}
-          </Text>
-        </View>
+        {/* BADGE */}
+        {isDeBaja && (
+          <View style={styles.badgeContainer}>
+            <View style={[styles.badge, {backgroundColor: '#FF4D4D'}]}>
+              <Text style={styles.badgeText}>DE BAJA</Text>
+            </View>
+          </View>
+        )}
       </View>
     </CustomCardContent>
   );
@@ -71,24 +61,9 @@ const styles = StyleSheet.create({
   subtitle: {
     color: '#888',
   },
-  footer: {
-    flexDirection: 'row-reverse',
-    justifyContent: 'space-between',
+  badgeContainer: {
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 8,
-    flexWrap: 'wrap',
-    position: 'relative',
-    paddingVertical: 4,
-  },
-  footerItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-  },
-  gpsContainer: {
-    position: 'absolute',
-    right: 0,
-    top: -17,
   },
   badge: {
     paddingHorizontal: 8,

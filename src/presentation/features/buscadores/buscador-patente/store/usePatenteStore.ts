@@ -3,11 +3,13 @@ import { ConsultaUnidades } from '../../../../../domain/entities/ConsultaUnidade
 
 
 interface PatenteStore {
-  setOnSelect: (fn: (patente: ConsultaUnidades) => void) => void;
+  setOnSelectPatente: (fn: (patente: ConsultaUnidades) => void) => void;
   onSelect: ((patente: ConsultaUnidades) => void) | null;
+   reset: () => void;
 }
 
 export const usePatenteStore = create<PatenteStore>(set => ({
   onSelect: null,
-  setOnSelect: fn => set({onSelect: fn}),
+  setOnSelectPatente: fn => set({onSelect: fn}),
+  reset: () => set({onSelect: null}),
 }));

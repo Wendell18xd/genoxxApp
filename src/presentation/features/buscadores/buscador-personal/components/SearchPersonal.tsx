@@ -3,14 +3,14 @@ import {View} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
-import { useSearchPersonal } from '../hooks/useSearchPersonal';
+import {useSearchPersonal} from '../hooks/useSearchPersonal';
 
 interface Props {
   onClose?: () => void;
 }
 
 export const SearchPersonal = ({onClose}: Props) => {
-  const {initialValues, isFetchPersonal, handleSearch} =
+  const {initialValues, isFetchPersonal, getValidationSchema, handleSearch} =
     useSearchPersonal();
 
   return (
@@ -18,7 +18,8 @@ export const SearchPersonal = ({onClose}: Props) => {
       {isFetchPersonal && <FullScreenLoader transparent />}
       <Formik
         initialValues={initialValues}
-        onSubmit={values => handleSearch(values, onClose)}>
+        onSubmit={values => handleSearch(values, onClose)}
+        validationSchema={getValidationSchema}>
         {({
           handleChange,
           handleBlur,
