@@ -7,6 +7,7 @@ import {
   ViewStyle,
   ActivityIndicator,
   View,
+  TextStyle,
 } from 'react-native';
 import {useTheme} from 'react-native-paper';
 import MaterialIcons from './icons/MaterialIcons';
@@ -17,11 +18,13 @@ interface Props {
   children?: React.ReactNode;
   label?: string;
   style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
   onPress?: () => void;
   loading?: boolean;
   disabled?: boolean;
   debounce?: boolean;
   icon?: string;
+  iconColor?: string;
 }
 
 const PrimaryButton = ({
@@ -31,10 +34,12 @@ const PrimaryButton = ({
   label,
   onPress,
   style,
+  textStyle,
   loading = false,
   disabled = false,
   debounce = false,
   icon = '',
+  iconColor = 'white',
 }: Props) => {
   const {colors} = useTheme();
   const lastPressRef = useRef<number>(0);
@@ -74,13 +79,13 @@ const PrimaryButton = ({
       ]}>
       <View style={styles.content}>
         {loading && (
-          <ActivityIndicator color="white" style={{marginRight: 8}} />
+          <ActivityIndicator color={iconColor} style={{marginRight: 8}} />
         )}
         {icon && !loading && (
-          <MaterialIcons name={icon} color="white" style={{marginEnd: 8}} />
+          <MaterialIcons name={icon} color={iconColor} style={{marginEnd: 8}} />
         )}
         {(children || label) && (
-          <Text style={styles.label}>{children ?? label}</Text>
+          <Text style={[styles.label, textStyle]}>{children ?? label}</Text>
         )}
       </View>
     </Pressable>

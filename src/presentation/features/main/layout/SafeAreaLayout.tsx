@@ -14,6 +14,7 @@ interface Props {
   isHeader?: boolean;
   title?: string;
   isBack?: boolean;
+  isSafeBottom?: boolean;
 }
 
 const SafeAreaLayout = ({
@@ -25,6 +26,7 @@ const SafeAreaLayout = ({
   isHeader = false,
   isBack = true,
   curvaHeight = 0,
+  isSafeBottom = false,
 }: Props) => {
   const {top, bottom} = useSafeAreaInsets();
   const {colors} = useTheme();
@@ -65,6 +67,7 @@ const SafeAreaLayout = ({
             flex: 1,
             position: 'relative',
             paddingTop: isHeader ? 0 : top,
+            paddingBottom: !isSafeBottom ? 0 : keyboardVisible ? 0 : bottom,
           }}>
           {primary && isCurva && (
             <View

@@ -8,20 +8,25 @@ import {TextInput} from 'react-native-paper';
 import {CustomDropdownInput} from '../../../../../components/ui/CustomDropdownInput';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ConsultaHistoricaPatenteStackParam} from '../../navigations/ConsultaHistoricaPatenteStackNavigation';
-import {usePatenteStore} from '../../../../buscadores/buscador-patente/store/usePatente';
 
 interface Props {
-  onClose?: () => void;
+  onClose?: (tipoSeleccionado: 'PERS' | 'PLACA') => void;
+  onTipoBusquedaChange?: (tipo: 'PERS' | 'PLACA') => void;
 }
 
-export const SearchConsultaHistoricaPatente = ({onClose}: Props) => {
+export const SearchConsultaHistoricaPatente = ({
+  onClose,
+  onTipoBusquedaChange,
+}: Props) => {
   const {
     tiposBusqueda,
     initialValues,
     isFetchConsultaHistoricaPatente,
     handleSearch,
+    getValidationSchema,
     setCodDestinatario,
-    setOnSelect,
+    setOnSelectPersonal,
+    setOnSelectPatente,
   } = useSearchConsultaHistoricaPatente();
 
   const navigation =
@@ -32,7 +37,19 @@ export const SearchConsultaHistoricaPatente = ({onClose}: Props) => {
       {isFetchConsultaHistoricaPatente && <FullScreenLoader transparent />}
       <Formik
         initialValues={initialValues}
-        onSubmit={values => handleSearch(values, onClose)}>
+        onSubmit={values => {
+          handleSearch(values, () => {
+            if (onClose) {
+              if (
+                values.cbo_bus_tipo === 'PERS' ||
+                values.cbo_bus_tipo === 'PLACA'
+              ) {
+                onClose(values.cbo_bus_tipo);
+              }
+            }
+          });
+        }}
+        validationSchema={getValidationSchema}>
         {({
           handleChange,
           handleBlur,
@@ -53,6 +70,12 @@ export const SearchConsultaHistoricaPatente = ({onClose}: Props) => {
                     setFieldValue('cbo_bus_tipo', val);
                     setFieldValue('txt_cod_destinatario', '');
                     setCodDestinatario('');
+                    if (
+                      onTipoBusquedaChange &&
+                      (val === 'PERS' || val === 'PLACA')
+                    ) {
+                      onTipoBusquedaChange(val);
+                    }
                   }}
                 />
               </View>
@@ -65,26 +88,42 @@ export const SearchConsultaHistoricaPatente = ({onClose}: Props) => {
                 editable={false}
                 right={
                   <TextInput.Icon
-                    icon="magnify"
+                    icon={
+                      values.txt_cod_destinatario &&
+                      values.txt_cod_destinatario.length > 0
+                        ? 'close'
+                        : 'magnify'
+                    }
                     onPress={() => {
-                      if (values.cbo_bus_tipo === 'PERS' || values.cbo_bus_tipo === undefined) {
-                        setOnSelect(personal => {
-                          setFieldValue(
-                            'txt_cod_destinatario',
-                            `${personal.cod_para} - ${personal.nom_para}`,
-                          );
-                          setCodDestinatario(personal.cod_para);
-                        });
-                        navigation.navigate('BuscadorPersonalScreen');
-                      } else if (values.cbo_bus_tipo === 'PLACA') {
-                        usePatenteStore.getState().setOnSelect(patente => {
-                          setFieldValue(
-                            'txt_cod_destinatario',
-                            `${patente.nro_placa} - ${patente.nom_marca}`,
-                          );
-                          setCodDestinatario(patente.nro_placa);
-                        });
-                        navigation.navigate('BuscadorPatenteScreen');
+                      if (
+                        values.txt_cod_destinatario &&
+                        values.txt_cod_destinatario.length > 0
+                      ) {
+                        setFieldValue('txt_cod_destinatario', '');
+                        setCodDestinatario('');
+                      } else {
+                        if (
+                          values.cbo_bus_tipo === 'PERS' ||
+                          values.cbo_bus_tipo === undefined
+                        ) {
+                          setOnSelectPersonal(personal => {
+                            setFieldValue(
+                              'txt_cod_destinatario',
+                              `${personal.cod_para} - ${personal.nom_para}`,
+                            );
+                            setCodDestinatario(personal.cod_para);
+                          });
+                          navigation.navigate('BuscadorPersonalScreen');
+                        } else if (values.cbo_bus_tipo === 'PLACA') {
+                          setOnSelectPatente(patente => {
+                            setFieldValue(
+                              'txt_cod_destinatario',
+                              `${patente.nro_placa} - ${patente.nom_marca}`,
+                            );
+                            setCodDestinatario(patente.nro_placa);
+                          });
+                          navigation.navigate('BuscadorPatenteScreen');
+                        }
                       }
                     }}
                   />
