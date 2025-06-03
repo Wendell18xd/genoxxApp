@@ -3,7 +3,7 @@ import {useEffect} from 'react';
 import Toast from 'react-native-toast-message';
 import DrawerLayout from '../../main/layout/DrawerLayout';
 import {FlatList} from 'react-native-gesture-handler';
-import {useSearchPatente} from './hooks/useSearchPatente';
+import { useSearchPatente} from './hooks/useSearchPatente';
 import { SearchPatente } from './components/SearchPatente';
 import { ItemPatente } from './components/ItemPatente';
 
@@ -41,7 +41,7 @@ export const BuscadorPatenteScreen = () => {
           <SearchPatente/>
           <FlatList
             data={patente}
-            keyExtractor={item => item.nro_placa}
+            keyExtractor={item => item.cod_para}
             contentContainerStyle={{gap: 16, padding: 16}}
             refreshing={isFetchPatente}
             onRefresh={refetchPatente}
