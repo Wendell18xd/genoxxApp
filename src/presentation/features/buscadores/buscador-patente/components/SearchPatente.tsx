@@ -3,14 +3,14 @@ import {View} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
-import { useSearchPatente } from '../hooks/useSearchPatente';
+import {useSearchPatente} from '../hooks/useSearchPatente';
 
 interface Props {
   onClose?: () => void;
 }
 
 export const SearchPatente = ({onClose}: Props) => {
-  const {initialValues, isFetchPatente, handleSearch} =
+  const {initialValues, isFetchPatente, handleSearch, getValidationSchema} =
     useSearchPatente();
 
   return (
@@ -18,7 +18,8 @@ export const SearchPatente = ({onClose}: Props) => {
       {isFetchPatente && <FullScreenLoader transparent />}
       <Formik
         initialValues={initialValues}
-        onSubmit={values => handleSearch(values, onClose)}>
+        onSubmit={values => handleSearch(values, onClose)}
+        validationSchema={getValidationSchema}>
         {({
           handleChange,
           handleBlur,
@@ -30,7 +31,7 @@ export const SearchPatente = ({onClose}: Props) => {
           return (
             <View style={{padding: 16}}>
               <CustomTextInput
-                label="Buscar"
+                label="Buscar patente"
                 mode="outlined"
                 value={values.nro_placa}
                 onChangeText={handleChange('nro_placa')}

@@ -7,7 +7,8 @@ import {ConsultaUnidadesRequest} from '../../../../../infrastructure/interfaces/
 import {useAuthStore} from '../../../../store/auth/useAuthStore';
 import {getConsultaUnidades} from '../../../../../actions/flota/consultaUnidades';
 import {ConsultaUnidades} from '../../../../../domain/entities/ConsultaUnidades';
-import {usePatenteStore} from '../store/usePatente';
+import {usePatenteStore} from '../store/usePatenteStore';
+import * as Yup from 'yup';
 
 interface SearchUnidadesFormValues {
   nro_placa: string;
@@ -27,6 +28,11 @@ export const useSearchPatente = () => {
     vl_empr_codigo: user?.empr_codigo || '',
     txt_nro_placa: '',
   });
+
+  const getValidationSchema = () =>
+    Yup.object().shape({
+      nro_placa: Yup.string().required('Buscar patente'),
+    });
 
   const {
     data: patente,
@@ -69,6 +75,7 @@ export const useSearchPatente = () => {
 
     //* Metodos
     handleSearch,
+    getValidationSchema,
     refetchPatente,
     handleSelectPatente,
   };

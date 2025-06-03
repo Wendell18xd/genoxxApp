@@ -5,7 +5,7 @@ import DrawerLayout from '../../main/layout/DrawerLayout';
 import {FlatList} from 'react-native-gesture-handler';
 import { useSearchPersonal } from './hooks/useSearchPersonal';
 import { SearchPersonal } from './components/SearchPersonal';
-import { ItemConductor } from './components/ItemConductor';
+import { ItemPersonal } from './components/ItemPersonal';
 
 export const BuscadorPersonalScreen = () => {
   const {
@@ -47,7 +47,7 @@ export const BuscadorPersonalScreen = () => {
             onRefresh={refetchPersonal}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => (
-              <ItemConductor
+              <ItemPersonal
                 personal={item}
                 onPress={() => {
                   handleSelectPersonal(item);
