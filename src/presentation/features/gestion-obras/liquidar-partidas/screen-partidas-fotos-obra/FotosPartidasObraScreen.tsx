@@ -1,9 +1,9 @@
 import {View, Text, StyleSheet} from 'react-native';
 import {CustomFAB} from '../../../../components/ui/CustomFAB';
-import {useFotosObras} from './hooks/useFotosObras';
+import {useFotosPartidasObras} from './hooks/useFotosPartidasObras';
 
-export const FotosObraScreen = () => {
-  const {handleCamera} = useFotosObras();
+export const FotosPartidasObraScreen = () => {
+  const {handleCamera} = useFotosPartidasObras();
 
   return (
     <View style={styles.container}>

@@ -5,7 +5,10 @@ export const parseLocalDate = (isoDateString: string): Date => {
   return new Date(year, month - 1, day); // ⚠️ mes base 0
 };
 
-export const formatearFecha = (fechaString?: string | null): string => {
+export const formatearFecha = (
+  fechaString?: string | null,
+  formato = 'dd/MM/yyyy',
+): string => {
   if (!fechaString) {
     return '';
   }
@@ -15,7 +18,7 @@ export const formatearFecha = (fechaString?: string | null): string => {
 
   try {
     const fecha = parseISO(fechaString);
-    return format(fecha, 'dd/MM/yyyy');
+    return format(fecha, formato);
   } catch (error) {
     return '';
   }

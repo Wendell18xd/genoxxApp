@@ -5,11 +5,12 @@ import {useEffect, useState} from 'react';
 import {SegmentedButtons, useTheme} from 'react-native-paper';
 import {DetalleObraScreen} from '../screen-detalle-obra/DetalleObraScreen';
 import {MaterialesObraScreen} from '../liquidar-materiales/screen-materiales-obra/MaterialesObraScreen';
-import {FotosObraScreen} from '../liquidar-materiales/screen-fotos-obra/FotosObraScreen';
+import {FotosMaterialesObraScreen} from '../liquidar-materiales/screen-materiales-fotos-obra/FotosMaterialesObraScreen';
 import {useObrasStore} from '../store/useObrasStore';
 import {useMainStore} from '../../../store/main/useMainStore';
 import {Menu} from '../../../../types/menus';
 import {PartidasObrasScreen} from '../liquidar-partidas/screen-partidas-obra/PartidasObrasScreen';
+import {FotosPartidasObraScreen} from '../liquidar-partidas/screen-partidas-fotos-obra/FotosPartidasObraScreen';
 
 export const SegmentedButtonsDetalleObras = () => {
   const {reset: resetLiquiMate} = useLiquiMateStore();
@@ -74,7 +75,11 @@ export const SegmentedButtonsDetalleObras = () => {
           {isMateriales ? <MaterialesObraScreen /> : <PartidasObrasScreen />}
         </View>
         <View style={[styles.screen, value !== '3' && styles.hidden]}>
-          <FotosObraScreen />
+          {isMateriales ? (
+            <FotosMaterialesObraScreen />
+          ) : (
+            <FotosPartidasObraScreen />
+          )}
         </View>
       </View>
     </DrawerLayout>

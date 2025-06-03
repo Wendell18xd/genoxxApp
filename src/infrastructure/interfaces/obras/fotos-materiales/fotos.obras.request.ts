@@ -9,3 +9,10 @@ export interface GrabarFotosObrasRequest {
   vl_coord_x: string;
   vl_coord_y: string;
 }
+
+export interface ListarFotosObrasRequest {
+  vg_empr_codigo: string;
+  vg_usua_codigo: string;
+  vl_tipo_archivo: string;
+  vl_regi_codigo: string;
+}
