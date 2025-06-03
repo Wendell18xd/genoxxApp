@@ -1,4 +1,3 @@
-import {useNavigation} from '@react-navigation/native';
 import {useQuery, useMutation} from '@tanstack/react-query';
 import {useState, useEffect} from 'react';
 import Toast from 'react-native-toast-message';
@@ -29,7 +28,6 @@ export const getAlertValidationSchema = Yup.object().shape({
 });
 
 export const useAlertas = () => {
-  const navigation = useNavigation();
   const {user} = useAuthStore();
   const [formValues] = useState<AlertasFromValues>(initialValues);
 
@@ -89,7 +87,6 @@ export const useAlertas = () => {
           text1: 'Alerta enviada correctamente',
         });
         resetForm();
-        navigation.goBack();
       },
     });
   };

@@ -18,23 +18,27 @@ export const useAudioRecorder = () => {
   const [audioBase64, setAudioBase64] = useState('');
   const [recordVolume, setRecordVolume] = useState(-160);
   const [playbackPosition, setPlaybackPosition] = useState(0);
+  const [recordTime, setRecordTime] = useState('00:00');
+  const [playTime, setPlayTime] = useState('00:00');
+  const [audioDuration, setAudioDuration] = useState(0);
 
   const onStartRecord = async () => {
     try {
       if (Platform.OS === 'android') {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-        );
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+      );
         if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-          console.warn('Permiso de micrófono denegado');
-          return;
+    console.warn('Permiso de micrófono denegado');
+    return;
         }
       }
 
-      const path = Platform.select({
-        ios: 'alerta.m4a',
-        android: 'sdcard/alerta.mp4',
-      });
+    const path = Platform.select({
+      ios: 'alerta.m4a',
+      android: `${RNFS.ExternalDirectoryPath}/alerta.mp4`,
+    });
+
 
       const audioSet: AudioSet = {
         AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
@@ -48,7 +52,16 @@ export const useAudioRecorder = () => {
       setIsRecording(true);
 
       audioRecorderPlayer.addRecordBackListener(e => {
-        if (Platform.OS === 'android' && typeof e.currentMetering === 'number') {
+        const minutes = Math.floor(e.currentPosition / 60000);
+        const seconds = Math.floor((e.currentPosition % 60000) / 1000);
+        const formatted = `${String(minutes).padStart(2, '0')}:${String(
+          seconds,
+        ).padStart(2, '0')}`;
+        setRecordTime(formatted);
+        if (
+          Platform.OS === 'android' &&
+          typeof e.currentMetering === 'number'
+        ) {
           setRecordVolume(e.currentMetering);
         } else {
           setRecordVolume(-100);
@@ -90,6 +103,16 @@ export const useAudioRecorder = () => {
 
       audioRecorderPlayer.addPlayBackListener(e => {
         setPlaybackPosition(e.currentPosition);
+        setAudioDuration(e.duration);
+
+        const remaining = e.duration - e.currentPosition;
+        const minutes = Math.floor(remaining / 60000);
+        const seconds = Math.floor((remaining % 60000) / 1000);
+        const formatted = `${String(minutes).padStart(2, '0')}:${String(
+          seconds,
+        ).padStart(2, '0')}`;
+        setPlayTime(formatted);
+
         if (e.currentPosition >= e.duration) {
           setIsPlaying(false);
           setPlaybackPosition(0);
@@ -155,6 +178,8 @@ export const useAudioRecorder = () => {
     audioBase64,
     recordVolume,
     resetRecorder,
+    recordTime,
+    playTime,
+    audioDuration,
   };
 };
-
