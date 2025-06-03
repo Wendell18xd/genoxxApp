@@ -1,15 +1,14 @@
 import { genoxxApi } from '../../config/api/genoxxApi';
-import { PersonalRequest } from '../../infrastructure/interfaces/flota/personal/personal.request';
-import { PersonalResponse } from '../../infrastructure/interfaces/flota/personal/personal.response';
+import { PersonalRequest } from '../../infrastructure/interfaces/buscadores/personal/personal.request';
+import { PersonalResponse } from '../../infrastructure/interfaces/buscadores/personal/personal.response';
 
 
 export const getPersonal = async (
   props: PersonalRequest,
 ): Promise<PersonalResponse> => {
   try {
-    console.log('getConsultaUnidades', props);
     const {data} = await genoxxApi.post<PersonalResponse>(
-      '/flota/get_personal',
+      '/master/get_personal',
       {
         vg_empr_codigo: props.vl_empr_codigo,
         txt_buscar: props.txt_buscar,

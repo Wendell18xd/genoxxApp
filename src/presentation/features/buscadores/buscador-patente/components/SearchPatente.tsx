@@ -1,6 +1,6 @@
 import {Formik} from 'formik';
 import {View} from 'react-native';
-import {TextInput} from 'react-native-paper';
+import {Text, TextInput} from 'react-native-paper';
 import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
 import {useSearchPatente} from '../hooks/useSearchPatente';
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const SearchPatente = ({onClose}: Props) => {
-  const {initialValues, isFetchPatente, handleSearch, getValidationSchema} =
+  const {initialValues, isFetchPatente, getValidationSchema,  handleSearch} =
     useSearchPatente();
 
   return (
@@ -33,9 +33,9 @@ export const SearchPatente = ({onClose}: Props) => {
               <CustomTextInput
                 label="Buscar patente"
                 mode="outlined"
-                value={values.nro_placa}
-                onChangeText={handleChange('nro_placa')}
-                onBlur={handleBlur('nro_placa')}
+                value={values.txt_buscar}
+                onChangeText={handleChange('txt_buscar')}
+                onBlur={handleBlur('txt_buscar')}
                 right={
                   <TextInput.Icon
                     icon="magnify"
@@ -43,8 +43,13 @@ export const SearchPatente = ({onClose}: Props) => {
                     onPress={() => handleSubmit()}
                   />
                 }
-                error={touched.nro_placa && !!errors.nro_placa}
+                error={touched.txt_buscar && !!errors.txt_buscar}
               />
+              {touched.txt_buscar && errors.txt_buscar && (
+                <Text style={{color: 'red', marginBottom: 4}}>
+                  {errors.txt_buscar}
+                </Text>
+              )}
             </View>
           );
         }}
