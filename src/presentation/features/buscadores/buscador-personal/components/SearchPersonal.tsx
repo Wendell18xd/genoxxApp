@@ -1,6 +1,6 @@
 import {Formik} from 'formik';
 import {View} from 'react-native';
-import {TextInput} from 'react-native-paper';
+import {Text, TextInput} from 'react-native-paper';
 import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
 import {useSearchPersonal} from '../hooks/useSearchPersonal';
@@ -45,6 +45,11 @@ export const SearchPersonal = ({onClose}: Props) => {
                 }
                 error={touched.txt_buscar && !!errors.txt_buscar}
               />
+              {touched.txt_buscar && errors.txt_buscar && (
+                <Text style={{color: 'red', marginBottom: 4}}>
+                  {errors.txt_buscar}
+                </Text>
+              )}
             </View>
           );
         }}

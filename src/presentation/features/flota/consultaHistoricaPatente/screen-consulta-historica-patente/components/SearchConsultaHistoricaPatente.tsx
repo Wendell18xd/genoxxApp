@@ -4,7 +4,7 @@ import PrimaryButton from '../../../../../components/ui/PrimaryButton';
 import {View} from 'react-native';
 import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoader';
 import {useSearchConsultaHistoricaPatente} from '../hooks/useSearchConsultaHistoricaPatente';
-import {TextInput} from 'react-native-paper';
+import {Text, TextInput} from 'react-native-paper';
 import {CustomDropdownInput} from '../../../../../components/ui/CustomDropdownInput';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ConsultaHistoricaPatenteStackParam} from '../../navigations/ConsultaHistoricaPatenteStackNavigation';
@@ -118,9 +118,9 @@ export const SearchConsultaHistoricaPatente = ({
                           setOnSelectPatente(patente => {
                             setFieldValue(
                               'txt_cod_destinatario',
-                              `${patente.nro_placa} - ${patente.nom_marca}`,
+                              `${patente.cod_para} - ${patente.nom_para}`,
                             );
-                            setCodDestinatario(patente.nro_placa);
+                            setCodDestinatario(patente.cod_para);
                           });
                           navigation.navigate('BuscadorPatenteScreen');
                         }
@@ -133,6 +133,11 @@ export const SearchConsultaHistoricaPatente = ({
                 }
                 style={{width: '100%'}}
               />
+               {touched.txt_cod_destinatario && errors.txt_cod_destinatario && (
+                  <Text style={{color: 'red', marginBottom: 4}}>
+                    {errors.txt_cod_destinatario}
+                  </Text>
+                )}
 
               <PrimaryButton
                 label="Buscar"

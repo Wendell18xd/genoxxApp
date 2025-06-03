@@ -1,10 +1,10 @@
 import {create} from 'zustand';
-import { ConsultaUnidades } from '../../../../../domain/entities/ConsultaUnidades';
+import { Placa } from '../../../../../domain/entities/Placa';
 
 
 interface PatenteStore {
-  setOnSelectPatente: (fn: (patente: ConsultaUnidades) => void) => void;
-  onSelect: ((patente: ConsultaUnidades) => void) | null;
+  setOnSelectPatente: (fn: (patente: Placa) => void) => void;
+  onSelect: ((patente: Placa) => void) | null;
    reset: () => void;
 }
 
