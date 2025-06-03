@@ -6,7 +6,7 @@ interface useLiquiPartState {
   reset: () => void;
 }
 
-export const useuseLiquiPartStore = create<useLiquiPartState>()(set => ({
+export const useLiquiPartStore = create<useLiquiPartState>()(set => ({
   isRefetchLiquidacion: true,
   setIsRefetchLiquidacion: (isRefetch: boolean) =>
     set({isRefetchLiquidacion: isRefetch}),

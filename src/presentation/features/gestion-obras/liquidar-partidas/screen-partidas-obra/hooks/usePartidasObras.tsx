@@ -2,12 +2,11 @@ import {useQuery} from '@tanstack/react-query';
 import {useAuthStore} from '../../../../../store/auth/useAuthStore';
 import {useObrasStore} from '../../../store/useObrasStore';
 import {listadoPartidasObras} from '../../../../../../actions/obras/partidas.obras';
-import {useuseLiquiPartStore} from '../../store/useLiquiPartStore';
+import {useLiquiPartStore} from '../../store/useLiquiPartStore';
 
 export const usePartidasObras = () => {
   const {user} = useAuthStore();
-  const {isRefetchLiquidacion, setIsRefetchLiquidacion} =
-    useuseLiquiPartStore();
+  const {isRefetchLiquidacion, setIsRefetchLiquidacion} = useLiquiPartStore();
   const {obra} = useObrasStore();
 
   const {
@@ -18,13 +17,19 @@ export const usePartidasObras = () => {
   } = useQuery({
     queryKey: ['partidas', 'liquidados', obra],
     queryFn: async () => {
-      const {datos} = await listadoPartidasObras({
-        vg_empr_codigo: user?.empr_codigo || '',
-        vg_usua_perfil: user?.usua_perfil || '',
-        vl_regi_codigo: obra?.regi_codigo || '',
-        vl_proy_codigo: obra?.proy_codigo || '',
-      });
-      return datos;
+      const {partidas, cierre} = await listadoPartidasObras(
+        {
+          vg_empr_codigo: user?.empr_codigo || '',
+          vg_usua_perfil: user?.usua_perfil || '',
+          vl_regi_codigo: obra?.regi_codigo || '',
+          vl_proy_codigo: obra?.proy_codigo || '',
+        },
+        {
+          vl_empr_codigo: user?.empr_codigo || '',
+          vl_nro_orden: obra?.nro_orden || '',
+        },
+      );
+      return {partidas: partidas.datos, cierre};
     },
     enabled: false,
   });

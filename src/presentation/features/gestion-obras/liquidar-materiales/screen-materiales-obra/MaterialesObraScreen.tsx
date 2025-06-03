@@ -1,18 +1,27 @@
 import {FlatList, StyleSheet, View} from 'react-native';
 import {globalStyle} from '../../../../styles/globalStyle';
 import CustomSwitch from '../../../../components/ui/CustomSwitch';
-import {useCallback, useEffect} from 'react';
+import {useCallback, useEffect, useRef} from 'react';
 import {useMateObras} from './hooks/useMateObras';
 import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
 import Toast from 'react-native-toast-message';
 import SinResultados from '../../../../components/ui/SinResultados';
 import {ItemMateLiqui} from './components/ItemMateLiqui';
 import {CustomFAB} from '../../../../components/ui/CustomFAB';
-import {NavigationProp, useFocusEffect, useNavigation} from '@react-navigation/native';
+import {
+  NavigationProp,
+  useFocusEffect,
+  useNavigation,
+} from '@react-navigation/native';
 import {LiquiMatObrasStackParam} from '../navigations/LiquiMatObrasStackNavigation';
+import {useObrasStore} from '../../store/useObrasStore';
+import {useQueryClient} from '@tanstack/react-query';
 
 export const MaterialesObraScreen = () => {
   const navigation = useNavigation<NavigationProp<LiquiMatObrasStackParam>>();
+  const {obra} = useObrasStore();
+  const queryClient = useQueryClient();
+  const hasShownError = useRef(false);
   const {
     dataMateriales,
     isFetchMateriales,
@@ -28,19 +37,31 @@ export const MaterialesObraScreen = () => {
     useCallback(() => {
       if (isRefetchLiquidacion) {
         refetchMateriales();
+        hasShownError.current = true;
         setIsRefetchLiquidacion(false);
       }
     }, [isRefetchLiquidacion]),
   );
 
   useEffect(() => {
-    if (errorMateriales) {
+    if (errorMateriales && !hasShownError.current) {
       Toast.show({
         type: 'error',
         text1: 'Error al obtener materiales liquidados',
       });
+      hasShownError.current = true;
+      setIsRefetchLiquidacion(true);
     }
   }, [errorMateriales]);
+
+  useEffect(() => {
+    return () => {
+      queryClient.invalidateQueries({
+        queryKey: ['materiales', 'liquidados', obra],
+      });
+      setIsRefetchLiquidacion(false);
+    };
+  }, []);
 
   return (
     <View style={globalStyle.container}>
@@ -72,6 +93,14 @@ export const MaterialesObraScreen = () => {
       <CustomFAB
         icon="plus"
         onPress={() => {
+          if (dataMateriales?.cierre.est_cierre_material === '1') {
+            Toast.show({
+              type: 'error',
+              text1: 'Los materiales se encuentran cerrados',
+            });
+            return;
+          }
+
           navigation.navigate('LiquiMatObrasScreen', {
             isRegulariza: isRegulariza,
           });

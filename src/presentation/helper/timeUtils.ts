@@ -20,3 +20,18 @@ export const formatearFecha = (fechaString?: string | null): string => {
     return '';
   }
 };
+
+export const obtenerMesYAnio = (
+  fechaString: string,
+): {mes: string; anio: string} => {
+  if (!fechaString) {
+    return {mes: '', anio: ''};
+  }
+  const partes = fechaString.split('-');
+  if (partes.length !== 3) {
+    return {mes: '', anio: ''};
+  }
+  const anio = Number(partes[0]);
+  const mes = Number(partes[1]);
+  return {mes: mes.toString(), anio: anio.toString()};
+};

@@ -3,16 +3,33 @@ import {CustomCardContent} from '../../../../components/ui/CustomCardContent';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
 import {StyleSheet, View} from 'react-native';
 import {ActividadPartida} from '../../../../../domain/entities/ActividadPartida';
+import {Menu} from '../../../../../types/menus';
 
 interface Props {
   item: ActividadPartida;
   onPress?: () => void;
+  drawerKey: string;
 }
 
-export const ItemActividad = ({item, onPress}: Props) => {
+export const ItemActividad = ({item, drawerKey, onPress}: Props) => {
   const {colors} = useTheme();
+
+  const tipo =
+    drawerKey === Menu.LIQUIDACION_PARTIDAS_OBRAS_ENERGIA ? 'ENERGIA' : '';
+
   return (
-    <CustomCardContent onPress={onPress} mode="outlined">
+    <CustomCardContent
+      onPress={onPress}
+      mode="outlined"
+      style={
+        item.part_clase !== ''
+          ? {
+              borderColor: '#FFE599',
+              borderWidth: 1,
+              backgroundColor: '#FFFBEA',
+            }
+          : {}
+      }>
       <View style={styles.container}>
         {/* ICONO */}
         <MaterialIcons name="layers-outline" size={28} color={colors.primary} />
@@ -38,6 +55,23 @@ export const ItemActividad = ({item, onPress}: Props) => {
           </Text>
           <Text variant="bodySmall">{item.part_medida}</Text>
         </View>
+
+        {tipo === 'ENERGIA' && (
+          <>
+            <View style={styles.footerItem}>
+              <Text variant="bodySmall" style={styles.info}>
+                Cantidad:
+              </Text>
+              <Text variant="bodySmall">{item.can_trabajo}</Text>
+            </View>
+            <View style={styles.footerItem}>
+              <Text variant="bodySmall" style={styles.info}>
+                Codigo 2:
+              </Text>
+              <Text variant="bodySmall">{item.part_codigo2}</Text>
+            </View>
+          </>
+        )}
       </View>
     </CustomCardContent>
   );
@@ -60,9 +94,6 @@ const styles = StyleSheet.create({
     color: '#888',
   },
   footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
     marginTop: 8,
     flexWrap: 'wrap',
     position: 'relative',
