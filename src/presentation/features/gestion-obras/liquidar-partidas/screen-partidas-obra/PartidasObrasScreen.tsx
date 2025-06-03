@@ -60,7 +60,7 @@ export const PartidasObrasScreen = () => {
             contentContainerStyle={{gap: 16}}
           />
         ) : (
-          <SinResultados message="No hay materiales liquidados" />
+          <SinResultados message="No hay partidas liquidadas" />
         )}
       </View>
 

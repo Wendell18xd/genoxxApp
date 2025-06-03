@@ -6,26 +6,28 @@ import CustomDatePicker from '../../../../components/ui/CustomDatePicker';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
 import {TextInput} from 'react-native-paper';
 import PrimaryButton from '../../../../components/ui/PrimaryButton';
-
-const initialValues = {
-  fecha_liquidacion: new Date().toISOString().slice(0, 10),
-  actividad: '',
-  cantidad: '',
-  observacion: '',
-};
+import {useLiquiPartObras} from './hooks/useLiquiPartObras';
 
 export const LiquiPartObrasScreen = () => {
+  const {
+    initialValues,
+    getValidationSchema,
+    handleSavePartida,
+    handleSelectActividad,
+  } = useLiquiPartObras();
+
   return (
     <DrawerLayout>
       <Formik
         enableReinitialize
         initialValues={initialValues}
-        onSubmit={(values, {resetForm}) => {}}
-        /* validationSchema={getValidationSchema} */
-      >
+        onSubmit={(values, {resetForm}) => {
+          handleSavePartida(values, resetForm);
+        }}
+        validationSchema={getValidationSchema}>
         {({
           handleSubmit,
-          handleReset,
+          handleBlur,
           handleChange,
           setFieldValue,
           values,
@@ -56,7 +58,20 @@ export const LiquiPartObrasScreen = () => {
                 label="Buscar actividad"
                 value={values.actividad}
                 onChangeText={handleChange('actividad')}
-                right={<TextInput.Icon icon="magnify" />}
+                onBlur={handleBlur('actividad')}
+                editable={false}
+                right={
+                  <TextInput.Icon
+                    icon={
+                      values.actividad && values.actividad.length > 0
+                        ? 'close'
+                        : 'magnify'
+                    }
+                    onPress={() => {
+                      handleSelectActividad(values.actividad, setFieldValue);
+                    }}
+                  />
+                }
                 style={{marginTop: 8}}
                 error={touched.actividad && !!errors.actividad}
               />
