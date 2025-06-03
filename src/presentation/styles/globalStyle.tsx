@@ -5,6 +5,9 @@ export const globalColors = {
   warning: '#FF9800',
   primary: '#043767',
   secondary: '#0090D7',
+  gray: '#cdcecf',
+  textPrimary: '#000',
+  textSecondary: '#666',
 };
 
 export const globalStyle = StyleSheet.create({

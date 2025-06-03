@@ -4,15 +4,30 @@ import {Text, useTheme} from 'react-native-paper';
 
 interface Props {
   message?: string;
+  animationName?: 'empty-list' | 'empty-photos';
 }
 
-const SinResultados = ({message = 'No se encontraron resultados'}: Props) => {
+const SinResultados = ({
+  message = 'No se encontraron resultados',
+  animationName = 'empty-list',
+}: Props) => {
   const {colors} = useTheme();
+
+  const getAnimationSource = () => {
+    switch (animationName) {
+      case 'empty-list':
+        return require('../../../assets/lotties/no-result-animation.json');
+      case 'empty-photos':
+        return require('../../../assets/lotties/empty-photos.json');
+      default:
+        return require('../../../assets/lotties/no-result-animation.json');
+    }
+  };
 
   return (
     <View style={styles.container}>
       <LottieView
-        source={require('../../../assets/lotties/no-result-animation.json')}
+        source={getAnimationSource()}
         autoPlay
         loop
         style={styles.animation}
@@ -34,8 +49,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
   },
   animation: {
-    width: 180,
-    height: 180,
+    width: 250,
+    height: 150,
     marginBottom: 16,
   },
   message: {

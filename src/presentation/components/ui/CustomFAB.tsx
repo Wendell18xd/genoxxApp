@@ -77,7 +77,5 @@ export const CustomFAB: React.FC<CustomFABProps> = ({
 const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
-    right: 0,
-    bottom: 0,
   },
 });

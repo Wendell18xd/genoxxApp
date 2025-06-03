@@ -1,8 +1,8 @@
 import {genoxxApi} from '../../config/api/genoxxApi';
-import {ObrasRequest} from '../../infrastructure/interfaces/gestionObras/liquidar-materiales/liquiMateObra.request';
-import {ObrasResponse} from '../../infrastructure/interfaces/gestionObras/liquidar-materiales/liquiMateObra.response';
-import {ProyectosObrasRequest} from '../../infrastructure/interfaces/gestionObras/obras.request';
-import {ProyectosObrasResponse} from '../../infrastructure/interfaces/gestionObras/obras.response';
+import {ObrasRequest} from '../../infrastructure/interfaces/obras/liquidar-materiales/liquiMateObra.request';
+import {ObrasResponse} from '../../infrastructure/interfaces/obras/liquidar-materiales/liquiMateObra.response';
+import {ProyectosObrasRequest} from '../../infrastructure/interfaces/obras/obras.request';
+import {ProyectosObrasResponse} from '../../infrastructure/interfaces/obras/obras.response';
 
 export const listadoProyectosObras = async (
   props: ProyectosObrasRequest,
