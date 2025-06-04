@@ -2,14 +2,14 @@ import {create} from 'zustand';
 import { Placa } from '../../../../../domain/entities/Placa';
 
 
-interface PatenteStore {
+interface usePatenteStore {
   setOnSelectPatente: (fn: (patente: Placa) => void) => void;
   onSelect: ((patente: Placa) => void) | null;
-   reset: () => void;
+   resetPatente: () => void;
 }
 
-export const usePatenteStore = create<PatenteStore>(set => ({
+export const usePatenteStore = create<usePatenteStore>(set => ({
   onSelect: null,
   setOnSelectPatente: fn => set({onSelect: fn}),
-  reset: () => set({onSelect: null}),
+  resetPatente: () => set({onSelect: null}),
 }));
