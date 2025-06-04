@@ -25,16 +25,19 @@ const Stack = createStackNavigator<LiquiPartObrasStackParam>();
 export const LiquiPartObrasStackNavigation = () => {
   const {user} = useAuthStore();
   const {setDrawerKey, resetDrawerKey} = useMainStore();
-  const {drawerKey} = useRoute().params as {drawerKey: string};
+  const {drawerKey: currentDrawerKey} = useRoute().params as {
+    drawerKey: string;
+  };
   const [isReady, setIsReady] = useState(false);
 
-  //* SETEO EL DRAWER KEY
   useEffect(() => {
-    //* Lo seteamos una sola vez
-    setDrawerKey(drawerKey);
-    setIsReady(true); //* Ahora sí puede renderizar
-    return () => resetDrawerKey();
-  }, [drawerKey]);
+    setDrawerKey(currentDrawerKey);
+    setIsReady(true);
+    return () => {
+      setIsReady(false);
+      resetDrawerKey();
+    };
+  }, [currentDrawerKey]);
 
   if (!isReady) {
     return <FullScreenLoader />;
@@ -58,21 +61,13 @@ export const LiquiPartObrasStackNavigation = () => {
     );
   }
 
-  if (
-    drawerKey === Menu.LIQUIDACION_MATERIALES_OBRAS_ENERGIA ||
-    drawerKey === Menu.LIQUIDACION_PARTIDAS_OBRAS_ENERGIA
-  ) {
+  if (currentDrawerKey === Menu.LIQUIDACION_MATERIALES_OBRAS_ENERGIA) {
     if (user.trab_documento === 'ET03') {
-      let message = 'liquidar materiales';
-
-      if (drawerKey === Menu.LIQUIDACION_PARTIDAS_OBRAS_ENERGIA) {
-        message = 'liquidar partidas';
-      }
 
       return (
         <AccessDeniedScreen
           title="No tienes acceso"
-          subtitle={`No estas habilitado para ${message}`}
+          subtitle={'No estas habilitado para liquidar partidas'}
         />
       );
     }

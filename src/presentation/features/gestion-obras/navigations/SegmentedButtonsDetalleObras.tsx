@@ -10,7 +10,6 @@ import {useObrasStore} from '../store/useObrasStore';
 import {useMainStore} from '../../../store/main/useMainStore';
 import {Menu} from '../../../../types/menus';
 import {PartidasObrasScreen} from '../liquidar-partidas/screen-partidas-obra/PartidasObrasScreen';
-import {FotosPartidasObraScreen} from '../liquidar-partidas/screen-partidas-fotos-obra/FotosPartidasObraScreen';
 
 export const SegmentedButtonsDetalleObras = () => {
   const {reset: resetLiquiMate} = useLiquiMateStore();
@@ -78,7 +77,7 @@ export const SegmentedButtonsDetalleObras = () => {
           {isMateriales ? (
             <FotosMaterialesObraScreen />
           ) : (
-            <FotosPartidasObraScreen />
+            <FotosMaterialesObraScreen />
           )}
         </View>
       </View>

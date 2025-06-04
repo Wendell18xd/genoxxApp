@@ -3,13 +3,13 @@ import {SegmentedButtonsDetalleObras} from '../../navigations/SegmentedButtonsDe
 import {LiquiMatObrasScreen} from '../screen-liqui-mat-stock-obras/LiquiMatObrasScreen';
 import {useAuthStore} from '../../../../store/auth/useAuthStore';
 import {AccessDeniedScreen} from '../../../../components/AccessDeniedScreen';
-import {useMainStore} from '../../../../store/main/useMainStore';
 import {Menu} from '../../../../../types/menus';
 import {useRoute} from '@react-navigation/native';
+import {CustomCameraScreen} from '../../../foto/screens/CustomCameraScreen';
+import {ListaObrasScreen} from '../../screen-lista-obras/ListaObrasScreen';
+import {useMainStore} from '../../../../store/main/useMainStore';
 import {useEffect, useState} from 'react';
 import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
-import { CustomCameraScreen } from '../../../foto/screens/CustomCameraScreen';
-import { ListaObrasScreen } from '../../screen-lista-obras/ListaObrasScreen';
 
 export type LiquiMatObrasStackParam = {
   ListaObrasScreen: undefined;
@@ -21,18 +21,21 @@ export type LiquiMatObrasStackParam = {
 const Stack = createStackNavigator<LiquiMatObrasStackParam>();
 
 export const LiquiMatObrasStackNavigation = () => {
+  const {drawerKey: currentDrawerKey} = useRoute().params as {
+    drawerKey: string;
+  };
   const {user} = useAuthStore();
   const {setDrawerKey, resetDrawerKey} = useMainStore();
-  const {drawerKey} = useRoute().params as {drawerKey: string};
   const [isReady, setIsReady] = useState(false);
 
-  //* SETEO EL DRAWER KEY
   useEffect(() => {
-    //* Lo seteamos una sola vez
-    setDrawerKey(drawerKey);
-    setIsReady(true); //* Ahora sí puede renderizar
-    return () => resetDrawerKey();
-  }, [drawerKey]);
+    setDrawerKey(currentDrawerKey);
+    setIsReady(true);
+    return () => {
+      setIsReady(false);
+      resetDrawerKey();
+    };
+  }, [currentDrawerKey]);
 
   if (!isReady) {
     return <FullScreenLoader />;
@@ -56,7 +59,7 @@ export const LiquiMatObrasStackNavigation = () => {
     );
   }
 
-  if (drawerKey === Menu.LIQUIDACION_MATERIALES_OBRAS_ENERGIA) {
+  if (currentDrawerKey === Menu.LIQUIDACION_MATERIALES_OBRAS_ENERGIA) {
     if (user.trab_documento === 'ET03') {
       return (
         <AccessDeniedScreen
@@ -73,7 +76,10 @@ export const LiquiMatObrasStackNavigation = () => {
         headerShown: false,
       }}
       initialRouteName="ListaObrasScreen">
-      <Stack.Screen name="ListaObrasScreen" component={ListaObrasScreen} />
+      <Stack.Screen
+        name="ListaObrasScreen"
+        component={ListaObrasScreen}
+      />
       <Stack.Screen
         name="SegmentedButtonsDetalleObras"
         component={SegmentedButtonsDetalleObras}
@@ -82,10 +88,7 @@ export const LiquiMatObrasStackNavigation = () => {
         name="LiquiMatObrasScreen"
         component={LiquiMatObrasScreen}
       />
-      <Stack.Screen
-        name="CustomCameraScreen"
-        component={CustomCameraScreen}
-      />
+      <Stack.Screen name="CustomCameraScreen" component={CustomCameraScreen} />
     </Stack.Navigator>
   );
 };

@@ -12,9 +12,9 @@ import {mapToDropdown} from '../../../../../infrastructure/mappers/mapToDropdown
 import {useAuthStore} from '../../../../store/auth/useAuthStore';
 import {useMainStore} from '../../../../store/main/useMainStore';
 import {LiquiMatObrasStackParam} from '../../liquidar-materiales/navigations/LiquiMatObrasStackNavigation';
-import { Menu } from '../../../../../types/menus';
+import {Menu} from '../../../../../types/menus';
 import * as Yup from 'yup';
-import { useObrasStore } from '../../store/useObrasStore';
+import {useObrasStore} from '../../store/useObrasStore';
 
 interface SearchObrasFormValues {
   cbo_proy_codigo: string;
@@ -58,9 +58,12 @@ export const useSarchObras = () => {
   const navigation = useNavigation<NavigationProp<LiquiMatObrasStackParam>>();
 
   const proy_tipo =
-    drawerKey === Menu.LIQUIDACION_MATERIALES_OBRAS_ENERGIA
+    drawerKey === Menu.LIQUIDACION_MATERIALES_OBRAS_ENERGIA ||
+    drawerKey === Menu.LIQUIDACION_PARTIDAS_OBRAS_ENERGIA
       ? 'ENERGIA'
       : 'OBRAS';
+
+  console.log(proy_tipo);
 
   const filtrosRef = useRef<ObrasRequest>({
     vl_empr_codigo: user?.empr_codigo || '',
