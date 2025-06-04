@@ -21,7 +21,7 @@ export const useSearchPatente = () => {
   const {user} = useAuthStore();
   const navigation =
     useNavigation<NavigationProp<ConsultaHistoricaPatenteStackParam>>();
-  const onSelect = usePatenteStore(state => state.onSelect);
+  const {onSelect} = usePatenteStore();
 
   const filtrosRef = useRef<PlacaRequest>({
     vl_empr_codigo: user?.empr_codigo || '',
