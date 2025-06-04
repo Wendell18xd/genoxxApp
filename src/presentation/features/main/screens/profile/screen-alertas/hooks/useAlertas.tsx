@@ -5,6 +5,7 @@ import {mapToDropdown} from '../../../../../../../infrastructure/mappers/mapToDr
 import {useAuthStore} from '../../../../../../store/auth/useAuthStore';
 import * as Yup from 'yup';
 import { enviarAlerta, getAlertas } from '../../../../../../../actions/profile/Alertas/Alertas';
+import { useFotosStore } from '../../../../../foto/store/useFotosStore';
 
 interface AlertasFromValues {
   nom_audio: string;
@@ -30,6 +31,7 @@ export const getAlertValidationSchema = Yup.object().shape({
 export const useAlertas = () => {
   const {user} = useAuthStore();
   const [formValues] = useState<AlertasFromValues>(initialValues);
+  const { fotos, onReset } = useFotosStore();
 
   const {
     data: tipos,
@@ -79,6 +81,7 @@ export const useAlertas = () => {
       txt_telefono: values.telefono,
       txt_audio: audioBase64 || '',
       txt_comentario: values.comentario,
+      txt_fotos: fotos.map(foto => foto.foto),
     };
     mutation.mutate(data, {
       onSuccess: () => {
@@ -87,6 +90,7 @@ export const useAlertas = () => {
           text1: 'Alerta enviada correctamente',
         });
         resetForm();
+        onReset();
       },
     });
   };

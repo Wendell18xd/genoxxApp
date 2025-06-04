@@ -16,6 +16,7 @@ import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoa
 import {useNavigation} from '@react-navigation/native';
 import CustomIconBottom from '../../../../../components/ui/CustomIconBottom';
 import { useCamaraAlertas } from './hooks/useCamaraAlertas';
+import { useFotosStore } from '../../../../foto/store/useFotosStore';
 
 export const AlertasScreen = () => {
   const {
@@ -32,6 +33,7 @@ export const AlertasScreen = () => {
   const isSheetOpenRef = useRef(false);
   const navigation = useNavigation();
   const {handleCamera} = useCamaraAlertas();
+  const { onReset: resetFotos } = useFotosStore();
   // const [isStopping, setIsStopping] = useState(false);
 
   const open = () => {
@@ -63,6 +65,7 @@ export const AlertasScreen = () => {
   useEffect(() => {
     return () => {
       resetRecorder();
+      resetFotos();
     };
   }, []);
 

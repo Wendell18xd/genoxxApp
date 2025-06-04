@@ -6,6 +6,7 @@ export interface EnviarAlertaResponse {
   txt_telefono: string;
   txt_comentario: string;
   txt_audio: string;
+  txt_fotos: string[];
 }
 
 
