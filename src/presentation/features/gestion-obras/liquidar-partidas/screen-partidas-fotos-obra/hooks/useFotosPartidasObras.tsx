@@ -6,7 +6,7 @@ import {grabarFotosPartidasObras} from '../../../../../../actions/obras/fotos.ob
 import Toast from 'react-native-toast-message';
 import {useAuthStore} from '../../../../../store/auth/useAuthStore';
 import {useObrasStore} from '../../../store/useObrasStore';
-import {LiquiMatObrasStackParam} from '../../../liquidar-materiales/navigations/LiquiMatObrasStackNavigation';
+import {LiquiMatObrasStackParam} from '../../../navigations/LiquiMatObrasStackNavigation';
 
 export const useFotosPartidasObras = () => {
   const navigation = useNavigation<NavigationProp<LiquiMatObrasStackParam>>();

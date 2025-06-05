@@ -1,7 +1,6 @@
 // ListaObrasScreen.tsx
 import {FlatList, View} from 'react-native';
 import {useSarchObras} from './hooks/useSarchObras';
-import {SearchObras} from './components/SearchObras';
 import {useEffect, useState} from 'react';
 import Toast from 'react-native-toast-message';
 import {useQueryClient} from '@tanstack/react-query';
@@ -12,8 +11,12 @@ import SinResultados from '../../../components/ui/SinResultados';
 import {CustomFAB} from '../../../components/ui/CustomFAB';
 import CustomBottomSheet from '../../../components/ui/bottomSheetModal/CustomBottomSheet';
 import {useBottomSheetModal} from '../../../hooks/useBottomSheet';
+import {SeleccionarOpcionObra} from './components/SeleccionarOpcionObra';
+import {useObrasNavigationStore} from '../store/useObrasNavigationStore';
 
 export const ListaObrasScreen = () => {
+  const {seleccionarOpcion} = useObrasNavigationStore();
+
   const {obras, errorObras, isFetchObras, refetchObras, handleSelectObra} =
     useSarchObras();
   const {ref, open, close} = useBottomSheetModal();
@@ -34,6 +37,12 @@ export const ListaObrasScreen = () => {
       queryClient.removeQueries({
         queryKey: ['obrasAsignadas'],
       });
+    };
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      seleccionarOpcion('menu');
     };
   }, []);
 
@@ -80,7 +89,7 @@ export const ListaObrasScreen = () => {
         />
 
         <CustomBottomSheet ref={ref}>
-          <SearchObras onClose={close} />
+          <SeleccionarOpcionObra onClose={close} />
         </CustomBottomSheet>
       </View>
     </DrawerLayout>

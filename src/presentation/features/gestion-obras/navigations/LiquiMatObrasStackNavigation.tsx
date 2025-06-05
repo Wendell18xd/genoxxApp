@@ -1,15 +1,15 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import {SegmentedButtonsDetalleObras} from '../../navigations/SegmentedButtonsDetalleObras';
-import {LiquiMatObrasScreen} from '../screen-liqui-mat-stock-obras/LiquiMatObrasScreen';
-import {useAuthStore} from '../../../../store/auth/useAuthStore';
-import {AccessDeniedScreen} from '../../../../components/AccessDeniedScreen';
-import {Menu} from '../../../../../types/menus';
+import {SegmentedButtonsDetalleObras} from './SegmentedButtonsDetalleObras';
+import {LiquiMatObrasScreen} from '../liquidar-materiales/screen-liqui-mat-stock-obras/LiquiMatObrasScreen';
+import {useAuthStore} from '../../../store/auth/useAuthStore';
+import {AccessDeniedScreen} from '../../../components/AccessDeniedScreen';
+import {Menu} from '../../../../types/menus';
 import {useRoute} from '@react-navigation/native';
-import {CustomCameraScreen} from '../../../foto/screens/CustomCameraScreen';
-import {ListaObrasScreen} from '../../screen-lista-obras/ListaObrasScreen';
-import {useMainStore} from '../../../../store/main/useMainStore';
+import {CustomCameraScreen} from '../../foto/screens/CustomCameraScreen';
+import {ListaObrasScreen} from '../screen-lista-obras/ListaObrasScreen';
+import {useMainStore} from '../../../store/main/useMainStore';
 import {useEffect, useState} from 'react';
-import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
+import FullScreenLoader from '../../../components/ui/loaders/FullScreenLoader';
 
 export type LiquiMatObrasStackParam = {
   ListaObrasScreen: undefined;
@@ -64,7 +64,7 @@ export const LiquiMatObrasStackNavigation = () => {
       return (
         <AccessDeniedScreen
           title="No tienes acceso"
-          subtitle="No estas habilitado para liquidar materiales"
+          subtitle="No estas habilitado para liquidar materiales / partidas"
         />
       );
     }

@@ -13,7 +13,7 @@ import {
   useFocusEffect,
   useNavigation,
 } from '@react-navigation/native';
-import {LiquiMatObrasStackParam} from '../navigations/LiquiMatObrasStackNavigation';
+import {LiquiMatObrasStackParam} from '../../navigations/LiquiMatObrasStackNavigation';
 import {useObrasStore} from '../../store/useObrasStore';
 import {useQueryClient} from '@tanstack/react-query';
 

@@ -5,16 +5,20 @@ import MaterialIcons from '../../../../../components/ui/icons/MaterialIcons';
 
 interface Props {
   menu: Menu;
+  mode?: 'elevated' | 'outlined' | 'contained';
   onPress?: () => void;
 }
 
-const MenuItem = ({menu, onPress}: Props) => {
+const MenuItem = ({menu, mode = 'elevated', onPress}: Props) => {
   const {colors} = useTheme();
   const {width} = useWindowDimensions();
   const itemWidth = (width - 16 * 2 - 16 * 2) / 3;
 
   return (
-    <Card mode="elevated" onPress={onPress} style={[styles.card, {width: itemWidth}]}>
+    <Card
+      mode={mode}
+      onPress={onPress}
+      style={[styles.card, {width: itemWidth}]}>
       <Card.Content style={styles.cardContent}>
         <View
           style={[
