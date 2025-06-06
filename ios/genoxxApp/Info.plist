@@ -7,7 +7,10 @@
     <string>Select image/video from photos</string>
     <key>NSCameraUsageDescription</key>
     <string>Capture Image</string>
-	
+
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Necesitamos acceso para guardar imágenes</string>
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
