@@ -7,8 +7,11 @@ import {View} from 'react-native';
 import {useQueryClient} from '@tanstack/react-query';
 import {useEffect} from 'react';
 import Toast from 'react-native-toast-message';
+import {useMainStore} from '../../../store/main/useMainStore';
 
 export const BuscadorActividadPartidaScreen = () => {
+  const {drawerKey} = useMainStore();
+
   const {
     actividadPartida,
     isFetchActividadPartida,
@@ -42,7 +45,7 @@ export const BuscadorActividadPartidaScreen = () => {
         <SearchActividad />
         <FlatList
           data={actividadPartida}
-          keyExtractor={item => item.cod_para}
+          keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={{gap: 16}}
           refreshing={isFetchActividadPartida}
           onRefresh={refetchActividadPartida}
@@ -50,6 +53,7 @@ export const BuscadorActividadPartidaScreen = () => {
           renderItem={({item}) => (
             <ItemActividad
               item={item}
+              drawerKey={drawerKey}
               onPress={() => {
                 handleSelectActividadPartida(item);
               }}

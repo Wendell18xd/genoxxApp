@@ -8,14 +8,20 @@ import {
   useFocusEffect,
   useNavigation,
 } from '@react-navigation/native';
-import {LiquiPartObrasStackParam} from '../navigations/LiquiPartObrasStackNavigation';
 import {usePartidasObras} from './hooks/usePartidasObras';
-import {useCallback, useEffect} from 'react';
+import {useCallback, useEffect, useRef} from 'react';
 import Toast from 'react-native-toast-message';
 import {ItemPartidaObra} from './components/ItemPartidaObra';
+import {useObrasStore} from '../../store/useObrasStore';
+import {useQueryClient} from '@tanstack/react-query';
+import {LiquidacionObrasStackParam} from '../../navigations/LiquidacionObrasStackNavigation';
 
 export const PartidasObrasScreen = () => {
-  const navigation = useNavigation<NavigationProp<LiquiPartObrasStackParam>>();
+  const navigation =
+    useNavigation<NavigationProp<LiquidacionObrasStackParam>>();
+  const {obra} = useObrasStore();
+  const queryClient = useQueryClient();
+  const hasShownError = useRef(false);
 
   const {
     dataPartidas,
@@ -30,28 +36,40 @@ export const PartidasObrasScreen = () => {
     useCallback(() => {
       if (isRefetchLiquidacion) {
         refetchPartidas();
+        hasShownError.current = true;
         setIsRefetchLiquidacion(false);
       }
     }, [isRefetchLiquidacion]),
   );
 
   useEffect(() => {
-    if (errorPartidas) {
+    if (errorPartidas && !hasShownError.current) {
       Toast.show({
         type: 'error',
         text1: 'Error al obtener partidas de obra',
       });
+      hasShownError.current = true;
+      setIsRefetchLiquidacion(true);
     }
   }, [errorPartidas]);
+
+  useEffect(() => {
+    return () => {
+      setIsRefetchLiquidacion(true);
+      queryClient.invalidateQueries({
+        queryKey: ['partidas', 'liquidados', obra],
+      });
+    };
+  }, []);
 
   return (
     <View style={globalStyle.container}>
       {isFetchPartidas && <FullScreenLoader transparent />}
 
       <View style={[globalStyle.padding, {flex: 1}]}>
-        {dataPartidas && dataPartidas.length > 0 ? (
+        {dataPartidas?.partidas && dataPartidas.partidas.length > 0 ? (
           <FlatList
-            data={dataPartidas}
+            data={dataPartidas.partidas}
             keyExtractor={(item, index) => index.toString()}
             refreshing={isFetchPartidas}
             onRefresh={refetchPartidas}
@@ -67,6 +85,13 @@ export const PartidasObrasScreen = () => {
       <CustomFAB
         icon="plus"
         onPress={() => {
+          if (dataPartidas?.cierre.est_cierre === '1') {
+            Toast.show({
+              type: 'error',
+              text1: 'Las partidas se encuentran cerradas',
+            });
+            return;
+          }
           navigation.navigate('LiquiPartObrasScreen');
         }}
         style={styles.fab}

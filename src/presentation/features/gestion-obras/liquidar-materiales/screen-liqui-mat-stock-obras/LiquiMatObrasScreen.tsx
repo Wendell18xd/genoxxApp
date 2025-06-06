@@ -2,7 +2,7 @@ import {View} from 'react-native';
 import DrawerLayout from '../../../main/layout/DrawerLayout';
 import {globalStyle} from '../../../../styles/globalStyle';
 import {RouteProp, useRoute} from '@react-navigation/native';
-import {LiquiMatObrasStackParam} from '../navigations/LiquiMatObrasStackNavigation';
+import {LiquidacionObrasStackParam} from '../../navigations/LiquidacionObrasStackNavigation';
 import {useEffect} from 'react';
 import {useQueryClient} from '@tanstack/react-query';
 import {FormLiquiMateObras} from './components/FormLiquiMateObras';
@@ -10,7 +10,7 @@ import {useObrasStore} from '../../store/useObrasStore';
 
 export const LiquiMatObrasScreen = () => {
   const {isRegulariza} =
-    useRoute<RouteProp<LiquiMatObrasStackParam, 'LiquiMatObrasScreen'>>()
+    useRoute<RouteProp<LiquidacionObrasStackParam, 'LiquiMatObrasScreen'>>()
       .params;
   const queryClient = useQueryClient();
   const {obra} = useObrasStore();

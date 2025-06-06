@@ -7,6 +7,7 @@ import {
   MateLiquiObrasResponse,
   ValidaCierreObrasResponse,
 } from '../../infrastructure/interfaces/obras/liquidar-materiales/liquiMateObra.response';
+import { validaCierreObra } from './obras';
 
 export const listadoMaterialesObra = async (
   mateProps: MateLiquiRequest,
@@ -31,23 +32,6 @@ export const listadoMaterialesObra = async (
       materiales,
       cierre,
     };
-  } catch (error) {
-    throw new Error(error as string);
-  }
-};
-
-export const validaCierreObra = async (
-  props: ValidaCierreObraRequest,
-): Promise<ValidaCierreObrasResponse> => {
-  try {
-    const {data} = await genoxxApi.post<ValidaCierreObrasResponse>(
-      '/obras/get_valida_cierre_obra',
-      {
-        vg_empr_codigo: props.vl_empr_codigo,
-        vl_nro_orden: props.vl_nro_orden,
-      },
-    );
-    return data;
   } catch (error) {
     throw new Error(error as string);
   }

@@ -1,9 +1,9 @@
 import {StyleSheet, View} from 'react-native';
 import {Text, useTheme, IconButton} from 'react-native-paper';
-import MaterialIcons from '../../../components/ui/icons/MaterialIcons';
-import {Obra} from '../../../../domain/entities/Obra';
-import {CustomCardContent} from '../../../components/ui/CustomCardContent';
-import {globalColors} from '../../../styles/globalStyle';
+import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
+import {Obra} from '../../../../../domain/entities/Obra';
+import {CustomCardContent} from '../../../../components/ui/CustomCardContent';
+// import {globalColors} from '../../../../styles/globalStyle';
 
 interface Props {
   obra: Obra;
@@ -45,7 +45,7 @@ export const ItemObra = ({obra, onPress}: Props) => {
         </View> */}
 
         {/* GPS */}
-        {obra.coordenada_x !== '' && (
+        {/* {obra.coordenada_x !== '' && (
           <View style={styles.gpsContainer}>
             <IconButton
               icon="map-marker"
@@ -55,7 +55,7 @@ export const ItemObra = ({obra, onPress}: Props) => {
               }}
             />
           </View>
-        )}
+        )} */}
       </View>
     </CustomCardContent>
   );

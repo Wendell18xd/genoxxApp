@@ -1,40 +1,45 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import {useAuthStore} from '../../../../store/auth/useAuthStore';
-import {AccessDeniedScreen} from '../../../../components/AccessDeniedScreen';
-import {useMainStore} from '../../../../store/main/useMainStore';
-import {Menu} from '../../../../../types/menus';
+import {SegmentedButtonsDetalleObras} from './SegmentedButtonsDetalleObras';
+import {LiquiMatObrasScreen} from '../liquidar-materiales/screen-liqui-mat-stock-obras/LiquiMatObrasScreen';
+import {useAuthStore} from '../../../store/auth/useAuthStore';
+import {AccessDeniedScreen} from '../../../components/AccessDeniedScreen';
+import {Menu} from '../../../../types/menus';
 import {useRoute} from '@react-navigation/native';
+import {CustomCameraScreen} from '../../foto/screens/CustomCameraScreen';
+import {ListaObrasScreen} from '../screen-lista-obras/ListaObrasScreen';
+import {useMainStore} from '../../../store/main/useMainStore';
 import {useEffect, useState} from 'react';
-import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
-import {CustomCameraScreen} from '../../../foto/screens/CustomCameraScreen';
-import {ListaObrasScreen} from '../../screen-lista-obras/ListaObrasScreen';
-import {LiquiPartObrasScreen} from '../screen-liqui-part-obras/LiquiPartObrasScreen';
-import {SegmentedButtonsDetalleObras} from '../../navigations/SegmentedButtonsDetalleObras';
-import {BuscadorActividadPartidaScreen} from '../../../buscadores/buscador-actividad-partida/BuscadorActividadPartidaScreen';
+import FullScreenLoader from '../../../components/ui/loaders/FullScreenLoader';
+import {LiquiPartObrasScreen} from '../liquidar-partidas/screen-liqui-part-obras/LiquiPartObrasScreen';
+import {BuscadorActividadPartidaScreen} from '../../buscadores/buscador-actividad-partida/BuscadorActividadPartidaScreen';
 
-export type LiquiPartObrasStackParam = {
+export type LiquidacionObrasStackParam = {
   ListaObrasScreen: undefined;
   SegmentedButtonsDetalleObras: undefined;
   CustomCameraScreen: undefined;
+  LiquiMatObrasScreen: {isRegulariza: boolean};
   LiquiPartObrasScreen: undefined;
   BuscadorActividadPartidaScreen: undefined;
 };
 
-const Stack = createStackNavigator<LiquiPartObrasStackParam>();
+const Stack = createStackNavigator<LiquidacionObrasStackParam>();
 
-export const LiquiPartObrasStackNavigation = () => {
+export const LiquidacionObrasStackNavigation = () => {
+  const {drawerKey: currentDrawerKey} = useRoute().params as {
+    drawerKey: string;
+  };
   const {user} = useAuthStore();
   const {setDrawerKey, resetDrawerKey} = useMainStore();
-  const {drawerKey} = useRoute().params as {drawerKey: string};
   const [isReady, setIsReady] = useState(false);
 
-  //* SETEO EL DRAWER KEY
   useEffect(() => {
-    //* Lo seteamos una sola vez
-    setDrawerKey(drawerKey);
-    setIsReady(true); //* Ahora sí puede renderizar
-    return () => resetDrawerKey();
-  }, [drawerKey]);
+    setDrawerKey(currentDrawerKey);
+    setIsReady(true);
+    return () => {
+      setIsReady(false);
+      resetDrawerKey();
+    };
+  }, [currentDrawerKey]);
 
   if (!isReady) {
     return <FullScreenLoader />;
@@ -58,21 +63,12 @@ export const LiquiPartObrasStackNavigation = () => {
     );
   }
 
-  if (
-    drawerKey === Menu.LIQUIDACION_MATERIALES_OBRAS_ENERGIA ||
-    drawerKey === Menu.LIQUIDACION_PARTIDAS_OBRAS_ENERGIA
-  ) {
+  if (currentDrawerKey === Menu.LIQUIDACION_MATERIALES_OBRAS_ENERGIA) {
     if (user.trab_documento === 'ET03') {
-      let message = 'liquidar materiales';
-
-      if (drawerKey === Menu.LIQUIDACION_PARTIDAS_OBRAS_ENERGIA) {
-        message = 'liquidar partidas';
-      }
-
       return (
         <AccessDeniedScreen
           title="No tienes acceso"
-          subtitle={`No estas habilitado para ${message}`}
+          subtitle="No estas habilitado para liquidar materiales / partidas"
         />
       );
     }
@@ -90,14 +86,18 @@ export const LiquiPartObrasStackNavigation = () => {
         component={SegmentedButtonsDetalleObras}
       />
       <Stack.Screen
+        name="LiquiMatObrasScreen"
+        component={LiquiMatObrasScreen}
+      />
+      <Stack.Screen
         name="LiquiPartObrasScreen"
         component={LiquiPartObrasScreen}
       />
-      <Stack.Screen name="CustomCameraScreen" component={CustomCameraScreen} />
       <Stack.Screen
         name="BuscadorActividadPartidaScreen"
         component={BuscadorActividadPartidaScreen}
       />
+      <Stack.Screen name="CustomCameraScreen" component={CustomCameraScreen} />
     </Stack.Navigator>
   );
 };
