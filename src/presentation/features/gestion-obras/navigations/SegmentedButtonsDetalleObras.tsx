@@ -4,32 +4,36 @@ import {useLiquiMateStore} from '../liquidar-materiales/store/useLiquiMateStore'
 import {useEffect, useState} from 'react';
 import {SegmentedButtons, useTheme} from 'react-native-paper';
 import {DetalleObraScreen} from '../screen-detalle-obra/DetalleObraScreen';
-import {MaterialesObraScreen} from '../liquidar-materiales/screen-materiales-obra/MaterialesObraScreen';
 import {FotosMaterialesObraScreen} from '../liquidar-materiales/screen-materiales-fotos-obra/FotosMaterialesObraScreen';
 import {useObrasStore} from '../store/useObrasStore';
-import {useMainStore} from '../../../store/main/useMainStore';
-import {Menu} from '../../../../types/menus';
-import {PartidasObrasScreen} from '../liquidar-partidas/screen-partidas-obra/PartidasObrasScreen';
+import {ChipsLiquidacionScreen} from '../liquidar-materiales/screen-materiales-obra/ChipsLiquidacionScreen';
+import {MaterialesObraScreen} from '../liquidar-materiales/screen-materiales-obra/MaterialesObraScreen';
 
 export const SegmentedButtonsDetalleObras = () => {
   const {reset: resetLiquiMate} = useLiquiMateStore();
   const {reset: resetObras} = useObrasStore();
   const [value, setValue] = useState('1');
   const {colors} = useTheme();
-  const {drawerKey} = useMainStore();
-  const [isMateriales, setIsMateriales] = useState(false);
+
+  const [mounted, setMounted] = useState<{[key: string]: boolean}>({
+    '1': true,
+    '2': false,
+    '3': false,
+  });
 
   useEffect(() => {
-    setIsMateriales(
-      drawerKey === Menu.LIQUIDACION_MATERIALES_OBRAS ||
-        drawerKey === Menu.LIQUIDACION_MATERIALES_OBRAS_ENERGIA,
-    );
-
     return () => {
       resetLiquiMate();
       resetObras();
     };
   }, []);
+
+  useEffect(() => {
+    // Marcar como montado el valor actual si no lo está
+    if (!mounted[value]) {
+      setMounted(prev => ({...prev, [value]: true}));
+    }
+  }, [value]);
 
   return (
     <DrawerLayout title="Detalle de Obra">
@@ -51,7 +55,7 @@ export const SegmentedButtonsDetalleObras = () => {
             },
             {
               value: '2',
-              label: isMateriales ? 'Materiales' : 'Partidas',
+              label: 'Liquidado',
               checkedColor: 'white',
               icon: 'cube',
             },
@@ -67,19 +71,23 @@ export const SegmentedButtonsDetalleObras = () => {
 
       {/* Todas las pantallas montadas siempre */}
       <View style={styles.screenContainer}>
-        <View style={[styles.screen, value !== '1' && styles.hidden]}>
-          <DetalleObraScreen />
-        </View>
-        <View style={[styles.screen, value !== '2' && styles.hidden]}>
-          {isMateriales ? <MaterialesObraScreen /> : <PartidasObrasScreen />}
-        </View>
-        <View style={[styles.screen, value !== '3' && styles.hidden]}>
-          {isMateriales ? (
+        {mounted['1'] && (
+          <View style={[styles.screen, value !== '1' && styles.hidden]}>
+            <DetalleObraScreen />
+          </View>
+        )}
+        {mounted['2'] && (
+          <View style={[styles.screen, value !== '2' && styles.hidden]}>
+            <ChipsLiquidacionScreen>
+              <MaterialesObraScreen />
+            </ChipsLiquidacionScreen>
+          </View>
+        )}
+        {mounted['3'] && (
+          <View style={[styles.screen, value !== '3' && styles.hidden]}>
             <FotosMaterialesObraScreen />
-          ) : (
-            <FotosMaterialesObraScreen />
-          )}
-        </View>
+          </View>
+        )}
       </View>
     </DrawerLayout>
   );

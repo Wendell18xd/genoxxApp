@@ -6,7 +6,7 @@ import Toast from 'react-native-toast-message';
 import {useQueryClient} from '@tanstack/react-query';
 import {Searchbar} from 'react-native-paper';
 import DrawerLayout from '../../main/layout/DrawerLayout';
-import {ItemObra} from '../components/ItemObra';
+import {ItemObra} from './components/ItemObra';
 import SinResultados from '../../../components/ui/SinResultados';
 import {CustomFAB} from '../../../components/ui/CustomFAB';
 import CustomBottomSheet from '../../../components/ui/bottomSheetModal/CustomBottomSheet';

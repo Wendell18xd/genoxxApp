@@ -55,7 +55,7 @@ export const SearchObras = ({onClose}: Props) => {
 
   return (
     <View>
-      {!proyectos && isFetchProyecto && <FullScreenLoader transparent />}
+      {/* {!proyectos && isFetchProyecto && <FullScreenLoader transparent />} */}
       {isFetchObras && <FullScreenLoader transparent />}
 
       <View
@@ -110,6 +110,8 @@ export const SearchObras = ({onClose}: Props) => {
                   value={values.cbo_proy_codigo}
                   onSelect={val => setFieldValue('cbo_proy_codigo', val)}
                   error={touched.cbo_proy_codigo && !!errors.cbo_proy_codigo}
+                  loading={!proyectos && isFetchProyecto}
+                  disabled={!proyectos && isFetchProyecto}
                 />
                 {touched.cbo_proy_codigo && errors.cbo_proy_codigo && (
                   <Text style={{color: 'red', marginTop: 4}}>

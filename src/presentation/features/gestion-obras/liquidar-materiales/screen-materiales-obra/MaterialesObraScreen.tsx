@@ -59,7 +59,7 @@ export const MaterialesObraScreen = () => {
       queryClient.invalidateQueries({
         queryKey: ['materiales', 'liquidados', obra],
       });
-      setIsRefetchLiquidacion(false);
+      setIsRefetchLiquidacion(true);
     };
   }, []);
 

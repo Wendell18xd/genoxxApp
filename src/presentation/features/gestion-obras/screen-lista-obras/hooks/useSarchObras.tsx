@@ -63,8 +63,6 @@ export const useSarchObras = () => {
       ? 'ENERGIA'
       : 'OBRAS';
 
-  console.log(proy_tipo);
-
   const filtrosRef = useRef<ObrasRequest>({
     vl_empr_codigo: user?.empr_codigo || '',
     cbo_tipo_buscar_doc: 'ORDN',

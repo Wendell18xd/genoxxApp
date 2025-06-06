@@ -10,7 +10,7 @@ interface Props {
 }
 
 const menuLiquida: Menu = {
-  menu_nombre: 'Liquidar',
+  menu_nombre: 'Liquidacion de obras',
   menu_codigo: 'Liquidar',
   menu_padre: '',
   menu_icoweb: '',
@@ -23,7 +23,7 @@ const menuLiquida: Menu = {
 };
 
 const menuEjecuta: Menu = {
-  menu_nombre: 'Ejecución',
+  menu_nombre: 'Ejecución de obras',
   menu_codigo: 'Ejecución',
   menu_padre: '',
   menu_icoweb: '',
