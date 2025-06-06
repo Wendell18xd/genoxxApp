@@ -1,15 +1,14 @@
 import {create} from 'zustand';
-import { Personal } from '../../../../../domain/entities/Personal';
+import {Personal} from '../../../../../domain/entities/Personal';
 
-
-interface PersonalState {
+interface usePersonalState {
   setOnSelectPersonal: (fn: (personal: Personal) => void) => void;
   onSelect: ((personal: Personal) => void) | null;
-  reset: () => void;
+  resetPersonal: () => void;
 }
 
-export const usePersonalStore = create<PersonalState>(set => ({
+export const usePersonalStore = create<usePersonalState>(set => ({
   onSelect: null,
   setOnSelectPersonal: fn => set({onSelect: fn}),
-  reset: () => set({onSelect: null}),
+  resetPersonal: () => set({onSelect: null}),
 }));

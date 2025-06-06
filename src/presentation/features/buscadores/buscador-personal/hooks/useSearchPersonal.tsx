@@ -21,7 +21,7 @@ export const useSearchPersonal = () => {
   const {user} = useAuthStore();
   const navigation =
     useNavigation<NavigationProp<ConsultaHistoricaPatenteStackParam>>();
-  const onSelect = usePersonalStore(state => state.onSelect);
+  const {onSelect} = usePersonalStore();
 
   const filtrosRef = useRef<PersonalRequest>({
     vl_empr_codigo: user?.empr_codigo || '',
