@@ -1,7 +1,6 @@
 import * as Yup from 'yup';
 import {useActividadPartidaStore} from '../../../../buscadores/buscador-actividad-partida/store/useActividadPartidaStore';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {LiquiPartObrasStackParam} from '../../navigations/LiquiPartObrasStackNavigation';
 import {useObrasStore} from '../../../store/useObrasStore';
 import {useMainStore} from '../../../../../store/main/useMainStore';
 import {Menu} from '../../../../../../types/menus';
@@ -13,6 +12,7 @@ import {useAuthStore} from '../../../../../store/auth/useAuthStore';
 import {obtenerMesYAnio} from '../../../../../helper/timeUtils';
 import {useLiquiPartStore} from '../../store/useLiquiPartStore';
 import {useRef} from 'react';
+import { LiquidacionObrasStackParam } from '../../../navigations/LiquidacionObrasStackNavigation';
 
 const initialValues = {
   fecha_liquidacion: new Date().toISOString().slice(0, 10),
@@ -35,7 +35,7 @@ export const useLiquiPartObras = () => {
   const {setIsRefetchLiquidacion} = useLiquiPartStore();
   const {obra} = useObrasStore();
   const {user} = useAuthStore();
-  const navigation = useNavigation<NavigationProp<LiquiPartObrasStackParam>>();
+  const navigation = useNavigation<NavigationProp<LiquidacionObrasStackParam>>();
   const {drawerKey} = useMainStore();
   const resetFormRef = useRef<() => void>(() => {});
   const txt_tipo =
@@ -138,7 +138,8 @@ export const useLiquiPartObras = () => {
     values: typeof initialValues,
     resetForm: () => void,
   ) => {
-    await mutation.mutateAsync({
+    resetFormRef.current = resetForm;
+    mutation.mutate({
       vg_empr_codigo: user?.empr_codigo || '',
       vg_usua_codigo: user?.usua_codigo || '',
       vl_regi_codigo: obra?.regi_codigo || '',
@@ -153,7 +154,6 @@ export const useLiquiPartObras = () => {
       vl_dificultad: values.dificultad,
       vl_tipo_obra: txt_tipo,
     });
-    resetFormRef.current = resetForm;
   };
 
   return {

@@ -43,7 +43,7 @@ export const SegmentedButtonsDetalleObras = () => {
           buttons={[
             {
               value: '1',
-              label: 'Detalle',
+              label: 'Información',
               checkedColor: 'white',
               icon: 'format-list-bulleted-type',
             },

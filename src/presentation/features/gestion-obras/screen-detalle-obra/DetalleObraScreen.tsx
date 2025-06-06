@@ -22,7 +22,7 @@ const LabelValueRow = ({label, value, style}: Props) => {
         </Text>
       </View>
       <View style={{flex: 0.6}}>
-        <Text variant="bodyMedium" numberOfLines={1} adjustsFontSizeToFit>
+        <Text variant="bodyMedium" /* numberOfLines={1} adjustsFontSizeToFit */>
           {value}
         </Text>
       </View>
@@ -56,12 +56,12 @@ export const DetalleObraScreen = () => {
       <LabelValueRow
         label="Proyecto"
         value={obra?.proy_nombre}
-        style={{marginBottom: 40}}
+        // style={{marginBottom: 40}}
       />
 
-      <Text variant="titleLarge" style={{fontWeight: 'bold'}}>
+      {/* <Text variant="titleLarge" style={{fontWeight: 'bold'}}>
         Detalle de trabajo
-      </Text>
+      </Text> */}
 
       <Divider style={{marginVertical: 16}} />
 
@@ -80,14 +80,17 @@ export const DetalleObraScreen = () => {
       <LabelValueRow
         label="Supervisor"
         value={obra?.nom_supervisor}
-        style={{marginBottom: 40}}
+        // style={{marginBottom: 40}}
       />
 
-      <Text variant="titleLarge" style={{fontWeight: 'bold', marginBottom: 16}}>
+      <Divider style={{marginVertical: 16}} />
+      <LabelValueRow label="Observacion" value={obra?.observacion} />
+
+      {/* <Text variant="titleLarge" style={{fontWeight: 'bold', marginBottom: 16}}>
         Observación
       </Text>
 
-      <Text variant="bodyMedium">{obra?.observacion}</Text>
+      <Text variant="bodyMedium">{obra?.observacion}</Text> */}
     </ScrollView>
   );
 };
