@@ -8,6 +8,7 @@ export const globalColors = {
   gray: '#cdcecf',
   textPrimary: '#000',
   textSecondary: '#666',
+  white: '#fff',
 };
 
 export const globalStyle = StyleSheet.create({
