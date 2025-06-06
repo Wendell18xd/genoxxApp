@@ -1,40 +1,42 @@
 import {FlatList, StyleSheet, View} from 'react-native';
 import {globalStyle} from '../../../../styles/globalStyle';
+import CustomSwitch from '../../../../components/ui/CustomSwitch';
+import {useCallback, useEffect, useRef} from 'react';
+import {useMateObras} from './hooks/useMateObras';
 import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
+import Toast from 'react-native-toast-message';
 import SinResultados from '../../../../components/ui/SinResultados';
+import {ItemMateLiqui} from './components/ItemMateLiqui';
 import {CustomFAB} from '../../../../components/ui/CustomFAB';
 import {
   NavigationProp,
   useFocusEffect,
   useNavigation,
 } from '@react-navigation/native';
-import {LiquiPartObrasStackParam} from '../navigations/LiquiPartObrasStackNavigation';
-import {usePartidasObras} from './hooks/usePartidasObras';
-import {useCallback, useEffect, useRef} from 'react';
-import Toast from 'react-native-toast-message';
-import {ItemPartidaObra} from './components/ItemPartidaObra';
+import {LiquidacionObrasStackParam} from '../../navigations/LiquidacionObrasStackNavigation';
 import {useObrasStore} from '../../store/useObrasStore';
 import {useQueryClient} from '@tanstack/react-query';
 
-export const PartidasObrasScreen = () => {
-  const navigation = useNavigation<NavigationProp<LiquiPartObrasStackParam>>();
+export const MaterialesObraScreen = () => {
+  const navigation = useNavigation<NavigationProp<LiquidacionObrasStackParam>>();
   const {obra} = useObrasStore();
   const queryClient = useQueryClient();
   const hasShownError = useRef(false);
-
   const {
-    dataPartidas,
-    isFetchPartidas,
-    errorPartidas,
+    dataMateriales,
+    isFetchMateriales,
+    errorMateriales,
+    isRegulariza,
     isRefetchLiquidacion,
-    refetchPartidas,
+    refetchMateriales,
+    handleRegularizarMateriales,
     setIsRefetchLiquidacion,
-  } = usePartidasObras();
+  } = useMateObras();
 
   useFocusEffect(
     useCallback(() => {
       if (isRefetchLiquidacion) {
-        refetchPartidas();
+        refetchMateriales();
         hasShownError.current = true;
         setIsRefetchLiquidacion(false);
       }
@@ -42,56 +44,66 @@ export const PartidasObrasScreen = () => {
   );
 
   useEffect(() => {
-    if (errorPartidas && !hasShownError.current) {
+    if (errorMateriales && !hasShownError.current) {
       Toast.show({
         type: 'error',
-        text1: 'Error al obtener partidas de obra',
+        text1: 'Error al obtener materiales liquidados',
       });
       hasShownError.current = true;
       setIsRefetchLiquidacion(true);
     }
-  }, [errorPartidas]);
+  }, [errorMateriales]);
 
   useEffect(() => {
     return () => {
-      setIsRefetchLiquidacion(true);
       queryClient.invalidateQueries({
-        queryKey: ['partidas', 'liquidados', obra],
+        queryKey: ['materiales', 'liquidados', obra],
       });
+      setIsRefetchLiquidacion(true);
     };
   }, []);
 
   return (
     <View style={globalStyle.container}>
-      {isFetchPartidas && <FullScreenLoader transparent />}
+      {isFetchMateriales && <FullScreenLoader transparent />}
 
       <View style={[globalStyle.padding, {flex: 1}]}>
-        {dataPartidas?.partidas && dataPartidas.partidas.length > 0 ? (
+        <CustomSwitch
+          isOn={isRegulariza}
+          onChange={value => handleRegularizarMateriales(value)}
+          text="Regularizar materiales"
+        />
+        <View style={{marginVertical: 8}} />
+
+        {dataMateriales?.materiales && dataMateriales.materiales.length > 0 ? (
           <FlatList
-            data={dataPartidas.partidas}
-            keyExtractor={(item, index) => index.toString()}
-            refreshing={isFetchPartidas}
-            onRefresh={refetchPartidas}
-            renderItem={({item}) => <ItemPartidaObra partida={item} />}
+            data={dataMateriales?.materiales}
+            keyExtractor={item => item.cont_correlativo}
+            refreshing={isFetchMateriales}
+            onRefresh={refetchMateriales}
+            renderItem={({item}) => <ItemMateLiqui mate={item} />}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{gap: 16}}
           />
         ) : (
-          <SinResultados message="No hay partidas liquidadas" />
+          <SinResultados message="No hay materiales liquidados" />
         )}
       </View>
 
       <CustomFAB
         icon="plus"
         onPress={() => {
-          if (dataPartidas?.cierre.est_cierre === '1') {
+          if (dataMateriales?.cierre.est_cierre_material === '1') {
             Toast.show({
               type: 'error',
-              text1: 'Las partidas se encuentran cerradas',
+              text1: 'Los materiales se encuentran cerrados',
             });
             return;
           }
-          navigation.navigate('LiquiPartObrasScreen');
+
+          navigation.navigate('LiquiMatObrasScreen', {
+            isRegulariza: isRegulariza,
+          });
         }}
         style={styles.fab}
       />

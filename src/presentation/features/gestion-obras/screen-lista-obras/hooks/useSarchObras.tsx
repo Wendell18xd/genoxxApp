@@ -11,7 +11,7 @@ import {ObrasRequest} from '../../../../../infrastructure/interfaces/obras/liqui
 import {mapToDropdown} from '../../../../../infrastructure/mappers/mapToDropdown';
 import {useAuthStore} from '../../../../store/auth/useAuthStore';
 import {useMainStore} from '../../../../store/main/useMainStore';
-import {LiquiMatObrasStackParam} from '../../navigations/LiquiMatObrasStackNavigation';
+import {LiquidacionObrasStackParam} from '../../navigations/LiquidacionObrasStackNavigation';
 import {Menu} from '../../../../../types/menus';
 import * as Yup from 'yup';
 import {useObrasStore} from '../../store/useObrasStore';
@@ -55,7 +55,7 @@ export const useSarchObras = () => {
   const {user} = useAuthStore();
   const {drawerKey} = useMainStore();
   const {setObra} = useObrasStore();
-  const navigation = useNavigation<NavigationProp<LiquiMatObrasStackParam>>();
+  const navigation = useNavigation<NavigationProp<LiquidacionObrasStackParam>>();
 
   const proy_tipo =
     drawerKey === Menu.LIQUIDACION_MATERIALES_OBRAS_ENERGIA ||

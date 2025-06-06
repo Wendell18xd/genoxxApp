@@ -1,9 +1,9 @@
 import {View} from 'react-native';
-import {DatoFoto} from '../../../../../../infrastructure/interfaces/obras/fotos-materiales/fotos.obras.response';
+import {DatoFoto} from '../../../../../infrastructure/interfaces/obras/fotos-materiales/fotos.obras.response';
 import {Text} from 'react-native-paper';
-import {formatearFecha} from '../../../../../helper/timeUtils';
+import {formatearFecha} from '../../../../helper/timeUtils';
 import {FlatList} from 'react-native-gesture-handler';
-import {FadeInImage} from '../../../../../components/ui/FadeInImage';
+import {FadeInImage} from '../../../../components/ui/FadeInImage';
 
 interface Props {
   item: DatoFoto;

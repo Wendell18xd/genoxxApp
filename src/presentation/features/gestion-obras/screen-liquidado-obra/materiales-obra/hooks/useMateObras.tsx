@@ -1,9 +1,9 @@
 import {useQuery} from '@tanstack/react-query';
 import {listadoMaterialesObra} from '../../../../../../actions/obras/materiales.obras';
 import {useAuthStore} from '../../../../../store/auth/useAuthStore';
-import {useLiquiMateStore} from '../../store/useLiquiMateStore';
 import {useRef, useState} from 'react';
 import {useObrasStore} from '../../../store/useObrasStore';
+import {useLiquiMateStore} from '../../../liquidar-materiales/store/useLiquiMateStore';
 
 export const useMateObras = () => {
   const {user} = useAuthStore();

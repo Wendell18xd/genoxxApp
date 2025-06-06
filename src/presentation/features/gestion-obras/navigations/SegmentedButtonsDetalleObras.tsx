@@ -1,24 +1,25 @@
 import {View, StyleSheet} from 'react-native';
 import DrawerLayout from '../../main/layout/DrawerLayout';
 import {useLiquiMateStore} from '../liquidar-materiales/store/useLiquiMateStore';
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {SegmentedButtons, useTheme} from 'react-native-paper';
 import {DetalleObraScreen} from '../screen-detalle-obra/DetalleObraScreen';
-import {FotosMaterialesObraScreen} from '../liquidar-materiales/screen-materiales-fotos-obra/FotosMaterialesObraScreen';
 import {useObrasStore} from '../store/useObrasStore';
-import {ChipsLiquidacionScreen} from '../liquidar-materiales/screen-materiales-obra/ChipsLiquidacionScreen';
-import {MaterialesObraScreen} from '../liquidar-materiales/screen-materiales-obra/MaterialesObraScreen';
+import {useMounted} from '../../../hooks/useMounted';
+import {ChipsLiquidacionObrasScreen} from '../screen-liquidado-obra/ChipsLiquidacionObrasScreen';
+import {ChipsFotosObrasScreen} from '../screen-fotos-obra/ChipsFotosObrasScreen';
 
 export const SegmentedButtonsDetalleObras = () => {
   const {reset: resetLiquiMate} = useLiquiMateStore();
   const {reset: resetObras} = useObrasStore();
-  const [value, setValue] = useState('1');
   const {colors} = useTheme();
-
-  const [mounted, setMounted] = useState<{[key: string]: boolean}>({
-    '1': true,
-    '2': false,
-    '3': false,
+  const {value, mounted, setValue} = useMounted({
+    defaultValue: '1',
+    initialParams: {
+      '1': true,
+      '2': false,
+      '3': false,
+    },
   });
 
   useEffect(() => {
@@ -27,13 +28,6 @@ export const SegmentedButtonsDetalleObras = () => {
       resetObras();
     };
   }, []);
-
-  useEffect(() => {
-    // Marcar como montado el valor actual si no lo está
-    if (!mounted[value]) {
-      setMounted(prev => ({...prev, [value]: true}));
-    }
-  }, [value]);
 
   return (
     <DrawerLayout title="Detalle de Obra">
@@ -78,14 +72,12 @@ export const SegmentedButtonsDetalleObras = () => {
         )}
         {mounted['2'] && (
           <View style={[styles.screen, value !== '2' && styles.hidden]}>
-            <ChipsLiquidacionScreen>
-              <MaterialesObraScreen />
-            </ChipsLiquidacionScreen>
+            <ChipsLiquidacionObrasScreen />
           </View>
         )}
         {mounted['3'] && (
           <View style={[styles.screen, value !== '3' && styles.hidden]}>
-            <FotosMaterialesObraScreen />
+            <ChipsFotosObrasScreen />
           </View>
         )}
       </View>

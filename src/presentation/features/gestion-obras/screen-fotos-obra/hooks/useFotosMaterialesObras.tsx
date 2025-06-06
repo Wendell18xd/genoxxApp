@@ -1,21 +1,48 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {useFotosStore} from '../../../../foto/store/useFotosStore';
-import {Foto} from '../../../../../../domain/entities/Foto';
-import {useMutation} from '@tanstack/react-query';
-import {grabarFotosPartidasObras} from '../../../../../../actions/obras/fotos.obras';
+import {useMutation, useQuery} from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
-import {useAuthStore} from '../../../../../store/auth/useAuthStore';
-import {useObrasStore} from '../../../store/useObrasStore';
-import {LiquiMatObrasStackParam} from '../../../navigations/LiquiMatObrasStackNavigation';
+import {
+  listarFotosMaterialesObras,
+  grabarFotosMaterialesObras,
+  grabarFotosPartidasObras,
+} from '../../../../../actions/obras/fotos.obras';
+import {Foto} from '../../../../../domain/entities/Foto';
+import {useAuthStore} from '../../../../store/auth/useAuthStore';
+import {useFotosStore} from '../../../foto/store/useFotosStore';
+import {LiquidacionObrasStackParam} from '../../navigations/LiquidacionObrasStackNavigation';
+import {useObrasStore} from '../../store/useObrasStore';
 
-export const useFotosPartidasObras = () => {
-  const navigation = useNavigation<NavigationProp<LiquiMatObrasStackParam>>();
+export const useFotosMaterialesObras = (opcion: string) => {
+  const navigation =
+    useNavigation<NavigationProp<LiquidacionObrasStackParam>>();
   const {setInitialParams} = useFotosStore();
   const {user} = useAuthStore();
   const {obra} = useObrasStore();
 
+  const {
+    data: datosFotos,
+    isFetching: isFetchingFotos,
+    refetch: refetchFotos,
+    error: errorFotos,
+  } = useQuery({
+    queryKey: ['fotosMaterialesObra', obra],
+    queryFn: async () => {
+      const {datos: fotos} = await listarFotosMaterialesObras({
+        vg_empr_codigo: user?.empr_codigo || '',
+        vg_usua_codigo: user?.usua_codigo || '',
+        vl_tipo_archivo: 'TD05',
+        vl_origen_archivo: opcion === 'materiales' ? 'MATE' : 'PART',
+        vl_regi_codigo: obra?.regi_codigo || '',
+      });
+
+      return fotos;
+    },
+    enabled: false,
+  });
+
   const fotoMutation = useMutation({
-    mutationFn: grabarFotosPartidasObras,
+    mutationFn:
+      opcion === 'MATE' ? grabarFotosMaterialesObras : grabarFotosPartidasObras,
     onSuccess: data => {
       const {datos: estado, mensaje} = data;
 
@@ -65,10 +92,10 @@ export const useFotosPartidasObras = () => {
       vg_empr_codigo: user?.empr_codigo || '',
       vg_usua_codigo: user?.usua_codigo || '',
       vl_regi_codigo: obra?.regi_codigo || '',
-      vl_nro_guia: '',
       vl_coord_x: '',
       vl_coord_y: '',
       vl_tipo_archivo: 'TD05',
+      vl_origen_archivo: opcion === 'materiales' ? 'MATE' : 'PART',
       vl_fotos: _fotos.map(foto => foto.foto),
       vl_fotos_comentarios: _fotos.map(foto => foto.comentario),
     });
@@ -77,7 +104,12 @@ export const useFotosPartidasObras = () => {
   return {
     //* Propiedades
     fotoMutation,
+    datosFotos,
+    isFetchingFotos,
+    errorFotos,
+
     //* Metodos
     handleCamera,
+    refetchFotos,
   };
 };

@@ -1,22 +1,26 @@
 import {View, StyleSheet} from 'react-native';
-import {CustomFAB} from '../../../../components/ui/CustomFAB';
 import {useFotosMaterialesObras} from './hooks/useFotosMaterialesObras';
 import {useCallback, useEffect} from 'react';
-import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
 import Toast from 'react-native-toast-message';
 import {FlatList} from 'react-native-gesture-handler';
-import SinResultados from '../../../../components/ui/SinResultados';
 import {useFocusEffect} from '@react-navigation/native';
 import {ItemFechasFotos} from './components/ItemFechasFotos';
+import FullScreenLoader from '../../../components/ui/loaders/FullScreenLoader';
+import SinResultados from '../../../components/ui/SinResultados';
+import {CustomFAB} from '../../../components/ui/CustomFAB';
 
-export const FotosMaterialesObraScreen = () => {
+interface Props {
+  opcion: string;
+}
+
+export const FotosObraScreen = ({opcion}: Props) => {
   const {datosFotos, isFetchingFotos, errorFotos, refetchFotos, handleCamera} =
-    useFotosMaterialesObras();
+    useFotosMaterialesObras(opcion);
 
   useFocusEffect(
     useCallback(() => {
       refetchFotos();
-    }, [refetchFotos]),
+    }, [refetchFotos, opcion]),
   );
 
   useEffect(() => {
@@ -37,6 +41,9 @@ export const FotosMaterialesObraScreen = () => {
           data={datosFotos}
           keyExtractor={item => item.fecha}
           contentContainerStyle={{gap: 32}}
+          showsVerticalScrollIndicator={false}
+          refreshing={isFetchingFotos}
+          onRefresh={refetchFotos}
           renderItem={({item}) => <ItemFechasFotos item={item} />}
         />
       ) : (

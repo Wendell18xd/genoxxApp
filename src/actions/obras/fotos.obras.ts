@@ -37,7 +37,7 @@ export const grabarFotosMaterialesObras = async (
     formData.append('vg_empr_codigo', props.vg_empr_codigo);
     formData.append('vg_usua_codigo', props.vg_usua_codigo);
     formData.append('vl_regi_codigo', props.vl_regi_codigo);
-    formData.append('vl_nro_guia', props.vl_nro_guia);
+    formData.append('vl_origen_archivo', props.vl_origen_archivo);
     formData.append('vl_tipo_archivo', props.vl_tipo_archivo);
     formData.append('vl_coord_x', props.vl_coord_x);
     formData.append('vl_coord_y', props.vl_coord_y);
@@ -86,7 +86,7 @@ export const grabarFotosPartidasObras = async (
     formData.append('vg_empr_codigo', props.vg_empr_codigo);
     formData.append('vg_usua_codigo', props.vg_usua_codigo);
     formData.append('vl_regi_codigo', props.vl_regi_codigo);
-    formData.append('vl_nro_guia', props.vl_nro_guia);
+    formData.append('vl_origen_archivo', props.vl_origen_archivo);
     formData.append('vl_tipo_archivo', props.vl_tipo_archivo);
     formData.append('vl_coord_x', props.vl_coord_x);
     formData.append('vl_coord_y', props.vl_coord_y);
@@ -117,6 +117,7 @@ export const listarFotosMaterialesObras = async (
         vg_usua_codigo: props.vg_usua_codigo,
         vl_tipo_archivo: props.vl_tipo_archivo,
         vl_regi_codigo: props.vl_regi_codigo,
+        vl_origen_archivo: props.vl_origen_archivo,
       },
     );
     return data;
