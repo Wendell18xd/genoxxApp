@@ -1,11 +1,15 @@
 import {useQuery, useMutation} from '@tanstack/react-query';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import Toast from 'react-native-toast-message';
 import {mapToDropdown} from '../../../../../../../infrastructure/mappers/mapToDropdown';
 import {useAuthStore} from '../../../../../../store/auth/useAuthStore';
 import * as Yup from 'yup';
-import { enviarAlerta, getAlertas } from '../../../../../../../actions/profile/Alertas/Alertas';
-import { useFotosStore } from '../../../../../foto/store/useFotosStore';
+import {
+  enviarAlerta,
+  getAlertas,
+} from '../../../../../../../actions/profile/Alertas/Alertas';
+import {useFotosStore} from '../../../../../foto/store/useFotosStore';
+import { useNavigation } from '@react-navigation/native';
 
 interface AlertasFromValues {
   nom_audio: string;
@@ -23,15 +27,16 @@ const initialValues: AlertasFromValues = {
 
 export const getAlertValidationSchema = Yup.object().shape({
   tipo: Yup.string().required('Seleccione un tipo de alerta'),
-  telefono: Yup.string()
-    .required('Ingrese un número de teléfono'),
+  telefono: Yup.string().required('Ingrese un número de teléfono'),
   comentario: Yup.string().required('Ingrese un comentario'),
 });
 
 export const useAlertas = () => {
   const {user} = useAuthStore();
   const [formValues] = useState<AlertasFromValues>(initialValues);
-  const { fotos, onReset } = useFotosStore();
+  const {fotos, onReset} = useFotosStore();
+  const onResetRef = useRef(() => {});
+  const navigation = useNavigation();
 
   const {
     data: tipos,
@@ -39,7 +44,6 @@ export const useAlertas = () => {
     refetch,
   } = useQuery({
     queryKey: ['alertas'],
-    staleTime: 1000 * 60 * 5,
     queryFn: async () => {
       const resp = await getAlertas();
       return mapToDropdown(resp.datos, 'nom_para', 'cod_para');
@@ -58,6 +62,9 @@ export const useAlertas = () => {
         type: 'success',
         text1: 'Alerta enviada correctamente',
       });
+      onResetRef.current();
+      onReset();
+      navigation.goBack();
     },
     onError: error => {
       Toast.show({
@@ -73,26 +80,20 @@ export const useAlertas = () => {
     resetForm: () => void,
     audioBase64?: string,
   ) => {
+    onResetRef.current = resetForm;
     const data = {
       vg_empr_codigo: user?.empr_codigo || '',
       vg_usua_codigo: user?.usua_codigo || '',
-      txt_trab_codigo: user?.usua_perfil || '',
+      vg_usua_perfil: user?.usua_perfil || '',
       txt_tipo: values.tipo,
       txt_telefono: values.telefono,
       txt_audio: audioBase64 || '',
       txt_comentario: values.comentario,
-      txt_fotos: fotos.map(foto => foto.foto),
+      vl_fotos: fotos.map(foto => foto.foto),
+      vl_coord_x: '',
+      vl_coord_y: '',
     };
-    mutation.mutate(data, {
-      onSuccess: () => {
-        Toast.show({
-          type: 'success',
-          text1: 'Alerta enviada correctamente',
-        });
-        resetForm();
-        onReset();
-      },
-    });
+    mutation.mutate(data);
   };
 
   return {
