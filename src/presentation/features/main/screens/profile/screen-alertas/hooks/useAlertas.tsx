@@ -9,7 +9,8 @@ import {
   getAlertas,
 } from '../../../../../../../actions/profile/Alertas/Alertas';
 import {useFotosStore} from '../../../../../foto/store/useFotosStore';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import {useLocationStore} from '../../../../../../store/location/useLocationStore';
 
 interface AlertasFromValues {
   nom_audio: string;
@@ -37,6 +38,7 @@ export const useAlertas = () => {
   const {fotos, onReset} = useFotosStore();
   const onResetRef = useRef(() => {});
   const navigation = useNavigation();
+  const {getLocation} = useLocationStore();
 
   const {
     data: tipos,
@@ -75,12 +77,13 @@ export const useAlertas = () => {
     },
   });
 
-  const startAlertaSubmit = (
+  const startAlertaSubmit = async (
     values: AlertasFromValues,
     resetForm: () => void,
     audioBase64?: string,
   ) => {
     onResetRef.current = resetForm;
+    const location = await getLocation();
     const data = {
       vg_empr_codigo: user?.empr_codigo || '',
       vg_usua_codigo: user?.usua_codigo || '',
@@ -90,8 +93,8 @@ export const useAlertas = () => {
       txt_audio: audioBase64 || '',
       txt_comentario: values.comentario,
       vl_fotos: fotos.map(foto => foto.foto),
-      vl_coord_x: '',
-      vl_coord_y: '',
+      vl_coord_x: location?.latitude?.toString() || '',
+      vl_coord_y: location?.longitude?.toString() || '',
     };
     mutation.mutate(data);
   };

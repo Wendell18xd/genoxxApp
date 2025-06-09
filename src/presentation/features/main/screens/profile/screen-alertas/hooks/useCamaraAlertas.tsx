@@ -4,7 +4,7 @@ import {ProfileStackParam} from '../../navigations/ProfileStackNavigation';
 
 export const useCamaraAlertas = () => {
   const navigation = useNavigation<NavigationProp<ProfileStackParam>>();
-  const {setInitialParams} = useFotosStore();
+  const {setInitialParams, fotos} = useFotosStore();
 
   const handleCamera = () => {
     setInitialParams({
@@ -16,5 +16,6 @@ export const useCamaraAlertas = () => {
   };
   return {
     handleCamera,
+    fotos,
   };
 };
