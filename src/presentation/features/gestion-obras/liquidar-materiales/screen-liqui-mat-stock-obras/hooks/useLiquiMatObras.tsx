@@ -1,6 +1,6 @@
 import {useQuery} from '@tanstack/react-query';
 import {useLiquiMateStore} from '../../store/useLiquiMateStore';
-import {listadoStockMaterilesObras} from '../../../../../../actions/obras/stock.obras';
+import {listadoStockMaterilesObras} from '../../../../../../actions/gestion-obras/stock.obras';
 import {useAuthStore} from '../../../../../store/auth/useAuthStore';
 import {useRef} from 'react';
 import {useMainStore} from '../../../../../store/main/useMainStore';

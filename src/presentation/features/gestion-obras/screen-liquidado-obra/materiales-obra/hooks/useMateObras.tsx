@@ -1,5 +1,5 @@
 import {useQuery} from '@tanstack/react-query';
-import {listadoMaterialesObra} from '../../../../../../actions/obras/materiales.obras';
+import {listadoMaterialesObra} from '../../../../../../actions/gestion-obras/materiales.obras';
 import {useAuthStore} from '../../../../../store/auth/useAuthStore';
 import {useRef, useState} from 'react';
 import {useObrasStore} from '../../../store/useObrasStore';

@@ -1,14 +1,14 @@
 import {genoxxApi} from '../../config/api/genoxxApi';
-import {ListarStockObrasRequest} from '../../infrastructure/interfaces/obras/liquidar-materiales/listarStockObras.request';
-import {ListarStockObrasResponse} from '../../infrastructure/interfaces/obras/liquidar-materiales/listarStockObras.response';
+import {ListarStockObrasRequest} from '../../infrastructure/interfaces/gestion-obras/liquidar-materiales/listarStockObras.request';
+import {ListarStockObrasResponse} from '../../infrastructure/interfaces/gestion-obras/liquidar-materiales/listarStockObras.response';
 import {
   GrabarMaterialesObrasRequest,
   ValidarCuadroMaterialesRequest,
-} from '../../infrastructure/interfaces/obras/liquidar-materiales/saveLiquiMateObra.request';
+} from '../../infrastructure/interfaces/gestion-obras/liquidar-materiales/saveLiquiMateObra.request';
 import {
   GrabarMaterialesObrasResponse,
   ValidarCuadroMaterialesResponse,
-} from '../../infrastructure/interfaces/obras/liquidar-materiales/saveLiquiMateObra.response';
+} from '../../infrastructure/interfaces/gestion-obras/liquidar-materiales/saveLiquiMateObra.response';
 
 export const listadoStockMaterilesObras = async (
   props: ListarStockObrasRequest,

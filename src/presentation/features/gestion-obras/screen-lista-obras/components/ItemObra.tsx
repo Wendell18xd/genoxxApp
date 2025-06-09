@@ -3,18 +3,34 @@ import {Text, useTheme, IconButton} from 'react-native-paper';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
 import {Obra} from '../../../../../domain/entities/Obra';
 import {CustomCardContent} from '../../../../components/ui/CustomCardContent';
-// import {globalColors} from '../../../../styles/globalStyle';
+import {globalColors} from '../../../../styles/globalStyle';
 
 interface Props {
   obra: Obra;
+  opcionSeleccionada?: 'liquidar' | 'ejecutar' | 'menu';
   onPress?: () => void;
 }
 
-export const ItemObra = ({obra, onPress}: Props) => {
+export const ItemObra = ({obra, opcionSeleccionada, onPress}: Props) => {
   const {colors} = useTheme();
 
   return (
-    <CustomCardContent onPress={onPress} mode="outlined">
+    <CustomCardContent
+      onPress={onPress}
+      mode="outlined"
+      style={
+        opcionSeleccionada !== 'liquidar' && [
+          {
+            backgroundColor:
+              obra.estado_ejecucion === '0'
+                ? globalColors.lightYellow
+                : undefined,
+            borderColor:
+              obra.estado_ejecucion === '0' ? globalColors.yellow : undefined,
+            borderWidth: obra.estado_ejecucion === '0' ? 1 : undefined,
+          },
+        ]
+      }>
       <View style={styles.container}>
         {/* ICONO */}
         <MaterialIcons name="cube" size={28} color={colors.primary} />
@@ -31,31 +47,6 @@ export const ItemObra = ({obra, onPress}: Props) => {
 
         {/* FLECHA */}
         <IconButton icon="chevron-right" size={24} iconColor={colors.primary} />
-      </View>
-
-      {/* <Divider /> */}
-
-      {/* Etiqueta inferior */}
-      <View style={styles.footer}>
-        {/* <View style={styles.footerItem}>
-          <Text variant="bodySmall" style={{marginRight: 4}}>
-            Dirección:
-          </Text>
-          <Text variant="bodySmall">{obra.direccion}</Text>
-        </View> */}
-
-        {/* GPS */}
-        {/* {obra.coordenada_x !== '' && (
-          <View style={styles.gpsContainer}>
-            <IconButton
-              icon="map-marker"
-              iconColor={globalColors.success}
-              onPress={() => {
-                console.log(obra.coordenada_x, obra.coordenada_y);
-              }}
-            />
-          </View>
-        )} */}
       </View>
     </CustomCardContent>
   );

@@ -1,10 +1,10 @@
 import {genoxxApi} from '../../config/api/genoxxApi';
-import {ValidaCierreObraRequest} from '../../infrastructure/interfaces/obras/liquidar-materiales/liquiMateObra.request';
-import {ValidaCierreObrasResponse} from '../../infrastructure/interfaces/obras/liquidar-materiales/liquiMateObra.response';
-import {GrabarPartidaObrasRequest} from '../../infrastructure/interfaces/obras/liquidar-partidas/grabar.partida.obras.request';
-import {GrabarPartidaObrasResponse} from '../../infrastructure/interfaces/obras/liquidar-partidas/grabar.partida.obras.response';
-import {PartidasObrasRequest} from '../../infrastructure/interfaces/obras/liquidar-partidas/partidas.obras.request';
-import {PartidasObrasResponse} from '../../infrastructure/interfaces/obras/liquidar-partidas/partidas.obras.response';
+import {ValidaCierreObraRequest} from '../../infrastructure/interfaces/gestion-obras/liquidar-materiales/liquiMateObra.request';
+import {ValidaCierreObrasResponse} from '../../infrastructure/interfaces/gestion-obras/liquidar-materiales/liquiMateObra.response';
+import {GrabarPartidaObrasRequest} from '../../infrastructure/interfaces/gestion-obras/liquidar-partidas/grabar.partida.obras.request';
+import {GrabarPartidaObrasResponse} from '../../infrastructure/interfaces/gestion-obras/liquidar-partidas/grabar.partida.obras.response';
+import {PartidasObrasRequest} from '../../infrastructure/interfaces/gestion-obras/liquidar-partidas/partidas.obras.request';
+import {PartidasObrasResponse} from '../../infrastructure/interfaces/gestion-obras/liquidar-partidas/partidas.obras.response';
 import {validaCierreObra} from './obras';
 
 export const listadoPartidasObras = async (

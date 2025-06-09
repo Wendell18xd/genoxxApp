@@ -5,7 +5,7 @@ import {
   listarFotosMaterialesObras,
   grabarFotosMaterialesObras,
   grabarFotosPartidasObras,
-} from '../../../../../actions/obras/fotos.obras';
+} from '../../../../../actions/gestion-obras/fotos.obras';
 import {Foto} from '../../../../../domain/entities/Foto';
 import {useAuthStore} from '../../../../store/auth/useAuthStore';
 import {useFotosStore} from '../../../foto/store/useFotosStore';

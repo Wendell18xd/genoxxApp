@@ -2,11 +2,11 @@ import {genoxxApi} from '../../config/api/genoxxApi';
 import {
   GrabarFotosObrasRequest,
   ListarFotosObrasRequest,
-} from '../../infrastructure/interfaces/obras/fotos-materiales/fotos.obras.request';
+} from '../../infrastructure/interfaces/gestion-obras/fotos-materiales/fotos.obras.request';
 import {
   GrabarFotosObrasResponse,
   ListarFotosObrasResponse,
-} from '../../infrastructure/interfaces/obras/fotos-materiales/fotos.obras.response';
+} from '../../infrastructure/interfaces/gestion-obras/fotos-materiales/fotos.obras.response';
 
 export const grabarFotosMaterialesObras = async (
   props: GrabarFotosObrasRequest,

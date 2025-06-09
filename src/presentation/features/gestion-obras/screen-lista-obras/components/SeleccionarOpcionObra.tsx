@@ -43,12 +43,13 @@ export const SeleccionarOpcionObra = ({onClose}: Props) => {
   };
 
   const handleEjecutar = () => {
+    seleccionarOpcion('ejecutar');
     onClose?.();
   };
 
   return (
     <>
-      {opcionSeleccionada === 'menu' && (
+      {(opcionSeleccionada === 'menu' || opcionSeleccionada === 'ejecutar') && (
         <View style={[{paddingHorizontal: 16, paddingBottom: 16}]}>
           <Text
             variant="titleLarge"

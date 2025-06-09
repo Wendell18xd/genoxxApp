@@ -10,16 +10,26 @@ import {ItemObra} from './components/ItemObra';
 import SinResultados from '../../../components/ui/SinResultados';
 import {CustomFAB} from '../../../components/ui/CustomFAB';
 import CustomBottomSheet from '../../../components/ui/bottomSheetModal/CustomBottomSheet';
-import {useBottomSheetModal} from '../../../hooks/useBottomSheet';
 import {SeleccionarOpcionObra} from './components/SeleccionarOpcionObra';
 import {useObrasNavigationStore} from '../store/useObrasNavigationStore';
+import FullScreenLoader from '../../../components/ui/loaders/FullScreenLoader';
+import { ChipsFiltroEjecucion } from './components/ChipsFiltroEjecucion';
 
 export const ListaObrasScreen = () => {
   const {seleccionarOpcion} = useObrasNavigationStore();
 
-  const {obras, errorObras, isFetchObras, refetchObras, handleSelectObra} =
-    useSarchObras();
-  const {ref, open, close} = useBottomSheetModal();
+  const {
+    opcionSeleccionada,
+    obras,
+    errorObras,
+    isFetchObras,
+    ref,
+    refetchObras,
+    handleSelectObra,
+    handleSearch,
+    handleOpenSearch,
+    close,
+  } = useSarchObras();
   const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -46,8 +56,21 @@ export const ListaObrasScreen = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (opcionSeleccionada === 'ejecutar') {
+      const values = {
+        cbo_proy_codigo: '',
+        cbo_tipo: 'ORDN',
+        txt_busqueda: '',
+      };
+      handleSearch(values);
+    }
+  }, [opcionSeleccionada]);
+
   return (
     <DrawerLayout title="Lista de Obras">
+      {isFetchObras && <FullScreenLoader transparent />}
+
       <View style={{flex: 1}}>
         {obras && obras.length > 0 ? (
           <>
@@ -57,6 +80,11 @@ export const ListaObrasScreen = () => {
               value={searchQuery}
               style={{marginHorizontal: 16, marginTop: 16}}
             />
+
+            {opcionSeleccionada !== 'liquidar' && (
+              <ChipsFiltroEjecucion />
+            )}
+
             <FlatList
               data={obras?.filter(obra =>
                 obra.nro_orden
@@ -71,6 +99,7 @@ export const ListaObrasScreen = () => {
               renderItem={({item}) => (
                 <ItemObra
                   obra={item}
+                  opcionSeleccionada={opcionSeleccionada}
                   onPress={() => {
                     handleSelectObra(item);
                   }}
@@ -79,12 +108,18 @@ export const ListaObrasScreen = () => {
             />
           </>
         ) : (
-          <SinResultados message="No se encontraron obras, use la lupa para buscar" />
+          <SinResultados
+            message={
+              opcionSeleccionada === 'ejecutar'
+                ? 'No tienes ordenes asignadas, Consultar con despacho'
+                : 'No se encontraron obras, use la lupa para buscar'
+            }
+          />
         )}
 
         <CustomFAB
           icon="magnify"
-          onPress={open}
+          onPress={handleOpenSearch}
           style={{bottom: 16, right: 16}}
         />
 

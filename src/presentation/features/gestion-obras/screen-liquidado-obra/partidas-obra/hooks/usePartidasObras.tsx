@@ -1,7 +1,7 @@
 import {useQuery} from '@tanstack/react-query';
 import {useAuthStore} from '../../../../../store/auth/useAuthStore';
 import {useObrasStore} from '../../../store/useObrasStore';
-import {listadoPartidasObras} from '../../../../../../actions/obras/partidas.obras';
+import {listadoPartidasObras} from '../../../../../../actions/gestion-obras/partidas.obras';
 import {useLiquiPartStore} from '../../../liquidar-partidas/store/useLiquiPartStore';
 
 export const usePartidasObras = () => {

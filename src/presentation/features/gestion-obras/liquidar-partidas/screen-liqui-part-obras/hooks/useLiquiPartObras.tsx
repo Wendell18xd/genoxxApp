@@ -6,7 +6,7 @@ import {useMainStore} from '../../../../../store/main/useMainStore';
 import {Menu} from '../../../../../../types/menus';
 import {sanitizarDecimalInput} from '../../../../../helper/inputUtils';
 import {useMutation} from '@tanstack/react-query';
-import {grabarPartidaObras} from '../../../../../../actions/obras/partidas.obras';
+import {grabarPartidaObras} from '../../../../../../actions/gestion-obras/partidas.obras';
 import Toast from 'react-native-toast-message';
 import {useAuthStore} from '../../../../../store/auth/useAuthStore';
 import {obtenerMesYAnio} from '../../../../../helper/timeUtils';

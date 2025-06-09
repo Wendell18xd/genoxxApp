@@ -5,6 +5,7 @@ export interface ObrasRequest {
   txt_proy_codigo: string;
   txt_codi_ejecuta: string;
   txt_cod_negocio: string;
+  vl_opcion: string;
 }
 
 export interface MateLiquiRequest {

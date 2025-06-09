@@ -5,7 +5,6 @@ import {View} from 'react-native';
 import Toast from 'react-native-toast-message';
 import {CustomDropdownInput} from '../../../../components/ui/CustomDropdownInput';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
-import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
 import PrimaryButton from '../../../../components/ui/PrimaryButton';
 import {useSarchObras} from '../hooks/useSarchObras';
 import {IconButton, Text} from 'react-native-paper';
@@ -56,8 +55,6 @@ export const SearchObras = ({onClose}: Props) => {
   return (
     <View>
       {/* {!proyectos && isFetchProyecto && <FullScreenLoader transparent />} */}
-      {isFetchObras && <FullScreenLoader transparent />}
-
       <View
         style={{
           position: 'relative',

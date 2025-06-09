@@ -12,7 +12,7 @@ import Toast from 'react-native-toast-message';
 import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoader';
 import {ItemStockMateObras} from './items/ItemStockMateObras';
 import {CustomFAB} from '../../../../../components/ui/CustomFAB';
-import {MaterialesLiquiRequest} from '../../../../../../infrastructure/interfaces/obras/liquidar-materiales/saveLiquiMateObra.request';
+import {MaterialesLiquiRequest} from '../../../../../../infrastructure/interfaces/gestion-obras/liquidar-materiales/saveLiquiMateObra.request';
 
 interface Props {
   isRegulariza: boolean;

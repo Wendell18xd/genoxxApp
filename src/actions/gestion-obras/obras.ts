@@ -2,13 +2,13 @@ import {genoxxApi} from '../../config/api/genoxxApi';
 import {
   ObrasRequest,
   ValidaCierreObraRequest,
-} from '../../infrastructure/interfaces/obras/liquidar-materiales/liquiMateObra.request';
+} from '../../infrastructure/interfaces/gestion-obras/liquidar-materiales/liquiMateObra.request';
 import {
   ObrasResponse,
   ValidaCierreObrasResponse,
-} from '../../infrastructure/interfaces/obras/liquidar-materiales/liquiMateObra.response';
-import {ProyectosObrasRequest} from '../../infrastructure/interfaces/obras/obras.request';
-import {ProyectosObrasResponse} from '../../infrastructure/interfaces/obras/obras.response';
+} from '../../infrastructure/interfaces/gestion-obras/liquidar-materiales/liquiMateObra.response';
+import {ProyectosObrasRequest} from '../../infrastructure/interfaces/gestion-obras/obras.request';
+import {ProyectosObrasResponse} from '../../infrastructure/interfaces/gestion-obras/obras.response';
 
 export const listadoProyectosObras = async (
   props: ProyectosObrasRequest,
@@ -41,6 +41,7 @@ export const listadoObrasAsiganadas = async (
         txt_proy_codigo: props.txt_proy_codigo,
         txt_codi_ejecuta: props.txt_codi_ejecuta,
         txt_cod_negocio: props.txt_cod_negocio,
+        vl_opcion: props.vl_opcion,
       },
     );
     return data;

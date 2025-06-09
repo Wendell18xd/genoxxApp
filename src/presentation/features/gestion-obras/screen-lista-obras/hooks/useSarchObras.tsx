@@ -5,9 +5,9 @@ import {Option} from 'react-native-paper-dropdown';
 import {
   listadoProyectosObras,
   listadoObrasAsiganadas,
-} from '../../../../../actions/obras/obras';
+} from '../../../../../actions/gestion-obras/obras';
 import {Obra} from '../../../../../domain/entities/Obra';
-import {ObrasRequest} from '../../../../../infrastructure/interfaces/obras/liquidar-materiales/liquiMateObra.request';
+import {ObrasRequest} from '../../../../../infrastructure/interfaces/gestion-obras/liquidar-materiales/liquiMateObra.request';
 import {mapToDropdown} from '../../../../../infrastructure/mappers/mapToDropdown';
 import {useAuthStore} from '../../../../store/auth/useAuthStore';
 import {useMainStore} from '../../../../store/main/useMainStore';
@@ -15,6 +15,8 @@ import {LiquidacionObrasStackParam} from '../../navigations/LiquidacionObrasStac
 import {Menu} from '../../../../../types/menus';
 import * as Yup from 'yup';
 import {useObrasStore} from '../../store/useObrasStore';
+import {useObrasNavigationStore} from '../../store/useObrasNavigationStore';
+import {useBottomSheetModal} from '../../../../hooks/useBottomSheet';
 
 interface SearchObrasFormValues {
   cbo_proy_codigo: string;
@@ -55,7 +57,10 @@ export const useSarchObras = () => {
   const {user} = useAuthStore();
   const {drawerKey} = useMainStore();
   const {setObra} = useObrasStore();
-  const navigation = useNavigation<NavigationProp<LiquidacionObrasStackParam>>();
+  const {opcionSeleccionada, seleccionarOpcion} = useObrasNavigationStore();
+  const {ref, open, close} = useBottomSheetModal();
+  const navigation =
+    useNavigation<NavigationProp<LiquidacionObrasStackParam>>();
 
   const proy_tipo =
     drawerKey === Menu.LIQUIDACION_MATERIALES_OBRAS_ENERGIA ||
@@ -70,6 +75,7 @@ export const useSarchObras = () => {
     txt_proy_codigo: '',
     txt_codi_ejecuta: user?.usua_perfil || '',
     txt_cod_negocio: '',
+    vl_opcion: '',
   });
 
   const getValidationSchema = () =>
@@ -110,14 +116,15 @@ export const useSarchObras = () => {
   });
 
   const handleSearch = (
-    values: SearchObrasFormValues,
+    values?: SearchObrasFormValues,
     onClose?: () => void,
   ) => {
     const nuevosFiltros: ObrasRequest = {
       ...filtrosRef.current,
-      cbo_tipo_buscar_doc: values.cbo_tipo,
-      txt_nro_buscar_doc: values.txt_busqueda,
-      txt_proy_codigo: values.cbo_proy_codigo,
+      cbo_tipo_buscar_doc: values?.cbo_tipo || '',
+      txt_nro_buscar_doc: values?.txt_busqueda || '',
+      txt_proy_codigo: values?.cbo_proy_codigo || '',
+      vl_opcion: opcionSeleccionada || '',
     };
     filtrosRef.current = nuevosFiltros;
     refetchObras();
@@ -127,6 +134,13 @@ export const useSarchObras = () => {
   const handleSelectObra = (obra: Obra) => {
     setObra(obra);
     navigation.navigate('SegmentedButtonsDetalleObras');
+  };
+
+  const handleOpenSearch = () => {
+    if (opcionSeleccionada === 'ejecutar') {
+      seleccionarOpcion('menu');
+    }
+    open();
   };
 
   return {
@@ -139,6 +153,8 @@ export const useSarchObras = () => {
     obras,
     isFetchObras,
     errorObras,
+    opcionSeleccionada,
+    ref,
 
     //* Metodos
     handleSearch,
@@ -146,5 +162,7 @@ export const useSarchObras = () => {
     refetchProyectos,
     refetchObras,
     handleSelectObra,
+    close,
+    handleOpenSearch,
   };
 };
