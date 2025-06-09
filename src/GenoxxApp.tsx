@@ -8,6 +8,7 @@ import {useEffect, useState} from 'react';
 import {initApi} from './config/api/genoxxApi';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import LoadingScreen from './presentation/components/ui/loaders/LoadingScreen';
+import PermissionChecker from './presentation/providers/PermissionChecker';
 
 const queryClient = new QueryClient();
 
@@ -36,7 +37,9 @@ const GenoxxApp = () => {
         />
         <ThemeContextProvider>
           <GestureHandlerRootView style={{flex: 1}}>
-            <AppNavigation />
+            <PermissionChecker>
+              <AppNavigation />
+            </PermissionChecker>
           </GestureHandlerRootView>
         </ThemeContextProvider>
       </QueryClientProvider>
