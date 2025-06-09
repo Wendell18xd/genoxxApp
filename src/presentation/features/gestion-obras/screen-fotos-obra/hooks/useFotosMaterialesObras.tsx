@@ -12,6 +12,7 @@ import {useFotosStore} from '../../../foto/store/useFotosStore';
 import {LiquidacionObrasStackParam} from '../../navigations/LiquidacionObrasStackNavigation';
 import {useObrasStore} from '../../store/useObrasStore';
 import {useLocationStore} from '../../../../store/location/useLocationStore';
+import {validarGpsActivo} from '../../../../helper/checkGPS';
 
 export const useFotosMaterialesObras = (opcion: string) => {
   const navigation =
@@ -90,6 +91,10 @@ export const useFotosMaterialesObras = (opcion: string) => {
 
   //* Dispara el onSave de la pantalla de la camara
   const handleSave = async (_fotos: Foto[]) => {
+    const gpsActivo = await validarGpsActivo();
+    if (!gpsActivo) {
+      return;
+    }
     const location = await getLocation();
     await fotoMutation.mutateAsync({
       vg_empr_codigo: user?.empr_codigo || '',
