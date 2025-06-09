@@ -1,11 +1,9 @@
 import {Text, TextInput} from 'react-native-paper';
 import SafeAreaLayout from '../../../layout/SafeAreaLayout';
 import {
-  KeyboardAvoidingView,
   TouchableWithoutFeedback,
   View,
   Keyboard,
-  Platform,
 } from 'react-native';
 import CustomTextInput from '../../../../../components/ui/CustomTextInput';
 import {Formik} from 'formik';
@@ -84,9 +82,6 @@ export const AlertasScreen = () => {
       <SafeAreaLayout title="Alertas" isHeader primary>
         {mutation.isPending && <FullScreenLoader transparent />}
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <KeyboardAvoidingView
-            style={{flex: 1}}
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
             <View
               style={{
                 flex: 1,
@@ -273,7 +268,6 @@ export const AlertasScreen = () => {
                 </View>
               </CustomBottomSheet>
             </View>
-          </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
       </SafeAreaLayout>
     </View>
