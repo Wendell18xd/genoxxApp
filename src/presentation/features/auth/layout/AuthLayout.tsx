@@ -1,8 +1,6 @@
 import {
   Image,
   Keyboard,
-  KeyboardAvoidingView,
-  Platform,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -116,24 +114,18 @@ const AuthLayout = ({children}: Props) => {
       <View style={{width: '100%'}}>
         <CurvaView />
       </View>
-
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}
-        keyboardVerticalOffset={keyboardVisible ? 0 : -(top + bottom)}>
-        {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
-          <View
-            style={[
-              styles.containerChildren,
-              {
-                backgroundColor: colors.background,
-                paddingBottom: keyboardVisible ? 0 : bottom,
-              },
-            ]}>
-            {children}
-          </View>
-        {/* </TouchableWithoutFeedback> */}
-      </KeyboardAvoidingView>
+      {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
+      <View
+        style={[
+          styles.containerChildren,
+          {
+            backgroundColor: colors.background,
+            paddingBottom: keyboardVisible ? 0 : bottom,
+          },
+        ]}>
+        {children}
+      </View>
+      {/* </TouchableWithoutFeedback> */}
     </View>
   );
 };
