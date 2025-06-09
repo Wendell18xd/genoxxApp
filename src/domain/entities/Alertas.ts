@@ -4,6 +4,7 @@ export interface Alertas {
   cod_para: string;
   nom_para: string;
   correos: string;
+  regi_codigo: string;
 }
 
 export interface AlertaDato {
