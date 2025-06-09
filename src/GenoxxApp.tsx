@@ -4,25 +4,28 @@ import {ThemeContextProvider} from './presentation/context/ThemeContext';
 import {StatusBar, useColorScheme} from 'react-native';
 import AppNavigation from './presentation/navigations/AppNavigation';
 import Toast from 'react-native-toast-message';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {initApi} from './config/api/genoxxApi';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-// import changeNavigationBarColor from 'react-native-navigation-bar-color';
+import LoadingScreen from './presentation/components/ui/loaders/LoadingScreen';
+import PermissionChecker from './presentation/providers/PermissionChecker';
 
 const queryClient = new QueryClient();
 
 const GenoxxApp = () => {
   const colorScheme = useColorScheme();
   const barStyle = colorScheme === 'dark' ? 'light-content' : 'dark-content';
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    initApi();
+    initApi().then(() => {
+      setLoading(false);
+    });
   }, []);
 
-  // Despues revisar afecta a la posision del dropdown
-  /* useEffect(() => {
-    changeNavigationBarColor('transparent', true, false);
-  }, []); */
+  if (loading) {
+    return <LoadingScreen state />;
+  }
 
   return (
     <>
@@ -34,7 +37,9 @@ const GenoxxApp = () => {
         />
         <ThemeContextProvider>
           <GestureHandlerRootView style={{flex: 1}}>
-            <AppNavigation />
+            <PermissionChecker>
+              <AppNavigation />
+            </PermissionChecker>
           </GestureHandlerRootView>
         </ThemeContextProvider>
       </QueryClientProvider>

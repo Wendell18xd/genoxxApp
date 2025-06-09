@@ -1,15 +1,15 @@
 import {create} from 'zustand';
-import { ConsultaUnidades } from '../../../../../domain/entities/ConsultaUnidades';
+import { Placa } from '../../../../../domain/entities/Placa';
 
 
-interface PatenteStore {
-  setOnSelectPatente: (fn: (patente: ConsultaUnidades) => void) => void;
-  onSelect: ((patente: ConsultaUnidades) => void) | null;
-   reset: () => void;
+interface usePatenteStore {
+  setOnSelectPatente: (fn: (patente: Placa) => void) => void;
+  onSelect: ((patente: Placa) => void) | null;
+   resetPatente: () => void;
 }
 
-export const usePatenteStore = create<PatenteStore>(set => ({
+export const usePatenteStore = create<usePatenteStore>(set => ({
   onSelect: null,
   setOnSelectPatente: fn => set({onSelect: fn}),
-  reset: () => set({onSelect: null}),
+  resetPatente: () => set({onSelect: null}),
 }));

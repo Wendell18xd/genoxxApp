@@ -4,34 +4,23 @@ import PrimaryButton from '../../../../../components/ui/PrimaryButton';
 import {View} from 'react-native';
 import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoader';
 import {useSearchConsultaHistoricaPatente} from '../hooks/useSearchConsultaHistoricaPatente';
-import {TextInput} from 'react-native-paper';
+import {Text, TextInput} from 'react-native-paper';
 import {CustomDropdownInput} from '../../../../../components/ui/CustomDropdownInput';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {ConsultaHistoricaPatenteStackParam} from '../../navigations/ConsultaHistoricaPatenteStackNavigation';
 
 interface Props {
   onClose?: (tipoSeleccionado: 'PERS' | 'PLACA') => void;
-  onTipoBusquedaChange?: (tipo: 'PERS' | 'PLACA') => void;
 }
 
-export const SearchConsultaHistoricaPatente = ({
-  onClose,
-  onTipoBusquedaChange,
-}: Props) => {
+export const SearchConsultaHistoricaPatente = ({onClose}: Props) => {
   const {
     tiposBusqueda,
     initialValues,
     isFetchConsultaHistoricaPatente,
     handleSearch,
+    handleSelectPatente,
+    handleSelectPersonal,
     getValidationSchema,
-    setCodDestinatario,
-    setOnSelectPersonal,
-    setOnSelectPatente,
   } = useSearchConsultaHistoricaPatente();
-
-  const navigation =
-    useNavigation<NavigationProp<ConsultaHistoricaPatenteStackParam>>();
-
   return (
     <View>
       {isFetchConsultaHistoricaPatente && <FullScreenLoader transparent />}
@@ -69,20 +58,14 @@ export const SearchConsultaHistoricaPatente = ({
                   onSelect={val => {
                     setFieldValue('cbo_bus_tipo', val);
                     setFieldValue('txt_cod_destinatario', '');
-                    setCodDestinatario('');
-                    if (
-                      onTipoBusquedaChange &&
-                      (val === 'PERS' || val === 'PLACA')
-                    ) {
-                      onTipoBusquedaChange(val);
-                    }
                   }}
                 />
               </View>
-              <CustomTextInput
+
+               <CustomTextInput
                 label="Buscar"
                 mode="outlined"
-                value={values.txt_cod_destinatario}
+                value={values.cbo_bus_tipo === 'PERS' ? values.personal : values.patente}
                 onChangeText={handleChange('txt_cod_destinatario')}
                 onBlur={handleBlur('txt_cod_destinatario')}
                 editable={false}
@@ -95,35 +78,10 @@ export const SearchConsultaHistoricaPatente = ({
                         : 'magnify'
                     }
                     onPress={() => {
-                      if (
-                        values.txt_cod_destinatario &&
-                        values.txt_cod_destinatario.length > 0
-                      ) {
-                        setFieldValue('txt_cod_destinatario', '');
-                        setCodDestinatario('');
-                      } else {
-                        if (
-                          values.cbo_bus_tipo === 'PERS' ||
-                          values.cbo_bus_tipo === undefined
-                        ) {
-                          setOnSelectPersonal(personal => {
-                            setFieldValue(
-                              'txt_cod_destinatario',
-                              `${personal.cod_para} - ${personal.nom_para}`,
-                            );
-                            setCodDestinatario(personal.cod_para);
-                          });
-                          navigation.navigate('BuscadorPersonalScreen');
-                        } else if (values.cbo_bus_tipo === 'PLACA') {
-                          setOnSelectPatente(patente => {
-                            setFieldValue(
-                              'txt_cod_destinatario',
-                              `${patente.nro_placa} - ${patente.nom_marca}`,
-                            );
-                            setCodDestinatario(patente.nro_placa);
-                          });
-                          navigation.navigate('BuscadorPatenteScreen');
-                        }
+                      if (values.cbo_bus_tipo === 'PLACA') {
+                        handleSelectPatente(values.patente, setFieldValue);
+                      } else if (values.cbo_bus_tipo === 'PERS') {
+                        handleSelectPersonal(values.personal, setFieldValue);
                       }
                     }}
                   />
@@ -133,6 +91,11 @@ export const SearchConsultaHistoricaPatente = ({
                 }
                 style={{width: '100%'}}
               />
+              {touched.txt_cod_destinatario && errors.txt_cod_destinatario && (
+                <Text style={{color: 'red', marginBottom: 4}}>
+                  {errors.txt_cod_destinatario}
+                </Text>
+              )}
 
               <PrimaryButton
                 label="Buscar"

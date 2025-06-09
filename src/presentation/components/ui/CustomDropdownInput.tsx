@@ -3,8 +3,9 @@ import {
   DropdownInputProps,
   Option,
 } from 'react-native-paper-dropdown';
-import {TextInput} from 'react-native-paper';
+import {ActivityIndicator, TextInput} from 'react-native-paper';
 import {useMemo} from 'react';
+import {View} from 'react-native';
 
 interface Props {
   height?: number;
@@ -16,7 +17,11 @@ interface Props {
   value: string;
   onSelect: (val?: string) => void;
   error?: boolean;
+  loading?: boolean;
+  disabled?: boolean;
 }
+
+const LoadingIcon = () => <ActivityIndicator color="gray" size="small" />;
 
 export const CustomDropdownInput: React.FC<Props> = ({
   height = 60,
@@ -28,6 +33,8 @@ export const CustomDropdownInput: React.FC<Props> = ({
   value,
   onSelect,
   error = false,
+  loading = false,
+  disabled = false,
 }) => {
   const DropdownInput = useMemo(() => {
     return ({selectedLabel, rightIcon}: DropdownInputProps) => (
@@ -40,24 +47,33 @@ export const CustomDropdownInput: React.FC<Props> = ({
         pointerEvents="none"
         error={error}
         style={{height, backgroundColor: 'transparent'}}
-        left={icon ? <TextInput.Icon icon={icon} /> : undefined}
+        left={
+          loading ? (
+            <TextInput.Icon icon={LoadingIcon} />
+          ) : icon ? (
+            <TextInput.Icon icon={icon} />
+          ) : undefined
+        }
         right={rightIcon}
+        disabled={disabled}
       />
     );
-  }, [icon, height, mode, error, label, placeholder]);
+  }, [icon, height, mode, error, label, placeholder, loading, disabled]);
 
   return (
-    <Dropdown
-      label={label}
-      mode={mode}
-      placeholder={placeholder}
-      options={options}
-      value={value}
-      onSelect={onSelect}
-      CustomDropdownInput={DropdownInput}
-      menuContentStyle={{
-        backgroundColor: '#f5f5f5',
-      }}
-    />
+    <View pointerEvents={disabled ? 'none' : 'auto'}>
+      <Dropdown
+        label={label}
+        mode={mode}
+        placeholder={placeholder}
+        options={options}
+        value={value}
+        onSelect={onSelect}
+        CustomDropdownInput={DropdownInput}
+        menuContentStyle={{
+          backgroundColor: '#f5f5f5',
+        }}
+      />
+    </View>
   );
 };

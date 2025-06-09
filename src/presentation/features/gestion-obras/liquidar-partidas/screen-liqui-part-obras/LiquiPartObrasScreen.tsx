@@ -6,26 +6,38 @@ import CustomDatePicker from '../../../../components/ui/CustomDatePicker';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
 import {TextInput} from 'react-native-paper';
 import PrimaryButton from '../../../../components/ui/PrimaryButton';
-
-const initialValues = {
-  fecha_liquidacion: new Date().toISOString().slice(0, 10),
-  actividad: '',
-  cantidad: '',
-  observacion: '',
-};
+import {useLiquiPartObras} from './hooks/useLiquiPartObras';
+import {mostrarSiNoCero} from '../../../../helper/utils';
+import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
 
 export const LiquiPartObrasScreen = () => {
+  const {
+    initialValues,
+    mutation,
+    mapUnidadesMedida,
+    txt_tipo,
+    getValidationSchema,
+    handleSavePartida,
+    handleSelectActividad,
+    handleChangeCantidad,
+  } = useLiquiPartObras();
+
   return (
     <DrawerLayout>
+      {mutation.isPending && (
+        <FullScreenLoader message="Grabando partida" transparent />
+      )}
+
       <Formik
         enableReinitialize
         initialValues={initialValues}
-        onSubmit={(values, {resetForm}) => {}}
-        /* validationSchema={getValidationSchema} */
-      >
+        onSubmit={(values, {resetForm}) => {
+          handleSavePartida(values, resetForm);
+        }}
+        validationSchema={getValidationSchema}>
         {({
           handleSubmit,
-          handleReset,
+          handleBlur,
           handleChange,
           setFieldValue,
           values,
@@ -56,21 +68,40 @@ export const LiquiPartObrasScreen = () => {
                 label="Buscar actividad"
                 value={values.actividad}
                 onChangeText={handleChange('actividad')}
-                right={<TextInput.Icon icon="magnify" />}
+                onBlur={handleBlur('actividad')}
+                focusable={false}
+                right={
+                  <TextInput.Icon
+                    icon={
+                      values.actividad && values.actividad.length > 0
+                        ? 'close'
+                        : 'magnify'
+                    }
+                    onPress={() => {
+                      handleSelectActividad(values.actividad, setFieldValue);
+                    }}
+                  />
+                }
                 style={{marginTop: 8}}
-                error={touched.actividad && !!errors.actividad}
+                error={
+                  touched.actividad &&
+                  !!errors.actividad &&
+                  values.cod_actividad === ''
+                }
               />
-              {touched.actividad && errors.actividad && (
-                <Text style={{color: 'red', marginBottom: 4}}>
-                  {errors.actividad}
-                </Text>
-              )}
+              {touched.actividad &&
+                errors.actividad &&
+                values.cod_actividad === '' && (
+                  <Text style={{color: 'red', marginBottom: 4}}>
+                    {errors.actividad}
+                  </Text>
+                )}
 
               <CustomTextInput
                 label="Cantidad"
-                value={values.cantidad}
+                value={mostrarSiNoCero(values.cantidad?.toString())}
                 style={{marginTop: 8}}
-                onChangeText={handleChange('cantidad')}
+                onChangeText={val => handleChangeCantidad(val, setFieldValue)}
                 error={touched.cantidad && !!errors.cantidad}
                 keyboardType="decimal-pad"
               />
@@ -78,6 +109,21 @@ export const LiquiPartObrasScreen = () => {
                 <Text style={{color: 'red', marginBottom: 4}}>
                   {errors.cantidad}
                 </Text>
+              )}
+
+              {txt_tipo === 'ENERGIA' && (
+                <CustomTextInput
+                  label="Dificultad"
+                  value={
+                    mapUnidadesMedida[
+                      values.dificultad as keyof typeof mapUnidadesMedida
+                    ]
+                  }
+                  style={{marginTop: 8}}
+                  editable={false}
+                  onChangeText={val => setFieldValue('dificultad', val)}
+                  error={touched.dificultad && !!errors.dificultad}
+                />
               )}
 
               <CustomTextInput
@@ -101,7 +147,7 @@ export const LiquiPartObrasScreen = () => {
               <PrimaryButton
                 label="Grabar"
                 icon="content-save"
-                loading={false}
+                loading={mutation.isPending}
                 onPress={handleSubmit}
                 style={{marginTop: 16, width: '100%'}}
               />

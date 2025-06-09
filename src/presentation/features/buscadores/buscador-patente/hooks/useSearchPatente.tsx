@@ -1,37 +1,36 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-
 import {useRef} from 'react';
 import {useQuery} from '@tanstack/react-query';
 import {ConsultaHistoricaPatenteStackParam} from '../../../flota/consultaHistoricaPatente/navigations/ConsultaHistoricaPatenteStackNavigation';
-import {ConsultaUnidadesRequest} from '../../../../../infrastructure/interfaces/flota/consultaUnidades/consultaUnidades.request';
 import {useAuthStore} from '../../../../store/auth/useAuthStore';
-import {getConsultaUnidades} from '../../../../../actions/flota/consultaUnidades';
-import {ConsultaUnidades} from '../../../../../domain/entities/ConsultaUnidades';
 import {usePatenteStore} from '../store/usePatenteStore';
 import * as Yup from 'yup';
+import {PlacaRequest} from '../../../../../infrastructure/interfaces/buscadores/placa/placa.request';
+import {getPlaca} from '../../../../../actions/buscadores/placa';
+import {Placa} from '../../../../../domain/entities/Placa';
 
-interface SearchUnidadesFormValues {
-  nro_placa: string;
+interface SearchPlacaFormValues {
+  txt_buscar: string;
 }
 
-const initialValues: SearchUnidadesFormValues = {
-  nro_placa: '',
+const initialValues: SearchPlacaFormValues = {
+  txt_buscar: '',
 };
 
 export const useSearchPatente = () => {
   const {user} = useAuthStore();
   const navigation =
     useNavigation<NavigationProp<ConsultaHistoricaPatenteStackParam>>();
-  const onSelect = usePatenteStore(state => state.onSelect);
+  const {onSelect} = usePatenteStore();
 
-  const filtrosRef = useRef<ConsultaUnidadesRequest>({
+  const filtrosRef = useRef<PlacaRequest>({
     vl_empr_codigo: user?.empr_codigo || '',
-    txt_nro_placa: '',
+    txt_buscar: '',
   });
 
   const getValidationSchema = () =>
     Yup.object().shape({
-      nro_placa: Yup.string().required('Buscar patente'),
+      txt_buscar: Yup.string().required('Ingrese una patente'),
     });
 
   const {
@@ -42,26 +41,26 @@ export const useSearchPatente = () => {
   } = useQuery({
     queryKey: ['consultaPatentes'],
     queryFn: async () => {
-      const {datos} = await getConsultaUnidades(filtrosRef.current);
+      const {datos} = await getPlaca(filtrosRef.current);
       return datos;
     },
     enabled: false,
   });
 
   const handleSearch = (
-    values: SearchUnidadesFormValues,
+    values: SearchPlacaFormValues,
     onClose?: () => void,
   ) => {
-    const nuevosFiltros: ConsultaUnidadesRequest = {
+    const nuevosFiltros: PlacaRequest = {
       ...filtrosRef.current,
-      txt_nro_placa: values.nro_placa.trim().toUpperCase(),
+      txt_buscar: values.txt_buscar.trim().toUpperCase(),
     };
     filtrosRef.current = nuevosFiltros;
     refetchPatente();
     onClose?.();
   };
 
-  const handleSelectPatente = (selectedPatente: ConsultaUnidades) => {
+  const handleSelectPatente = (selectedPatente: Placa) => {
     onSelect?.(selectedPatente);
     navigation.goBack();
   };

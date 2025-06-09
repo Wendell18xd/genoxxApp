@@ -1,23 +1,28 @@
 import {useQueryClient} from '@tanstack/react-query';
 import {Formik} from 'formik';
 import {useEffect} from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import Toast from 'react-native-toast-message';
 import {CustomDropdownInput} from '../../../../components/ui/CustomDropdownInput';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
 import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
 import PrimaryButton from '../../../../components/ui/PrimaryButton';
 import {useSarchObras} from '../hooks/useSarchObras';
+import {IconButton, Text} from 'react-native-paper';
+import {useObrasNavigationStore} from '../../store/useObrasNavigationStore';
 
 interface Props {
   onClose?: () => void;
 }
 
 export const SearchObras = ({onClose}: Props) => {
+  const {seleccionarOpcion} = useObrasNavigationStore();
+
   const {
     tiposBusqueda,
     initialValues,
     proyectos,
+    isFetchProyecto,
     isFetchObras,
     errorProyectos,
     handleSearch,
@@ -48,13 +53,41 @@ export const SearchObras = ({onClose}: Props) => {
     }
   }, [errorProyectos]);
 
-  if (!proyectos && isFetchObras) {
-    return <FullScreenLoader />;
-  }
-
   return (
     <View>
+      {/* {!proyectos && isFetchProyecto && <FullScreenLoader transparent />} */}
       {isFetchObras && <FullScreenLoader transparent />}
+
+      <View
+        style={{
+          position: 'relative',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: 50,
+        }}>
+        {/* Texto centrado */}
+        <Text
+          variant="titleLarge"
+          style={{
+            position: 'absolute',
+            textAlign: 'center',
+            fontWeight: 'bold',
+          }}>
+          Buscar obra
+        </Text>
+
+        {/* Flecha encima */}
+        <IconButton
+          icon="arrow-left"
+          onPress={() => seleccionarOpcion('menu')}
+          style={{
+            position: 'absolute',
+            left: 0,
+            zIndex: 10,
+          }}
+        />
+      </View>
+
       <Formik
         initialValues={initialValues}
         onSubmit={values => handleSearch(values, onClose)}
@@ -77,6 +110,8 @@ export const SearchObras = ({onClose}: Props) => {
                   value={values.cbo_proy_codigo}
                   onSelect={val => setFieldValue('cbo_proy_codigo', val)}
                   error={touched.cbo_proy_codigo && !!errors.cbo_proy_codigo}
+                  loading={!proyectos && isFetchProyecto}
+                  disabled={!proyectos && isFetchProyecto}
                 />
                 {touched.cbo_proy_codigo && errors.cbo_proy_codigo && (
                   <Text style={{color: 'red', marginTop: 4}}>

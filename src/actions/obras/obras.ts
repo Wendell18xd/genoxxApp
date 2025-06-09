@@ -1,6 +1,12 @@
 import {genoxxApi} from '../../config/api/genoxxApi';
-import {ObrasRequest} from '../../infrastructure/interfaces/obras/liquidar-materiales/liquiMateObra.request';
-import {ObrasResponse} from '../../infrastructure/interfaces/obras/liquidar-materiales/liquiMateObra.response';
+import {
+  ObrasRequest,
+  ValidaCierreObraRequest,
+} from '../../infrastructure/interfaces/obras/liquidar-materiales/liquiMateObra.request';
+import {
+  ObrasResponse,
+  ValidaCierreObrasResponse,
+} from '../../infrastructure/interfaces/obras/liquidar-materiales/liquiMateObra.response';
 import {ProyectosObrasRequest} from '../../infrastructure/interfaces/obras/obras.request';
 import {ProyectosObrasResponse} from '../../infrastructure/interfaces/obras/obras.response';
 
@@ -35,6 +41,23 @@ export const listadoObrasAsiganadas = async (
         txt_proy_codigo: props.txt_proy_codigo,
         txt_codi_ejecuta: props.txt_codi_ejecuta,
         txt_cod_negocio: props.txt_cod_negocio,
+      },
+    );
+    return data;
+  } catch (error) {
+    throw new Error(error as string);
+  }
+};
+
+export const validaCierreObra = async (
+  props: ValidaCierreObraRequest,
+): Promise<ValidaCierreObrasResponse> => {
+  try {
+    const {data} = await genoxxApi.post<ValidaCierreObrasResponse>(
+      '/obras/get_valida_cierre_obra',
+      {
+        vg_empr_codigo: props.vl_empr_codigo,
+        vl_nro_orden: props.vl_nro_orden,
       },
     );
     return data;

@@ -2,22 +2,22 @@ import {Text, useTheme} from 'react-native-paper';
 import {CustomCardContent} from '../../../../components/ui/CustomCardContent';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
 import {StyleSheet, View} from 'react-native';
-import {ConsultaUnidades} from '../../../../../domain/entities/ConsultaUnidades';
+import { Placa } from '../../../../../domain/entities/Placa';
 
 interface Props {
-  patente: ConsultaUnidades;
+  patente: Placa;
   onPress?: () => void;
 }
 
 export const ItemPatente = ({patente, onPress}: Props) => {
   const {colors} = useTheme();
-  const isDeBaja = patente.situacion === 'DEVP';
+  const deBaja = patente.estado === '0';
 
   return (
     <CustomCardContent
       onPress={onPress}
       mode="outlined"
-      style={isDeBaja ? {borderColor: '#FF4D4D', borderWidth: 1} : {}}>
+      style={deBaja ? {borderColor: '#FF4D4D', borderWidth: 1} : {}}>
       <View style={styles.container}>
         {/* ICONO */}
         <MaterialIcons name="car-side" size={28} color={colors.primary} />
@@ -25,15 +25,15 @@ export const ItemPatente = ({patente, onPress}: Props) => {
         {/* CONTENIDO PRINCIPAL */}
         <View style={styles.content}>
           <Text variant="titleMedium" style={styles.title}>
-            {patente.nro_placa}
+            {patente.cod_para}
           </Text>
           <Text variant="bodySmall" style={styles.subtitle}>
-            {patente.nom_marca}
+            {patente.nom_para}
           </Text>
         </View>
 
         {/* BADGE */}
-        {isDeBaja && (
+        {deBaja && (
           <View style={styles.badgeContainer}>
             <View style={[styles.badge, {backgroundColor: '#FF4D4D'}]}>
               <Text style={styles.badgeText}>DE BAJA</Text>

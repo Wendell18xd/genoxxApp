@@ -1,11 +1,10 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-
 import {useRef} from 'react';
 import {useQuery} from '@tanstack/react-query';
 import {ConsultaHistoricaPatenteStackParam} from '../../../flota/consultaHistoricaPatente/navigations/ConsultaHistoricaPatenteStackNavigation';
 import {useAuthStore} from '../../../../store/auth/useAuthStore';
-import {PersonalRequest} from '../../../../../infrastructure/interfaces/flota/personal/personal.request';
-import {getPersonal} from '../../../../../actions/personal/personal';
+import {PersonalRequest} from '../../../../../infrastructure/interfaces/buscadores/personal/personal.request';
+import {getPersonal} from '../../../../../actions/buscadores/personal';
 import {Personal} from '../../../../../domain/entities/Personal';
 import {usePersonalStore} from '../store/usePersonalStore';
 import * as Yup from 'yup';
@@ -22,7 +21,7 @@ export const useSearchPersonal = () => {
   const {user} = useAuthStore();
   const navigation =
     useNavigation<NavigationProp<ConsultaHistoricaPatenteStackParam>>();
-  const onSelect = usePersonalStore(state => state.onSelect);
+  const {onSelect} = usePersonalStore();
 
   const filtrosRef = useRef<PersonalRequest>({
     vl_empr_codigo: user?.empr_codigo || '',
@@ -32,7 +31,7 @@ export const useSearchPersonal = () => {
 
   const getValidationSchema = () =>
     Yup.object().shape({
-      txt_buscar: Yup.string().required('Buscar personal'),
+      txt_buscar: Yup.string().required('Ingrese un personal'),
     });
 
   const {
