@@ -9,6 +9,8 @@ export const globalColors = {
   textPrimary: '#000',
   textSecondary: '#666',
   white: '#fff',
+  yellow: '#FFE599',
+  lightYellow: '#FFFBEA',
 };
 
 export const globalStyle = StyleSheet.create({
