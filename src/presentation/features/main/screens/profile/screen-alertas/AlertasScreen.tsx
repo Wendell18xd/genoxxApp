@@ -31,6 +31,7 @@ export const AlertasScreen = () => {
   const [isSheetVisible, setIsSheetVisible] = useState(false);
 
   const {handleCamera, fotos} = useCamaraAlertas();
+  const [loading, setLoading] = useState(false);
 
   const open = () => {
     isSheetOpenRef.current = true;
@@ -68,7 +69,6 @@ export const AlertasScreen = () => {
 
   const handleCancel = () => {
     resetRecorder();
-    close();
   };
 
   if (!tipos && isFetching) {
@@ -78,14 +78,19 @@ export const AlertasScreen = () => {
   return (
     <View style={{flex: 1}}>
       <SafeAreaLayout title="Alertas" isHeader primary>
-        {mutation.isPending && <FullScreenLoader transparent />}
+        {(mutation.isPending || loading) && <FullScreenLoader transparent />}
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={{flex: 1, padding: 16, paddingBottom: 80}}>
             <Formik
               initialValues={formValues}
               validationSchema={getAlertValidationSchema}
               onSubmit={(values, {resetForm}) => {
-                startAlertaSubmit(values, resetForm, audioBase64);
+                setLoading(true);
+                startAlertaSubmit(values, resetForm, audioBase64).finally(
+                  () => {
+                    setLoading(false);
+                  },
+                );
               }}>
               {({values, setFieldValue, handleSubmit, touched, errors}) => (
                 <View style={{flex: 1}}>
