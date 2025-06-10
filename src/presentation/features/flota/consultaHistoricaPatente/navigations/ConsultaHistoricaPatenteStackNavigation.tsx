@@ -1,8 +1,8 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import { ListaConsultaHistoricaPatenteScreen } from '../screen-consulta-historica-patente/ListaConsultaHistoricaPatenteScreen';
-import { BuscadorPatenteScreen } from '../../../buscadores/buscador-patente/BuscadorPatenteScreen';
+import { ListaConsultaHistoricaPatenteScreen } from '../screenConsultaHistoricaPatente/ListaConsultaHistoricaPatenteScreen';
+import { BuscadorPatenteScreen } from '../../../buscadores/buscadorPatente/BuscadorPatenteScreen';
 import { Personal } from '../../../../../domain/entities/Personal';
-import { BuscadorPersonalScreen } from '../../../buscadores/buscador-personal/BuscadorPersonalScreen';
+import { BuscadorPersonalScreen } from '../../../buscadores/buscadorPersonal/BuscadorPersonalScreen';
 import { Placa } from '../../../../../domain/entities/Placa';
 
 export type ConsultaHistoricaPatenteStackParam = {
