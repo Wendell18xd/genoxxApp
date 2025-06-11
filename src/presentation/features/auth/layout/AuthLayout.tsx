@@ -18,6 +18,7 @@ import {
 } from '../../../../config/api/genoxxApi';
 import {StorageAdapter} from '../../../adapter/storage-adapter';
 import {useNavigation} from '@react-navigation/native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 interface Props {
   children?: React.ReactNode;
@@ -28,7 +29,7 @@ const AuthLayout = ({children}: Props) => {
   const {colors} = useTheme();
   const navigation = useNavigation();
 
-  const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const [_keyboardVisible, setKeyboardVisible] = useState(false);
 
   const handlerConfig = async () => {
     const host = await StorageAdapter.getItem('host');
@@ -114,18 +115,27 @@ const AuthLayout = ({children}: Props) => {
       <View style={{width: '100%'}}>
         <CurvaView />
       </View>
-      {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
-      <View
-        style={[
-          styles.containerChildren,
-          {
-            backgroundColor: colors.background,
-            paddingBottom: keyboardVisible ? 0 : bottom,
-          },
-        ]}>
-        {children}
+      <View style={{flex: 1, backgroundColor: colors.background}}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{flexGrow: 1}}
+          enableOnAndroid={true}
+          extraScrollHeight={16}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}>
+          {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
+          <View
+            style={[
+              styles.containerChildren,
+              {
+                backgroundColor: colors.background,
+                paddingBottom: bottom,
+              },
+            ]}>
+            {children}
+          </View>
+          {/* </TouchableWithoutFeedback> */}
+        </KeyboardAwareScrollView>
       </View>
-      {/* </TouchableWithoutFeedback> */}
     </View>
   );
 };

@@ -39,6 +39,7 @@ export const useAlertas = () => {
   const onResetRef = useRef(() => {});
   const navigation = useNavigation();
   const {getLocation} = useLocationStore();
+  const [loadingGPS, setLoadingGPS] = useState(false);
 
   const {
     data: tipos,
@@ -67,6 +68,7 @@ export const useAlertas = () => {
       onResetRef.current();
       onReset();
       navigation.goBack();
+      setLoadingGPS(false);
     },
     onError: error => {
       Toast.show({
@@ -74,6 +76,7 @@ export const useAlertas = () => {
         text1: 'Error al enviar alerta',
         text2: error.message,
       });
+      setLoadingGPS(false);
     },
   });
 
@@ -83,6 +86,7 @@ export const useAlertas = () => {
     audioBase64?: string,
   ) => {
     onResetRef.current = resetForm;
+    setLoadingGPS(true);
     const location = await getLocation();
     const data = {
       vg_empr_codigo: user?.empr_codigo || '',
@@ -106,6 +110,7 @@ export const useAlertas = () => {
     isFetching,
     initialValues,
     mutation,
+    loadingGPS,
 
     //* Metodos
     startAlertaSubmit,

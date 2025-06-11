@@ -24,6 +24,7 @@ export const AlertasScreen = () => {
     isFetching,
     getAlertValidationSchema,
     mutation,
+    loadingGPS,
   } = useAlertas();
 
   const {ref, open: openModal, close: closeModal} = useBottomSheetModal();
@@ -31,7 +32,6 @@ export const AlertasScreen = () => {
   const [isSheetVisible, setIsSheetVisible] = useState(false);
 
   const {handleCamera, fotos} = useCamaraAlertas();
-  const [loading, setLoading] = useState(false);
 
   const open = () => {
     isSheetOpenRef.current = true;
@@ -78,19 +78,14 @@ export const AlertasScreen = () => {
   return (
     <View style={{flex: 1}}>
       <SafeAreaLayout title="Alertas" isHeader primary>
-        {(mutation.isPending || loading) && <FullScreenLoader transparent />}
+        {(mutation.isPending || loadingGPS) && <FullScreenLoader transparent />}
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={{flex: 1, padding: 16, paddingBottom: 80}}>
             <Formik
               initialValues={formValues}
               validationSchema={getAlertValidationSchema}
               onSubmit={(values, {resetForm}) => {
-                setLoading(true);
-                startAlertaSubmit(values, resetForm, audioBase64).finally(
-                  () => {
-                    setLoading(false);
-                  },
-                );
+                startAlertaSubmit(values, resetForm, audioBase64);
               }}>
               {({values, setFieldValue, handleSubmit, touched, errors}) => (
                 <View style={{flex: 1}}>
@@ -158,8 +153,8 @@ export const AlertasScreen = () => {
                     icon="content-save"
                     style={{marginTop: 16, width: '100%'}}
                     onPress={handleSubmit}
-                    disabled={mutation.isPending}
-                    loading={mutation.isPending}
+                    disabled={mutation.isPending || loadingGPS}
+                    loading={mutation.isPending || loadingGPS}
                   />
                 </View>
               )}

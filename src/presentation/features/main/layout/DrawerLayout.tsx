@@ -64,7 +64,8 @@ const DrawerLayout = ({
         />
       </Appbar.Header>
 
-      <KeyboardAvoidingView
+      <View>
+        <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}
         keyboardVerticalOffset={keyboardVisible ? -16 : -(top + bottom)}>
@@ -94,6 +95,7 @@ const DrawerLayout = ({
           </View>
         {/* </TouchableWithoutFeedback> */}
       </KeyboardAvoidingView>
+      </View>
     </View>
   );
 };

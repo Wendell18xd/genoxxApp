@@ -1,9 +1,10 @@
-import {KeyboardAvoidingView, Platform, View, ViewStyle} from 'react-native';
+import {View, ViewStyle} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import CurvaBottomView from '../../../components/ui/CurvaBottomView';
 import {Appbar, useTheme} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {useKeyBoardVisible} from '../../../hooks/useKeyBoardVisible';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 interface Props {
   children: React.ReactNode;
@@ -15,6 +16,7 @@ interface Props {
   title?: string;
   isBack?: boolean;
   isSafeBottom?: boolean;
+  useKeyboardAwareScroll?: true;
 }
 
 const SafeAreaLayout = ({
@@ -57,34 +59,45 @@ const SafeAreaLayout = ({
           <Appbar.Content title={title} color={primary ? 'white' : ''} />
         </Appbar.Header>
       )}
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}
-        keyboardVerticalOffset={keyboardVisible ? 0 : -(top + bottom)}>
-        {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
+      {KeyboardAwareScrollView ? (
+        <KeyboardAwareScrollView
+          contentContainerStyle={{flexGrow: 1}}
+          enableOnAndroid={true}
+          extraScrollHeight={16}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}>
+          <View
+            style={{
+              flex: 1,
+              position: 'relative',
+              paddingTop: isHeader ? 0 : top,
+              paddingBottom: !isSafeBottom ? 0 : keyboardVisible ? 0 : bottom,
+            }}>
+            {primary && isCurva && (
+              <View
+                style={{
+                  position: 'absolute',
+                  width: '100%',
+                }}>
+                <View
+                  style={{backgroundColor: colors.primary, height: curvaHeight}}
+                />
+                <CurvaBottomView />
+              </View>
+            )}
+            {children}
+          </View>
+        </KeyboardAwareScrollView>
+      ) : (
         <View
           style={{
             flex: 1,
-            position: 'relative',
             paddingTop: isHeader ? 0 : top,
             paddingBottom: !isSafeBottom ? 0 : keyboardVisible ? 0 : bottom,
           }}>
-          {primary && isCurva && (
-            <View
-              style={{
-                position: 'absolute',
-                width: '100%',
-              }}>
-              <View
-                style={{backgroundColor: colors.primary, height: curvaHeight}}
-              />
-              <CurvaBottomView />
-            </View>
-          )}
           {children}
         </View>
-        {/* </TouchableWithoutFeedback> */}
-      </KeyboardAvoidingView>
+      )}
     </View>
   );
 };
