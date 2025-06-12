@@ -17,6 +17,11 @@ export const globalStyle = StyleSheet.create({
   container: {
     flex: 1,
   },
+  defaultContainer: {
+    flex: 1,
+    padding: 16,
+    position: 'relative',
+  },
   padding: {
     padding: 16,
   },

@@ -22,6 +22,7 @@ export const ListaObrasScreen = () => {
     errorObras,
     isFetchObras,
     ref,
+    loadingActividades,
     refetchObras,
     handleSelectObra,
     handleSearch,
@@ -84,12 +85,11 @@ export const ListaObrasScreen = () => {
         queryKey: ['obrasAsignadas'],
       });
     }
-    console.log(opcionSeleccionada);
   }, [opcionSeleccionada]);
 
   return (
     <DrawerLayout title="Lista de Obras">
-      {isFetchObras && <FullScreenLoader transparent />}
+      {(isFetchObras || loadingActividades) && <FullScreenLoader transparent />}
 
       <View style={{flex: 1}}>
         {obras && obras.length > 0 ? (
