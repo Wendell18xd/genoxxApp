@@ -59,7 +59,7 @@ export const CustomFAB = ({
   };
 
   return (
-    <View style={[{right: 0, bottom: 0, position: 'absolute'}, style]}>
+    <View style={[{position: 'absolute'}, style]}>
       {cantidad > 0 && (
         <View
           style={{

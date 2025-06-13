@@ -1,5 +1,5 @@
 import {FormikErrors} from 'formik';
-import {useState} from 'react';
+import {useRef, useState} from 'react';
 import {Option} from 'react-native-paper-dropdown';
 import {useEjecucionObrasStore} from '../../../store/useEjecucionObrasStore';
 import {mapToDropdown} from '../../../../../../../infrastructure/mappers/mapToDropdown';
@@ -10,11 +10,12 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {LiquidacionObrasStackParam} from '../../../../navigations/LiquidacionObrasStackNavigation';
 import {ToastNativo} from '../../../../../../helper/utils';
 import {useLocationStore} from '../../../../../../store/location/useLocationStore';
-import {useMutation} from '@tanstack/react-query';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {saveObraEjecutada} from '../../../../../../../actions/gestionObras/ejecucion.obras';
 import Toast from 'react-native-toast-message';
 import {useAuthStore} from '../../../../../../store/auth/useAuthStore';
 import * as Yup from 'yup';
+import {Obra} from '../../../../../../../domain/entities/Obra';
 
 interface initialParams {
   tipo_registro: string;
@@ -48,6 +49,8 @@ export const useEjecucionObras = () => {
   const {getLocation} = useLocationStore();
   const {user} = useAuthStore();
   const [isSaving, setIsSaving] = useState(false);
+  const queryClient = useQueryClient();
+  const valuesFormik = useRef<initialParams>(initialValues);
 
   const getValidationSchema = () =>
     Yup.object().shape({
@@ -134,6 +137,21 @@ export const useEjecucionObras = () => {
           type: 'success',
           text1: 'Se registro correctamente',
         });
+
+        if (valuesFormik.current.cierre === 'CIERRE') {
+          queryClient.setQueryData<Obra[]>(['obrasAsignadas'], oldData => {
+            if (!oldData) {
+              return oldData;
+            }
+
+            return oldData.map(item =>
+              item.regi_codigo === obra?.regi_codigo
+                ? {...item, estado_ejecucion: '1'}
+                : item,
+            );
+          });
+        }
+
         navigation.goBack();
       } else {
         Toast.show({
@@ -172,6 +190,7 @@ export const useEjecucionObras = () => {
         return;
       }
 
+      valuesFormik.current = values;
       mutation.mutate(
         {
           vg_empr_codigo: user?.empr_codigo || '',
