@@ -11,11 +11,17 @@ export const globalColors = {
   white: '#fff',
   yellow: '#FFE599',
   lightYellow: '#FFFBEA',
+  lightSuccess: '#E8F5E9',
 };
 
 export const globalStyle = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  defaultContainer: {
+    flex: 1,
+    padding: 16,
+    position: 'relative',
   },
   padding: {
     padding: 16,

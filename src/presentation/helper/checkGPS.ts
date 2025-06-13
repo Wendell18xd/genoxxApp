@@ -25,7 +25,7 @@ export const checkIfLocationIsEnabled = (): Promise<boolean> => {
           resolve(false);
         }
       },
-      {enableHighAccuracy: true, timeout: 5000, maximumAge: 0},
+      {enableHighAccuracy: false, timeout: 5000, maximumAge: 0},
     );
   });
 };
@@ -54,9 +54,7 @@ export const validarGpsActivo = async (): Promise<boolean> => {
             text: 'Ir a configuración',
             onPress: () => {
               if (Platform.OS === 'android') {
-                Linking.openURL(
-                  'package:com.android.settings/.LocationSettingsActivity',
-                );
+                Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
               } else {
                 openSettings();
               }

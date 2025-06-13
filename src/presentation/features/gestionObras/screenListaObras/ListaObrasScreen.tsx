@@ -14,6 +14,7 @@ import {SeleccionarOpcionObra} from './components/SeleccionarOpcionObra';
 import {useObrasNavigationStore} from '../store/useObrasNavigationStore';
 import FullScreenLoader from '../../../components/ui/loaders/FullScreenLoader';
 import {ChipsFiltroEjecucion} from './components/ChipsFiltroEjecucion';
+import {globalColors} from '../../../styles/globalStyle';
 
 export const ListaObrasScreen = () => {
   const {
@@ -22,6 +23,7 @@ export const ListaObrasScreen = () => {
     errorObras,
     isFetchObras,
     ref,
+    loadingActividades,
     refetchObras,
     handleSelectObra,
     handleSearch,
@@ -84,12 +86,11 @@ export const ListaObrasScreen = () => {
         queryKey: ['obrasAsignadas'],
       });
     }
-    console.log(opcionSeleccionada);
   }, [opcionSeleccionada]);
 
   return (
     <DrawerLayout title="Lista de Obras">
-      {isFetchObras && <FullScreenLoader transparent />}
+      {(isFetchObras || loadingActividades) && <FullScreenLoader transparent />}
 
       <View style={{flex: 1}}>
         {obras && obras.length > 0 ? (
@@ -134,6 +135,17 @@ export const ListaObrasScreen = () => {
                 ? 'No tienes ordenes asignadas, Consultar con despacho'
                 : 'No se encontraron obras, use la lupa para buscar'
             }
+          />
+        )}
+
+        {opcionSeleccionada === 'ejecutar' && (
+          <CustomFAB
+            icon="sync"
+            label="Sincronizar"
+            loading={isFetchObras}
+            onPress={refetchObras}
+            style={{bottom: 16, left: 16}}
+            color={globalColors.primary}
           />
         )}
 

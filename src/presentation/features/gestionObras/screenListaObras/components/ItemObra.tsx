@@ -16,7 +16,11 @@ export const ItemObra = ({obra, opcionSeleccionada, onPress}: Props) => {
 
   return (
     <CustomCardContent
-      onPress={onPress}
+      onPress={
+        opcionSeleccionada !== 'liquidar' && obra.estado_ejecucion === '1'
+          ? undefined
+          : onPress
+      }
       mode="outlined"
       style={
         opcionSeleccionada !== 'liquidar' && [
@@ -24,10 +28,11 @@ export const ItemObra = ({obra, opcionSeleccionada, onPress}: Props) => {
             backgroundColor:
               obra.estado_ejecucion === '0'
                 ? globalColors.lightYellow
-                : undefined,
+                : globalColors.lightSuccess,
             borderColor:
-              obra.estado_ejecucion === '0' ? globalColors.yellow : undefined,
-            borderWidth: obra.estado_ejecucion === '0' ? 1 : undefined,
+              obra.estado_ejecucion === '0'
+                ? globalColors.yellow
+                : globalColors.success,
           },
         ]
       }>

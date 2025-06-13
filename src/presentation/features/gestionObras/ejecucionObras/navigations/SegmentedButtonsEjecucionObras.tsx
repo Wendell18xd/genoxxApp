@@ -2,22 +2,23 @@ import {View, StyleSheet} from 'react-native';
 import {useEffect} from 'react';
 import {SegmentedButtons, useTheme} from 'react-native-paper';
 import {EjecucionObras} from '../ejecucionConObra/screen-ejecucion-obra/EjecucionObras';
-import {FotosEjecucionObras} from '../ejecucionConObra/screen-fotos-obra/FotosEjecucionObras';
 import {useMounted} from '../../../../hooks/useMounted';
 import {useLiquiMateStore} from '../../liquidarMateriales/store/useLiquiMateStore';
 import {DetalleObraScreen} from '../../screenDetalleObra/DetalleObraScreen';
 import {useObrasStore} from '../../store/useObrasStore';
 import DrawerLayout from '../../../main/layout/DrawerLayout';
+import {useFotosStore} from '../../../foto/store/useFotosStore';
 
 export const SegmentedButtonsEjecucionObras = () => {
   const {reset: resetLiquiMate} = useLiquiMateStore();
   const {reset: resetObras} = useObrasStore();
+  const {onReset: resetFotos} = useFotosStore();
   const {colors} = useTheme();
   const {value, mounted, setValue} = useMounted({
     defaultValue: '1',
     initialParams: {
       '1': true,
-      '2': false,
+      '2': true,
       '3': false,
     },
   });
@@ -26,6 +27,7 @@ export const SegmentedButtonsEjecucionObras = () => {
     return () => {
       resetLiquiMate();
       resetObras();
+      resetFotos();
     };
   }, []);
 
@@ -53,12 +55,6 @@ export const SegmentedButtonsEjecucionObras = () => {
               checkedColor: 'white',
               icon: 'account-hard-hat-outline',
             },
-            {
-              value: '3',
-              label: 'Fotos',
-              checkedColor: 'white',
-              icon: 'camera',
-            },
           ]}
         />
       </View>
@@ -73,11 +69,6 @@ export const SegmentedButtonsEjecucionObras = () => {
         {mounted['2'] && (
           <View style={[styles.screen, value !== '2' && styles.hidden]}>
             <EjecucionObras />
-          </View>
-        )}
-        {mounted['3'] && (
-          <View style={[styles.screen, value !== '3' && styles.hidden]}>
-            <FotosEjecucionObras />
           </View>
         )}
       </View>

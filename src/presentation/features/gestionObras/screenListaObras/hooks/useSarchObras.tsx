@@ -17,6 +17,7 @@ import * as Yup from 'yup';
 import {useObrasStore} from '../../store/useObrasStore';
 import {useObrasNavigationStore} from '../../store/useObrasNavigationStore';
 import {useBottomSheetModal} from '../../../../hooks/useBottomSheet';
+import {useEjecucionObrasStore} from '../../ejecucionObras/store/useEjecucionObrasStore';
 
 interface SearchObrasFormValues {
   cbo_proy_codigo: string;
@@ -59,6 +60,8 @@ export const useSarchObras = () => {
   const {setObra} = useObrasStore();
   const {opcionSeleccionada, seleccionarOpcion} = useObrasNavigationStore();
   const {ref, open, close} = useBottomSheetModal();
+  const {loading: loadingActividades, getActividadesObras} =
+    useEjecucionObrasStore();
   const navigation =
     useNavigation<NavigationProp<LiquidacionObrasStackParam>>();
 
@@ -131,12 +134,15 @@ export const useSarchObras = () => {
     onClose?.();
   };
 
-  const handleSelectObra = (obra: Obra) => {
+  const handleSelectObra = async (obra: Obra) => {
     setObra(obra);
     if (opcionSeleccionada === 'liquidar') {
       navigation.navigate('SegmentedButtonsDetalleObras');
     }
     if (opcionSeleccionada === 'ejecutar') {
+      await getActividadesObras({
+        vg_empr_pais: user?.empr_pais || '',
+      });
       navigation.navigate('SegmentedButtonsEjecucionObras');
     }
   };
@@ -160,6 +166,7 @@ export const useSarchObras = () => {
     errorObras,
     opcionSeleccionada,
     ref,
+    loadingActividades,
 
     //* Metodos
     handleSearch,
