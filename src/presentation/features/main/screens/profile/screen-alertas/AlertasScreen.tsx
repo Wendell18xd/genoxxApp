@@ -1,6 +1,6 @@
 import {Text, TextInput} from 'react-native-paper';
 import SafeAreaLayout from '../../../layout/SafeAreaLayout';
-import {TouchableWithoutFeedback, View, Keyboard} from 'react-native';
+import {View} from 'react-native';
 import CustomTextInput from '../../../../../components/ui/CustomTextInput';
 import {Formik} from 'formik';
 import {useAlertas} from './hooks/useAlertas';
@@ -15,6 +15,7 @@ import Icon from '@react-native-vector-icons/material-design-icons';
 import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoader';
 import CustomIconBottom from '../../../../../components/ui/CustomIconBottom';
 import {useCamaraAlertas} from './hooks/useCamaraAlertas';
+import CustomScrollView from '../../../../../components/ui/CustomScrollView';
 
 export const AlertasScreen = () => {
   const {
@@ -78,8 +79,11 @@ export const AlertasScreen = () => {
   return (
     <View style={{flex: 1}}>
       <SafeAreaLayout title="Alertas" isHeader primary>
-        {(mutation.isPending || loadingGPS) && <FullScreenLoader transparent />}
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <CustomScrollView>
+          {(mutation.isPending || loadingGPS) && (
+            <FullScreenLoader transparent />
+          )}
+          {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
           <View style={{flex: 1, padding: 16, paddingBottom: 80}}>
             <Formik
               initialValues={formValues}
@@ -160,7 +164,8 @@ export const AlertasScreen = () => {
               )}
             </Formik>
           </View>
-        </TouchableWithoutFeedback>
+          {/* </TouchableWithoutFeedback> */}
+        </CustomScrollView>
       </SafeAreaLayout>
       <View
         pointerEvents="box-none"
@@ -174,20 +179,28 @@ export const AlertasScreen = () => {
         }}>
         <CustomFAB icon="microphone" onPress={open} />
 
-        {audioPath && (
+        {(isRecording || audioPath) && (
           <View
             style={{
               position: 'absolute',
-              top: 0,
+              top: -5,
               left: 10,
-              width: 20,
-              height: 20,
-              borderRadius: 10,
-              backgroundColor: 'red',
+              width: 24,
+              height: 24,
+              borderRadius: 12,
+              backgroundColor: isRecording
+                ? 'red'
+                : isPlaying
+                ? 'red'
+                : 'green',
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Icon name="play" size={15} color="white" />
+            <Icon
+              name={isRecording ? 'stop' : isPlaying ? 'play' : 'play-circle'}
+              size={16}
+              color="white"
+            />
           </View>
         )}
 
@@ -200,16 +213,18 @@ export const AlertasScreen = () => {
           <View
             style={{
               position: 'absolute',
-              top: 70,
+              top: 65,
               left: 10,
-              width: 20,
-              height: 20,
-              borderRadius: 10,
-              backgroundColor: 'red',
+              width: 24,
+              height: 24,
+              borderRadius: 12,
+              backgroundColor: 'green',
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Icon name="image" size={15} color="white" />
+            <Text style={{color: 'white', fontWeight: 'bold', fontSize: 12}}>
+              {fotos.length}
+            </Text>
           </View>
         )}
       </View>

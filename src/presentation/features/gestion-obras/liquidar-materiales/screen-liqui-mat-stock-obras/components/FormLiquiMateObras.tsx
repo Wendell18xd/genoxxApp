@@ -1,6 +1,6 @@
 import {Formik} from 'formik';
 import CustomDatePicker from '../../../../../components/ui/CustomDatePicker';
-import {FlatList, View} from 'react-native';
+import {View} from 'react-native';
 import {useFormLiquiMateObras} from '../hooks/useFormLiquiMateObras';
 import {Text} from 'react-native-paper';
 import {CustomDropdownInput} from '../../../../../components/ui/CustomDropdownInput';
@@ -13,6 +13,7 @@ import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoa
 import {ItemStockMateObras} from './items/ItemStockMateObras';
 import {CustomFAB} from '../../../../../components/ui/CustomFAB';
 import {MaterialesLiquiRequest} from '../../../../../../infrastructure/interfaces/obras/liquidar-materiales/saveLiquiMateObra.request';
+import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 
 interface Props {
   isRegulariza: boolean;
@@ -101,7 +102,7 @@ export const FormLiquiMateObras = ({isRegulariza}: Props) => {
               {isFetchingStock && dataStock && <FullScreenLoader transparent />}
 
               {filteredStock && filteredStock.length > 0 ? (
-                <FlatList
+                <KeyboardAwareFlatList
                   data={filteredStock}
                   renderItem={({item, index}) => (
                     <ItemStockMateObras

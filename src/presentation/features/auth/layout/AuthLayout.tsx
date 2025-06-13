@@ -18,7 +18,6 @@ import {
 } from '../../../../config/api/genoxxApi';
 import {StorageAdapter} from '../../../adapter/storage-adapter';
 import {useNavigation} from '@react-navigation/native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 interface Props {
   children?: React.ReactNode;
@@ -116,12 +115,12 @@ const AuthLayout = ({children}: Props) => {
         <CurvaView />
       </View>
       <View style={{flex: 1, backgroundColor: colors.background}}>
-        <KeyboardAwareScrollView
+        {/* <KeyboardAwareScrollView
           contentContainerStyle={{flexGrow: 1}}
           enableOnAndroid={true}
           extraScrollHeight={16}
           keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}>
+          showsVerticalScrollIndicator={false}> */}
           {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
           <View
             style={[
@@ -134,7 +133,7 @@ const AuthLayout = ({children}: Props) => {
             {children}
           </View>
           {/* </TouchableWithoutFeedback> */}
-        </KeyboardAwareScrollView>
+        {/* </KeyboardAwareScrollView> */}
       </View>
     </View>
   );

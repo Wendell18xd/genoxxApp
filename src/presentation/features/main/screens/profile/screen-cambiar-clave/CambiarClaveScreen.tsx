@@ -5,8 +5,8 @@ import {Formik} from 'formik';
 import CustomTextInput from '../../../../../components/ui/CustomTextInput';
 import PrimaryButton from '../../../../../components/ui/PrimaryButton';
 import CustomSimpleCard from '../../../../../components/ui/CustomSimpleCard';
-import {ScrollView} from 'react-native-gesture-handler';
 import {useCambiarClave} from './hooks/useCambiarClave';
+import CustomScrollView from '../../../../../components/ui/CustomScrollView';
 
 export const CambiarClaveScreen = () => {
   const {initialValues, mutation, getValidationSchema, startCambioPassSubmit} =
@@ -14,7 +14,13 @@ export const CambiarClaveScreen = () => {
 
   return (
     <SafeAreaLayout title="Cambiar contraseña" isHeader primary>
-      <ScrollView
+      {/* <ScrollView
+        contentContainerStyle={{
+          padding: 32,
+          flexGrow: 1,
+          justifyContent: 'center',
+        }}> */}
+      <CustomScrollView
         contentContainerStyle={{
           padding: 32,
           flexGrow: 1,
@@ -128,7 +134,8 @@ export const CambiarClaveScreen = () => {
             );
           }}
         </Formik>
-      </ScrollView>
+        {/* </ScrollView> */}
+      </CustomScrollView>
     </SafeAreaLayout>
   );
 };
