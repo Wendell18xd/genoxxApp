@@ -1,7 +1,7 @@
 import {ConsultaHistoricaPatenteStackNavigation} from '../presentation/features/flota/consultaHistoricaPatente/navigations/ConsultaHistoricaPatenteStackNavigation';
 import {ConsultaUnidadesStackNavigation} from '../presentation/features/flota/consultaUnidades/navigations/ConsultaUnidadesStackNavigation';
-import {LiquiMatATCStackNavigation} from '../presentation/features/gestion-atc/liquidarMateriales/navigations/LiquiMatATCStackNavigation';
-import {LiquidacionObrasStackNavigation} from '../presentation/features/gestion-obras/navigations/LiquidacionObrasStackNavigation';
+import {LiquiMatATCStackNavigation} from '../presentation/features/gestionAtc/liquidarMateriales/navigations/LiquiMatATCStackNavigation';
+import {LiquidacionObrasStackNavigation} from '../presentation/features/gestionObras/navigations/LiquidacionObrasStackNavigation';
 import {Menu} from './menus';
 
 export const drawerScreenComponents: Record<

@@ -6,11 +6,11 @@ export const getCurrentLocation = async (): Promise<Location> => {
     console.log('📍 Intentando con GPS (alta precisión)...');
     return await getLocation(true, 5000); // GPS: hasta 10s
   } catch (error) {
-    console.warn('⚠️ Falló con GPS. Intentando con red celular/Wi-Fi...');
+    console.log('⚠️ Falló con GPS. Intentando con red celular/Wi-Fi...');
     try {
       return await getLocation(false, 5000); // Fallback: más rápido
     } catch (fallbackError) {
-      console.error('❌ No se pudo obtener ubicación de ninguna forma.');
+      console.log('❌ No se pudo obtener ubicación de ninguna forma.');
       throw fallbackError;
     }
   }
