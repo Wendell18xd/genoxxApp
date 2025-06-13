@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Keyboard, StyleProp, StyleSheet, ViewStyle} from 'react-native';
-import {FAB, useTheme} from 'react-native-paper';
+import {Keyboard, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import {FAB, Text, useTheme} from 'react-native-paper';
 
 interface CustomFABProps {
   icon: string;
@@ -8,19 +8,23 @@ interface CustomFABProps {
   color?: string;
   labelColor?: string;
   style?: StyleProp<ViewStyle>;
+  fabStyle?: StyleProp<ViewStyle>;
   loading?: boolean;
+  cantidad?: number;
   onPress: () => void;
 }
 
-export const CustomFAB: React.FC<CustomFABProps> = ({
+export const CustomFAB = ({
   icon,
   label,
   color = '',
   labelColor = '#fff',
   style,
+  fabStyle,
   onPress,
   loading = false,
-}) => {
+  cantidad = 0,
+}: CustomFABProps) => {
   const {colors} = useTheme();
   const [tecladoAbierto, setTecladoAbierto] = useState(false);
   const lastPressRef = useRef<number>(0);
@@ -55,27 +59,53 @@ export const CustomFAB: React.FC<CustomFABProps> = ({
   };
 
   return (
-    <FAB
-      icon={icon}
-      label={label}
-      style={[styles.fab, {backgroundColor: color || colors.secondary}, style]}
-      color={labelColor}
-      theme={{
-        colors: {
-          onSecondaryContainer: labelColor,
-        },
-      }}
-      rippleColor={
-        tecladoAbierto ? 'rgba(255,255,255,0.0)' : 'rgba(255,255,255,0.3)'
-      }
-      loading={loading}
-      onPress={handlePress}
-    />
+    <View style={[{right: 0, bottom: 0, position: 'absolute'}, style]}>
+      {cantidad > 0 && (
+        <View
+          style={{
+            position: 'absolute',
+            top: -6,
+            right: -6,
+            width: 20,
+            height: 20,
+            backgroundColor: 'red',
+            borderRadius: 10, // Mitad del ancho/alto
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 1,
+          }}>
+          <Text style={{color: 'white', fontSize: 12, fontWeight: 'bold'}}>
+            {cantidad}
+          </Text>
+        </View>
+      )}
+
+      <FAB
+        icon={icon}
+        label={label}
+        style={[
+          styles.fab,
+          {backgroundColor: color || colors.secondary},
+          fabStyle,
+        ]}
+        color={labelColor}
+        theme={{
+          colors: {
+            onSecondaryContainer: labelColor,
+          },
+        }}
+        rippleColor={
+          tecladoAbierto ? 'rgba(255,255,255,0.0)' : 'rgba(255,255,255,0.3)'
+        }
+        loading={loading}
+        onPress={handlePress}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   fab: {
-    position: 'absolute',
+    position: 'relative',
   },
 });

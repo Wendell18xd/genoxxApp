@@ -5,13 +5,14 @@ import {
   getCurrentLocation,
   watchCurrentLocation,
 } from '../../../actions/location/location';
+import {validarGpsActivo} from '../../helper/checkGPS';
 
 interface LocationState {
   lastKnownLocation: Location | null;
   userLocationList: Location[];
   watchId: number | null;
 
-  getLocation: () => Promise<Location | null>;
+  getLocation: (validaGps?: boolean) => Promise<Location | null>;
   watchLocation: () => void;
   clearWatchLocation: () => void;
 }
@@ -21,7 +22,14 @@ export const useLocationStore = create<LocationState>()((set, get) => ({
   userLocationList: [],
   watchId: null,
 
-  getLocation: async () => {
+  getLocation: async (validaGps = true) => {
+    if (validaGps) {
+      const gpsActivo = await validarGpsActivo();
+      if (!gpsActivo) {
+        return null;
+      }
+    }
+
     const location = await getCurrentLocation();
     set({lastKnownLocation: location});
     return location;

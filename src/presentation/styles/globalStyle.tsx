@@ -11,6 +11,7 @@ export const globalColors = {
   white: '#fff',
   yellow: '#FFE599',
   lightYellow: '#FFFBEA',
+  lightSuccess: '#E8F5E9',
 };
 
 export const globalStyle = StyleSheet.create({

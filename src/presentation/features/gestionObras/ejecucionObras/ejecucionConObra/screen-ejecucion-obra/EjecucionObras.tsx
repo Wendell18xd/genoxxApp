@@ -19,17 +19,22 @@ export const EjecucionObras = () => {
     initialValues,
     medida,
     isSaving,
+    cantidadFotos,
     handelSelectedDropDown,
     handleChangeCantidad,
     handleSave,
     handleCamera,
+    getValidationSchema,
   } = useEjecucionObras();
 
   return (
     <View style={globalStyle.defaultContainer}>
       {isSaving && <FullScreenLoader transparent />}
 
-      <Formik initialValues={initialValues} onSubmit={handleSave}>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={handleSave}
+        validationSchema={getValidationSchema}>
         {({
           handleChange,
           handleBlur,
@@ -99,6 +104,7 @@ export const EjecucionObras = () => {
                 }
                 error={touched.actividad && !!errors.actividad}
               />
+
               {touched.actividad && errors.actividad && (
                 <Text style={{color: 'red', marginTop: 4}}>
                   {errors.actividad}
@@ -110,9 +116,11 @@ export const EjecucionObras = () => {
                 <CustomTextInput
                   label="Tramo"
                   mode="outlined"
-                  autoCapitalize="characters"
+                  keyboardType="decimal-pad"
                   value={mostrarSiNoCero(values.tramo.toString())}
-                  onChangeText={val => handleChangeCantidad(val, setFieldValue)}
+                  onChangeText={val =>
+                    handleChangeCantidad(val, setFieldValue, 'tramo')
+                  }
                   onBlur={handleBlur('tramo')}
                   error={touched.tramo && !!errors.tramo}
                 />
@@ -128,7 +136,9 @@ export const EjecucionObras = () => {
                   mode="outlined"
                   keyboardType="decimal-pad"
                   value={mostrarSiNoCero(values.cantidad.toString())}
-                  onChangeText={val => handleChangeCantidad(val, setFieldValue)}
+                  onChangeText={val =>
+                    handleChangeCantidad(val, setFieldValue, 'cantidad')
+                  }
                   onBlur={handleBlur('cantidad')}
                   error={touched.cantidad && !!errors.cantidad}
                 />
@@ -152,6 +162,11 @@ export const EjecucionObras = () => {
                 style={{height: 150}}
                 error={touched.comentario && !!errors.comentario}
               />
+              {touched.comentario && errors.comentario && (
+                <Text style={{color: 'red', marginTop: 4}}>
+                  {errors.comentario}
+                </Text>
+              )}
             </View>
             <View style={{marginTop: 16}}>
               <PrimaryButton
@@ -170,8 +185,9 @@ export const EjecucionObras = () => {
 
       <CustomFAB
         icon="camera"
-        style={{right: 16, bottom: 16}}
         onPress={handleCamera}
+        cantidad={cantidadFotos}
+        style={{right: 16, bottom: 16}}
       />
     </View>
   );

@@ -14,6 +14,7 @@ import {useMutation} from '@tanstack/react-query';
 import {saveObraEjecutada} from '../../../../../../../actions/gestionObras/ejecucion.obras';
 import Toast from 'react-native-toast-message';
 import {useAuthStore} from '../../../../../../store/auth/useAuthStore';
+import * as Yup from 'yup';
 
 interface initialParams {
   tipo_registro: string;
@@ -38,7 +39,7 @@ const initialValues: initialParams = {
 export const useEjecucionObras = () => {
   const {obra} = useObrasStore();
   const {actividades, mapDropFamilia} = useEjecucionObrasStore();
-  const {fotos, initialParams, setInitialParams} = useFotosStore();
+  const {fotos, setInitialParams} = useFotosStore();
   const [mapDropSubFamilia, setMapDropSubFamilia] = useState<Option[]>([]);
   const [mapDropActividad, setMapDropActividad] = useState<Option[]>([]);
   const [medida, setMedida] = useState('');
@@ -47,6 +48,14 @@ export const useEjecucionObras = () => {
   const {getLocation} = useLocationStore();
   const {user} = useAuthStore();
   const [isSaving, setIsSaving] = useState(false);
+
+  const getValidationSchema = () =>
+    Yup.object().shape({
+      tipo_registro: Yup.string().required('Seleccione el tipo de registro'),
+      agrupacion: Yup.string().required('Seleccione la agrupación'),
+      actividad: Yup.string().required('Seleccione una actividad'),
+      comentario: Yup.string().required('Ingrese un comentario'),
+    });
 
   const handelSelectedDropDown = (
     param: string,
@@ -103,8 +112,9 @@ export const useEjecucionObras = () => {
   const handleChangeCantidad = (
     text: string,
     setFieldValue: (field: string, value: any) => void,
+    param: string,
   ) => {
-    setFieldValue('cantidad', sanitizarDecimalInput(text, 2));
+    setFieldValue(param, sanitizarDecimalInput(text, 2));
   };
 
   const handleCamera = () => {
@@ -145,10 +155,10 @@ export const useEjecucionObras = () => {
   const handleSave = async (values: initialParams) => {
     const arrFotos = fotos.map(foto => foto.foto);
 
-    if (arrFotos.length < initialParams.minFotos) {
+    if (arrFotos.length < 1) {
       ToastNativo({
         titulo: 'Fotos obligatorias',
-        mensaje: `Debe capturar al menos ${initialParams.minFotos} foto(s)`,
+        mensaje: 'Debe capturar al menos 1 foto',
       });
       return;
     }
@@ -156,6 +166,11 @@ export const useEjecucionObras = () => {
     try {
       setIsSaving(true);
       const location = await getLocation();
+
+      if (!location) {
+        setIsSaving(false);
+        return;
+      }
 
       mutation.mutate(
         {
@@ -187,11 +202,13 @@ export const useEjecucionObras = () => {
     mapDropActividad,
     medida,
     isSaving,
+    cantidadFotos: fotos.length,
 
     //* Metodos
     handelSelectedDropDown,
     handleChangeCantidad,
     handleSave,
     handleCamera,
+    getValidationSchema,
   };
 };
