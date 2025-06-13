@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Image, ScrollView, TouchableOpacity, View} from 'react-native';
+import {Image, TouchableOpacity, View} from 'react-native';
 import {Text, TextInput, useTheme} from 'react-native-paper';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
@@ -17,6 +17,7 @@ import {AuthStackParam} from '../../../navigations/AuthStackNavigation';
 import FullScreenLoader from '../../../components/ui/loaders/FullScreenLoader';
 import {CustomDropdownInput} from '../../../components/ui/CustomDropdownInput';
 import {StorageAdapter} from '../../../adapter/storage-adapter';
+import CustomScrollView from '../../../components/ui/CustomScrollView';
 
 interface LoginFormValues {
   usuario: string;
@@ -162,9 +163,10 @@ const LoginScreen = ({navigation}: Props) => {
   return (
     <>
       <AuthLayout>
-        <ScrollView
+        {/* <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingBottom: 32}}>
+          contentContainerStyle={{paddingBottom: 32}}> */}
+        <CustomScrollView>
           <Image
             source={require('../../../../assets/images/logo.png')}
             style={{
@@ -291,7 +293,8 @@ const LoginScreen = ({navigation}: Props) => {
               </>
             )}
           </Formik>
-        </ScrollView>
+        </CustomScrollView>
+        {/* </ScrollView> */}
       </AuthLayout>
     </>
   );

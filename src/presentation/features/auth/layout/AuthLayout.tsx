@@ -1,8 +1,6 @@
 import {
   Image,
   Keyboard,
-  KeyboardAvoidingView,
-  Platform,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -30,7 +28,7 @@ const AuthLayout = ({children}: Props) => {
   const {colors} = useTheme();
   const navigation = useNavigation();
 
-  const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const [_keyboardVisible, setKeyboardVisible] = useState(false);
 
   const handlerConfig = async () => {
     const host = await StorageAdapter.getItem('host');
@@ -116,24 +114,27 @@ const AuthLayout = ({children}: Props) => {
       <View style={{width: '100%'}}>
         <CurvaView />
       </View>
-
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}
-        keyboardVerticalOffset={keyboardVisible ? 0 : -(top + bottom)}>
-        {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
+      <View style={{flex: 1, backgroundColor: colors.background}}>
+        {/* <KeyboardAwareScrollView
+          contentContainerStyle={{flexGrow: 1}}
+          enableOnAndroid={true}
+          extraScrollHeight={16}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}> */}
+          {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
           <View
             style={[
               styles.containerChildren,
               {
                 backgroundColor: colors.background,
-                paddingBottom: keyboardVisible ? 0 : bottom,
+                paddingBottom: bottom,
               },
             ]}>
             {children}
           </View>
-        {/* </TouchableWithoutFeedback> */}
-      </KeyboardAvoidingView>
+          {/* </TouchableWithoutFeedback> */}
+        {/* </KeyboardAwareScrollView> */}
+      </View>
     </View>
   );
 };
