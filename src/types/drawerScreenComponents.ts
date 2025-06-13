@@ -2,6 +2,7 @@ import {ConsultaHistoricaPatenteStackNavigation} from '../presentation/features/
 import {ConsultaUnidadesStackNavigation} from '../presentation/features/flota/consultaUnidades/navigations/ConsultaUnidadesStackNavigation';
 import {LiquiMatATCStackNavigation} from '../presentation/features/gestionAtc/liquidarMateriales/navigations/LiquiMatATCStackNavigation';
 import {LiquidacionObrasStackNavigation} from '../presentation/features/gestionObras/navigations/LiquidacionObrasStackNavigation';
+import {ReporteStockStackNavigation} from '../presentation/features/logistica/reporteStock/navigations/ReporteStockStackNavigation';
 import {Menu} from './menus';
 
 export const drawerScreenComponents: Record<
@@ -19,4 +20,6 @@ export const drawerScreenComponents: Record<
   [Menu.CONSULTA_UNIDADES_FLOTA]: ConsultaUnidadesStackNavigation,
   [Menu.CONSULTA_HISTORICA_PATENTE_FLOTA]:
     ConsultaHistoricaPatenteStackNavigation,
+  //Logistica
+  [Menu.REPORTE_STOCK]: ReporteStockStackNavigation,
 };

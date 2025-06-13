@@ -6,4 +6,5 @@ export enum Menu {
   LIQUIDACION_PARTIDAS_OBRAS_ENERGIA = 'ListObrasFragment2',
   CONSULTA_UNIDADES_FLOTA = 'ListaUnidadesFragment',
   CONSULTA_HISTORICA_PATENTE_FLOTA = 'ConsultaHistoricaPatenteFragment',
+  REPORTE_STOCK = 'ReporteStockFragment',
 }
