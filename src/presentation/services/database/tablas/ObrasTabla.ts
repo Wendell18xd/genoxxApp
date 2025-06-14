@@ -1,0 +1,125 @@
+import SQLite from 'react-native-sqlite-storage';
+import {openDB} from '../database';
+import {Obra} from '../../../../domain/entities/Obra';
+
+export const createObrasTable = async (db: SQLite.SQLiteDatabase) => {
+  await db.executeSql(`
+    CREATE TABLE IF NOT EXISTS obras (
+        regi_codigo TEXT PRIMARY KEY,
+        proy_codigo TEXT,
+        proy_nombre TEXT,
+        gpro_codigo TEXT,
+        codi_asignado1 TEXT,
+        nom_asignado1 TEXT,
+        codi_asignado2 TEXT,
+        nom_asignado2 TEXT,
+        codi_supervisor TEXT,
+        nom_supervisor TEXT,
+        obse_asignacion TEXT,
+        nom_agencia TEXT,
+        distribucion TEXT,
+        cluster TEXT,
+        clasificacion TEXT,
+        causa TEXT,
+        categoria TEXT,
+        obse_ejecutado TEXT,
+        hora_ejecucion TEXT,
+        estado_ejecucion TEXT,
+        nro_orden TEXT,
+        nro_orden2 TEXT,
+        nro_orden3 TEXT,
+        tipo_obra TEXT,
+        nombre TEXT,
+        distrito TEXT,
+        direccion TEXT,
+        observacion TEXT,
+        contrato TEXT,
+        cliente TEXT,
+        estado_orden TEXT,
+        estado_ordencliente TEXT,
+        mo_proyectado TEXT,
+        ma_proyectado TEXT,
+        mo_ejecutado TEXT,
+        ma_ejecutado TEXT,
+        est_facturado TEXT,
+        total_facturado TEXT,
+        coordenada_x TEXT,
+        coordenada_y TEXT,
+        user_finaliza TEXT,
+        fecha_finaliza TEXT,
+        user_registro TEXT,
+        fecha_registro TEXT,
+        cantidad_hps TEXT,
+        orden_compra TEXT,
+        remedy_fo TEXT,
+        remedy_cu TEXT,
+        toa_vpi TEXT,
+        linea_fo TEXT,
+        tendido TEXT,
+        empalme128 TEXT,
+        empalme256 TEXT,
+        valida_proyectado TEXT,
+        maneja_stock_guia TEXT,
+        fecha_asignacion TEXT
+    );
+  `);
+};
+
+export const insertObra = async (obra: Obra) => {
+  const db = await openDB();
+
+  const keys = Object.keys(obra);
+  const values = Object.values(obra);
+  const placeholders = keys.map(() => '?').join(', ');
+  const columns = keys.join(', ');
+
+  const query = `INSERT INTO obras (${columns}) VALUES (${placeholders})`;
+
+  await db.executeSql(query, values);
+};
+
+type ObraCamposActualizables = Partial<Omit<Obra, 'regi_codigo'>>;
+
+export const actualizarObra = async (
+  regi_codigo: string,
+  campos: ObraCamposActualizables,
+): Promise<void> => {
+  if (!regi_codigo || Object.keys(campos).length === 0) {
+    return;
+  }
+
+  const db = await openDB();
+
+  const columnas = Object.keys(campos);
+  const valores = Object.values(campos);
+
+  const sets = columnas.map(col => `${col} = ?`).join(', ');
+
+  const sql = `UPDATE obras SET ${sets} WHERE regi_codigo = ?`;
+
+  await db.executeSql(sql, [...valores, regi_codigo]);
+};
+
+export const listarObrasDB = async (
+  whereClause?: string,
+  whereArgs: (string | number)[] = [],
+): Promise<Obra[]> => {
+  const db = await openDB();
+  const query = `SELECT * FROM obras${
+    whereClause ? ` WHERE ${whereClause}` : ''
+  }`;
+  const [results] = await db.executeSql(query, whereArgs);
+  const rows = results.rows;
+  const obras: Obra[] = [];
+
+  for (let i = 0; i < rows.length; i++) {
+    obras.push(rows.item(i));
+  }
+
+  return obras;
+};
+
+export const eliminarTodasLasObras = async (): Promise<void> => {
+  const db = await openDB();
+  await db.executeSql('DELETE FROM obras');
+};

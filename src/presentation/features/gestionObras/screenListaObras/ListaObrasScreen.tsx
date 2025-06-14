@@ -16,12 +16,19 @@ import FullScreenLoader from '../../../components/ui/loaders/FullScreenLoader';
 import {ChipsFiltroEjecucion} from './components/ChipsFiltroEjecucion';
 import {globalColors} from '../../../styles/globalStyle';
 
+const valuesEjecucion = {
+  cbo_proy_codigo: '',
+  cbo_tipo: 'ORDN',
+  txt_busqueda: '',
+};
+
 export const ListaObrasScreen = () => {
   const {
     opcionSeleccionada,
     obras,
     errorObras,
     isFetchObras,
+    isRefresthObra,
     ref,
     loadingActividades,
     refetchObras,
@@ -71,12 +78,7 @@ export const ListaObrasScreen = () => {
 
   useEffect(() => {
     if (opcionSeleccionada === 'ejecutar') {
-      const values = {
-        cbo_proy_codigo: '',
-        cbo_tipo: 'ORDN',
-        txt_busqueda: '',
-      };
-      handleSearch(values);
+      handleSearch(valuesEjecucion);
     }
     if (opcionSeleccionada === 'menu') {
       setSearchQuery('');
@@ -86,7 +88,7 @@ export const ListaObrasScreen = () => {
         queryKey: ['obrasAsignadas'],
       });
     }
-  }, [opcionSeleccionada]);
+  }, [opcionSeleccionada, isRefresthObra]);
 
   return (
     <DrawerLayout title="Lista de Obras">
@@ -115,7 +117,9 @@ export const ListaObrasScreen = () => {
               keyExtractor={item => item.regi_codigo}
               contentContainerStyle={{gap: 16, padding: 16}}
               refreshing={isFetchObras}
-              onRefresh={refetchObras}
+              onRefresh={
+                opcionSeleccionada === 'liquidar' ? refetchObras : undefined
+              }
               showsVerticalScrollIndicator={false}
               renderItem={({item}) => (
                 <ItemObra
@@ -143,7 +147,7 @@ export const ListaObrasScreen = () => {
             icon="sync"
             label="Sincronizar"
             loading={isFetchObras}
-            onPress={refetchObras}
+            onPress={() => handleSearch(valuesEjecucion)}
             style={{bottom: 16, left: 16}}
             color={globalColors.primary}
           />
