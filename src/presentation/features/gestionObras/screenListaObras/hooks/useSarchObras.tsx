@@ -125,12 +125,10 @@ export const useSarchObras = () => {
 
       if (opcionSeleccionada === 'ejecutar') {
         setLoadingDB(true);
+        await getActividadesObras({vg_empr_pais: user?.empr_pais || ''});
         await eliminarTodasLasObras();
         await Promise.all(datos.map(obra => insertObra(obra)));
-        await listarObrasDb();
-        await getActividadesObras({
-          vg_empr_pais: user?.empr_pais || '',
-        });
+        await getObrasDB();
         setLoadingDB(false);
       }
 
@@ -156,7 +154,7 @@ export const useSarchObras = () => {
     const tieneInternet = await checkInternet();
 
     if (opcionSeleccionada === 'ejecutar' && !tieneInternet) {
-      await listarObrasDb();
+      await getObrasDB();
       setLoadingDB(false);
     } else {
       refetchObras();
@@ -164,7 +162,7 @@ export const useSarchObras = () => {
     onClose?.();
   };
 
-  const listarObrasDb = async () => {
+  const getObrasDB = async () => {
     const fechaHoy = format(new Date(), 'yyyy-MM-dd');
     const obras = await listarObrasDB([fechaHoy]);
     setObrasDB(obras);
