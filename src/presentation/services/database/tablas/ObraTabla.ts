@@ -1,5 +1,5 @@
 import SQLite from 'react-native-sqlite-storage';
-import {openDB} from '../database';
+import {deleteAllRows, insertRow, listRows, updateRow} from '../database';
 import {Obra} from '../../../../domain/entities/Obra';
 
 export const createObrasTable = async (db: SQLite.SQLiteDatabase) => {
@@ -66,60 +66,24 @@ export const createObrasTable = async (db: SQLite.SQLiteDatabase) => {
 };
 
 export const insertObra = async (obra: Obra) => {
-  const db = await openDB();
-
-  const keys = Object.keys(obra);
-  const values = Object.values(obra);
-  const placeholders = keys.map(() => '?').join(', ');
-  const columns = keys.join(', ');
-
-  const query = `INSERT INTO obras (${columns}) VALUES (${placeholders})`;
-
-  await db.executeSql(query, values);
+  await insertRow<Obra>('obras', obra);
 };
-
-type ObraCamposActualizables = Partial<Omit<Obra, 'regi_codigo'>>;
 
 export const actualizarObra = async (
   regi_codigo: string,
-  campos: ObraCamposActualizables,
+  datos: Partial<Obra>,
 ): Promise<void> => {
-  if (!regi_codigo || Object.keys(campos).length === 0) {
-    return;
-  }
-
-  const db = await openDB();
-
-  const columnas = Object.keys(campos);
-  const valores = Object.values(campos);
-
-  const sets = columnas.map(col => `${col} = ?`).join(', ');
-
-  const sql = `UPDATE obras SET ${sets} WHERE regi_codigo = ?`;
-
-  await db.executeSql(sql, [...valores, regi_codigo]);
+  await updateRow<Obra>('obras', 'regi_codigo', regi_codigo, datos);
 };
 
 export const listarObrasDB = async (
-  whereClause?: string,
   whereArgs: (string | number)[] = [],
 ): Promise<Obra[]> => {
-  const db = await openDB();
-  const query = `SELECT * FROM obras${
-    whereClause ? ` WHERE ${whereClause}` : ''
-  }`;
-  const [results] = await db.executeSql(query, whereArgs);
-  const rows = results.rows;
-  const obras: Obra[] = [];
-
-  for (let i = 0; i < rows.length; i++) {
-    obras.push(rows.item(i));
-  }
+  const obras = await listRows<Obra>('obras', 'fecha_asignacion = ?', whereArgs);
 
   return obras;
 };
 
 export const eliminarTodasLasObras = async (): Promise<void> => {
-  const db = await openDB();
-  await db.executeSql('DELETE FROM obras');
+  await deleteAllRows('obras');
 };

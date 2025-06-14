@@ -20,9 +20,13 @@ const GenoxxApp = () => {
 
   useEffect(() => {
     initApi().then(() => {
-      initDB().then(() => {
-        setLoading(false);
-      });
+      initDB()
+        .then(() => {
+          setLoading(false);
+        })
+        .catch(error => {
+          console.error('Error initializing database:', error);
+        });
     });
   }, []);
 

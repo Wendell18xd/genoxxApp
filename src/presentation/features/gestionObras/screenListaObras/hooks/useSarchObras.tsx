@@ -22,7 +22,7 @@ import {
   eliminarTodasLasObras,
   insertObra,
   listarObrasDB,
-} from '../../../../services/database/tablas/ObrasTabla';
+} from '../../../../services/database/tablas/ObraTabla';
 import {format} from 'date-fns';
 import {checkInternet} from '../../../../helper/network';
 
@@ -128,6 +128,9 @@ export const useSarchObras = () => {
         await eliminarTodasLasObras();
         await Promise.all(datos.map(obra => insertObra(obra)));
         await listarObrasDb();
+        await getActividadesObras({
+          vg_empr_pais: user?.empr_pais || '',
+        });
         setLoadingDB(false);
       }
 
@@ -163,7 +166,7 @@ export const useSarchObras = () => {
 
   const listarObrasDb = async () => {
     const fechaHoy = format(new Date(), 'yyyy-MM-dd');
-    const obras = await listarObrasDB('fecha_asignacion = ?', [fechaHoy]);
+    const obras = await listarObrasDB([fechaHoy]);
     setObrasDB(obras);
   };
 
@@ -173,9 +176,6 @@ export const useSarchObras = () => {
       navigation.navigate('SegmentedButtonsDetalleObras');
     }
     if (opcionSeleccionada === 'ejecutar') {
-      await getActividadesObras({
-        vg_empr_pais: user?.empr_pais || '',
-      });
       navigation.navigate('SegmentedButtonsEjecucionObras');
     }
   };

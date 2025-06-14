@@ -15,7 +15,7 @@ import {saveObraEjecutada} from '../../../../../../../actions/gestionObras/ejecu
 import Toast from 'react-native-toast-message';
 import {useAuthStore} from '../../../../../../store/auth/useAuthStore';
 import * as Yup from 'yup';
-import {actualizarObra} from '../../../../../../services/database/tablas/ObrasTabla';
+import {actualizarObra} from '../../../../../../services/database/tablas/ObraTabla';
 
 interface initialParams {
   tipo_registro: string;
