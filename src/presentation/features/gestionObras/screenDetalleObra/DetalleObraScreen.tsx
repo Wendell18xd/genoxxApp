@@ -1,7 +1,8 @@
-import {ScrollView, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import {Divider, Text} from 'react-native-paper';
 import {globalColors} from '../../../styles/globalStyle';
 import {useObrasStore} from '../store/useObrasStore';
+import CustomScrollView from '../../../components/ui/CustomScrollView';
 
 interface Props {
   label: string;
@@ -34,7 +35,7 @@ export const DetalleObraScreen = () => {
   const {obra} = useObrasStore();
 
   return (
-    <ScrollView contentContainerStyle={{padding: 32}}>
+    <CustomScrollView contentContainerStyle={{padding: 32}}>
       <Text variant="titleLarge" style={{fontWeight: 'bold'}}>
         Información de la obra
       </Text>
@@ -91,7 +92,7 @@ export const DetalleObraScreen = () => {
       </Text>
 
       <Text variant="bodyMedium">{obra?.observacion}</Text> */}
-    </ScrollView>
+    </CustomScrollView>
   );
 };
 

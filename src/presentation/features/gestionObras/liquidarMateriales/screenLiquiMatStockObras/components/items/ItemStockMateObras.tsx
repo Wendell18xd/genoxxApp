@@ -121,6 +121,7 @@ export const ItemStockMateObras = ({
           }
           height={40}
           onChangeText={val => handleChangeCantidad(val, setFieldValue, index)}
+          returnKeyType="done"
         />
 
         <Text
