@@ -1,6 +1,6 @@
 import {useNavigation, NavigationProp} from '@react-navigation/native';
 import {useQuery} from '@tanstack/react-query';
-import {useRef} from 'react';
+import {useRef, useState} from 'react';
 import {Option} from 'react-native-paper-dropdown';
 import {
   listadoProyectosObras,
@@ -18,6 +18,13 @@ import {useObrasStore} from '../../store/useObrasStore';
 import {useObrasNavigationStore} from '../../store/useObrasNavigationStore';
 import {useBottomSheetModal} from '../../../../hooks/useBottomSheet';
 import {useEjecucionObrasStore} from '../../ejecucionObras/store/useEjecucionObrasStore';
+import {
+  eliminarTodasLasObras,
+  insertObra,
+  listarObrasDB,
+} from '../../../../services/database/tablas/ObraTabla';
+import {format} from 'date-fns';
+import {checkInternet} from '../../../../helper/network';
 
 interface SearchObrasFormValues {
   cbo_proy_codigo: string;
@@ -57,13 +64,15 @@ const tiposBusqueda: Option[] = [
 export const useSarchObras = () => {
   const {user} = useAuthStore();
   const {drawerKey} = useMainStore();
-  const {setObra} = useObrasStore();
+  const {isRefresthObra, setObra} = useObrasStore();
   const {opcionSeleccionada, seleccionarOpcion} = useObrasNavigationStore();
   const {ref, open, close} = useBottomSheetModal();
   const {loading: loadingActividades, getActividadesObras} =
     useEjecucionObrasStore();
   const navigation =
     useNavigation<NavigationProp<LiquidacionObrasStackParam>>();
+  const [obrasDB, setObrasDB] = useState<Obra[]>([]);
+  const [loadingDB, setLoadingDB] = useState(false);
 
   const proy_tipo =
     drawerKey === Menu.LIQUIDACION_MATERIALES_OBRAS_ENERGIA ||
@@ -105,7 +114,7 @@ export const useSarchObras = () => {
   });
 
   const {
-    data: obras,
+    data: obrasuQ,
     isFetching: isFetchObras,
     refetch: refetchObras,
     error: errorObras,
@@ -113,12 +122,22 @@ export const useSarchObras = () => {
     queryKey: ['obrasAsignadas'],
     queryFn: async () => {
       const {datos} = await listadoObrasAsiganadas(filtrosRef.current);
+
+      if (opcionSeleccionada === 'ejecutar') {
+        setLoadingDB(true);
+        await getActividadesObras({vg_empr_pais: user?.empr_pais || ''});
+        await eliminarTodasLasObras();
+        await Promise.all(datos.map(obra => insertObra(obra)));
+        await getObrasDB();
+        setLoadingDB(false);
+      }
+
       return datos;
     },
     enabled: false,
   });
 
-  const handleSearch = (
+  const handleSearch = async (
     values?: SearchObrasFormValues,
     onClose?: () => void,
   ) => {
@@ -130,8 +149,23 @@ export const useSarchObras = () => {
       vl_opcion: opcionSeleccionada || '',
     };
     filtrosRef.current = nuevosFiltros;
-    refetchObras();
+
+    setLoadingDB(true);
+    const tieneInternet = await checkInternet();
+
+    if (opcionSeleccionada === 'ejecutar' && !tieneInternet) {
+      await getObrasDB();
+      setLoadingDB(false);
+    } else {
+      refetchObras();
+    }
     onClose?.();
+  };
+
+  const getObrasDB = async () => {
+    const fechaHoy = format(new Date(), 'yyyy-MM-dd');
+    const obras = await listarObrasDB([fechaHoy]);
+    setObrasDB(obras);
   };
 
   const handleSelectObra = async (obra: Obra) => {
@@ -140,9 +174,6 @@ export const useSarchObras = () => {
       navigation.navigate('SegmentedButtonsDetalleObras');
     }
     if (opcionSeleccionada === 'ejecutar') {
-      await getActividadesObras({
-        vg_empr_pais: user?.empr_pais || '',
-      });
       navigation.navigate('SegmentedButtonsEjecucionObras');
     }
   };
@@ -154,6 +185,14 @@ export const useSarchObras = () => {
     open();
   };
 
+  const onRefetchObras = () => {
+    filtrosRef.current = {
+      ...filtrosRef.current,
+      vl_opcion: opcionSeleccionada || '',
+    };
+    refetchObras();
+  };
+
   return {
     //* Propiedades
     tiposBusqueda,
@@ -161,18 +200,19 @@ export const useSarchObras = () => {
     proyectos,
     isFetchProyecto,
     errorProyectos,
-    obras,
-    isFetchObras,
+    obras: opcionSeleccionada === 'ejecutar' ? obrasDB : obrasuQ,
+    isFetchObras: opcionSeleccionada === 'ejecutar' ? loadingDB : isFetchObras,
     errorObras,
     opcionSeleccionada,
     ref,
     loadingActividades,
+    isRefresthObra,
 
     //* Metodos
     handleSearch,
     getValidationSchema,
     refetchProyectos,
-    refetchObras,
+    refetchObras: onRefetchObras,
     handleSelectObra,
     close,
     handleOpenSearch,

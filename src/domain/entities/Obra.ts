@@ -54,4 +54,5 @@ export interface Obra {
   empalme256: string;
   valida_proyectado: string;
   maneja_stock_guia: string;
+  fecha_asignacion: string;
 }
