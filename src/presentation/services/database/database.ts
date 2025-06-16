@@ -5,6 +5,7 @@ import {createActividadSinOrdenTable} from './tablas/ActividadSinOrdenTabla';
 import {createFamiliaTable} from './tablas/FamiliaTabla';
 import {createSubFamiliaTable} from './tablas/SubFamiliaTabla';
 import {createSituacionTable} from './tablas/SituacionTabla';
+import { createSaveActividadSinObraTable } from './tablas/SaveActividadSinOrdenTabla';
 
 SQLite.enablePromise(true);
 
@@ -27,6 +28,7 @@ export const initDB = async () => {
   await createFamiliaTable(db);
   await createSubFamiliaTable(db);
   await createSituacionTable(db);
+  await createSaveActividadSinObraTable(db);
 
   console.log('Base de datos inicializada correctamente');
 };

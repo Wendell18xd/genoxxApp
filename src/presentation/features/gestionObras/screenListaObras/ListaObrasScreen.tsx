@@ -14,8 +14,10 @@ import {SeleccionarOpcionObra} from './components/SeleccionarOpcionObra';
 import {useObrasNavigationStore} from '../store/useObrasNavigationStore';
 import FullScreenLoader from '../../../components/ui/loaders/FullScreenLoader';
 import {ChipsFiltroEjecucion} from './components/ChipsFiltroEjecucion';
-import {globalColors} from '../../../styles/globalStyle';
 import CustomFlatList from '../../../components/ui/CustomFlatList';
+import {globalColors} from '../../../styles/globalStyle';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {LiquidacionObrasStackParam} from '../navigations/LiquidacionObrasStackNavigation';
 
 const valuesEjecucion = {
   cbo_proy_codigo: '',
@@ -43,6 +45,8 @@ export const ListaObrasScreen = () => {
   const {seleccionarOpcion} = useObrasNavigationStore();
   const [obrasFilter, setObrasFilter] = useState(obras);
   const [chipValue, setChipValue] = useState('0');
+  const navigation =
+    useNavigation<NavigationProp<LiquidacionObrasStackParam>>();
 
   useEffect(() => {
     if (opcionSeleccionada === 'ejecutar') {
@@ -144,14 +148,39 @@ export const ListaObrasScreen = () => {
         )}
 
         {opcionSeleccionada === 'ejecutar' && (
-          <CustomFAB
-            icon="sync"
-            label="Sincronizar"
-            loading={isFetchObras}
-            onPress={() => handleSearch(valuesEjecucion)}
-            style={{bottom: 16, left: 16}}
-            color={globalColors.primary}
-          />
+          <>
+            <CustomFAB
+              icon="plus"
+              label="Iniciar Actividad"
+              onPress={() => {
+                navigation.navigate('ActividaSinObra');
+              }}
+              style={{bottom: 85, left: 16}}
+            />
+            <CustomFAB
+              icon="sync"
+              label="Sincronizar"
+              loading={isFetchObras}
+              onPress={() => handleSearch(valuesEjecucion)}
+              style={{bottom: 16, left: 16}}
+              color={globalColors.primary}
+            />
+            {/* <CustomFABGroup
+              actions={[
+                {
+                  icon: 'plus',
+                  label: 'Iniciar Actividad',
+                  onPress: () => console.log('Star'),
+                  color: globalColors.primary,
+                },
+                {
+                  icon: 'sync',
+                  label: 'Sincronizar',
+                  onPress: () => handleSearch(valuesEjecucion),
+                },
+              ]}
+            /> */}
+          </>
         )}
 
         <CustomFAB

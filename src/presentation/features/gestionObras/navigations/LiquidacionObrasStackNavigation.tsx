@@ -13,6 +13,7 @@ import FullScreenLoader from '../../../components/ui/loaders/FullScreenLoader';
 import {LiquiPartObrasScreen} from '../liquidarPartidas/screenLiquiPartObras/LiquiPartObrasScreen';
 import {BuscadorActividadPartidaScreen} from '../../buscadores/buscadorActividadPartida/BuscadorActividadPartidaScreen';
 import {SegmentedButtonsEjecucionObras} from '../ejecucionObras/navigations/SegmentedButtonsEjecucionObras';
+import {ActividaSinObra} from '../ejecucionObras/ejecucionSinObra/screen-actividad/ActividaSinObra';
 
 export type LiquidacionObrasStackParam = {
   ListaObrasScreen: undefined;
@@ -22,6 +23,7 @@ export type LiquidacionObrasStackParam = {
   LiquiMatObrasScreen: {isRegulariza: boolean};
   LiquiPartObrasScreen: undefined;
   BuscadorActividadPartidaScreen: undefined;
+  ActividaSinObra: undefined;
 };
 
 const Stack = createStackNavigator<LiquidacionObrasStackParam>();
@@ -104,6 +106,7 @@ export const LiquidacionObrasStackNavigation = () => {
         component={BuscadorActividadPartidaScreen}
       />
       <Stack.Screen name="CustomCameraScreen" component={CustomCameraScreen} />
+      <Stack.Screen name="ActividaSinObra" component={ActividaSinObra} />
     </Stack.Navigator>
   );
 };

@@ -11,7 +11,7 @@ interface CustomFABProps {
   fabStyle?: StyleProp<ViewStyle>;
   loading?: boolean;
   cantidad?: number;
-  onPress: () => void;
+  onPress?: () => void;
 }
 
 export const CustomFAB = ({
@@ -55,7 +55,9 @@ export const CustomFAB = ({
       return; // no ejecuto onPress
     }
 
-    onPress(); // teclado cerrado, ejecuto onPress
+    if (onPress) {
+      onPress(); // teclado cerrado, ejecuto onPress
+    }
   };
 
   return (
@@ -98,7 +100,7 @@ export const CustomFAB = ({
           tecladoAbierto ? 'rgba(255,255,255,0.0)' : 'rgba(255,255,255,0.3)'
         }
         loading={loading}
-        onPress={handlePress}
+        onPress={onPress ? handlePress : undefined}
       />
     </View>
   );
