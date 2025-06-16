@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Alert, Image, ScrollView} from 'react-native';
+import {Alert, Image} from 'react-native';
 import {Text, TextInput, useTheme} from 'react-native-paper';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
@@ -11,6 +11,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {AuthStackParam} from '../../../navigations/AuthStackNavigation';
 import {useAuthStore} from '../../../store/auth/useAuthStore';
 import Toast from 'react-native-toast-message';
+import CustomScrollView from '../../../components/ui/CustomScrollView';
 
 interface OlvidarPassFormValues {
   usuario: string;
@@ -103,7 +104,7 @@ const OlvidarPassScreen = ({navigation}: Props) => {
   return (
     <>
       <AuthLayout>
-        <ScrollView showsVerticalScrollIndicator={false}>
+          <CustomScrollView>
           <Image
             source={require('../../../../assets/images/logo.png')}
             style={{
@@ -169,7 +170,7 @@ const OlvidarPassScreen = ({navigation}: Props) => {
               </>
             )}
           </Formik>
-        </ScrollView>
+        </CustomScrollView>
       </AuthLayout>
     </>
   );

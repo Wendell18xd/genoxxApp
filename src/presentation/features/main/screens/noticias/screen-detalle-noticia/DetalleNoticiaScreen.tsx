@@ -3,11 +3,12 @@ import {RouteProp, useRoute} from '@react-navigation/native';
 import {NoticiasStackParam} from '../navigations/NoticiasStackNatigation';
 import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoader';
 import {CustomFAB} from '../../../../../components/ui/CustomFAB';
-import {FlatList, View} from 'react-native';
+import {View} from 'react-native';
 import {DetalleHeaderNoticias} from './components/DetalleHeaderNoticias';
 import {ItemArchivoNoticia} from './components/ItemArchivoNoticia';
 import {useDetalleNoticia} from './hooks/useDetalleNoticia';
 import {useTheme} from 'react-native-paper';
+import CustomFlatList from '../../../../../components/ui/CustomFlatList';
 
 export const DetalleNoticiaScreen = () => {
   const {noticia} =
@@ -20,7 +21,7 @@ export const DetalleNoticiaScreen = () => {
   return (
     <SafeAreaLayout title="Detalle de Noticia" isHeader primary>
       {(isLoading || mutation.isPending) && <FullScreenLoader transparent />}
-      <FlatList
+      <CustomFlatList
         data={detalle?.archivos}
         renderItem={({item}) => (
           <View style={{marginBottom: 16}}>
@@ -28,7 +29,6 @@ export const DetalleNoticiaScreen = () => {
           </View>
         )}
         keyExtractor={item => item.cont_correlativo}
-        showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingHorizontal: 16,
           paddingVertical: 16,
