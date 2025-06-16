@@ -1,5 +1,5 @@
 // ListaObrasScreen.tsx
-import {FlatList, View} from 'react-native';
+import {View} from 'react-native';
 import {useSarchObras} from './hooks/useSarchObras';
 import {useEffect, useState} from 'react';
 import Toast from 'react-native-toast-message';
@@ -15,6 +15,7 @@ import {useObrasNavigationStore} from '../store/useObrasNavigationStore';
 import FullScreenLoader from '../../../components/ui/loaders/FullScreenLoader';
 import {ChipsFiltroEjecucion} from './components/ChipsFiltroEjecucion';
 import {globalColors} from '../../../styles/globalStyle';
+import CustomFlatList from '../../../components/ui/CustomFlatList';
 
 const valuesEjecucion = {
   cbo_proy_codigo: '',
@@ -108,7 +109,7 @@ export const ListaObrasScreen = () => {
               <ChipsFiltroEjecucion value={chipValue} setValue={setChipValue} />
             )}
 
-            <FlatList
+            <CustomFlatList
               data={obrasFilter?.filter(obra =>
                 obra.nro_orden
                   ?.toLowerCase()

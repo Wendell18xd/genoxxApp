@@ -1,6 +1,6 @@
 import DrawerLayout from '../layout/DrawerLayout';
 import {useMainStore} from '../../../store/main/useMainStore';
-import {FlatList, View} from 'react-native';
+import {View} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import MenuItem from './home/components/MenuItem';
 import SinResultados from '../../../components/ui/SinResultados';
@@ -8,6 +8,7 @@ import CustomTextInput from '../../../components/ui/CustomTextInput';
 import {TextInput} from 'react-native-paper';
 import {useFilterMenu} from '../hooks/useFilterMenu';
 import {Menu} from '../../../../domain/entities/User';
+import CustomFlatList from '../../../components/ui/CustomFlatList';
 
 export const ModuleScreen = () => {
   const navigation = useNavigation();
@@ -37,7 +38,7 @@ export const ModuleScreen = () => {
         />
       </View>
       {filterMenu && filterMenu.length > 0 ? (
-        <FlatList
+        <CustomFlatList
           style={{padding: 16, marginTop: 16}}
           data={filterMenu}
           showsVerticalScrollIndicator={false}

@@ -3,14 +3,7 @@ import {
   NavigationProp,
   useNavigation,
 } from '@react-navigation/native';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  StyleProp,
-  StyleSheet,
-  View,
-  ViewStyle,
-} from 'react-native';
+import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {MainStackParam} from '../../../navigations/MainStackNavigation';
 import {Appbar, useTheme} from 'react-native-paper';
@@ -36,7 +29,7 @@ const DrawerLayout = ({
   curvaHeight = 10,
 }: Props) => {
   const navigation = useNavigation<NavigationProp<MainStackParam>>();
-  const {bottom, top} = useSafeAreaInsets();
+  const {bottom} = useSafeAreaInsets();
   const {menuSelected} = useMainStore();
   const {colors} = useTheme();
   const {keyboardVisible} = useKeyBoardVisible();
@@ -64,36 +57,36 @@ const DrawerLayout = ({
         />
       </Appbar.Header>
 
-      <KeyboardAvoidingView
+      {/* <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}
-        keyboardVerticalOffset={keyboardVisible ? -16 : -(top + bottom)}>
-        {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
+        keyboardVerticalOffset={keyboardVisible ? -16 : -(top + bottom)}> */}
+      {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
+      <View
+        style={[
+          styles.containerChildren,
+          {
+            backgroundColor: colors.background,
+            paddingBottom: keyboardVisible ? 0 : bottom,
+          },
+          style,
+        ]}>
+        {primary && isCurva && (
           <View
-            style={[
-              styles.containerChildren,
-              {
-                backgroundColor: colors.background,
-                paddingBottom: keyboardVisible ? 0 : bottom,
-              },
-              style,
-            ]}>
-            {primary && isCurva && (
-              <View
-                style={{
-                  position: 'absolute',
-                  width: '100%',
-                }}>
-                <View
-                  style={{backgroundColor: colors.primary, height: curvaHeight}}
-                />
-                <CurvaBottomView />
-              </View>
-            )}
-            {children}
+            style={{
+              position: 'absolute',
+              width: '100%',
+            }}>
+            <View
+              style={{backgroundColor: colors.primary, height: curvaHeight}}
+            />
+            <CurvaBottomView />
           </View>
-        {/* </TouchableWithoutFeedback> */}
-      </KeyboardAvoidingView>
+        )}
+        {children}
+      </View>
+      {/* </TouchableWithoutFeedback> */}
+      {/* </KeyboardAvoidingView> */}
     </View>
   );
 };
