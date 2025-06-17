@@ -12,6 +12,7 @@ interface Props {
   onChange: (value: string) => void;
   error?: boolean;
   style?: TextStyle;
+  disabled?: boolean;
 }
 
 const CustomTimePicker: React.FC<Props> = ({
@@ -21,6 +22,7 @@ const CustomTimePicker: React.FC<Props> = ({
   onChange,
   error,
   style,
+  disabled = false,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -47,6 +49,7 @@ const CustomTimePicker: React.FC<Props> = ({
         left={<TextInput.Icon icon="clock-outline" />}
         showSoftInputOnFocus={false}
         style={style}
+        disabled={disabled}
       />
 
       <Portal>

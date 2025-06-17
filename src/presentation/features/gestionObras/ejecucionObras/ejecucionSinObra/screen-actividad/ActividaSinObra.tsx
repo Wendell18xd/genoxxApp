@@ -20,6 +20,9 @@ export const ActividaSinObra = () => {
     actividades,
     situacion,
     tiempo,
+    saving,
+    saveActividad,
+    loading,
     handleSave,
     getValidationSchema,
     start,
@@ -32,14 +35,19 @@ export const ActividaSinObra = () => {
   }, []);
 
   return (
-    <DrawerLayout title="Iniciar Actividad">
+    <DrawerLayout
+      title={
+        saveActividad.length > 0 ? 'Finalizar actividad' : 'Iniciar actividad'
+      }>
       <View style={globalStyle.defaultContainer}>
-        {false && <FullScreenLoader transparent />}
+        {saving && <FullScreenLoader transparent message="Guardando" />}
+        {loading && <FullScreenLoader />}
 
         <Formik
           initialValues={initialValues}
           onSubmit={handleSave}
-          validationSchema={getValidationSchema}>
+          validationSchema={() => getValidationSchema(saveActividad)}
+          enableReinitialize>
           {({
             handleChange,
             handleBlur,
@@ -52,15 +60,20 @@ export const ActividaSinObra = () => {
             <CustomScrollView
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{flex: 1}}>
-              <TurnoSelector
-                value={values.turno}
-                onChange={val => setFieldValue('turno', val)}
-              />
-              {touched.turno && errors.turno && (
-                <Text style={{color: 'red', marginTop: 4}}>
-                  {errors.turno}
-                </Text>
-              )}
+              <View
+                style={{
+                  pointerEvents: saveActividad.length > 0 ? 'none' : 'auto',
+                }}>
+                <TurnoSelector
+                  value={values.turno}
+                  onChange={val => setFieldValue('turno', val)}
+                />
+                {touched.turno && errors.turno && (
+                  <Text style={{color: 'red', marginTop: 4}}>
+                    {errors.turno}
+                  </Text>
+                )}
+              </View>
 
               <View style={{marginTop: 8}}>
                 <CustomDropdownInput
@@ -69,6 +82,7 @@ export const ActividaSinObra = () => {
                   value={values.actividad}
                   onSelect={val => setFieldValue('actividad', val)}
                   error={touched.actividad && !!errors.actividad}
+                  disabled={saveActividad.length > 0}
                 />
                 {touched.actividad && errors.actividad && (
                   <Text style={{color: 'red', marginTop: 4}}>
@@ -84,6 +98,7 @@ export const ActividaSinObra = () => {
                     value={values.hora_inicio}
                     onChange={hora => setFieldValue('hora_inicio', hora)}
                     error={touched.hora_inicio && !!errors.hora_inicio}
+                    disabled={saveActividad.length > 0}
                   />
                   {touched.hora_inicio && errors.hora_inicio && (
                     <Text style={{color: 'red', marginTop: 4}}>
@@ -91,6 +106,22 @@ export const ActividaSinObra = () => {
                     </Text>
                   )}
                 </View>
+
+                {saveActividad.length > 0 && (
+                  <View style={{flex: 0.5}}>
+                    <CustomTimePicker
+                      label="Hora final"
+                      value={values.hora_final}
+                      onChange={hora => setFieldValue('hora_final', hora)}
+                      error={touched.hora_final && !!errors.hora_final}
+                    />
+                    {touched.hora_final && errors.hora_final && (
+                      <Text style={{color: 'red', marginTop: 4}}>
+                        {errors.hora_final}
+                      </Text>
+                    )}
+                  </View>
+                )}
               </View>
 
               <View style={{marginTop: 8}}>
@@ -100,6 +131,7 @@ export const ActividaSinObra = () => {
                   value={values.situacion}
                   onSelect={val => setFieldValue('situacion', val)}
                   error={touched.situacion && !!errors.situacion}
+                  disabled={saveActividad.length > 0}
                 />
                 {touched.situacion && errors.situacion && (
                   <Text style={{color: 'red', marginTop: 4}}>
@@ -130,11 +162,15 @@ export const ActividaSinObra = () => {
               <View style={{marginTop: 16}}>
                 <PrimaryButton
                   debounce
-                  label="Iniciar Actividad"
+                  label={
+                    saveActividad.length > 0
+                      ? 'Finalizar actividad'
+                      : 'Iniciar actividad'
+                  }
                   icon="content-save"
                   style={{width: '100%'}}
-                  disabled={false}
-                  loading={false}
+                  disabled={saving}
+                  loading={saving}
                   onPress={handleSubmit}
                 />
               </View>

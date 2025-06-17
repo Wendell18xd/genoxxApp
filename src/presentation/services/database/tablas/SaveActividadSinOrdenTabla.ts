@@ -1,8 +1,10 @@
 import SQLite from 'react-native-sqlite-storage';
 import {deleteAllRows, insertRow, listRows} from '../database';
-import {Actividade} from '../../../../infrastructure/interfaces/gestionObras/ejecucionObras/actividades.obras.response';
+import {SaveActividadSinOrden} from '../../../../domain/entities/SaveActividadSinOrden';
 
-export const createSaveActividadSinObraTable = async (db: SQLite.SQLiteDatabase) => {
+export const createSaveActividadSinObraTable = async (
+  db: SQLite.SQLiteDatabase,
+) => {
   await db.executeSql(`
     CREATE TABLE IF NOT EXISTS saveactividadsinobra (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -12,17 +14,21 @@ export const createSaveActividadSinObraTable = async (db: SQLite.SQLiteDatabase)
         hora_final TEXT,
         situacion TEXT,
         observacion TEXT,
-        tiempo_transcurrido TEXT,
+        tiempo_transcurrido TEXT
     );
   `);
 };
 
-export const insertSaveActividadSinObraDB = async (item: Actividade) => {
-  await insertRow<Actividade>('saveactividadsinobra', item);
+export const insertSaveActividadSinObraDB = async (
+  item: SaveActividadSinOrden,
+) => {
+  await insertRow<SaveActividadSinOrden>('saveactividadsinobra', item);
 };
 
-export const listAllSaveActividadSinObraDB = async (): Promise<Actividade[]> => {
-  const list = await listRows<Actividade>('saveactividadsinobra');
+export const listAllSaveActividadSinObraDB = async (): Promise<
+  SaveActividadSinOrden[]
+> => {
+  const list = await listRows<SaveActividadSinOrden>('saveactividadsinobra');
   return list;
 };
 

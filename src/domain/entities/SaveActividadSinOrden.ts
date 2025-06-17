@@ -1,5 +1,5 @@
 export interface SaveActividadSinOrden {
-  id: number;
+  id?: number;
   turno: string;
   actividad: string;
   hora_inicio: string;

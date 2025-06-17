@@ -18,6 +18,7 @@ import CustomFlatList from '../../../components/ui/CustomFlatList';
 import {globalColors} from '../../../styles/globalStyle';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {LiquidacionObrasStackParam} from '../navigations/LiquidacionObrasStackNavigation';
+import {listAllSaveActividadSinObraDB} from '../../../services/database/tablas/SaveActividadSinOrdenTabla';
 
 const valuesEjecucion = {
   cbo_proy_codigo: '',
@@ -47,6 +48,7 @@ export const ListaObrasScreen = () => {
   const [chipValue, setChipValue] = useState('0');
   const navigation =
     useNavigation<NavigationProp<LiquidacionObrasStackParam>>();
+  const [isInicio, setIsInicio] = useState(false);
 
   useEffect(() => {
     if (opcionSeleccionada === 'ejecutar') {
@@ -94,6 +96,12 @@ export const ListaObrasScreen = () => {
       });
     }
   }, [opcionSeleccionada, isRefresthObra]);
+
+  useEffect(() => {
+    listAllSaveActividadSinObraDB().then(data => {
+      setIsInicio(data.length === 0);
+    });
+  }, []);
 
   return (
     <DrawerLayout title="Lista de Obras">
@@ -151,11 +159,12 @@ export const ListaObrasScreen = () => {
           <>
             <CustomFAB
               icon="plus"
-              label="Iniciar Actividad"
+              label={isInicio ? 'Iniciar Actividad' : 'Finalizar Actividad'}
               onPress={() => {
                 navigation.navigate('ActividaSinObra');
               }}
               style={{bottom: 85, left: 16}}
+              color={isInicio ? globalColors.secondary : globalColors.warning}
             />
             <CustomFAB
               icon="sync"
