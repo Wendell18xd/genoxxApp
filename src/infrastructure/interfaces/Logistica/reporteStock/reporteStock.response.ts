@@ -3,7 +3,6 @@ import { ReporteStock } from '../../../../domain/entities/ReporteStock';
 export interface ReporteStockResponse {
     datos:        ReporteStock[];
     mensaje:      string;
-    datosresumen: Datosresuman[];
 }
 
 export interface ReporteStockResponse {
@@ -151,9 +150,3 @@ export enum TipoPerfil {
     Alma = 'ALMA',
 }
 
-export interface Datosresuman {
-    codi_perfil: string;
-    rut_perfil:  string;
-    nom_perfil:  string;
-    mate_total:  string;
-}
