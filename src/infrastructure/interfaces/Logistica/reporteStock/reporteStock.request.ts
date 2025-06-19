@@ -1,5 +1,5 @@
 export interface ReporteStockRequest {
-  vl_empr_codigo: string;
+  vg_empr_codigo: string;
   cbo_bus_proyecto: string;
   cbo_bus_tipo_perfil: string;
   cbo_bus_unidad_negocio: string;

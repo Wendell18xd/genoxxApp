@@ -21,6 +21,8 @@ export const getReporteStock = async (
         txt_aplica_varios_almacenes: props.txt_aplica_varios_almacenes || '',
         txt_maneja_kardex: props.txt_maneja_kardex || '',
         cbo_bus_tipo_material: props.cbo_bus_tipo_material || '',
+        txt_liquida_app: props.txt_liquida_app || '',
+        vg_empr_codigo: props.vg_empr_codigo ?? '',
       },
     );
     return data;
