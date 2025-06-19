@@ -5,10 +5,10 @@ import MaterialIcons from '../../../../../../components/ui/icons/MaterialIcons';
 import {formatearNumero} from '../../../../../../helper/moneyUtils';
 import {StyleSheet, View} from 'react-native';
 import React from 'react';
-import {ReporteStock} from '../../../../../../../domain/entities/ReporteStock';
+import {DetalleStock} from '../../../../../../../domain/entities/ReporteStock';
 
 interface Props {
-  detalle: ReporteStock;
+  detalle: DetalleStock;
 }
 export const ItemDetalleStock = ({detalle}: Props) => {
   const {colors} = useTheme();
@@ -21,15 +21,18 @@ export const ItemDetalleStock = ({detalle}: Props) => {
         <MaterialIcons name="layers" size={28} color={colors.primary} />
         {/* CONTENIDO PRINCIPAL */}
         <View style={styles.content}>
-          <Text variant="bodySmall" style={styles.title}>
+          <Text variant="titleMedium" style={styles.title}>
             {detalle.mate_nombre}
+          </Text>
+          <Text variant="bodySmall" style={styles.subtitle}>
+            {detalle.mate_codigo}
           </Text>
         </View>
 
         {/* STOCK CONTABLE */}
         <Text variant="bodyLarge">
           {formatearNumero({
-            valor: detalle.alma_stock,
+            valor: detalle.stock_contable,
             pais: user?.empr_pais,
           })}
         </Text>
@@ -39,7 +42,6 @@ export const ItemDetalleStock = ({detalle}: Props) => {
 
       {/* Etiqueta inferior */}
       <View style={styles.footer}>
-        <ItemInferior label="Cod Material" value={detalle.mate_codigo} />
         <ItemInferior label="Umed" value={detalle.mate_medida} />
       </View>
     </CustomCardContent>

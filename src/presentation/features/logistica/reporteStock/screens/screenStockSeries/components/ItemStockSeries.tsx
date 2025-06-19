@@ -1,55 +1,51 @@
-import { Divider, Text, useTheme } from 'react-native-paper';
-import { useAuthStore } from '../../../../../../store/auth/useAuthStore';
-import { CustomCardContent } from '../../../../../../components/ui/CustomCardContent';
-import { StyleSheet, View } from 'react-native';
+import {Divider, Text, useTheme} from 'react-native-paper';
+import {useAuthStore} from '../../../../../../store/auth/useAuthStore';
+import {CustomCardContent} from '../../../../../../components/ui/CustomCardContent';
+import {StyleSheet, View} from 'react-native';
 import MaterialIcons from '../../../../../../components/ui/icons/MaterialIcons';
-import { formatearNumero } from '../../../../../../helper/moneyUtils';
+import {formatearNumero} from '../../../../../../helper/moneyUtils';
+import {StockSerie} from '../../../../../../../domain/entities/ReporteStock';
 
 interface Props {
-    series: StockSeries;
+  serie: StockSerie;
 }
+export const ItemStockSeries = ({serie}: Props) => {
+  const {colors} = useTheme();
+  const {user} = useAuthStore();
 
-export const ItemStockSeries = (series) => {
-    const {colors} = useTheme();
-    const {user} = useAuthStore();
   return (
     <CustomCardContent mode="outlined">
-        <View style= {styles.container}>
-            {/* ICONO */}
-            <MaterialIcons name="layers" size={28} color={colors.primary}/>
-
-            {/* CONTENIDO PRINCIPAL */}
-
-            <View style={styles.content}>
-                <Text variant="titleMedium" style={styles.title}>
-                    {series. }
-                </Text>
-                <Text variant="bodySmall" style={styles.subtitle}>
-                    {series. }
-                </Text>
-            </View>
-
-            {/* CANTIDAD */}
-            <Text>
-                {formatearNumero({
-                    valor: series. ,
-                    pais: user?.empr_codigo,
-                })}
-            </Text>
+      <View style={styles.container}>
+        {/* ICONO */}
+        <MaterialIcons name="layers" size={28} color={colors.primary} />
+        {/* CONTENIDO PRINCIPAL */}
+        <View style={styles.content}>
+          <Text variant="titleMedium" style={styles.title}>
+            {serie.mate_nombre}
+          </Text>
+          <Text variant="bodySmall" style={styles.subtitle}>
+            {serie.mate_codigo}
+          </Text>
         </View>
 
-        <Divider style={{marginVertical: 8}}/>
+        {/* STOCK CONTABLE */}
+        <Text variant="bodyLarge">
+          {formatearNumero({
+            valor: serie.mate_cantidad,
+            pais: user?.empr_pais,
+          })}
+        </Text>
+      </View>
 
-        {/* Etiqueta inferior */}
-        <View style={styles.footer}>
-            <ItemInferior label="Cod Material" value={series.}/>
-            <ItemInferior label="Descripción" value={series. } />
-            <ItemInferior label="Serie" value= {series. }/>
-        </View>
+      <Divider style={{marginVertical: 8}} />
+
+      {/* Etiqueta inferior */}
+      <View style={styles.footer}>
+        <ItemInferior label="Serie" value={serie.mate_serie} />
+      </View>
     </CustomCardContent>
-  )
+  );
 };
-
 
 const ItemInferior = ({value, label}: {value: string; label: string}) => (
   <View style={styles.footerItem}>
@@ -59,7 +55,6 @@ const ItemInferior = ({value, label}: {value: string; label: string}) => (
     <Text variant="bodySmall">{value}</Text>
   </View>
 );
-
 
 const styles = StyleSheet.create({
   container: {

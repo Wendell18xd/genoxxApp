@@ -10,19 +10,11 @@ export const getReporteStock = async (
     const {data} = await genoxxApi.post<ReporteStockResponse>(
       '/logistica/listar_reportestock',
       {
-        cbo_bus_tipo_perfil: props.cbo_bus_tipo_perfil || '',
-        cbo_bus_proyecto: props.cbo_bus_proyecto || '',
-        cbo_bus_unidad_negocio: props.cbo_bus_unidad_negocio || '',
-        cbo_bus_origen: props.cbo_bus_origen || '',
-        cbo_bus_activo_fijo: props.cbo_bus_activo_fijo || '',
-        txt_bus_cod_perfil: props.txt_bus_cod_perfil || '',
-        txt_bus_mate_codigo: props.txt_bus_mate_codigo || '',
-        chk_bus_sin_saldo: props.chk_bus_sin_saldo || '',
-        txt_aplica_varios_almacenes: props.txt_aplica_varios_almacenes || '',
-        txt_maneja_kardex: props.txt_maneja_kardex || '',
-        cbo_bus_tipo_material: props.cbo_bus_tipo_material || '',
-        txt_liquida_app: props.txt_liquida_app || '',
         vg_empr_codigo: props.vg_empr_codigo ?? '',
+        cbo_bus_tipo_perfil: props.cbo_bus_tipo_perfil || '',
+        txt_bus_cod_perfil: props.txt_bus_cod_perfil || '',
+        txt_maneja_kardex: props.txt_maneja_kardex || '',
+        txt_liquida_app: props.txt_liquida_app || '',
       },
     );
     return data;
