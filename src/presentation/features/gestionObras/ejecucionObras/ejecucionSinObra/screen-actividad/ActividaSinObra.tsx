@@ -22,6 +22,7 @@ export const ActividaSinObra = () => {
     tiempo,
     saving,
     saveActividad,
+    isSaving,
     loading,
     handleSave,
     getValidationSchema,
@@ -41,6 +42,7 @@ export const ActividaSinObra = () => {
       }>
       <View style={globalStyle.defaultContainer}>
         {saving && <FullScreenLoader transparent message="Guardando" />}
+        {isSaving && <FullScreenLoader transparent message="Grabando" />}
         {loading && <FullScreenLoader />}
 
         <Formik

@@ -19,6 +19,7 @@ import {globalColors} from '../../../styles/globalStyle';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {LiquidacionObrasStackParam} from '../navigations/LiquidacionObrasStackNavigation';
 import {listAllSaveActividadSinObraDB} from '../../../services/database/tablas/SaveActividadSinOrdenTabla';
+import { useEjecucionObrasStore } from '../ejecucionObras/store/useEjecucionObrasStore';
 
 const valuesEjecucion = {
   cbo_proy_codigo: '',
@@ -49,6 +50,7 @@ export const ListaObrasScreen = () => {
   const navigation =
     useNavigation<NavigationProp<LiquidacionObrasStackParam>>();
   const [isInicio, setIsInicio] = useState(false);
+  const {isSaveActividad, setIsSaveActividad} = useEjecucionObrasStore();
 
   useEffect(() => {
     if (opcionSeleccionada === 'ejecutar') {
@@ -100,12 +102,20 @@ export const ListaObrasScreen = () => {
   useEffect(() => {
     listAllSaveActividadSinObraDB().then(data => {
       setIsInicio(data.length === 0);
+      setIsSaveActividad(false);
     });
-  }, []);
+  }, [isSaveActividad]);
 
   return (
     <DrawerLayout title="Lista de Obras">
-      {(isFetchObras || loadingActividades) && <FullScreenLoader transparent />}
+      {(isFetchObras || loadingActividades) && (
+        <FullScreenLoader
+          message={
+            opcionSeleccionada !== 'ejecutar' ? 'Cargando' : 'Sincronizando'
+          }
+          transparent={opcionSeleccionada !== 'ejecutar'}
+        />
+      )}
 
       <View style={{flex: 1}}>
         {obras && obras.length > 0 ? (

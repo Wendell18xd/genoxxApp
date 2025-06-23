@@ -35,6 +35,8 @@ interface useEjecucionObrasState {
   actividades?: ActividadesObrasResponse;
   mapDropFamilia?: Option[];
   loading: boolean;
+  isSaveActividad: boolean;
+  setIsSaveActividad: (value: boolean) => void;
   getActividadesObras: (
     value: ActividadesObrasRequest,
   ) => Promise<ActividadesObrasResponse>;
@@ -44,6 +46,8 @@ interface useEjecucionObrasState {
 export const useEjecucionObrasStore = create<useEjecucionObrasState>()(set => ({
   actividades: undefined,
   loading: false,
+  isSaveActividad: false,
+  setIsSaveActividad: value => set({isSaveActividad: value}),
   getActividadesObras: async (value: ActividadesObrasRequest) => {
     try {
       set({loading: true});
@@ -98,5 +102,11 @@ export const useEjecucionObrasStore = create<useEjecucionObrasState>()(set => ({
       throw new Error(error as string);
     }
   },
-  onReset: () => set({actividades: undefined}),
+  onReset: () =>
+    set({
+      actividades: undefined,
+      mapDropFamilia: undefined,
+      loading: false,
+      isSaveActividad: false,
+    }),
 }));

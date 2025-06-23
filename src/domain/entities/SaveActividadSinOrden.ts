@@ -7,4 +7,5 @@ export interface SaveActividadSinOrden {
   situacion: string;
   observacion: string;
   tiempo_transcurrido: string;
+  registro_fecha: string;
 }

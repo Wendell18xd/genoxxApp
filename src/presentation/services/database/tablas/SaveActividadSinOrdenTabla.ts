@@ -14,7 +14,8 @@ export const createSaveActividadSinObraTable = async (
         hora_final TEXT,
         situacion TEXT,
         observacion TEXT,
-        tiempo_transcurrido TEXT
+        tiempo_transcurrido TEXT,
+        registro_fecha TEXT
     );
   `);
 };

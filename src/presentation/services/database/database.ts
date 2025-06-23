@@ -19,7 +19,7 @@ export const initDB = async () => {
 
   // Si necesitas recrear las tablas cada vez (cuidado: borra los datos)
   // solo descomentar si modificas la estructura de las tablas
-  //   await db.executeSql('DROP TABLE IF EXISTS obras;');
+    // await db.executeSql('DROP TABLE IF EXISTS saveactividadsinobra;');
 
   // Crear tablas
   await createObrasTable(db);
