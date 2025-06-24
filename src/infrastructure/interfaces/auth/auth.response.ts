@@ -19,6 +19,7 @@ export interface Empresa {
 }
 
 export interface Usuario {
+  empr_documento: string;
   empr_codigo: string;
   empr_nombre: string;
   empr_pais: string;

@@ -92,18 +92,22 @@ export const useSearchInspeccion = () => {
 
   const handleSelectInspeccion = (item: ConsultaInspecciones) => {
      console.log('Número de inspección recibido:', item.numero_inspeccion);
+     console.log('Correlativo recibido:', item.cont_correlativo);
+
     const encodedNumeroInspeccion = encodeBase64UrlSafe(item.numero_inspeccion.toString());
 
     let url = `${genoxxApi.defaults.baseURL}/flota/imprimir_inspeccion_vehicular/${encodedNumeroInspeccion}`;
-    if (user?.trab_documento === '20492518311') {
+
+    console.log('Usuario:', user);
+    if (user?.empr_documento === '20492518311') {
       url = `${genoxxApi.defaults.baseURL}/flota/formato_inspeccion/${item.cont_correlativo}`;
     }
 
     const postData =
-      `vgCodUse=${user?.usua_codigo}` +
-      `&vgCodEmp=${user?.empr_codigo}` +
-      `&vgEmpRuc=${user?.trab_documento}` +
-      `&vgPais=${user?.empr_pais}`;
+      `vg_cod_use=${user?.usua_codigo}` +
+      `&vg_cod_emp=${user?.empr_codigo}` +
+      `&vg_emp_ruc=${user?.empr_documento}` +
+      `&vg_pais=${user?.empr_pais}`;
 
     console.log('URL:', url);
     navigation.navigate('WebViewerScreen', {

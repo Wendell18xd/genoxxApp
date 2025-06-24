@@ -20,6 +20,9 @@ export const ItemInspeccion = ({inspeccion, onPress}: Props) => {
         {/* CONTENIDO PRINCIPAL */}
         <View style={styles.content}>
           <Text variant="titleMedium" style={styles.title}>
+            {inspeccion.nom_situacion}
+          </Text>
+          <Text variant="bodySmall" style={styles.subtitle}>
             {inspeccion.placa}
           </Text>
         </View>
@@ -40,39 +43,33 @@ export const ItemInspeccion = ({inspeccion, onPress}: Props) => {
           </Text>
           <Text variant="bodySmall">{inspeccion.nombre_inspeccion}</Text>
         </View>
-        <View style={styles.footerItem}>
-          <Text
-            variant="bodySmall"
-            style={{marginRight: 4, fontWeight: 'bold'}}>
-            Número de inspección:
-          </Text>
-          <Text variant="bodySmall">{inspeccion.numero_inspeccion}</Text>
-        </View>
-        <View style={styles.footerItem}>
-          <Text
-            variant="bodySmall"
-            style={{marginRight: 4, fontWeight: 'bold'}}>
-            Estado:
-          </Text>
-          <Text variant="bodySmall">
-            {inspeccion.observado === '0' ? 'CONFORME' : 'OBSERVADO'}
-          </Text>
-        </View>
-        <View style={styles.footerItem}>
-          <Text
-            variant="bodySmall"
-            style={{marginRight: 4, fontWeight: 'bold'}}>
-            Tipo de registro:
-          </Text>
-          <Text variant="bodySmall">{inspeccion.nom_situacion}</Text>
-        </View>
-        <View style={styles.footerItem}>
-          <Text
-            variant="bodySmall"
-            style={{marginRight: 4, fontWeight: 'bold'}}>
-            Fecha:
-          </Text>
-          <Text variant="bodySmall">{inspeccion.fecha}</Text>
+        <View>
+          <View style={styles.footerItem}>
+            <Text
+              variant="bodySmall"
+              style={{marginRight: 4, fontWeight: 'bold'}}>
+              Número de inspección:
+            </Text>
+            <Text variant="bodySmall">{inspeccion.numero_inspeccion}</Text>
+          </View>
+          <View style={styles.footerItem}>
+            <Text
+              variant="bodySmall"
+              style={{marginRight: 4, fontWeight: 'bold'}}>
+              Estado:
+            </Text>
+            <Text variant="bodySmall">
+              {inspeccion.observado === '0' ? 'CONFORME' : 'OBSERVADO'}
+            </Text>
+          </View>
+          <View style={styles.footerItem}>
+            <Text
+              variant="bodySmall"
+              style={{marginRight: 4, fontWeight: 'bold'}}>
+              Fecha:
+            </Text>
+            <Text variant="bodySmall">{inspeccion.fecha}</Text>
+          </View>
         </View>
       </View>
     </CustomCardContent>

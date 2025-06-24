@@ -1,6 +1,6 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import { WebViewerScreen } from '../screen-detalle-inspecciones/WebViewerScreen';
-import { ListaConsultaInspeccionesScreen } from '../screen-consulta-inspecciones/ListaConsultaInspeccionesScreen';
+import { ListaConsultaInspeccionesScreen } from '../screenConsultaInspecciones/ListaConsultaInspeccionesScreen';
+import { WebViewerScreen } from '../screenDetalleInspecciones/WebViewerScreen';
 
 export type ConsultaInspeccionesStackParam = {
   ListaConsultaInspeccionesScreen: undefined;

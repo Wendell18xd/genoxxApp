@@ -4,8 +4,8 @@ import PrimaryButton from '../../../../../components/ui/PrimaryButton';
 import {View} from 'react-native';
 import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoader';
 import {useSearchInspeccion} from '../hooks/useSearchInspeccion';
-import CustomDatePicker from '../../../../../components/ui/CustomDatePicker';
 import {Text} from 'react-native-paper';
+import CustomDateRangePicker from '../../../../../components/ui/CustomDateRangePicker';
 
 interface Props {
   onClose?: () => void;
@@ -43,47 +43,26 @@ export const SearchInspeccion = ({onClose}: Props) => {
                   error={touched.txt_nro_placa && !!errors.txt_nro_placa}
                   style={{width: '100%'}}
                 />
-                 {touched.txt_nro_placa && errors.txt_nro_placa && (
+                {touched.txt_nro_placa && errors.txt_nro_placa && (
                   <Text style={{color: 'red', marginTop: 4}}>
                     {errors.txt_nro_placa}
                   </Text>
                 )}
               </View>
-               <View style={{marginBottom: 4}}>
-                <Text variant="titleMedium">Rango de fechas</Text>
-               </View>
-              <View style={{marginBottom: 16}}>
-                <CustomDatePicker
-                  label="Desde"
-                  placeholder="Selecciona una fecha"
-                  value={values.txt_bus_fecha_desde}
-                  onChange={val => setFieldValue('txt_bus_fecha_desde', val)}
-                  error={
-                    touched.txt_bus_fecha_desde && !!errors.txt_bus_fecha_desde
-                  }
-                />
-                {touched.txt_bus_fecha_desde && errors.txt_bus_fecha_desde && (
-                  <Text style={{color: 'red', marginTop: 4}}>
-                    {errors.txt_bus_fecha_desde}
-                  </Text>
-                )}
-              </View>
-
-              <CustomDatePicker
-                label="Hasta"
-                placeholder="Selecciona una fecha"
-                value={values.txt_bus_fecha_hasta}
-                onChange={val => setFieldValue('txt_bus_fecha_hasta', val)}
+              <CustomDateRangePicker
+                label="Rango de fechas"
+                desde={values.txt_bus_fecha_desde}
+                hasta={values.txt_bus_fecha_hasta}
+                onChange={(start, end) => {
+                  setFieldValue('txt_bus_fecha_desde', start);
+                  setFieldValue('txt_bus_fecha_hasta', end);
+                }}
                 error={
-                  touched.txt_bus_fecha_hasta && !!errors.txt_bus_fecha_hasta
+                  (touched.txt_bus_fecha_desde &&
+                    !!errors.txt_bus_fecha_desde) ||
+                  (touched.txt_bus_fecha_hasta && !!errors.txt_bus_fecha_hasta)
                 }
               />
-              {touched.txt_bus_fecha_hasta && errors.txt_bus_fecha_hasta && (
-                <Text style={{color: 'red', marginTop: 4}}>
-                  {errors.txt_bus_fecha_hasta}
-                </Text>
-              )}
-
               <PrimaryButton
                 label="Buscar"
                 onPress={() => handleSubmit()}
