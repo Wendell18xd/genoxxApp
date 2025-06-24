@@ -17,7 +17,7 @@ export const useAudioRecorder = () => {
   const [audioPath, setAudioPath] = useState('');
   const [audioBase64, setAudioBase64] = useState('');
   const [recordVolume, setRecordVolume] = useState(-160);
-  const [playbackPosition, setPlaybackPosition] = useState(0);
+  const [, setPlaybackPosition] = useState(0);
   const [recordTime, setRecordTime] = useState('00:00');
   const [playTime, setPlayTime] = useState('00:00');
   const [audioDuration, setAudioDuration] = useState(0);
@@ -25,20 +25,19 @@ export const useAudioRecorder = () => {
   const onStartRecord = async () => {
     try {
       if (Platform.OS === 'android') {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-      );
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+        );
         if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-    console.warn('Permiso de micrófono denegado');
-    return;
+          console.warn('Permiso de micrófono denegado');
+          return;
         }
       }
 
-    const path = Platform.select({
-      ios: 'alerta.m4a',
-      android: `${RNFS.ExternalDirectoryPath}/alerta.mp4`,
-    });
-
+      const path = Platform.select({
+        ios: 'alerta.m4a',
+        android: `${RNFS.ExternalDirectoryPath}/alerta.m4a`,
+      });
 
       const audioSet: AudioSet = {
         AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
@@ -54,10 +53,12 @@ export const useAudioRecorder = () => {
       audioRecorderPlayer.addRecordBackListener(e => {
         const minutes = Math.floor(e.currentPosition / 60000);
         const seconds = Math.floor((e.currentPosition % 60000) / 1000);
-        const formatted = `${String(minutes).padStart(2, '0')}:${String(
-          seconds,
-        ).padStart(2, '0')}`;
-        setRecordTime(formatted);
+        setRecordTime(
+          `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(
+            2,
+            '0',
+          )}`,
+        );
         if (
           Platform.OS === 'android' &&
           typeof e.currentMetering === 'number'
@@ -83,7 +84,8 @@ export const useAudioRecorder = () => {
       setAudioPath(result);
       setPlaybackPosition(0);
 
-      // Leer archivo grabado y convertirlo a base64
+      await new Promise(resolve => setTimeout(resolve, 500));
+
       const base64Audio = await RNFS.readFile(result, 'base64');
       setAudioBase64(base64Audio);
     } catch (error) {
@@ -97,31 +99,45 @@ export const useAudioRecorder = () => {
         return;
       }
 
+      audioRecorderPlayer.removePlayBackListener();
       await audioRecorderPlayer.startPlayer(audioPath);
-      await audioRecorderPlayer.seekToPlayer(playbackPosition);
+
       setIsPlaying(true);
 
       audioRecorderPlayer.addPlayBackListener(e => {
-        setPlaybackPosition(e.currentPosition);
-        setAudioDuration(e.duration);
+        try {
+          setPlaybackPosition(e.currentPosition);
+          setAudioDuration(e.duration);
 
-        const remaining = e.duration - e.currentPosition;
-        const minutes = Math.floor(remaining / 60000);
-        const seconds = Math.floor((remaining % 60000) / 1000);
-        const formatted = `${String(minutes).padStart(2, '0')}:${String(
-          seconds,
-        ).padStart(2, '0')}`;
-        setPlayTime(formatted);
+          const remaining = e.duration - e.currentPosition;
+          const minutes = Math.floor(remaining / 60000);
+          const seconds = Math.floor((remaining % 60000) / 1000);
+          setPlayTime(
+            `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(
+              2,
+              '0',
+            )}`,
+          );
 
-        if (e.currentPosition >= e.duration) {
+          if (e.duration > 0 && e.currentPosition >= e.duration - 100) {
+            audioRecorderPlayer.stopPlayer();
+            audioRecorderPlayer.removePlayBackListener();
+            setIsPlaying(false);
+            setPlaybackPosition(0);
+          }
+          return;
+        } catch (err) {
+          console.error('Error en PlayBackListener:', err);
+          audioRecorderPlayer.stopPlayer();
+          audioRecorderPlayer.removePlayBackListener();
           setIsPlaying(false);
           setPlaybackPosition(0);
-          audioRecorderPlayer.stopPlayer();
+          return;
         }
-        return;
       });
     } catch (error) {
       console.error('Error al reproducir audio', error);
+      setIsPlaying(false);
     }
   };
 
@@ -148,7 +164,7 @@ export const useAudioRecorder = () => {
     setAudioPath('');
     setPlaybackPosition(0);
     setIsPlaying(false);
-    setAudioBase64(''); // Limpiar base64 cuando se elimina audio
+    setAudioBase64('');
   };
 
   const resetRecorder = async () => {

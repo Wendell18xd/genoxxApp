@@ -4,7 +4,6 @@ export interface AlertaDato {
   cod_para: string;
   nom_para: string;
   correos: string;
-  txt_audio: string;
 }
 
 export interface AlertaResponse {

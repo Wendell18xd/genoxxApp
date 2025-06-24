@@ -3,11 +3,11 @@ import {
   useRef,
   forwardRef,
   ReactNode,
-  useMemo,
   useState,
+  useEffect,
 } from 'react';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
-import {StyleSheet} from 'react-native';
+import {Keyboard, StyleSheet} from 'react-native';
 import {CustomBackdrop} from './CustomBackdrop';
 
 export interface CustomBottomSheetRef {
@@ -24,36 +24,57 @@ interface Props {
 const CustomBottomSheet = forwardRef<CustomBottomSheetRef, Props>(
   ({children, snapPoints = ['50%', '85%'], onChange}, ref) => {
     const sheetRef = useRef<BottomSheet>(null);
-
-    // Estado para controlar el índice (abierto o cerrado)
     const [index, setIndex] = useState(-1);
 
-    // Para memoizar snapPoints
-    const memoSnapPoints = useMemo(() => snapPoints, [snapPoints]);
+    // Flag para evitar reabrir si está cerrado
+    const isSheetOpen = useRef(false);
 
     useImperativeHandle(ref, () => ({
       open: () => {
-        setIndex(0); // abrir primer snap point
+        setIndex(0);
       },
       close: () => {
         sheetRef.current?.close();
       },
     }));
 
-    // Manejar cambios de índice
     const handleChange = (newIndex: number) => {
       setIndex(newIndex);
-      if (onChange) {
-        onChange(newIndex);
+      isSheetOpen.current = newIndex >= 0;
+
+      if (newIndex === -1) {
+        Keyboard.dismiss();
       }
+
+      onChange?.(newIndex);
     };
+
+    useEffect(() => {
+      const showSub = Keyboard.addListener('keyboardDidShow', () => {
+        if (isSheetOpen.current) {
+          sheetRef.current?.expand();
+        }
+      });
+
+      const hideSub = Keyboard.addListener('keyboardDidHide', () => {
+        if (isSheetOpen.current) {
+          sheetRef.current?.snapToIndex(0);
+        }
+      });
+
+      return () => {
+        showSub.remove();
+        hideSub.remove();
+      };
+    }, []);
 
     return (
       <BottomSheet
         ref={sheetRef}
         index={index}
-        snapPoints={memoSnapPoints}
+        snapPoints={snapPoints}
         enablePanDownToClose
+        keyboardBehavior="extend"
         onChange={handleChange}
         backdropComponent={CustomBackdrop}>
         <BottomSheetView style={styles.sheetContent}>

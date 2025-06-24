@@ -5,4 +5,6 @@ export interface ActividadPartida {
   part_tipo: string;
   part_clase: string;
   dificultad: string;
+  part_codigo2: string;
+  can_trabajo: string;
 }
