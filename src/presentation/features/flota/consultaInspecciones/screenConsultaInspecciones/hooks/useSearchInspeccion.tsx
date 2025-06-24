@@ -6,7 +6,6 @@ import {ConsultaInspeccionesStackParam} from '../../navigations/ConsultaInspecci
 import {ConsultaInspeccionesRequest} from '../../../../../../infrastructure/interfaces/flota/consultaInspecciones/consultaInspecciones.request';
 import {getConsultaInspecciones} from '../../../../../../actions/flota/consultaInspecciones';
 import {ConsultaInspecciones} from '../../../../../../domain/entities/ConsultaInspecciones';
-import * as Yup from 'yup';
 import {genoxxApi} from '../../../../../../config/api/genoxxApi';
 // @ts-ignore
 import { encode as base64Encode } from 'base-64';
@@ -36,24 +35,6 @@ export const useSearchInspeccion = () => {
     txt_bus_fecha_hasta: '',
   });
 
-  const getValidationSchema = () =>
-    Yup.object().shape({
-      txt_nro_placa: Yup.string().required('Ingrese el número de placa'),
-      txt_bus_fecha_desde: Yup.string().required('Seleccione una fecha'),
-      txt_bus_fecha_hasta: Yup.string()
-        .required('Seleccione una fecha')
-        .test(
-          'is-after',
-          "La fecha 'Hasta' no puede ser menor que la fecha 'Desde'",
-          function (value) {
-            const {txt_bus_fecha_desde} = this.parent;
-            if (!value || !txt_bus_fecha_desde) {
-              return true;
-            }
-            return new Date(value) >= new Date(txt_bus_fecha_desde);
-          },
-        ),
-    });
   const {
     data: inspeccion,
     isFetching: isFetchInspeccion,
@@ -127,6 +108,5 @@ export const useSearchInspeccion = () => {
     handleSearch,
     refetchInspeccion,
     handleSelectInspeccion,
-    getValidationSchema,
   };
 };
