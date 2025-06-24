@@ -1,24 +1,39 @@
 import {useState} from 'react';
 import {Portal, TextInput, Dialog, Button, Text} from 'react-native-paper';
 import {format, parseISO, isBefore} from 'date-fns';
-import {Calendar} from 'react-native-calendars';
+import {Calendar, LocaleConfig} from 'react-native-calendars';
+import CustomTextInput from './CustomTextInput';
+import { TextStyle } from 'react-native';
+
+LocaleConfig.locales.es = {
+  monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+  monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+  dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+  dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+  today: 'Hoy',
+};
+LocaleConfig.defaultLocale = 'es';
 
 interface Props {
   label: string;
+  placeholder?: string;
   desde: string;
   hasta: string;
   onChange: (desde: string, hasta: string) => void;
   error?: boolean;
   title?: string;
+  style?: TextStyle;
 }
 
 const CustomDateRangePicker: React.FC<Props> = ({
   label,
+  placeholder,
   desde,
   hasta,
   onChange,
   error,
   title = 'Seleccione el rango de fechas',
+  style,
 }) => {
   const [visible, setVisible] = useState(false);
   const [startDate, setStartDate] = useState<string | null>(null);
@@ -91,8 +106,9 @@ const CustomDateRangePicker: React.FC<Props> = ({
 
   return (
     <>
-      <TextInput
+      <CustomTextInput
         label={label}
+        placeholder={placeholder}
         mode="outlined"
         value={
           desde && hasta
@@ -106,7 +122,7 @@ const CustomDateRangePicker: React.FC<Props> = ({
         showSoftInputOnFocus={false}
         error={error}
         left={<TextInput.Icon icon="calendar-range" />}
-         style={{ height: 60 }}
+        style={[style]}
       />
       {error && (
         <Text style={{color: 'red', marginTop: 4}}>

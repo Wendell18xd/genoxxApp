@@ -2,13 +2,13 @@ import {Text, ScrollView} from 'react-native';
 import DrawerLayout from '../../../main/layout/DrawerLayout';
 import {globalStyle} from '../../../../styles/globalStyle';
 import {Formik} from 'formik';
-import CustomDatePicker from '../../../../components/ui/CustomDatePicker';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
 import {TextInput} from 'react-native-paper';
 import PrimaryButton from '../../../../components/ui/PrimaryButton';
 import {useLiquiPartObras} from './hooks/useLiquiPartObras';
 import {mostrarSiNoCero} from '../../../../helper/utils';
 import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
+import CustomDateCalendarPicker from '../../../../components/ui/CustomDateCalendarPicker';
 
 export const LiquiPartObrasScreen = () => {
   const {
@@ -51,9 +51,9 @@ export const LiquiPartObrasScreen = () => {
                 globalStyle.padding,
                 {position: 'relative'},
               ]}>
-              <CustomDatePicker
-                label="Fecha Producción"
-                placeholder="Selecciona una fecha de producción"
+              <CustomDateCalendarPicker
+                label="Fecha de Producción"
+                placeholder="Seleccione una fecha de producción"
                 value={values.fecha_liquidacion}
                 onChange={val => setFieldValue('fecha_liquidacion', val)}
                 error={touched.fecha_liquidacion && !!errors.fecha_liquidacion}

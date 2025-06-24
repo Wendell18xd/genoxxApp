@@ -5,7 +5,6 @@ import CustomTextInput from '../../../../components/ui/CustomTextInput';
 import {StyleSheet, View} from 'react-native';
 import {Dropdown} from 'react-native-paper-dropdown';
 import {FlatList} from 'react-native-gesture-handler';
-import CustomDatePicker from '../../../../components/ui/CustomDatePicker';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
 import {Formik} from 'formik';
 import PrimaryButton from '../../../../components/ui/PrimaryButton';
@@ -16,6 +15,7 @@ import {mapToDropdown} from '../../../../../infrastructure/mappers/mapToDropdown
 import {getProyecto} from '../../../../../actions/gestionATC/proyectosATC';
 import {useAuthStore} from '../../../../store/auth/useAuthStore';
 import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
+import CustomDateCalendarPicker from '../../../../components/ui/CustomDateCalendarPicker';
 
 interface LiquidarMatFormValues {
   proyecto: string;
@@ -35,8 +35,7 @@ const initialValues: LiquidarMatFormValues = {
 
 const LiquidarMaterialesScreen = () => {
   // const navigation = useNavigation<NavigationProp<LiquiMatATCStackParam>>();
-  const [formValues] =
-    useState<LiquidarMatFormValues>(initialValues);
+  const [formValues] = useState<LiquidarMatFormValues>(initialValues);
   const {user} = useAuthStore();
   const [disabled] = useState(false);
   const [visible, setVisible] = React.useState(true);
@@ -68,7 +67,6 @@ const LiquidarMaterialesScreen = () => {
   useEffect(() => {
     refetch();
   }, []);
-
 
   /* const LiqMatMutation = useMutation({
     mutationFn: getProyecto,
@@ -118,7 +116,6 @@ const LiquidarMaterialesScreen = () => {
     //   nroSolicitud: values.nroSolicitud,
     //   nroPeticion: values.nroPeticion,
     // };
-
     // LiqMatMutation.mutate(LiqMatData);
   };
 
@@ -184,9 +181,9 @@ const LiquidarMaterialesScreen = () => {
                   )}
                 </View>
                 <View style={{marginBottom: 12}}>
-                  <CustomDatePicker
+                  <CustomDateCalendarPicker
                     label="Fecha de Liquidación"
-                    placeholder="Selecciona la fecha"
+                    placeholder="Seleccione la fecha"
                     value={values.fechaLiquidacion}
                     onChange={val => setFieldValue('fechaLiquidacion', val)}
                     error={

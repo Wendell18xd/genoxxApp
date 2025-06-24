@@ -268,7 +268,7 @@ const LoginScreen = ({navigation}: Props) => {
                   <TouchableOpacity
                     onPress={() => navigation.navigate('OlvidarPassScreen')}>
                     <Text style={{color: colors.primary}}>
-                      ¿Olvido su contraseña?
+                      ¿Olvidó su contraseña?
                     </Text>
                   </TouchableOpacity>
                 </View>
