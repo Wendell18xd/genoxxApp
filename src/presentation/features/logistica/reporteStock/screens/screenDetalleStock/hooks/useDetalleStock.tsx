@@ -1,11 +1,11 @@
-import {useQuery} from '@tanstack/react-query';
-import {getReporteStock} from '../../../../../../../actions/logistica/reporteStock';
-import {useAuthStore} from '../../../../../../store/auth/useAuthStore';
+import { useQuery } from '@tanstack/react-query';
+import { getReporteStock } from '../../../../../../../actions/logistica/reporteStock';
+import { useAuthStore } from '../../../../../../store/auth/useAuthStore';
 
 export const useDetalleStock = () => {
-  const {user} = useAuthStore();
+  const { user } = useAuthStore();
 
-  const {data, isLoading, error} = useQuery({
+  const { data, isLoading, isFetching, error } = useQuery({
     queryKey: ['detalleStock'],
     queryFn: async () => {
       const response = await getReporteStock({
@@ -28,6 +28,7 @@ export const useDetalleStock = () => {
   return {
     detalleStock: data,
     isLoading,
+    isFetching,
     error,
   };
 };
