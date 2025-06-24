@@ -5,8 +5,8 @@ import {useSessionStore} from '../store/useSessionStore';
 import {ToastNativo} from '../helper/utils';
 import {navigationRef} from '../navigations/navigationRef';
 
-// const SESSION_TIMEOUT = 60 * 60 * 1000; // 1 hora
-const SESSION_TIMEOUT = 10 * 1000; // 10 segundos
+const SESSION_TIMEOUT = 60 * 60 * 1000; // 1 hora
+// const SESSION_TIMEOUT = 10 * 1000; // 10 segundos para pruebas
 
 export const useSessionTimeout = () => {
   const isAuthenticated = useSessionStore(state => state.isAuthenticated);
