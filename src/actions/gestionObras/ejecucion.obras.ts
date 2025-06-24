@@ -1,8 +1,14 @@
 import {genoxxApi} from '../../config/api/genoxxApi';
 import {ActividadesObrasRequest} from '../../infrastructure/interfaces/gestionObras/ejecucionObras/actividades.obras.request';
 import {ActividadesObrasResponse} from '../../infrastructure/interfaces/gestionObras/ejecucionObras/actividades.obras.response';
-import {SaveEjecucionObrasRequest} from '../../infrastructure/interfaces/gestionObras/ejecucionObras/save.ejecucion.obras.request';
-import {SaveEjecucionObrasResponse} from '../../infrastructure/interfaces/gestionObras/ejecucionObras/save.ejecucion.obras.response';
+import {
+  SaveEjecucionObrasRequest,
+  SaveEjecucionSinObrasResquest,
+} from '../../infrastructure/interfaces/gestionObras/ejecucionObras/save.ejecucion.obras.request';
+import {
+  SaveEjecucionObrasResponse,
+  SaveEjecucionSinObrasResponse,
+} from '../../infrastructure/interfaces/gestionObras/ejecucionObras/save.ejecucion.obras.response';
 
 export const listarActividadesObras = async (
   props: ActividadesObrasRequest,
@@ -55,6 +61,37 @@ export const saveObraEjecutada = async (
         headers: {
           'Content-Type': 'multipart/form-data',
         },
+      },
+    );
+    return data;
+  } catch (error) {
+    throw new Error(error as string);
+  }
+};
+
+export const saveEjecucionSinObras = async (
+  props: SaveEjecucionSinObrasResquest,
+): Promise<SaveEjecucionSinObrasResponse> => {
+  try {
+    const {data} = await genoxxApi.post<SaveEjecucionSinObrasResponse>(
+      '/obras/save_actividad_tecnico',
+      {
+        vg_empr_codigo: props.vg_empr_codigo,
+        vg_usua_perfil: props.vg_usua_perfil,
+        vg_empr_pais: props.vg_empr_pais,
+        txt_actividad: props.txt_actividad,
+        txt_comentario: props.txt_comentario,
+        txt_situacion: props.txt_situacion,
+        txt_hora_inicio: props.txt_hora_inicio,
+        txt_hora_fin: props.txt_hora_fin,
+        txt_fecha: props.txt_fecha,
+        vl_coord_x: props.vl_coord_x,
+        vl_coord_y: props.vl_coord_y,
+        vl_turno: props.vl_turno,
+        vl_transcurrido_inicio: props.vl_transcurrido_inicio,
+        vl_transcurrido_fin: props.vl_transcurrido_fin,
+        vl_registro_fecha_inicio: props.vl_registro_fecha_inicio,
+        vl_automatico: props.vl_automatico,
       },
     );
     return data;

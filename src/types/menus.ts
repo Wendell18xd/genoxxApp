@@ -7,4 +7,5 @@ export enum Menu {
   CONSULTA_UNIDADES_FLOTA = 'ListaUnidadesFragment',
   CONSULTA_HISTORICA_PATENTE_FLOTA = 'ConsultaHistoricaPatenteFragment',
   REPORTE_STOCK = 'ReporteStockFragment',
+  CONSULTA_INSPECCIONES_FLOTA = 'HistorialInspeccionesFragment',
 }

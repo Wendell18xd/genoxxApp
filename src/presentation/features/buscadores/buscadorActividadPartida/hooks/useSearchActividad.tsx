@@ -4,11 +4,11 @@ import {useRef} from 'react';
 import {useQuery} from '@tanstack/react-query';
 import {useAuthStore} from '../../../../store/auth/useAuthStore';
 import * as Yup from 'yup';
-import {LiquiPartObrasStackParam} from '../../../gestionObras/liquidarPartidas/navigations/LiquiPartObrasStackNavigation';
 import {useActividadPartidaStore} from '../store/useActividadPartidaStore';
 import {getActividadesPartidas} from '../../../../../actions/buscadores/partidaActividades';
 import {ActividadesPartidasObrasRequest} from '../../../../../infrastructure/interfaces/buscadores/partida-actividades/partidas.actividades.request';
 import {ActividadPartida} from '../../../../../domain/entities/ActividadPartida';
+import { LiquidacionObrasStackParam } from '../../../gestionObras/navigations/LiquidacionObrasStackNavigation';
 
 interface SearchActividadFormValues {
   txt_buscar: string;
@@ -20,7 +20,7 @@ const initialValues: SearchActividadFormValues = {
 
 export const useSearchActividad = () => {
   const {user} = useAuthStore();
-  const navigation = useNavigation<NavigationProp<LiquiPartObrasStackParam>>();
+  const navigation = useNavigation<NavigationProp<LiquidacionObrasStackParam>>();
   const {onSelect, initialValues: actividadValues} =
     useActividadPartidaStore();
 

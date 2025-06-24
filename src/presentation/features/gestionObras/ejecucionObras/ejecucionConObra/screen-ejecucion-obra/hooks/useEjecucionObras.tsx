@@ -10,12 +10,12 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {LiquidacionObrasStackParam} from '../../../../navigations/LiquidacionObrasStackNavigation';
 import {ToastNativo} from '../../../../../../helper/utils';
 import {useLocationStore} from '../../../../../../store/location/useLocationStore';
-import {useMutation, useQueryClient} from '@tanstack/react-query';
+import {useMutation} from '@tanstack/react-query';
 import {saveObraEjecutada} from '../../../../../../../actions/gestionObras/ejecucion.obras';
 import Toast from 'react-native-toast-message';
 import {useAuthStore} from '../../../../../../store/auth/useAuthStore';
 import * as Yup from 'yup';
-import {Obra} from '../../../../../../../domain/entities/Obra';
+import {actualizarObra} from '../../../../../../services/database/tablas/ObraTabla';
 
 interface initialParams {
   tipo_registro: string;
@@ -38,7 +38,7 @@ const initialValues: initialParams = {
 };
 
 export const useEjecucionObras = () => {
-  const {obra} = useObrasStore();
+  const {obra, setIsRefresthObra} = useObrasStore();
   const {actividades, mapDropFamilia} = useEjecucionObrasStore();
   const {fotos, setInitialParams} = useFotosStore();
   const [mapDropSubFamilia, setMapDropSubFamilia] = useState<Option[]>([]);
@@ -49,7 +49,7 @@ export const useEjecucionObras = () => {
   const {getLocation} = useLocationStore();
   const {user} = useAuthStore();
   const [isSaving, setIsSaving] = useState(false);
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   const valuesFormik = useRef<initialParams>(initialValues);
 
   const getValidationSchema = () =>
@@ -130,7 +130,7 @@ export const useEjecucionObras = () => {
 
   const mutation = useMutation({
     mutationFn: saveObraEjecutada,
-    onSuccess: data => {
+    onSuccess: async data => {
       const {estado, mensaje} = data;
       if (estado === 1) {
         Toast.show({
@@ -139,7 +139,7 @@ export const useEjecucionObras = () => {
         });
 
         if (valuesFormik.current.cierre === 'CIERRE') {
-          queryClient.setQueryData<Obra[]>(['obrasAsignadas'], oldData => {
+          /* queryClient.setQueryData<Obra[]>(['obrasAsignadas'], oldData => {
             if (!oldData) {
               return oldData;
             }
@@ -149,7 +149,11 @@ export const useEjecucionObras = () => {
                 ? {...item, estado_ejecucion: '1'}
                 : item,
             );
+          }); */
+          await actualizarObra(obra?.regi_codigo || '', {
+            estado_ejecucion: '1',
           });
+          setIsRefresthObra(true);
         }
 
         navigation.goBack();

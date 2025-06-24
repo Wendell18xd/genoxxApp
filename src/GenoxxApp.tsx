@@ -9,6 +9,7 @@ import {initApi} from './config/api/genoxxApi';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import LoadingScreen from './presentation/components/ui/loaders/LoadingScreen';
 import PermissionChecker from './presentation/providers/PermissionChecker';
+import {initDB} from './presentation/services/database/database';
 
 const queryClient = new QueryClient();
 
@@ -19,12 +20,18 @@ const GenoxxApp = () => {
 
   useEffect(() => {
     initApi().then(() => {
-      setLoading(false);
+      initDB()
+        .then(() => {
+          setLoading(false);
+        })
+        .catch(error => {
+          console.error('Error initializing database:', error);
+        });
     });
   }, []);
 
   if (loading) {
-    return <LoadingScreen state />;
+    return <LoadingScreen state message="Iniciando App" />;
   }
 
   return (

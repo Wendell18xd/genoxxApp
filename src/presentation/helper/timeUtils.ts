@@ -38,3 +38,13 @@ export const obtenerMesYAnio = (
   const mes = Number(partes[1]);
   return {mes: mes.toString(), anio: anio.toString()};
 };
+
+export const formatTiempo = (segundos: number): string => {
+  const hrs = Math.floor(segundos / 3600);
+  const mins = Math.floor((segundos % 3600) / 60);
+  const secs = segundos % 60;
+
+  const pad = (n: number) => String(n).padStart(2, '0');
+
+  return `${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
+};
