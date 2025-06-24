@@ -16,6 +16,7 @@ import {
   UpdatePasswordResponse,
 } from '../../../infrastructure/interfaces/auth/auth.response';
 import {StorageAdapter} from '../../adapter/storage-adapter';
+import {useSessionStore} from '../useSessionStore';
 
 export interface AuthState {
   user?: User;
@@ -23,6 +24,7 @@ export interface AuthState {
   login: (props: LoginRequest) => Promise<LoginResponse>;
   forgot: (props: ForgotRequest) => Promise<ForgotResponse>;
   update: (props: UpdatePasswordRequest) => Promise<UpdatePasswordResponse>;
+  logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>()(set => ({
@@ -49,6 +51,7 @@ export const useAuthStore = create<AuthState>()(set => ({
               usua_clave: props.usuaClave,
             }),
           );
+          useSessionStore.getState().setAuthenticated(true);
         } else {
           await StorageAdapter.removeItem('usuario');
         }
@@ -119,5 +122,9 @@ export const useAuthStore = create<AuthState>()(set => ({
     } catch (error) {
       throw new Error(error as string);
     }
+  },
+  logout: () => {
+    set({user: undefined, menu: []});
+    useSessionStore.getState().logout();
   },
 }));
