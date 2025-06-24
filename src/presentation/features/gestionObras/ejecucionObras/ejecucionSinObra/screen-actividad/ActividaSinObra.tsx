@@ -1,9 +1,8 @@
-import {Text, View} from 'react-native';
+import {KeyboardAvoidingView, Platform, ScrollView, View} from 'react-native';
 import DrawerLayout from '../../../../main/layout/DrawerLayout';
-import {globalColors, globalStyle} from '../../../../../styles/globalStyle';
+import {globalColors} from '../../../../../styles/globalStyle';
 import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoader';
 import {Formik} from 'formik';
-import CustomScrollView from '../../../../../components/ui/CustomScrollView';
 import PrimaryButton from '../../../../../components/ui/PrimaryButton';
 import {CustomDropdownInput} from '../../../../../components/ui/CustomDropdownInput';
 import CustomTextInput from '../../../../../components/ui/CustomTextInput';
@@ -13,6 +12,8 @@ import {TurnoSelector} from './components/TurnoSelector';
 import {useEffect} from 'react';
 import {CustomFAB} from '../../../../../components/ui/CustomFAB';
 import {formatTiempo} from '../../../../../helper/timeUtils';
+import {CustomCardContent} from '../../../../../components/ui/CustomCardContent';
+import {Text} from 'react-native-paper';
 
 export const ActividaSinObra = () => {
   const {
@@ -24,10 +25,12 @@ export const ActividaSinObra = () => {
     saveActividad,
     isSaving,
     loading,
+    selectActividad,
     handleSave,
     getValidationSchema,
     start,
     reset,
+    handleActividadChange,
   } = useActividadSinObra();
 
   useEffect(() => {
@@ -40,11 +43,14 @@ export const ActividaSinObra = () => {
       title={
         saveActividad.length > 0 ? 'Finalizar actividad' : 'Iniciar actividad'
       }>
-      <View style={globalStyle.defaultContainer}>
-        {saving && <FullScreenLoader transparent message="Guardando" />}
-        {isSaving && <FullScreenLoader transparent message="Grabando" />}
-        {loading && <FullScreenLoader />}
+      {saving && <FullScreenLoader transparent message="Guardando" />}
+      {isSaving && <FullScreenLoader transparent message="Grabando" />}
+      {loading && <FullScreenLoader />}
 
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}
+        keyboardVerticalOffset={80}>
         <Formik
           initialValues={initialValues}
           onSubmit={handleSave}
@@ -59,9 +65,11 @@ export const ActividaSinObra = () => {
             errors,
             touched,
           }) => (
-            <CustomScrollView
+            <ScrollView
+              style={{flex: 1}}
+              contentContainerStyle={{padding: 16}}
               showsVerticalScrollIndicator={false}
-              contentContainerStyle={{flex: 1}}>
+              keyboardShouldPersistTaps="handled">
               <View
                 style={{
                   pointerEvents: saveActividad.length > 0 ? 'none' : 'auto',
@@ -82,7 +90,7 @@ export const ActividaSinObra = () => {
                   label="Actividad"
                   options={actividades || []}
                   value={values.actividad}
-                  onSelect={val => setFieldValue('actividad', val)}
+                  onSelect={val => handleActividadChange(setFieldValue, val)}
                   error={touched.actividad && !!errors.actividad}
                   disabled={saveActividad.length > 0}
                 />
@@ -141,6 +149,7 @@ export const ActividaSinObra = () => {
                   </Text>
                 )}
               </View>
+
               <View style={{marginTop: 16}}>
                 <CustomTextInput
                   placeholder="Observación"
@@ -152,7 +161,7 @@ export const ActividaSinObra = () => {
                   numberOfLines={3}
                   multiline
                   maxLength={250}
-                  style={{height: 150}}
+                  height={120}
                   error={touched.observacion && !!errors.observacion}
                 />
                 {touched.observacion && errors.observacion && (
@@ -161,6 +170,7 @@ export const ActividaSinObra = () => {
                   </Text>
                 )}
               </View>
+
               <View style={{marginTop: 16}}>
                 <PrimaryButton
                   debounce
@@ -176,17 +186,34 @@ export const ActividaSinObra = () => {
                   onPress={handleSubmit}
                 />
               </View>
-            </CustomScrollView>
+
+              {selectActividad?.descripcion && (
+                <CustomCardContent
+                  style={{
+                    marginTop: 16,
+                    borderColor: globalColors.primary,
+                    borderWidth: 1,
+                  }}
+                  mode="outlined">
+                  <Text variant="labelMedium" style={{fontWeight: 'bold'}}>
+                    LA ACTIVIDAD CORRESPONDE A:
+                  </Text>
+                  <Text variant="labelSmall">
+                    {selectActividad?.descripcion}
+                  </Text>
+                </CustomCardContent>
+              )}
+            </ScrollView>
           )}
         </Formik>
+      </KeyboardAvoidingView>
 
-        <CustomFAB
-          icon="timer"
-          label={formatTiempo(tiempo)}
-          fabStyle={{backgroundColor: globalColors.primary}}
-          style={{bottom: 16, right: 16}}
-        />
-      </View>
+      <CustomFAB
+        icon="timer"
+        label={formatTiempo(tiempo)}
+        fabStyle={{backgroundColor: globalColors.primary}}
+        style={{bottom: 16, right: 16}}
+      />
     </DrawerLayout>
   );
 };

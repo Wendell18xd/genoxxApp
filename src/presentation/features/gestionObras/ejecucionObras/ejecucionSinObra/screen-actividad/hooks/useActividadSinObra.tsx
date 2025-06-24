@@ -17,6 +17,7 @@ import {useMutation} from '@tanstack/react-query';
 import {saveEjecucionSinObras} from '../../../../../../../actions/gestionObras/ejecucion.obras';
 import {useAuthStore} from '../../../../../../store/auth/useAuthStore';
 import {useLocationStore} from '../../../../../../store/location/useLocationStore';
+import {Actividade} from '../../../../../../../infrastructure/interfaces/gestionObras/ejecucionObras/actividades.obras.response';
 
 const initialValues = {
   turno: '',
@@ -40,6 +41,7 @@ export const useActividadSinObra = () => {
   );
   const [formValues, setFormValues] = useState(initialValues);
   const {getLocation} = useLocationStore();
+  const [selectActividad, setSelectActividad] = useState<Actividade>();
 
   useEffect(() => {
     setLoading(true);
@@ -64,6 +66,22 @@ export const useActividadSinObra = () => {
         otherwise: schema => schema.notRequired(),
       }),
     });
+
+  const handleActividadChange = (
+    setFieldValue: (
+      field: string,
+      value: any,
+      shouldValidate?: boolean,
+    ) => void,
+    val: string | undefined,
+  ) => {
+    setFieldValue('actividad', val);
+    const findActividad = actividades?.actividades.find(
+      actividad => actividad.cont_parametro === val,
+    );
+    console.log(findActividad);
+    setSelectActividad(findActividad);
+  };
 
   const handleSave = async (values: typeof initialValues) => {
     try {
@@ -205,11 +223,13 @@ export const useActividadSinObra = () => {
     saveActividad,
     loading,
     isSaving,
+    selectActividad,
 
     //* Metodos
     handleSave,
     getValidationSchema,
     start,
     reset,
+    handleActividadChange,
   };
 };
