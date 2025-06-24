@@ -27,13 +27,12 @@ export const DetalleStockScreen = () => {
     ) ?? [];
 
   if (isLoading) {
-    return <FullScreenLoader transparent />;
+    return <FullScreenLoader/>;
   }
 
   return (
     <View
       style={[globalStyle.container, {flex: 1, backgroundColor: '#f9f9f9'}]}>
-      {isLoading && <FullScreenLoader transparent />}
 
       <View style={{flex: 1, marginTop: 16, marginHorizontal: 16}}>
         <CustomTextInput
