@@ -1,4 +1,4 @@
-import {KeyboardAvoidingView, Platform, ScrollView, View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import DrawerLayout from '../../../../main/layout/DrawerLayout';
 import {globalColors} from '../../../../../styles/globalStyle';
 import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoader';
@@ -14,6 +14,7 @@ import {CustomFAB} from '../../../../../components/ui/CustomFAB';
 import {formatTiempo} from '../../../../../helper/timeUtils';
 import {CustomCardContent} from '../../../../../components/ui/CustomCardContent';
 import {Text} from 'react-native-paper';
+import CustomKeyboardAvoidingView from '../../../../../components/ui/CustomKeyboardAvoidingView';
 
 export const ActividaSinObra = () => {
   const {
@@ -47,10 +48,7 @@ export const ActividaSinObra = () => {
       {isSaving && <FullScreenLoader transparent message="Grabando" />}
       {loading && <FullScreenLoader />}
 
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}
-        keyboardVerticalOffset={80}>
+      <CustomKeyboardAvoidingView keyboardVerticalOffset={80}>
         <Formik
           initialValues={initialValues}
           onSubmit={handleSave}
@@ -66,8 +64,7 @@ export const ActividaSinObra = () => {
             touched,
           }) => (
             <ScrollView
-              style={{flex: 1}}
-              contentContainerStyle={{padding: 16}}
+              contentContainerStyle={{flexGrow: 1, padding: 16}}
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled">
               <View
@@ -206,13 +203,13 @@ export const ActividaSinObra = () => {
             </ScrollView>
           )}
         </Formik>
-      </KeyboardAvoidingView>
+      </CustomKeyboardAvoidingView>
 
       <CustomFAB
         icon="timer"
         label={formatTiempo(tiempo)}
         fabStyle={{backgroundColor: globalColors.primary}}
-        style={{bottom: 16, right: 16}}
+        style={{bottom: 32, right: 16}}
       />
     </DrawerLayout>
   );

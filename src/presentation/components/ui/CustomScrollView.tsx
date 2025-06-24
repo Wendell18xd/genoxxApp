@@ -1,27 +1,25 @@
-import {ScrollViewProps} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import React from 'react';
+import {ScrollView, StyleProp, ViewStyle} from 'react-native';
 
-interface CustomScrollViewProps extends ScrollViewProps {
-  enableOnAndroid?: boolean;
-  extraScrollHeight?: number;
-  showsVerticalScrollIndicator?: boolean;
+interface Props extends React.ComponentProps<typeof ScrollView> {
+  children: React.ReactNode;
+  contentContainerStyle?: StyleProp<ViewStyle>;
 }
 
-const CustomScrollView: React.FC<CustomScrollViewProps> = ({
-  enableOnAndroid = true,
-  extraScrollHeight = 16,
-  showsVerticalScrollIndicator = false,
+const CustomScrollView = ({
+  children,
+  contentContainerStyle,
   ...props
-}) => {
+}: Props) => {
   return (
-    <KeyboardAwareScrollView
-      enableOnAndroid={enableOnAndroid}
-      extraScrollHeight={extraScrollHeight}
-      showsVerticalScrollIndicator={showsVerticalScrollIndicator}
-      enableResetScrollToCoords={true}
+    <ScrollView
+      contentContainerStyle={[{flexGrow: 1}, contentContainerStyle]}
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
       keyboardShouldPersistTaps="handled"
-      {...props}
-    />
+      {...props}>
+      {children}
+    </ScrollView>
   );
 };
 
