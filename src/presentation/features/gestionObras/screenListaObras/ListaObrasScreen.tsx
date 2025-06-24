@@ -14,8 +14,12 @@ import {SeleccionarOpcionObra} from './components/SeleccionarOpcionObra';
 import {useObrasNavigationStore} from '../store/useObrasNavigationStore';
 import FullScreenLoader from '../../../components/ui/loaders/FullScreenLoader';
 import {ChipsFiltroEjecucion} from './components/ChipsFiltroEjecucion';
-import {globalColors} from '../../../styles/globalStyle';
 import CustomFlatList from '../../../components/ui/CustomFlatList';
+import {globalColors} from '../../../styles/globalStyle';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {LiquidacionObrasStackParam} from '../navigations/LiquidacionObrasStackNavigation';
+import {listAllSaveActividadSinObraDB} from '../../../services/database/tablas/SaveActividadSinOrdenTabla';
+import { useEjecucionObrasStore } from '../ejecucionObras/store/useEjecucionObrasStore';
 
 const valuesEjecucion = {
   cbo_proy_codigo: '',
@@ -43,6 +47,10 @@ export const ListaObrasScreen = () => {
   const {seleccionarOpcion} = useObrasNavigationStore();
   const [obrasFilter, setObrasFilter] = useState(obras);
   const [chipValue, setChipValue] = useState('0');
+  const navigation =
+    useNavigation<NavigationProp<LiquidacionObrasStackParam>>();
+  const [isInicio, setIsInicio] = useState(false);
+  const {isSaveActividad, setIsSaveActividad} = useEjecucionObrasStore();
 
   useEffect(() => {
     if (opcionSeleccionada === 'ejecutar') {
@@ -91,9 +99,23 @@ export const ListaObrasScreen = () => {
     }
   }, [opcionSeleccionada, isRefresthObra]);
 
+  useEffect(() => {
+    listAllSaveActividadSinObraDB().then(data => {
+      setIsInicio(data.length === 0);
+      setIsSaveActividad(false);
+    });
+  }, [isSaveActividad]);
+
   return (
     <DrawerLayout title="Lista de Obras">
-      {(isFetchObras || loadingActividades) && <FullScreenLoader transparent />}
+      {(isFetchObras || loadingActividades) && (
+        <FullScreenLoader
+          message={
+            opcionSeleccionada !== 'ejecutar' ? 'Cargando' : 'Sincronizando'
+          }
+          transparent={opcionSeleccionada !== 'ejecutar'}
+        />
+      )}
 
       <View style={{flex: 1}}>
         {obras && obras.length > 0 ? (
@@ -144,14 +166,40 @@ export const ListaObrasScreen = () => {
         )}
 
         {opcionSeleccionada === 'ejecutar' && (
-          <CustomFAB
-            icon="sync"
-            label="Sincronizar"
-            loading={isFetchObras}
-            onPress={() => handleSearch(valuesEjecucion)}
-            style={{bottom: 16, left: 16}}
-            color={globalColors.primary}
-          />
+          <>
+            <CustomFAB
+              icon="plus"
+              label={isInicio ? 'Iniciar Actividad' : 'Finalizar Actividad'}
+              onPress={() => {
+                navigation.navigate('ActividaSinObra');
+              }}
+              style={{bottom: 85, left: 16}}
+              color={isInicio ? globalColors.secondary : globalColors.warning}
+            />
+            <CustomFAB
+              icon="sync"
+              label="Sincronizar"
+              loading={isFetchObras}
+              onPress={() => handleSearch(valuesEjecucion)}
+              style={{bottom: 16, left: 16}}
+              color={globalColors.primary}
+            />
+            {/* <CustomFABGroup
+              actions={[
+                {
+                  icon: 'plus',
+                  label: 'Iniciar Actividad',
+                  onPress: () => console.log('Star'),
+                  color: globalColors.primary,
+                },
+                {
+                  icon: 'sync',
+                  label: 'Sincronizar',
+                  onPress: () => handleSearch(valuesEjecucion),
+                },
+              ]}
+            /> */}
+          </>
         )}
 
         <CustomFAB
