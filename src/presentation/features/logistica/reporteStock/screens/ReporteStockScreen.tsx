@@ -15,7 +15,6 @@ export const ReporteStockScreen = () => {
       initialParams: {
         '1': true,
         '2': false,
-        '3': false,
       },
     });
 
