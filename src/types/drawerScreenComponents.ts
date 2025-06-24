@@ -1,4 +1,5 @@
-import {ConsultaHistoricaPatenteStackNavigation} from '../presentation/features/flota/consultaHistoricaPatente/navigations/ConsultaHistoricaPatenteStackNavigation';
+import { ConsultaHistoricaPatenteStackNavigation } from '../presentation/features/flota/consultaHistoricaPatente/navigations/ConsultaHistoricaPatenteStackNavigation';
+import { ConsultaInspeccionesStackNavigation } from '../presentation/features/flota/consultaInspecciones/navigations/ConsultaInspeccionesStackNavigation';
 import {ConsultaUnidadesStackNavigation} from '../presentation/features/flota/consultaUnidades/navigations/ConsultaUnidadesStackNavigation';
 import {LiquiMatATCStackNavigation} from '../presentation/features/gestionAtc/liquidarMateriales/navigations/LiquiMatATCStackNavigation';
 import {LiquidacionObrasStackNavigation} from '../presentation/features/gestionObras/navigations/LiquidacionObrasStackNavigation';
@@ -17,6 +18,6 @@ export const drawerScreenComponents: Record<
   // [Menu.LIQUIDACION_PARTIDAS_OBRAS_ENERGIA]: LiquiPartObrasStackNavigation, //ENERGIA
   //Flota
   [Menu.CONSULTA_UNIDADES_FLOTA]: ConsultaUnidadesStackNavigation,
-  [Menu.CONSULTA_HISTORICA_PATENTE_FLOTA]:
-    ConsultaHistoricaPatenteStackNavigation,
+  [Menu.CONSULTA_HISTORICA_PATENTE_FLOTA]: ConsultaHistoricaPatenteStackNavigation,
+  [Menu.CONSULTA_INSPECCIONES_FLOTA]: ConsultaInspeccionesStackNavigation,
 };

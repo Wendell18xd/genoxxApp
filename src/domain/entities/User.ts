@@ -12,6 +12,7 @@ export class User {
     public trab_documento: string,
     public trab_estado: string,
     public time_login: number,
+    public empr_documento: string,
   ) {}
 
   get usua_tipoopera(): 'IPER' | 'ISCO' {

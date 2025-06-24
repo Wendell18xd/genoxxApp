@@ -77,6 +77,7 @@ export const useAuthStore = create<AuthState>()(set => ({
         usuario.trab_documento,
         usuario.trab_estado,
         new Date().getTime(),
+        usuario.empr_documento,
       );
 
       set({user: userInstance});
@@ -103,6 +104,7 @@ export const useAuthStore = create<AuthState>()(set => ({
         '',
         '',
         new Date().getTime(),
+        '',
       );
       set({user: usuario});
       return resp;
