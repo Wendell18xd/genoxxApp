@@ -1,5 +1,4 @@
 import {Formik} from 'formik';
-import CustomDatePicker from '../../../../../components/ui/CustomDatePicker';
 import {FlatList, View} from 'react-native';
 import {useFormLiquiMateObras} from '../hooks/useFormLiquiMateObras';
 import {Text} from 'react-native-paper';
@@ -14,6 +13,7 @@ import {ItemStockMateObras} from './items/ItemStockMateObras';
 import {CustomFAB} from '../../../../../components/ui/CustomFAB';
 import {MaterialesLiquiRequest} from '../../../../../../infrastructure/interfaces/gestionObras/liquidarMateriales/saveLiquiMateObra.request';
 import CustomKeyboardAvoidingView from '../../../../../components/ui/CustomKeyboardAvoidingView';
+import CustomDateCalendarPicker from '../../../../../components/ui/CustomDateCalendarPicker';
 
 interface Props {
   isRegulariza: boolean;
@@ -121,8 +121,8 @@ export const FormLiquiMateObras = ({isRegulariza}: Props) => {
                     contentContainerStyle={{gap: 16}}
                     ListHeaderComponent={
                       <View>
-                        <CustomDatePicker
-                          label="Fecha Liquidación"
+                        <CustomDateCalendarPicker
+                          label="Fecha de Liquidación"
                           placeholder="Selecciona una fecha de liquidación"
                           value={values.fecha}
                           style={{marginBottom: 8}}
