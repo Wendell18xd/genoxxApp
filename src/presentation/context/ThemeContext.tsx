@@ -14,6 +14,7 @@ import merge from 'deepmerge';
 import {createContext, PropsWithChildren} from 'react';
 import MaterialIcons from '@react-native-vector-icons/material-design-icons';
 import {IconProps} from 'react-native-paper/lib/typescript/components/MaterialCommunityIcon';
+import {navigationRef} from '../navigations/navigationRef';
 
 const {LightTheme, DarkTheme} = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
@@ -71,7 +72,7 @@ export const ThemeContextProvider = ({children}: PropsWithChildren) => {
       settings={{
         icon: props => RenderIcon(props),
       }}>
-      <NavigationContainer theme={theme}>
+      <NavigationContainer theme={theme} ref={navigationRef}>
         <ThemeContext.Provider value={{isDark: isDarkTheme, theme: theme}}>
           {children}
         </ThemeContext.Provider>

@@ -1,4 +1,10 @@
-import {Alert, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Text, TextInput, useTheme} from 'react-native-paper';
 import {useAuthStore} from '../../../../store/auth/useAuthStore';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
@@ -14,7 +20,7 @@ import {UserImage} from '../../../../components/main/UserImage';
 import {MainStackParam} from '../../../../navigations/MainStackNavigation';
 import {useMainStore} from '../../../../store/main/useMainStore';
 import {useFilterMenu} from '../../hooks/useFilterMenu';
-import CustomFlatList from '../../../../components/ui/CustomFlatList';
+import {useSessionStore} from '../../../../store/useSessionStore';
 
 const HomeScreen = () => {
   const {user, menu} = useAuthStore();
@@ -30,13 +36,27 @@ const HomeScreen = () => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', e => {
+      const {expiredByInactivity, clearInactivityFlag} =
+        useSessionStore.getState();
+
+      console.log(expiredByInactivity);
+
+      if (expiredByInactivity) {
+        useAuthStore.getState().logout();
+        clearInactivityFlag(); // limpiar para próximos intentos
+        return; // no mostramos alerta
+      }
+
       e.preventDefault(); //detenemos la navegación
 
       Alert.alert('Cerrar Sesión', '¿Deseas cerrar sesión?', [
         {text: 'Cancelar', style: 'cancel', onPress: () => {}},
         {
           text: 'Sí, Cerrar',
-          onPress: () => navigation.dispatch(e.data.action), //continúa la navegación
+          onPress: () => {
+            useAuthStore.getState().logout(); //cerramos sesión
+            navigation.dispatch(e.data.action);
+          }, //continúa la navegación
         },
       ]);
     });
@@ -94,21 +114,11 @@ const HomeScreen = () => {
           <CurvaBottomView />
         </View>
         {filterMenu && filterMenu.length > 0 ? (
-          // <KeyboardAwareFlatList
-          //   style={{padding: 16}}
-          //   data={filterMenu}
-          //   showsVerticalScrollIndicator={false}
-          //   numColumns={3}
-          //   keyExtractor={item => item.menu_codigo}
-          //   columnWrapperStyle={{gap: 16}}
-          //   contentContainerStyle={{gap: 16, paddingBottom: 40}}
-          //   renderItem={({item}) => (
-          //     <MenuItem menu={item} onPress={() => handleMenuPress(item)} />
-          //   )}
-          // />
-          <CustomFlatList
+          <FlatList
             style={{padding: 16}}
             data={filterMenu}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
             numColumns={3}
             keyExtractor={item => item.menu_codigo}
             columnWrapperStyle={{gap: 16}}

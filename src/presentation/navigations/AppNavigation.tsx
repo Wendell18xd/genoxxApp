@@ -3,6 +3,7 @@ import {
   StackCardStyleInterpolator,
 } from '@react-navigation/stack';
 import {AuthStackNavigation} from './AuthStackNavigation';
+import { useSessionTimeout } from '../hooks/useInactivityTimeout';
 
 export type AppStackParam = {
   AuthStackNavigation: undefined;
@@ -19,6 +20,8 @@ const fadeAnimation: StackCardStyleInterpolator = ({current}) => {
 };
 
 const AppNavigation = () => {
+  useSessionTimeout();
+
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false}}

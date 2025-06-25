@@ -18,6 +18,7 @@ import {
 } from '../../../../config/api/genoxxApi';
 import {StorageAdapter} from '../../../adapter/storage-adapter';
 import {useNavigation} from '@react-navigation/native';
+import {useCanGoBackSafely} from '../../../hooks/useCanGoBackSafely';
 
 interface Props {
   children?: React.ReactNode;
@@ -27,6 +28,7 @@ const AuthLayout = ({children}: Props) => {
   const {top, bottom} = useSafeAreaInsets();
   const {colors} = useTheme();
   const navigation = useNavigation();
+  const canGoBack = useCanGoBackSafely();
 
   const [_keyboardVisible, setKeyboardVisible] = useState(false);
 
@@ -91,7 +93,7 @@ const AuthLayout = ({children}: Props) => {
       <View style={styles.box}>
         <View style={styles.boxHeader}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 20}}>
-            {navigation.canGoBack() && (
+            {canGoBack && (
               <TouchableOpacity onPress={navigation.goBack}>
                 <MaterialIcons name="arrow-left" color="white" />
               </TouchableOpacity>
@@ -121,18 +123,18 @@ const AuthLayout = ({children}: Props) => {
           extraScrollHeight={16}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}> */}
-          {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
-          <View
-            style={[
-              styles.containerChildren,
-              {
-                backgroundColor: colors.background,
-                paddingBottom: bottom,
-              },
-            ]}>
-            {children}
-          </View>
-          {/* </TouchableWithoutFeedback> */}
+        {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
+        <View
+          style={[
+            styles.containerChildren,
+            {
+              backgroundColor: colors.background,
+              paddingBottom: bottom + 32,
+            },
+          ]}>
+          {children}
+        </View>
+        {/* </TouchableWithoutFeedback> */}
         {/* </KeyboardAwareScrollView> */}
       </View>
     </View>
@@ -162,6 +164,7 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
     paddingHorizontal: 32,
+    paddingTop: 32,
   },
 });
 

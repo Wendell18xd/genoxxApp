@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {FlatList, View} from 'react-native';
 import CustomTextInput from '../../../../../components/ui/CustomTextInput';
 import {TextInput} from 'react-native-paper';
 import {globalStyle} from '../../../../../styles/globalStyle';
@@ -7,7 +7,6 @@ import {useEffect, useState} from 'react';
 import {ItemStockSeries} from './components/ItemStockSeries';
 import {useStockSeries} from './hooks/useStockSeries';
 import SinResultados from '../../../../../components/ui/SinResultados';
-import CustomFlatList from '../../../../../components/ui/CustomFlatList';
 
 export const StockSeriesScreen = () => {
   const {stockSerie, isLoading} = useStockSeries();
@@ -46,7 +45,7 @@ export const StockSeriesScreen = () => {
             <SinResultados message="No se encontraron resultados." />
           </View>
         ) : (
-          <CustomFlatList
+          <FlatList
             data={dataFiltrada}
             keyExtractor={(item, index) => `${item.mate_codigo}_${index}`}
             contentContainerStyle={{gap: 16, paddingTop: 16, paddingBottom: 32}}
