@@ -3,6 +3,9 @@ import {checkInternet} from '../../helper/network';
 import {OfflineQueueItem, processQueue} from '../processor/queueProcessor';
 import {globalColors} from '../../styles/globalStyle';
 import {listRows} from '../database/database';
+import {AppState, Platform} from 'react-native';
+
+const isAppInForeground = () => AppState.currentState === 'active';
 
 const sleep = (time: number) =>
   new Promise(resolve => setTimeout(resolve, time));
@@ -57,8 +60,28 @@ const options = {
 };
 
 export const startQueueBackgroundSync = async () => {
+  const androidVersion = Platform.Version;
+
   if (!BackgroundActions.isRunning()) {
-    await BackgroundActions.start(backgroundTask, options);
+    console.log(isAppInForeground());
+
+    if (Platform.OS === 'android' && androidVersion >= '34') {
+      if (!isAppInForeground()) {
+        console.log(
+          '[startQueueBackgroundSync] No se puede iniciar el servicio: App no está en foreground',
+        );
+        return;
+      }
+    }
+
+    try {
+      await BackgroundActions.start(backgroundTask, options);
+    } catch (e) {
+      console.log(
+        '[startQueueBackgroundSync] Error al iniciar background task',
+        e,
+      );
+    }
   }
 };
 
