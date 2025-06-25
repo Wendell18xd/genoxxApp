@@ -135,7 +135,7 @@ export const useEjecucionObras = () => {
       if (estado === 1) {
         Toast.show({
           type: 'success',
-          text1: 'Se registro correctamente',
+          text1: mensaje === '' ? 'Se registro correctamente' : mensaje,
         });
 
         if (valuesFormik.current.cierre === 'CIERRE') {
