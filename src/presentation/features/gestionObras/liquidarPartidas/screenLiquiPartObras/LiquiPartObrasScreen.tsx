@@ -1,7 +1,6 @@
 import DrawerLayout from '../../../main/layout/DrawerLayout';
 import {globalStyle} from '../../../../styles/globalStyle';
 import {Formik} from 'formik';
-import CustomDatePicker from '../../../../components/ui/CustomDatePicker';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
 import {Text, TextInput} from 'react-native-paper';
 import PrimaryButton from '../../../../components/ui/PrimaryButton';
@@ -10,6 +9,7 @@ import {mostrarSiNoCero} from '../../../../helper/utils';
 import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
 import CustomScrollView from '../../../../components/ui/CustomScrollView';
 import CustomKeyboardAvoidingView from '../../../../components/ui/CustomKeyboardAvoidingView';
+import CustomDateCalendarPicker from '../../../../components/ui/CustomDateCalendarPicker';
 
 export const LiquiPartObrasScreen = () => {
   const {
@@ -52,9 +52,9 @@ export const LiquiPartObrasScreen = () => {
                   globalStyle.padding,
                   {position: 'relative'},
                 ]}>
-                <CustomDatePicker
-                  label="Fecha Producción"
-                  placeholder="Selecciona una fecha de producción"
+                <CustomDateCalendarPicker
+                  label="Fecha de Producción"
+                  placeholder="Seleccione una fecha de producción"
                   value={values.fecha_liquidacion}
                   onChange={val => setFieldValue('fecha_liquidacion', val)}
                   error={
