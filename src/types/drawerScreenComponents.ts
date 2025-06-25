@@ -2,6 +2,7 @@ import { ConsultaHistoricaPatenteStackNavigation } from '../presentation/feature
 import { ConsultaInspeccionesStackNavigation } from '../presentation/features/flota/consultaInspecciones/navigations/ConsultaInspeccionesStackNavigation';
 import {ConsultaUnidadesStackNavigation} from '../presentation/features/flota/consultaUnidades/navigations/ConsultaUnidadesStackNavigation';
 import {LiquiMatATCStackNavigation} from '../presentation/features/gestionAtc/liquidarMateriales/navigations/LiquiMatATCStackNavigation';
+import { EjecucionObrasStackNavigation } from '../presentation/features/gestionObras/navigations/EjecucionObrasStackNavigation';
 import {LiquidacionObrasStackNavigation} from '../presentation/features/gestionObras/navigations/LiquidacionObrasStackNavigation';
 import {ReporteStockStackNavigation} from '../presentation/features/logistica/reporteStock/navigations/ReporteStockStackNavigation';
 import {Menu} from './menus';
@@ -14,6 +15,7 @@ export const drawerScreenComponents: Record<
   [Menu.LIQUIDACION_MATERIALES_ATC]: LiquiMatATCStackNavigation,
   //Obras
   [Menu.LIQUIDACION_MATERIALES_OBRAS]: LiquidacionObrasStackNavigation, //NORMAL
+  [Menu.CONSULTAR_EJECUCION_OBRAS]: EjecucionObrasStackNavigation, //NORMAL
   [Menu.LIQUIDACION_MATERIALES_OBRAS_ENERGIA]: LiquidacionObrasStackNavigation, //ENERGIA
   // [Menu.LIQUIDACION_PARTIDAS_OBRAS]: LiquiPartObrasStackNavigation, //NORMAL
   // [Menu.LIQUIDACION_PARTIDAS_OBRAS_ENERGIA]: LiquiPartObrasStackNavigation, //ENERGIA

@@ -1,6 +1,6 @@
 import {create} from 'zustand';
 
-type Opciones = 'menu' | 'liquidar' | 'ejecutar';
+type Opciones = 'menu' | 'liquidar' | 'ejecutar' | 'consulta';
 
 interface useObrasNavigationState {
   opcionSeleccionada?: Opciones;
