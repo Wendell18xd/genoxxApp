@@ -47,8 +47,8 @@ const backgroundTask = async (taskData: any) => {
 
 const options = {
   taskName: 'QueueSync',
-  taskTitle: 'Sincronizando datos pendientes...',
-  taskDesc: 'Enviando datos al servidor',
+  taskTitle: 'Genoxx trabajos en cola',
+  taskDesc: '',
   taskIcon: {
     name: 'ic_launcher',
     type: 'mipmap',
