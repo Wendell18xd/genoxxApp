@@ -6,6 +6,7 @@ import {useRef} from 'react';
 import * as Yup from 'yup';
 import {useQuery} from '@tanstack/react-query';
 import {getlistarConsultaEjecucion} from '../../../../../actions/gestionObras/consultaEjecucion.obras';
+import { Option } from 'react-native-paper-dropdown';
 
 interface SearchConsultaEjecucionFormValues {
   txt_fecha_inicio: string;
@@ -18,6 +19,30 @@ const initialValues: SearchConsultaEjecucionFormValues = {
   txt_fecha_final: new Date().toISOString().slice(0, 10),
   cbo_elegido: '',
 };
+
+const tiposItem: Option[] = [
+  {
+    label: 'NRO ORDEN',
+    value: 'NR01',
+  },
+  {
+    label: 'NRO ORDEN2',
+    value: 'NR02',
+  },
+  {
+    label: 'ACTIVIDAD',
+    value: 'ACTI',
+  },
+  {
+    label: 'HORA',
+    value: 'HORA',
+  },
+  {
+    label: 'COMENTARIO',
+    value: 'OBS',
+  },
+];
+
 
 export const useSearchConsultaEjecucion = () => {
   const {user} = useAuthStore();
@@ -85,6 +110,7 @@ export const useSearchConsultaEjecucion = () => {
     ejecucion,
     isFetchConsultarEjecucion,
     errorConsultarEjecucion,
+    tiposItem,
 
     //*Metodos
     filtrosRef,

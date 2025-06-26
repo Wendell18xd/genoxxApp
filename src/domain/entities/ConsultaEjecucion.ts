@@ -1,9 +1,4 @@
 export interface ConsultaEjecucion {
-  datos: ConsultaEjecucion[];
-  mensaje: string;
-}
-
-export interface ConsultaEjecucion {
   trab_codigo: string;
   cod_actividad: string;
   nom_actividad: string;

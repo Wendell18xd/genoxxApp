@@ -18,6 +18,7 @@ export const SearchConsultaEjecucion = ({onClose}: Props) => {
     handleSearch,
     getValidationSchema,
     ejecucion,
+    tiposItem,
   } = useSearchConsultaEjecucion();
 
   return (
@@ -46,7 +47,7 @@ export const SearchConsultaEjecucion = ({onClose}: Props) => {
               <View>
                 <CustomDropdownInput
                   label="Seleccione Item"
-                  options={ejecucion || []}
+                  options={tiposItem}
                   value={values.cbo_elegido}
                   onSelect={val => setFieldValue('cbo:elegido', val)}
                   error={touched.cbo_elegido && !!errors.cbo_elegido}
