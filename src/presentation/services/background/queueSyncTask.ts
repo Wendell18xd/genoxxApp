@@ -63,8 +63,6 @@ export const startQueueBackgroundSync = async () => {
   const androidVersion = Platform.Version;
 
   if (!BackgroundActions.isRunning()) {
-    console.log(isAppInForeground());
-
     if (Platform.OS === 'android' && androidVersion >= '34') {
       if (!isAppInForeground()) {
         console.log(

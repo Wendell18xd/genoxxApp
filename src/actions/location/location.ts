@@ -14,7 +14,10 @@ export const getCurrentLocation = async (): Promise<Location> => {
         return await getLocation(false, 5000); // Fallback: más rápido
       } catch (fallbackError) {
         console.log('❌ No se pudo obtener ubicación de ninguna forma.');
-        throw fallbackError;
+        return {
+          latitude: 0,
+          longitude: 0,
+        };
       }
     }
   } else {
