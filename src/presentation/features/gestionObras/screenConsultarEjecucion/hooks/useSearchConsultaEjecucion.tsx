@@ -10,11 +10,13 @@ import {getlistarConsultaEjecucion} from '../../../../../actions/gestionObras/co
 interface SearchConsultaEjecucionFormValues {
   txt_fecha_inicio: string;
   txt_fecha_final: string;
+  cbo_elegido: string;
 }
 
 const initialValues: SearchConsultaEjecucionFormValues = {
   txt_fecha_inicio: new Date().toISOString().slice(0, 10),
   txt_fecha_final: new Date().toISOString().slice(0, 10),
+  cbo_elegido: '',
 };
 
 export const useSearchConsultaEjecucion = () => {
