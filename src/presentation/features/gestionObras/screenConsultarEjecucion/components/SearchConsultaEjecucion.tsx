@@ -36,20 +36,22 @@ export const SearchConsultaEjecucion = ({onClose}: Props) => {
         {({handleSubmit, setFieldValue, values, errors, touched}) => {
           return (
             <View style={{padding: 8}}>
-              <CustomDateRangePicker
-                label="Rango de fechas"
-                desde={values.txt_fecha_inicio}
-                hasta={values.txt_fecha_final}
-                onChange={(start, end) => {
-                  setFieldValue('txt_fecha_inicio', start);
-                  setFieldValue('txt_fecha_final', end);
-                }}
-                error={
-                  (touched.txt_fecha_inicio && !!errors.txt_fecha_inicio) ||
-                  (touched.txt_fecha_final && !!errors.txt_fecha_final)
-                }
-              />
-              <View>
+              <View style={{marginBottom: 16}}>
+                <CustomDateRangePicker
+                  label="Rango de fechas"
+                  desde={values.txt_fecha_inicio}
+                  hasta={values.txt_fecha_final}
+                  onChange={(start, end) => {
+                    setFieldValue('txt_fecha_inicio', start);
+                    setFieldValue('txt_fecha_final', end);
+                  }}
+                  error={
+                    (touched.txt_fecha_inicio && !!errors.txt_fecha_inicio) ||
+                    (touched.txt_fecha_final && !!errors.txt_fecha_final)
+                  }
+                />
+              </View>
+              <View style={{marginBottom: 16}}>
                 <CustomDropdownInput
                   label="Seleccione Item"
                   options={tiposItem || []}
@@ -65,7 +67,7 @@ export const SearchConsultaEjecucion = ({onClose}: Props) => {
                   </Text>
                 )}
               </View>
-              <View>
+              <View style={{marginBottom: 16}}>
                 <CustomDropdownInput
                   label="Seleccione Proyecto"
                   options={proyectos || []}
@@ -81,7 +83,7 @@ export const SearchConsultaEjecucion = ({onClose}: Props) => {
                   </Text>
                 )}
               </View>
-              <View style={{marginTop: 16}}>
+              <View style={{marginBottom  : 16}}>
                 {(() => {
                   switch (values.cbo_elegido) {
                     case 'NR01':
