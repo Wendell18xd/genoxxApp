@@ -5,19 +5,31 @@ import {ListarConsultaEjecucionRequest} from '../../../../../infrastructure/inte
 import {useRef} from 'react';
 import * as Yup from 'yup';
 import {useQuery} from '@tanstack/react-query';
-import {getlistarConsultaEjecucion} from '../../../../../actions/gestionObras/consultaEjecucion.obras';
-import { Option } from 'react-native-paper-dropdown';
+import {
+  getlistarConsultaEjecucion,
+  listadoProyectosObras,
+} from '../../../../../actions/gestionObras/consultaEjecucion.obras';
+import {Option} from 'react-native-paper-dropdown';
+import {mapToDropdown} from '../../../../../infrastructure/mappers/mapToDropdown';
 
 interface SearchConsultaEjecucionFormValues {
   txt_fecha_inicio: string;
   txt_fecha_final: string;
   cbo_elegido: string;
+  vl_proy_tipo?: string; // Opcional para proyectos
+  txt_buscar: '',
+  txt_actividad: '',
+  txt_hora: '',
 }
 
 const initialValues: SearchConsultaEjecucionFormValues = {
   txt_fecha_inicio: new Date().toISOString().slice(0, 10),
   txt_fecha_final: new Date().toISOString().slice(0, 10),
   cbo_elegido: '',
+  vl_proy_tipo: '',
+  txt_buscar: '',
+  txt_actividad: '',
+  txt_hora: '',
 };
 
 const tiposItem: Option[] = [
@@ -42,7 +54,6 @@ const tiposItem: Option[] = [
     value: 'OBS',
   },
 ];
-
 
 export const useSearchConsultaEjecucion = () => {
   const {user} = useAuthStore();
@@ -90,6 +101,23 @@ export const useSearchConsultaEjecucion = () => {
     enabled: false,
   });
 
+  const {
+    data: proyectos,
+    isFetching: isFetchProyectos,
+    refetch: refetchProyectos,
+    error: errorProyectos,
+  } = useQuery({
+    queryKey: ['proyectos'],
+    queryFn: async () => {
+      const {datos} = await listadoProyectosObras({
+        vl_empr_codigo: user?.empr_codigo || '',
+        vl_proy_tipo: 'OBRAS',
+      });
+      const options = mapToDropdown(datos, 'proy_alias', 'proy_codigo');
+      return options;
+    },
+  });
+
   const handleSearch = (
     values: SearchConsultaEjecucionFormValues,
     onClose?: () => void,
@@ -111,6 +139,9 @@ export const useSearchConsultaEjecucion = () => {
     isFetchConsultarEjecucion,
     errorConsultarEjecucion,
     tiposItem,
+    proyectos,
+    isFetchProyectos,
+    errorProyectos,
 
     //*Metodos
     filtrosRef,
@@ -118,5 +149,6 @@ export const useSearchConsultaEjecucion = () => {
     refetchConsultarEjecucion,
     handleSearch,
     navigation,
+    refetchProyectos,
   };
 };

@@ -1,6 +1,8 @@
 import {genoxxApi} from '../../config/api/genoxxApi';
 import {ListarConsultaEjecucionRequest} from '../../infrastructure/interfaces/gestionObras/consultarEjecucion/listarConsultaEjecucion.request';
-import { ListarConsultaEjecucionResponse } from '../../infrastructure/interfaces/gestionObras/consultarEjecucion/listarConsultaEjecucion.response';
+import {ListarConsultaEjecucionResponse} from '../../infrastructure/interfaces/gestionObras/consultarEjecucion/listarConsultaEjecucion.response';
+import {ProyectosObrasRequest} from '../../infrastructure/interfaces/gestionObras/obras.request';
+import {ProyectosObrasResponse} from '../../infrastructure/interfaces/gestionObras/obras.response';
 
 export const getlistarConsultaEjecucion = async (
   props: ListarConsultaEjecucionRequest,
@@ -17,6 +19,24 @@ export const getlistarConsultaEjecucion = async (
         txt_buscar: props.txt_buscar,
         txt_actividad: props.txt_actividad,
         txt_hora: props.txt_hora,
+      },
+    );
+    return data;
+  } catch (error) {
+    throw new Error(error as string);
+  }
+};
+
+export const listadoProyectosObras = async (
+  props: ProyectosObrasRequest,
+): Promise<ProyectosObrasResponse> => {
+  try {
+    console.log(props);
+    const {data} = await genoxxApi.post<ProyectosObrasResponse>(
+      '/obras/listar_proyectos_obras',
+      {
+        vg_empr_codigo: props.vl_empr_codigo,
+        vl_proy_tipo: props.vl_proy_tipo,
       },
     );
     return data;
