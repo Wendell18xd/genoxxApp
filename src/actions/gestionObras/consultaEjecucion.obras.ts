@@ -1,10 +1,10 @@
 import {genoxxApi} from '../../config/api/genoxxApi';
 import {ListarConsultaEjecucionRequest} from '../../infrastructure/interfaces/gestionObras/consultarEjecucion/listarConsultaEjecucion.request';
 import {ListarConsultaEjecucionResponse} from '../../infrastructure/interfaces/gestionObras/consultarEjecucion/listarConsultaEjecucion.response';
-import {ActividadesObrasRequest} from '../../infrastructure/interfaces/gestionObras/ejecucionObras/actividades.obras.request';
-import {ActividadesObrasResponse} from '../../infrastructure/interfaces/gestionObras/ejecucionObras/actividades.obras.response';
 import {ProyectosObrasRequest} from '../../infrastructure/interfaces/gestionObras/obras.request';
 import {ProyectosObrasResponse} from '../../infrastructure/interfaces/gestionObras/obras.response';
+import {ActividadesObrasRequest} from '../../infrastructure/interfaces/gestionObras/ejecucionObras/actividades.obras.request';
+import {ActividadesObrasResponse} from '../../infrastructure/interfaces/gestionObras/ejecucionObras/actividades.obras.response';
 
 export const getlistarConsultaEjecucion = async (
   props: ListarConsultaEjecucionRequest,

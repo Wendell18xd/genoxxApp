@@ -8,10 +8,10 @@ import {useQuery} from '@tanstack/react-query';
 import {
   getlistarConsultaEjecucion,
   listadoProyectosObras,
+  listarActividadesObras,
 } from '../../../../../actions/gestionObras/consultaEjecucion.obras';
 import {Option} from 'react-native-paper-dropdown';
 import {mapToDropdown} from '../../../../../infrastructure/mappers/mapToDropdown';
-import {useEjecucionObrasStore} from '../../ejecucionObras/store/useEjecucionObrasStore';
 
 interface SearchConsultaEjecucionFormValues {
   txt_fecha_inicio: string;
@@ -58,7 +58,6 @@ const tiposItem: Option[] = [
 
 export const useSearchConsultaEjecucion = () => {
   const {user} = useAuthStore();
-  const {actividades} = useEjecucionObrasStore();
   const navigation = useNavigation<NavigationProp<EjecucionObrasStackParam>>();
 
   const filtrosRef = useRef<ListarConsultaEjecucionRequest>({
@@ -124,6 +123,12 @@ export const useSearchConsultaEjecucion = () => {
     },
   });
 
+  const {data: actividadesData, isFetching: isFetchActividades} = useQuery({
+    queryKey: ['actividades'],
+    queryFn: async () =>
+      listarActividadesObras({vg_empr_pais: user?.empr_pais || ''}),
+  });
+
   const handleSearch = (
     values: SearchConsultaEjecucionFormValues,
     onClose?: () => void,
@@ -149,10 +154,11 @@ export const useSearchConsultaEjecucion = () => {
     isFetchProyectos,
     errorProyectos,
     actividades: mapToDropdown(
-      actividades?.actividades_orden || [],
+      actividadesData?.actividades_orden || [],
       'cont_campo01',
       'cont_parametro',
     ),
+    isFetchActividades,
 
     //*Metodos
     filtrosRef,
