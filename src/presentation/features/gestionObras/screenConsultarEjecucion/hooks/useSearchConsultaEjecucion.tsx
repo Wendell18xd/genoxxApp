@@ -11,15 +11,16 @@ import {
 } from '../../../../../actions/gestionObras/consultaEjecucion.obras';
 import {Option} from 'react-native-paper-dropdown';
 import {mapToDropdown} from '../../../../../infrastructure/mappers/mapToDropdown';
+import {useEjecucionObrasStore} from '../../ejecucionObras/store/useEjecucionObrasStore';
 
 interface SearchConsultaEjecucionFormValues {
   txt_fecha_inicio: string;
   txt_fecha_final: string;
   cbo_elegido: string;
   vl_proy_tipo?: string; // Opcional para proyectos
-  txt_buscar: '',
-  txt_actividad: '',
-  txt_hora: '',
+  txt_buscar: '';
+  txt_actividad: '';
+  txt_hora: '';
 }
 
 const initialValues: SearchConsultaEjecucionFormValues = {
@@ -57,6 +58,7 @@ const tiposItem: Option[] = [
 
 export const useSearchConsultaEjecucion = () => {
   const {user} = useAuthStore();
+  const {actividades} = useEjecucionObrasStore();
   const navigation = useNavigation<NavigationProp<EjecucionObrasStackParam>>();
 
   const filtrosRef = useRef<ListarConsultaEjecucionRequest>({
@@ -69,6 +71,10 @@ export const useSearchConsultaEjecucion = () => {
     txt_actividad: '',
     txt_hora: '',
   });
+
+  // const actividadesRef = useRef<ListarActividadesRequest>({
+  //   vg_empr_pais: user?.empr_pais || '',
+  // });
 
   const getValidationSchema = () =>
     Yup.object().shape({
@@ -142,6 +148,11 @@ export const useSearchConsultaEjecucion = () => {
     proyectos,
     isFetchProyectos,
     errorProyectos,
+    actividades: mapToDropdown(
+      actividades?.actividades_orden || [],
+      'cont_campo01',
+      'cont_parametro',
+    ),
 
     //*Metodos
     filtrosRef,

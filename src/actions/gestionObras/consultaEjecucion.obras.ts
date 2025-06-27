@@ -1,6 +1,8 @@
 import {genoxxApi} from '../../config/api/genoxxApi';
 import {ListarConsultaEjecucionRequest} from '../../infrastructure/interfaces/gestionObras/consultarEjecucion/listarConsultaEjecucion.request';
 import {ListarConsultaEjecucionResponse} from '../../infrastructure/interfaces/gestionObras/consultarEjecucion/listarConsultaEjecucion.response';
+import {ActividadesObrasRequest} from '../../infrastructure/interfaces/gestionObras/ejecucionObras/actividades.obras.request';
+import {ActividadesObrasResponse} from '../../infrastructure/interfaces/gestionObras/ejecucionObras/actividades.obras.response';
 import {ProyectosObrasRequest} from '../../infrastructure/interfaces/gestionObras/obras.request';
 import {ProyectosObrasResponse} from '../../infrastructure/interfaces/gestionObras/obras.response';
 
@@ -37,6 +39,22 @@ export const listadoProyectosObras = async (
       {
         vg_empr_codigo: props.vl_empr_codigo,
         vl_proy_tipo: props.vl_proy_tipo,
+      },
+    );
+    return data;
+  } catch (error) {
+    throw new Error(error as string);
+  }
+};
+
+export const listarActividadesObras = async (
+  props: ActividadesObrasRequest,
+): Promise<ActividadesObrasResponse> => {
+  try {
+    const {data} = await genoxxApi.post<ActividadesObrasResponse>(
+      '/obras/listar_actividades_ejecucion_obras',
+      {
+        vg_empr_pais: props.vg_empr_pais,
       },
     );
     return data;

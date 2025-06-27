@@ -5,7 +5,7 @@ import {useSearchConsultaEjecucion} from '../hooks/useSearchConsultaEjecucion';
 import CustomDateRangePicker from '../../../../components/ui/CustomDateRangePicker';
 import {View} from 'react-native';
 import {CustomDropdownInput} from '../../../../components/ui/CustomDropdownInput';
-import {Text} from 'react-native-paper';
+import {Text, TextInput} from 'react-native-paper';
 import CustomTextInput from '../../../../components/ui/CustomTextInput';
 import CustomTimePicker from '../../../../components/ui/CustomTimePicker';
 
@@ -23,6 +23,7 @@ export const SearchConsultaEjecucion = ({onClose}: Props) => {
     tiposItem,
     proyectos,
     isFetchProyectos,
+    actividades,
   } = useSearchConsultaEjecucion();
 
   return (
@@ -80,39 +81,41 @@ export const SearchConsultaEjecucion = ({onClose}: Props) => {
                   </Text>
                 )}
               </View>
-              <View style= {{marginTop: 16}}>
+              <View style={{marginTop: 16}}>
                 {(() => {
                   switch (values.cbo_elegido) {
                     case 'NR01':
                     case 'NR02':
                     case 'OBS':
                       return (
-                        <Custom
-                        label="Buscar"
-                        icon= "magnify"
-                        value={values.txt_buscar}
-                        onChangeText={text => setFieldValue('txt_buscar', text)}
+                        <CustomTextInput
+                          label="Buscar"
+                          mode="outlined"
+                          value={values.txt_buscar}
+                          onChangeText={text =>
+                            setFieldValue('txt_buscar', text)
+                          }
+                          left={<TextInput.Icon icon="magnify" />}
                         />
                       );
                     case 'ACTI':
                       return (
                         <CustomDropdownInput
-                        label = "Seleccione Actividad"
-                        options = {txt_actividad || []}
-                        value = {values.txt_actividad}
-                        onSelect = {val => setFieldValue('txt_actividad', val)}
-                        error = {touched.txt_actividad && !!errors.txt_actividad}
-                        loading = {!txt_actividad && isFetchConsultarEjecucion}
-                        disabled = {!txt_actividad && isFetchConsultarEjecucion}
+                          label="Seleccione Actividad"
+                          options={actividades || []}
+                          value={values.txt_actividad ?? ''}
+                          onSelect={val => setFieldValue('txt_actividad', val)}
+                          error={
+                            touched.txt_actividad && !!errors.txt_actividad
+                          }
                         />
                       );
                     case 'HORA':
                       return (
                         <CustomTimePicker
-                        label = "Hora"
-                        value = {values.txt_hora}
-                        onChange = {time => setFieldValue('txt_hora', time)}
-                        icon = "clock-outline"
+                          label="Hora"
+                          value={values.txt_hora}
+                          onChange={time => setFieldValue('txt_hora', time)}
                         />
                       );
                     default:

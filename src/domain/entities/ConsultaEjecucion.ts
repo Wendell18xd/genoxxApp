@@ -15,3 +15,13 @@ export interface ConsultaEjecucion {
   hora_inicio: string;
   hora_fin: string;
 }
+
+export interface ActividadesOrden {
+  cont_parametro: string;
+  cont_campo01: string;
+  cont_campo05: string;
+  cont_campo06: string;
+  familia: string;
+  subfamilia: string;
+  medida: string;
+}
