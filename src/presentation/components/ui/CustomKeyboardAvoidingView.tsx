@@ -17,7 +17,11 @@ const CustomKeyboardAvoidingView = ({
         behavior ? behavior : Platform.OS === 'ios' ? 'padding' : 'height'
       }
       style={{flex: 1}}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? keyboardVerticalOffset + 40 : keyboardVerticalOffset}>
+      keyboardVerticalOffset={
+        Platform.OS === 'ios'
+          ? keyboardVerticalOffset + 40
+          : keyboardVerticalOffset
+      }>
       {/* The children components will be rendered here */}
       {children}
     </KeyboardAvoidingView>

@@ -129,7 +129,6 @@ const LoginScreen = () => {
                     style={{
                       marginTop: 16,
                       flexDirection: 'row',
-                      flex: 1,
                       justifyContent: 'space-between',
                     }}>
                     <CustomCheckbox
