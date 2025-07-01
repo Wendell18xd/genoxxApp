@@ -8,9 +8,17 @@ import {SearchConsultaEjecucion} from './components/SearchConsultaEjecucion';
 import CustomBottomSheet from '../../../components/ui/bottomSheetModal/CustomBottomSheet';
 import SinResultados from '../../../components/ui/SinResultados';
 import {useBottomSheetModal} from '../../../hooks/useBottomSheet';
+import {ItemConsultaEjecucion} from './components/ItemConsultaEjecucion';
+import {FlatList} from 'react-native-gesture-handler';
 
 export const ConsultaEjecucionScreen = () => {
-  const {ejecucion, errorConsultarEjecucion} = useSearchConsultaEjecucion();
+  const {
+    ejecucion,
+    errorConsultarEjecucion,
+    refetchConsultarEjecucion,
+    isFetchConsultarEjecucion,
+    handleSelectConsultaEjecucion,
+  } = useSearchConsultaEjecucion();
   const {ref, open, close} = useBottomSheetModal();
   const queryClient = useQueryClient();
 
@@ -30,11 +38,26 @@ export const ConsultaEjecucionScreen = () => {
       });
     };
   }, []);
-
+  console.log('Ejecucion:', ejecucion);
   return (
     <DrawerLayout title="Consulta de Ejecución">
       {ejecucion && ejecucion.length > 0 ? (
         <>
+          <FlatList
+            data={ejecucion}
+            contentContainerStyle={{gap: 16, padding: 16}}
+            refreshing={isFetchConsultarEjecucion}
+            onRefresh={refetchConsultarEjecucion}
+            showsVerticalScrollIndicator={false}
+            renderItem={({item}) => (
+              <ItemConsultaEjecucion
+                consulta={item}
+                onPress={() => {
+                  handleSelectConsultaEjecucion(item);
+                }}
+              />
+            )}
+          />
           <CustomFAB
             icon="magnify"
             onPress={open}

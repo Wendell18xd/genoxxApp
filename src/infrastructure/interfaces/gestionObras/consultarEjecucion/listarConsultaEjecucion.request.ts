@@ -3,10 +3,10 @@ export interface ListarConsultaEjecucionRequest {
   txt_fecha_inicio: string;
   txt_fecha_final: string;
   vl_codi_perfil: string;
-  cbo_elegido: string;
-  txt_buscar: string;
-  txt_actividad: string;
-  txt_hora: string;
+  cbo_elegido?: string;
+  txt_buscar?: string;
+  txt_actividad?: string;
+  txt_hora?: string;
 }
 
 export interface ListarActividadesRequest {

@@ -12,7 +12,7 @@ export const getlistarConsultaEjecucion = async (
   try {
     const {data} = await genoxxApi.post<ListarConsultaEjecucionResponse>(
       '/obras/get_listar_ejecucion_obras',
-      {
+     {
         vg_empr_codigo: props.vg_empr_codigo,
         txt_fecha_inicio: props.txt_fecha_inicio,
         txt_fecha_final: props.txt_fecha_final,

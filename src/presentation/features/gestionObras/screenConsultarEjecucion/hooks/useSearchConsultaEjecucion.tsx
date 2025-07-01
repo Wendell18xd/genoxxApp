@@ -12,6 +12,9 @@ import {
 } from '../../../../../actions/gestionObras/consultaEjecucion.obras';
 import {Option} from 'react-native-paper-dropdown';
 import {mapToDropdown} from '../../../../../infrastructure/mappers/mapToDropdown';
+import {formatearFecha} from '../../../../helper/timeUtils';
+import {ConsultaEjecucion} from '../../../../../domain/entities/ConsultaEjecucion';
+import { useConsultaEjecucionStore } from '../../store/useConsultaEjecucionStore';
 
 interface SearchConsultaEjecucionFormValues {
   txt_fecha_inicio: string;
@@ -59,13 +62,14 @@ const tiposItem: Option[] = [
 export const useSearchConsultaEjecucion = () => {
   const {user} = useAuthStore();
   const navigation = useNavigation<NavigationProp<EjecucionObrasStackParam>>();
+  const {setConsulta} = useConsultaEjecucionStore();
 
   const filtrosRef = useRef<ListarConsultaEjecucionRequest>({
     vg_empr_codigo: user?.empr_codigo || '',
     txt_fecha_inicio: '',
     txt_fecha_final: '',
     vl_codi_perfil: user?.usua_perfil || '',
-    cbo_elegido: '0',
+    cbo_elegido: '',
     txt_buscar: '',
     txt_actividad: '',
     txt_hora: '',
@@ -100,7 +104,9 @@ export const useSearchConsultaEjecucion = () => {
   } = useQuery({
     queryKey: ['consultarEjecucion'],
     queryFn: async () => {
+      console.log('Consultando con filtros:', filtrosRef.current);
       const {datos} = await getlistarConsultaEjecucion(filtrosRef.current);
+      console.log('Datos devueltos por API:', datos);
       return datos;
     },
     enabled: false,
@@ -133,14 +139,27 @@ export const useSearchConsultaEjecucion = () => {
     values: SearchConsultaEjecucionFormValues,
     onClose?: () => void,
   ) => {
-    const nuevosFiltros: ListarConsultaEjecucionRequest = {
-      ...filtrosRef.current,
-      txt_fecha_inicio: values.txt_fecha_inicio,
-      txt_fecha_final: values.txt_fecha_final,
+    const filtros: ListarConsultaEjecucionRequest = {
+      vg_empr_codigo: user?.empr_codigo || '',
+      vl_codi_perfil: user?.usua_perfil || '',
+      txt_fecha_inicio: formatearFecha(values.txt_fecha_inicio),
+      txt_fecha_final: formatearFecha(values.txt_fecha_final),
+      cbo_elegido: values.cbo_elegido || '0',
+      txt_buscar: values.txt_buscar ?? '',
+      txt_actividad: values.txt_actividad ?? '',
+      txt_hora: values.txt_hora ?? '',
     };
-    filtrosRef.current = nuevosFiltros;
+
+    console.log('📤 Filtros enviados desde handleSearch (limpios):', filtros);
+
+    filtrosRef.current = filtros;
     refetchConsultarEjecucion();
     onClose?.();
+  };
+
+  const handleSelectConsultaEjecucion = (item: ConsultaEjecucion) => {
+    setConsulta(item);
+    navigation.navigate('SegmentedButtonsDetalleConsulta', {SegmentedButtonsDetalleConsulta: item});
   };
 
   return {
@@ -153,12 +172,8 @@ export const useSearchConsultaEjecucion = () => {
     proyectos,
     isFetchProyectos,
     errorProyectos,
-    actividades: mapToDropdown(
-      actividadesData?.actividades_orden || [],
-      'cont_campo01',
-      'cont_parametro',
-    ),
     isFetchActividades,
+    originalActividades: actividadesData?.actividades_orden || [],
 
     //*Metodos
     filtrosRef,
@@ -167,5 +182,6 @@ export const useSearchConsultaEjecucion = () => {
     handleSearch,
     navigation,
     refetchProyectos,
+    handleSelectConsultaEjecucion,
   };
 };

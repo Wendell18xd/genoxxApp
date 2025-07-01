@@ -6,9 +6,16 @@ import {useRoute} from '@react-navigation/native';
 import FullScreenLoader from '../../../components/ui/loaders/FullScreenLoader';
 import {AccessDeniedScreen} from '../../../components/AccessDeniedScreen';
 import {ConsultaEjecucionScreen} from '../screenConsultarEjecucion/ConsultaEjecucionScreen';
+import {SegmentedButtonsDetalleConsulta} from './SegmentedButtonsDetalleConsulta';
+import {ConsultaEjecucion} from '../../../../domain/entities/ConsultaEjecucion';
+import {DetalleConsultaEjecucionScreen} from '../screenConsultarEjecucion/screenDetalleConsulta/DetalleConsultaEjecucionScreen';
 export type EjecucionObrasStackParam = {
   SegmentedButtonsConsultarEjecucion: undefined;
   ConsultaEjecucionScreen: undefined;
+  SegmentedButtonsDetalleConsulta: {
+    SegmentedButtonsDetalleConsulta: ConsultaEjecucion;
+  };
+  DetalleConsultaEjecucionScreen: undefined;
 };
 
 const Stack = createStackNavigator<EjecucionObrasStackParam>();
@@ -59,6 +66,14 @@ export const EjecucionObrasStackNavigation = () => {
       <Stack.Screen
         name="ConsultaEjecucionScreen"
         component={ConsultaEjecucionScreen}
+      />
+      <Stack.Screen
+        name="SegmentedButtonsDetalleConsulta"
+        component={SegmentedButtonsDetalleConsulta}
+      />
+      <Stack.Screen
+        name="DetalleConsultaEjecucionScreen"
+        component={DetalleConsultaEjecucionScreen}
       />
     </Stack.Navigator>
   );
