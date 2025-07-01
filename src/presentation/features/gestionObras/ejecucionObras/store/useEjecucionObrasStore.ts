@@ -99,6 +99,7 @@ export const useEjecucionObrasStore = create<useEjecucionObrasState>()(set => ({
 
       return response;
     } catch (error) {
+      set({loading: false});
       throw new Error(error as string);
     }
   },

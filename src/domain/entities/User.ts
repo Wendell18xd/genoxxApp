@@ -30,5 +30,5 @@ export interface Menu {
   menu_color_icoweb: string;
   menu_fileapp: string;
   menu_fileweb: string;
-  menu_hijo: Menu[];
+  menu_hijo?: Menu[];
 }

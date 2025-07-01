@@ -9,6 +9,8 @@ import {
   SaveEjecucionObrasResponse,
   SaveEjecucionSinObrasResponse,
 } from '../../infrastructure/interfaces/gestionObras/ejecucionObras/save.ejecucion.obras.response';
+import {checkInternet} from '../../presentation/helper/network';
+import {enqueueRequest} from '../../presentation/services/database/tablas/OfflineQueueTabla';
 
 export const listarActividadesObras = async (
   props: ActividadesObrasRequest,
@@ -29,6 +31,17 @@ export const listarActividadesObras = async (
 export const saveObraEjecutada = async (
   props: SaveEjecucionObrasRequest,
 ): Promise<SaveEjecucionObrasResponse> => {
+  const tieneInternet = await checkInternet();
+
+  // SI NO HAY INTERNET: guardar en la cola y salir
+  if (!tieneInternet) {
+    await enqueueRequest('saveObraEjecutada', props);
+    return {
+      estado: 1,
+      mensaje: 'Petición guardada en cola, no hay conexión a internet.',
+    };
+  }
+
   try {
     const formData = new FormData();
 
