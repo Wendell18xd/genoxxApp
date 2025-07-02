@@ -1,18 +1,30 @@
 import Geolocation from '@react-native-community/geolocation';
 import {Location} from '../../infrastructure/interfaces/location';
+import {checkInternet} from '../../presentation/helper/network';
 
 export const getCurrentLocation = async (): Promise<Location> => {
-  try {
-    console.log('📍 Intentando con GPS (alta precisión)...');
-    return await getLocation(true, 5000); // GPS: hasta 10s
-  } catch (error) {
-    console.log('⚠️ Falló con GPS. Intentando con red celular/Wi-Fi...');
+  const conexion = await checkInternet();
+  if (conexion) {
     try {
-      return await getLocation(false, 5000); // Fallback: más rápido
-    } catch (fallbackError) {
-      console.log('❌ No se pudo obtener ubicación de ninguna forma.');
-      throw fallbackError;
+      console.log('📍 Intentando con GPS (alta precisión)...');
+      return await getLocation(true, 5000); // GPS: hasta 10s
+    } catch (error) {
+      console.log('⚠️ Falló con GPS. Intentando con red celular/Wi-Fi...');
+      try {
+        return await getLocation(false, 5000); // Fallback: más rápido
+      } catch (fallbackError) {
+        console.log('❌ No se pudo obtener ubicación de ninguna forma.');
+        return {
+          latitude: 0,
+          longitude: 0,
+        };
+      }
     }
+  } else {
+    return {
+      latitude: 0,
+      longitude: 0,
+    };
   }
 };
 

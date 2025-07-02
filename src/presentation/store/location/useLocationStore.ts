@@ -31,6 +31,7 @@ export const useLocationStore = create<LocationState>()((set, get) => ({
     }
 
     const location = await getCurrentLocation();
+    console.log(location.latitude, location.longitude);
     set({lastKnownLocation: location});
     return location;
   },

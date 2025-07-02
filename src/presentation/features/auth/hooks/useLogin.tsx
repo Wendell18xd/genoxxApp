@@ -131,12 +131,14 @@ export const useLogin = () => {
     const user = await StorageAdapter.getItem('usuario');
     if (user) {
       const parsedUser = JSON.parse(user);
-      setFormValues({
-        usuario: parsedUser.usua_codigo,
-        contrasena: parsedUser.usua_clave,
-        empresa: '',
-        recordar: parsedUser.recorded,
-      });
+      if (parsedUser.recorded) {
+        setFormValues({
+          usuario: parsedUser.usua_codigo,
+          contrasena: parsedUser.usua_clave,
+          empresa: '',
+          recordar: parsedUser.recorded,
+        });
+      }
     }
     setLoadingUser(false);
   };

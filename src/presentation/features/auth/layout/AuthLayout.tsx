@@ -1,6 +1,5 @@
 import {
   Image,
-  Keyboard,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -8,7 +7,6 @@ import {
 import {Text, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import CurvaView from '../../../components/ui/CurvaView';
-import {useEffect, useState} from 'react';
 import MaterialIcons from '../../../components/ui/icons/MaterialIcons';
 import {showPromt} from '../../../adapter/prompt.adapter';
 import {
@@ -29,8 +27,6 @@ const AuthLayout = ({children}: Props) => {
   const {colors} = useTheme();
   const navigation = useNavigation();
   const canGoBack = useCanGoBackSafely();
-
-  const [_keyboardVisible, setKeyboardVisible] = useState(false);
 
   const handlerConfig = async () => {
     const host = await StorageAdapter.getItem('host');
@@ -66,28 +62,6 @@ const AuthLayout = ({children}: Props) => {
     });
   };
 
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      () => {
-        setKeyboardVisible(true);
-      },
-    );
-
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        setKeyboardVisible(false);
-      },
-    );
-
-    // Cleanup listeners on unmount
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    };
-  }, []);
-
   return (
     <View style={{flex: 1, paddingTop: top, backgroundColor: colors.primary}}>
       <View style={styles.box}>
@@ -117,25 +91,16 @@ const AuthLayout = ({children}: Props) => {
         <CurvaView />
       </View>
       <View style={{flex: 1, backgroundColor: colors.background}}>
-        {/* <KeyboardAwareScrollView
-          contentContainerStyle={{flexGrow: 1}}
-          enableOnAndroid={true}
-          extraScrollHeight={16}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}> */}
-        {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
         <View
           style={[
             styles.containerChildren,
             {
               backgroundColor: colors.background,
-              paddingBottom: bottom + 32,
+              paddingBottom: bottom + 8,
             },
           ]}>
           {children}
         </View>
-        {/* </TouchableWithoutFeedback> */}
-        {/* </KeyboardAwareScrollView> */}
       </View>
     </View>
   );
@@ -164,7 +129,6 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
     paddingHorizontal: 32,
-    paddingTop: 32,
   },
 });
 

@@ -6,6 +6,7 @@ import {
   PERMISSIONS,
   RESULTS,
 } from 'react-native-permissions';
+import {checkInternet} from './network';
 
 export const checkIfLocationIsEnabled = (): Promise<boolean> => {
   return new Promise(resolve => {
@@ -42,9 +43,10 @@ export const validarGpsActivo = async (): Promise<boolean> => {
   const result = await check(permission);
 
   if (result === RESULTS.GRANTED) {
+    const conexion = await checkInternet();
     const gpsOn = await checkIfLocationIsEnabled();
 
-    if (!gpsOn) {
+    if (!gpsOn && conexion) {
       Alert.alert(
         'Ubicación desactivada',
         'Tu GPS está apagado. Por favor, actívalo para continuar.',
