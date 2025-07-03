@@ -1,45 +1,79 @@
-import { FlatList, Image, StyleSheet, View } from 'react-native';
+import {useState} from 'react';
+import {useConsultaEjecucionStore} from '../../store/useConsultaEjecucionStore';
+import {Pressable, StyleSheet, View} from 'react-native';
+import {FlatList} from 'react-native-gesture-handler';
+import ImageViewing from 'react-native-image-viewing';
 import SinResultados from '../../../../components/ui/SinResultados';
-import { useConsultaEjecucionStore } from '../../store/useConsultaEjecucionStore';
-
+import {FadeInImage} from '../../../../components/ui/FadeInImage';
 
 export const FotosConsultaScreen = () => {
   const {consulta} = useConsultaEjecucionStore();
-  const fotos = consulta?.foto1 || [];
+  const [visible, setVisible] = useState(false);
+  const [indexSeleccionado, setIndexSeleccionado] = useState(0);
 
-  if (fotos.length === 0) {
-    return <SinResultados message="No hay fotos disponibles" />;
+  const fotos = [];
+  if (consulta?.foto1) {
+    fotos.push({
+      uri: consulta.foto1,
+    });
+  }
+  if (consulta?.foto2) {
+    fotos.push({
+      uri: consulta.foto2,
+    });
+  }
+  if (consulta?.foto3) {
+    fotos.push({
+      uri: consulta.foto3,
+    });
   }
 
+  const abrirVisor = (index: number) => {
+    setIndexSeleccionado(index);
+    setVisible(true);
+  };
+
   return (
-    <FlatList
-      data={fotos.slice(0, 3)} // máximo 3 fotos
-      keyExtractor={(item, index) => `${item}_${index}`}
-      contentContainerStyle={styles.container}
-      renderItem={({item}) => (
-        <View style={styles.imageContainer}>
-          <Image
-            source={{uri: item}}
-            style={styles.image}
-            resizeMode="cover"
+    <View style={styles.container}>
+      {fotos.length > 0 ? (
+        <>
+          <FlatList
+            data={fotos}
+            contentContainerStyle={styles.listContent}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={(foto, index) => foto.uri + index}
+            renderItem={({item: foto, index}) => (
+              <Pressable onPress={() => abrirVisor(index)}>
+                <FadeInImage uri={foto.uri} style={{resizeMode: 'contain'}} />
+              </Pressable>
+            )}
           />
-        </View>
+
+          <ImageViewing
+            images={fotos}
+            imageIndex={indexSeleccionado}
+            visible={visible}
+            onRequestClose={() => setVisible(false)}
+            backgroundColor="black"
+          />
+        </>
+      ) : (
+        <SinResultados message="No hay fotos registradas para esta ejecución" />
       )}
-    />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 16,
-    gap: 16,
   },
-  imageContainer: {
+  listContent: {
+    gap: 24,
+    paddingBottom: 16,
+  },
+  fotoContainer: {
     alignItems: 'center',
-  },
-  image: {
-    width: '100%',
-    height: 200,
-    borderRadius: 8,
   },
 });

@@ -65,7 +65,14 @@ export const SearchConsultaEjecucion = ({onClose}: Props) => {
                   label="Seleccione tipo de búsqueda"
                   options={tiposItem || []}
                   value={values.cbo_elegido}
-                  onSelect={val => setFieldValue('cbo_elegido', val)}
+                  onSelect={val => {
+                    setFieldValue('cbo_elegido', val);
+                    setFieldValue('txt_buscar', '');
+                    setFieldValue('txt_hora', '');
+                    setFieldValue('txt_actividad', '');
+                    setFieldValue('vl_proy_tipo', '');
+                    setActividadesFiltradas([]);
+                  }}
                   error={touched.cbo_elegido && !!errors.cbo_elegido}
                   loading={!ejecucion && isFetchConsultarEjecucion}
                   disabled={!ejecucion && isFetchConsultarEjecucion}
@@ -119,7 +126,9 @@ export const SearchConsultaEjecucion = ({onClose}: Props) => {
                     value={values.txt_actividad ?? ''}
                     onSelect={val => setFieldValue('txt_actividad', val)}
                     error={touched.txt_actividad && !!errors.txt_actividad}
-                    disabled={!values.vl_proy_tipo || actividadesFiltradas.length === 0}
+                    disabled={
+                      !values.vl_proy_tipo || actividadesFiltradas.length === 0
+                    }
                   />
                 ) : values.cbo_elegido === 'HORA' ? (
                   <CustomTimePicker

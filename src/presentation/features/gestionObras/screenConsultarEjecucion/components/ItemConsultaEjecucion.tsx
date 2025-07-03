@@ -1,43 +1,58 @@
+import {StyleSheet, View} from 'react-native';
 import {Divider, Text, useTheme} from 'react-native-paper';
 import {ConsultaEjecucion} from '../../../../../domain/entities/ConsultaEjecucion';
 import {CustomCardContent} from '../../../../components/ui/CustomCardContent';
-import {StyleSheet, View} from 'react-native';
 import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
-import React from 'react';
 
 interface Props {
   consulta: ConsultaEjecucion;
   onPress?: () => void;
 }
+
 export const ItemConsultaEjecucion = ({consulta, onPress}: Props) => {
   const {colors} = useTheme();
 
   return (
-    <CustomCardContent onPress={onPress} mode="outlined">
-      <View style={styles.container}>
-        {/* ICONO */}
-        <MaterialIcons name="account-hard-hat" size={28} color={colors.primary} />
-        {/* CONTENIDO PRINCIPAL */}
-        <View style={styles.content}>
-          <Text variant="titleMedium" style={styles.title}>
-            {consulta.nom_actividad}
-          </Text>
-          <Text variant="bodySmall" style={styles.subtitle}>
-            {consulta.fecha}
-          </Text>
-          <Text variant="bodySmall" style={styles.subtitle}>
-            {consulta.hora}
-          </Text>
+    <CustomCardContent
+      onPress={onPress}
+      mode="outlined"
+      style={styles.card}
+      styleContent={styles.cardContent}>
+      <View style={styles.row}>
+        {/* Franja de color alineada al borde izquierdo */}
+        <View style={[styles.colorStrip, {backgroundColor: consulta.color}]} />
+
+        {/* Contenido */}
+        <View style={styles.contentContainer}>
+          <View style={styles.header}>
+            <MaterialIcons
+              name="account-hard-hat"
+              size={28}
+              color={colors.primary}
+            />
+            <View style={styles.textContainer}>
+              <Text variant="titleMedium" style={styles.title}>
+                {consulta.nom_actividad}
+              </Text>
+              <View>
+                <Text variant="bodySmall" style={styles.subtitle}>
+                  {consulta.fecha + ' - ' + consulta.hora}
+                </Text>
+              </View>
+            </View>
+          </View>
+
+          <Divider style={{marginVertical: 8}} />
+
+          <View style={styles.footer}>
+            <ItemInferiorNumero label="Nro Orden" value={consulta.nro_orden} />
+            <ItemInferiorNumero
+              label="Nro Orden2"
+              value={consulta.nro_orden2}
+            />
+            <ItemInferior label="Comentario" value={consulta.obse_ejecutado} />
+          </View>
         </View>
-      </View>
-
-      <Divider style={{marginVertical: 8}} />
-
-      {/* Etiqueta Inferior */}
-      <View style={styles.footer}>
-        <ItemInferiorNumero label="Nro Orden" value={consulta.nro_orden} />
-        <ItemInferiorNumero label="Nro Orden2" value={consulta.nro_orden2} />
-        <ItemInferior label="Comentario" value={consulta.obse_ejecutado} />
       </View>
     </CustomCardContent>
   );
@@ -62,33 +77,58 @@ const ItemInferiorNumero = ({value, label}: {value: number; label: string}) => (
 );
 
 const styles = StyleSheet.create({
-  container: {
+  card: {
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  cardContent: {
+    padding: 0,
+  },
+  row: {
+    flexDirection: 'row',
+    width: '100%',
+    position: 'relative',
+  },
+  colorStrip: {
+    position: 'absolute',
+    left: -16,
+    top: 0,
+    bottom: 0,
+    width: 8,
+    backgroundColor: 'red',
+  },
+  contentContainer: {
+    flex: 1,
+    paddingVertical: 8,
+    paddingRight: 10,
+    paddingLeft: 8,
+  },
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
   },
-  content: {
+  textContainer: {
     flex: 1,
     marginLeft: 12,
   },
   title: {
     fontWeight: 'bold',
   },
+  subtitle: {
+    color: '#888',
+  },
   footer: {
-    flexWrap: 'wrap',
-    position: 'relative',
-    paddingVertical: 4,
+    flexWrap: 'nowrap',
+    paddingVertical: 5,
   },
   footerItem: {
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
+    marginTop: 4,
   },
   info: {
     fontWeight: 'bold',
     marginRight: 4,
-  },
-  subtitle: {
-    color: '#888',
   },
 });
