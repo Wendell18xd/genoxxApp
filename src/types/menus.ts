@@ -9,4 +9,5 @@ export enum Menu {
   REPORTE_STOCK = 'ReporteStockFragment',
   CONSULTA_INSPECCIONES_FLOTA = 'HistorialInspeccionesFragment',
   CONTROL_ODOMETRO_FLOTA = 'ControlOdometroFragment',
+  RECEPCION_MATERIALES_CAMPO = 'RecepcionMaterialesCampoFragment',
 }

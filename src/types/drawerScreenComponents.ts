@@ -4,6 +4,7 @@ import {ConsultaUnidadesStackNavigation} from '../presentation/features/flota/co
 import { ControlOdometroStackNavigation } from '../presentation/features/flota/controlOdometro/navigations/ControlOdometroStackNavigation';
 import {LiquiMatATCStackNavigation} from '../presentation/features/gestionAtc/liquidarMateriales/navigations/LiquiMatATCStackNavigation';
 import {LiquidacionObrasStackNavigation} from '../presentation/features/gestionObras/navigations/LiquidacionObrasStackNavigation';
+import RecepcionMateCampoStackNavigation from '../presentation/features/gestionObras/recepcionMaterialesCampo/navigations/RecepcionMateCampoStackNavigation';
 import {ReporteStockStackNavigation} from '../presentation/features/logistica/reporteStock/navigations/ReporteStockStackNavigation';
 import {Menu} from './menus';
 
@@ -16,8 +17,7 @@ export const drawerScreenComponents: Record<
   //Obras
   [Menu.LIQUIDACION_MATERIALES_OBRAS]: LiquidacionObrasStackNavigation, //NORMAL
   [Menu.LIQUIDACION_MATERIALES_OBRAS_ENERGIA]: LiquidacionObrasStackNavigation, //ENERGIA
-  // [Menu.LIQUIDACION_PARTIDAS_OBRAS]: LiquiPartObrasStackNavigation, //NORMAL
-  // [Menu.LIQUIDACION_PARTIDAS_OBRAS_ENERGIA]: LiquiPartObrasStackNavigation, //ENERGIA
+  [Menu.RECEPCION_MATERIALES_CAMPO]: RecepcionMateCampoStackNavigation, //NORMAL
   //Flota
   [Menu.CONSULTA_UNIDADES_FLOTA]: ConsultaUnidadesStackNavigation,
   [Menu.CONSULTA_HISTORICA_PATENTE_FLOTA]: ConsultaHistoricaPatenteStackNavigation,
