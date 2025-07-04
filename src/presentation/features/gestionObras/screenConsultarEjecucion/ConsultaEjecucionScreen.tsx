@@ -53,7 +53,9 @@ export const ConsultaEjecucionScreen = () => {
               <ItemConsultaEjecucion
                 consulta={item}
                 onPress={() => {
-                  handleSelectConsultaEjecucion(item);
+                  item.nro_orden !== ''
+                    ? handleSelectConsultaEjecucion(item)
+                    : undefined;
                 }}
               />
             )}

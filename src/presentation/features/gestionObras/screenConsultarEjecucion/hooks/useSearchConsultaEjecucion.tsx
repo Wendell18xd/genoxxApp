@@ -14,7 +14,7 @@ import {Option} from 'react-native-paper-dropdown';
 import {mapToDropdown} from '../../../../../infrastructure/mappers/mapToDropdown';
 import {formatearFecha} from '../../../../helper/timeUtils';
 import {ConsultaEjecucion} from '../../../../../domain/entities/ConsultaEjecucion';
-import { useConsultaEjecucionStore } from '../../store/useConsultaEjecucionStore';
+import {useConsultaEjecucionStore} from '../../store/useConsultaEjecucionStore';
 
 interface SearchConsultaEjecucionFormValues {
   txt_fecha_inicio: string;
@@ -158,8 +158,13 @@ export const useSearchConsultaEjecucion = () => {
   };
 
   const handleSelectConsultaEjecucion = (item: ConsultaEjecucion) => {
-    setConsulta(item);
-    navigation.navigate('SegmentedButtonsDetalleConsulta', {SegmentedButtonsDetalleConsulta: item});
+    if (item.nro_orden !== '') {
+      setConsulta(item);
+      navigation.navigate('SegmentedButtonsDetalleConsulta', {
+        SegmentedButtonsDetalleConsulta: item,
+      });
+    }
+    console.log(item.nro_orden);
   };
 
   return {

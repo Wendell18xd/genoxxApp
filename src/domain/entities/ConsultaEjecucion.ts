@@ -3,11 +3,11 @@ export interface ConsultaEjecucion {
   cod_actividad: string;
   nom_actividad: string;
   color: string;
-  cod_registro_obra: number;
-  nro_orden: number;
-  nro_orden2: number;
+  cod_registro_obra: string;
+  nro_orden: string;
+  nro_orden2: string;
   fecha: string;
-  hora: number;
+  hora: string;
   obse_ejecutado: string;
   foto1: string;
   foto2: string;

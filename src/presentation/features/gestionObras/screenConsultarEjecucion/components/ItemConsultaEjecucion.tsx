@@ -14,7 +14,7 @@ export const ItemConsultaEjecucion = ({consulta, onPress}: Props) => {
 
   return (
     <CustomCardContent
-      onPress={onPress}
+      onPress={consulta.nro_orden ? onPress : undefined}
       mode="outlined"
       style={styles.card}
       styleContent={styles.cardContent}>
@@ -45,8 +45,8 @@ export const ItemConsultaEjecucion = ({consulta, onPress}: Props) => {
           <Divider style={{marginVertical: 8}} />
 
           <View style={styles.footer}>
-            <ItemInferiorNumero label="Nro Orden" value={consulta.nro_orden} />
-            <ItemInferiorNumero
+            <ItemInferior label="Nro Orden" value={consulta.nro_orden} />
+            <ItemInferior
               label="Nro Orden2"
               value={consulta.nro_orden2}
             />
@@ -67,14 +67,6 @@ const ItemInferior = ({value, label}: {value: string; label: string}) => (
   </View>
 );
 
-const ItemInferiorNumero = ({value, label}: {value: number; label: string}) => (
-  <View style={styles.footerItem}>
-    <Text variant="bodySmall" style={styles.info}>
-      {label}:
-    </Text>
-    <Text variant="bodySmall">{value}</Text>
-  </View>
-);
 
 const styles = StyleSheet.create({
   card: {
