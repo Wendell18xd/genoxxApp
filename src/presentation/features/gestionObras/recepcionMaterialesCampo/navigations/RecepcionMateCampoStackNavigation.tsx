@@ -1,11 +1,11 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import ListarObrasMaterialesCampoScreen from '../screenListarObrasMaterialesCampo/ListarObrasMaterialesCampoScreen';
-import DetalleMaterialesCampoScreen from '../screenDetalleMaterialesCampo/DetalleMaterialesCampoScreen';
 import DrawerLayout from '../../../main/layout/DrawerLayout';
+import {SegmentedButtonsMatesCampo} from './SegmentedButtonsDetalleObras';
 
 export type RecepcionMateCampoStackParam = {
   ListarObrasMaterialesCampoScreen: undefined;
-  DetalleMaterialesCampoScreen: undefined;
+  SegmentedButtonsMatesCampo: undefined;
 };
 
 const Stack = createStackNavigator<RecepcionMateCampoStackParam>();
@@ -24,13 +24,10 @@ const RecepcionMateCampoStackNavigation = () => {
           </DrawerLayout>
         )}
       </Stack.Screen>
-      <Stack.Screen name="DetalleMaterialesCampoScreen">
-        {() => (
-          <DrawerLayout title="Detalle de Obra">
-            <DetalleMaterialesCampoScreen />
-          </DrawerLayout>
-        )}
-      </Stack.Screen>
+      <Stack.Screen
+        name="SegmentedButtonsMatesCampo"
+        component={SegmentedButtonsMatesCampo}
+      />
     </Stack.Navigator>
   );
 };

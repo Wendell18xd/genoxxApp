@@ -7,6 +7,8 @@ import * as Yup from 'yup';
 import {useAuthStore} from '../../../../../store/auth/useAuthStore';
 import {useQuery} from '@tanstack/react-query';
 import {listadoObrasAsiganadas} from '../../../../../../actions/gestionObras/obras';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RecepcionMateCampoStackParam} from '../../navigations/RecepcionMateCampoStackNavigation';
 
 const initialValues = {
   nro_orden: '',
@@ -16,6 +18,13 @@ export const useObrasMaterialesCampo = () => {
   const {user} = useAuthStore();
   const {isRefresthObra, setObra} = useObrasStore();
   const {ref, open, close} = useBottomSheetModal();
+  const navigation =
+    useNavigation<
+      NavigationProp<
+        RecepcionMateCampoStackParam,
+        'ListarObrasMaterialesCampoScreen'
+      >
+    >();
 
   const filtrosRef = useRef<ObrasRequest>({
     vl_empr_codigo: user?.empr_codigo || '',
@@ -61,7 +70,7 @@ export const useObrasMaterialesCampo = () => {
 
   const handleSelectObra = async (obra: Obra) => {
     setObra(obra);
-    // Todo: Navegar al detalle
+    navigation.navigate('SegmentedButtonsMatesCampo');
   };
 
   const handleOpenSearch = () => {
