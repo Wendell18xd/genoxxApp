@@ -30,10 +30,8 @@ const CustomKeyboardAvoidingView = ({
   console.log(bottom);
 
   const verticalOffset = keyboardVisible
-    // ? keyboardVerticalOffset
-    // : -bottomOffset;
-    ? keyboardVerticalOffset + bottomOffset
-  : -bottomOffset;
+    ? keyboardVerticalOffset
+    : -bottomOffset;
   return (
     <KeyboardAvoidingView
       behavior={
