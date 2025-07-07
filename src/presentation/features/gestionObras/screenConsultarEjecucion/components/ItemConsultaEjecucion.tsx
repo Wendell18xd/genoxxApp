@@ -46,10 +46,7 @@ export const ItemConsultaEjecucion = ({consulta, onPress}: Props) => {
 
           <View style={styles.footer}>
             <ItemInferior label="Nro Orden" value={consulta.nro_orden} />
-            <ItemInferior
-              label="Nro Orden2"
-              value={consulta.nro_orden2}
-            />
+            <ItemInferior label="Nro Orden2" value={consulta.nro_orden2} />
             <ItemInferior label="Comentario" value={consulta.obse_ejecutado} />
           </View>
         </View>
@@ -66,7 +63,6 @@ const ItemInferior = ({value, label}: {value: string; label: string}) => (
     <Text variant="bodySmall">{value}</Text>
   </View>
 );
-
 
 const styles = StyleSheet.create({
   card: {

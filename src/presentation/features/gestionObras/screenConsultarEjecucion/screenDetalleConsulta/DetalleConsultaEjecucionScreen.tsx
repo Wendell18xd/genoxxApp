@@ -32,31 +32,31 @@ const LabelValueRow = ({label, value, style}: Props) => {
 export const DetalleConsultaEjecucionScreen = () => {
   const {consulta} = useConsultaEjecucionStore();
   return (
-      <CustomScrollView contentContainerStyle={{padding: 32}}>
-        <Text variant="titleLarge" style={{fontWeight: 'bold'}}>
-          Detalle
-        </Text>
+    <CustomScrollView contentContainerStyle={{padding: 32}}>
+      <Text variant="titleLarge" style={{fontWeight: 'bold'}}>
+        Detalle
+      </Text>
 
-        <Divider style={{marginVertical: 16}} />
+      <Divider style={{marginVertical: 16}} />
 
-        <LabelValueRow label="Nro Orden" value={consulta?.nro_orden} />
+      <LabelValueRow label="Nro Orden" value={consulta?.nro_orden} />
 
-        <Divider style={{marginVertical: 16}} />
+      <Divider style={{marginVertical: 16}} />
 
-        <LabelValueRow label="Nro Orden2" value={consulta?.nro_orden2} />
+      <LabelValueRow label="Nro Orden2" value={consulta?.nro_orden2} />
 
-        <Divider style={{marginVertical: 16}} />
+      <Divider style={{marginVertical: 16}} />
 
-        <LabelValueRow label="Fecha" value={consulta?.hora} />
+      <LabelValueRow label="Fecha" value={consulta?.hora} />
 
-        <Divider style={{marginVertical: 16}} />
+      <Divider style={{marginVertical: 16}} />
 
-        <LabelValueRow label="Actividad" value={consulta?.nom_actividad} />
+      <LabelValueRow label="Actividad" value={consulta?.nom_actividad} />
 
-        <Divider style={{marginVertical: 16}} />
+      <Divider style={{marginVertical: 16}} />
 
-        <LabelValueRow label="Comentario" value={consulta?.obse_ejecutado} />
-      </CustomScrollView>
+      <LabelValueRow label="Comentario" value={consulta?.obse_ejecutado} />
+    </CustomScrollView>
   );
 };
 
