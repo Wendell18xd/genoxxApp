@@ -25,11 +25,15 @@ const CustomKeyboardAvoidingView = ({
   isBottom = true,
 }: Props) => {
   const {keyboardVisible} = useKeyBoardVisible();
-  const {bottom, top} = useSafeAreaInsets();
+  const {bottom} = useSafeAreaInsets();
   const bottomOffset = (isBottom ? bottom : 0) + safeOffset;
-  console.log(bottom, top);
+  console.log(bottom);
 
-  const verticalOffset = keyboardVisible ? keyboardVerticalOffset : -(bottomOffset);
+  const verticalOffset = keyboardVisible
+    // ? keyboardVerticalOffset
+    // : -bottomOffset;
+    ? keyboardVerticalOffset + bottomOffset
+  : -bottomOffset;
   return (
     <KeyboardAvoidingView
       behavior={
