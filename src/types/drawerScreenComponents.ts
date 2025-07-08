@@ -1,6 +1,7 @@
 import { ConsultaHistoricaPatenteStackNavigation } from '../presentation/features/flota/consultaHistoricaPatente/navigations/ConsultaHistoricaPatenteStackNavigation';
 import { ConsultaInspeccionesStackNavigation } from '../presentation/features/flota/consultaInspecciones/navigations/ConsultaInspeccionesStackNavigation';
 import {ConsultaUnidadesStackNavigation} from '../presentation/features/flota/consultaUnidades/navigations/ConsultaUnidadesStackNavigation';
+import { ControlOdometroStackNavigation } from '../presentation/features/flota/controlOdometro/navigations/ControlOdometroStackNavigation';
 import {LiquiMatATCStackNavigation} from '../presentation/features/gestionAtc/liquidarMateriales/navigations/LiquiMatATCStackNavigation';
 import {LiquidacionObrasStackNavigation} from '../presentation/features/gestionObras/navigations/LiquidacionObrasStackNavigation';
 import {ReporteStockStackNavigation} from '../presentation/features/logistica/reporteStock/navigations/ReporteStockStackNavigation';
@@ -23,4 +24,5 @@ export const drawerScreenComponents: Record<
   //Logistica
   [Menu.REPORTE_STOCK]: ReporteStockStackNavigation,
   [Menu.CONSULTA_INSPECCIONES_FLOTA]: ConsultaInspeccionesStackNavigation,
+  [Menu.CONTROL_ODOMETRO_FLOTA]: ControlOdometroStackNavigation,
 };
