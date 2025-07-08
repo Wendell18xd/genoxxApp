@@ -26,18 +26,15 @@ export const CustomCardContent = ({
   );
 
   return (
-    <Card style={[styles.card, style]} mode={mode}>
-      {onPress ? (
-        <TouchableRipple
-          onPress={onPress}
-          borderless={false}
-          rippleColor="rgba(0, 0, 0, 0.1)"
-          style={{borderRadius: rippleRadius}}>
-          {content}
-        </TouchableRipple>
-      ) : (
-        content
-      )}
+  <Card style={[styles.card, style]} mode={mode}>
+      <TouchableRipple
+        onPress={onPress}
+        disabled={!onPress}
+        borderless={false}
+        rippleColor="rgba(0, 0, 0, 0.1)"
+        style={{borderRadius: rippleRadius}}>
+        {content}
+      </TouchableRipple>
     </Card>
   );
 };
