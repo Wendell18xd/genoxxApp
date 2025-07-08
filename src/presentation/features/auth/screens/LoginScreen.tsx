@@ -105,43 +105,6 @@ const LoginScreen = () => {
                       {errors.contrasena}
                     </Text>
                   )}
-
-                   <CustomTextInput
-                    label="Contraseña"
-                    mode="outlined"
-                    value={values.contrasena}
-                    onChangeText={handleChange('contrasena')}
-                    onBlur={handleBlur('contrasena')}
-                    error={touched.contrasena && !!errors.contrasena}
-                    left={<TextInput.Icon icon="lock" />}
-                    showPassword
-                    style={{marginTop: 8}}
-                    disabled={disabled}
-                  />
-                  {touched.contrasena && errors.contrasena && (
-                    <Text style={{color: 'red', marginBottom: 4}}>
-                      {errors.contrasena}
-                    </Text>
-                  )}
-
-                   <CustomTextInput
-                    label="Contraseña"
-                    mode="outlined"
-                    value={values.contrasena}
-                    onChangeText={handleChange('contrasena')}
-                    onBlur={handleBlur('contrasena')}
-                    error={touched.contrasena && !!errors.contrasena}
-                    left={<TextInput.Icon icon="lock" />}
-                    showPassword
-                    style={{marginTop: 8}}
-                    disabled={disabled}
-                  />
-                  {touched.contrasena && errors.contrasena && (
-                    <Text style={{color: 'red', marginBottom: 4}}>
-                      {errors.contrasena}
-                    </Text>
-                  )}
-
                   {empresas && empresas.length > 0 && (
                     <View style={{marginTop: 8}}>
                       <CustomDropdownInput

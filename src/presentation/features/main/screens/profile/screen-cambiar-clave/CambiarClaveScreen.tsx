@@ -15,7 +15,7 @@ export const CambiarClaveScreen = () => {
 
   return (
     <SafeAreaLayout title="Cambiar contraseña" isHeader primary>
-      <CustomKeyboardAvoidingView>
+      <CustomKeyboardAvoidingView keyboardVerticalOffset={100}>
         <CustomScrollView
           contentContainerStyle={{
             padding: 32,

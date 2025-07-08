@@ -12,7 +12,6 @@ interface Props {
   keyboardVerticalOffset?: number;
   style?: StyleProp<ViewStyle>;
   behavior?: 'height' | 'position' | 'padding';
-  safeOffset?: number;
 }
 
 const CustomKeyboardAvoidingView = ({
@@ -20,13 +19,12 @@ const CustomKeyboardAvoidingView = ({
   keyboardVerticalOffset = 80,
   behavior,
   style,
-  safeOffset = 0,
 }: Props) => {
   const {keyboardVisible} = useKeyBoardVisible();
   const {bottom} = useSafeAreaInsets();
 
   const verticalOffset = keyboardVisible
-    ? keyboardVerticalOffset + safeOffset
+    ? keyboardVerticalOffset
     : 0;
 
   return (
@@ -37,7 +35,7 @@ const CustomKeyboardAvoidingView = ({
       style={[{flex: 1}, style]}
       keyboardVerticalOffset={
         Platform.OS === 'ios'
-          ? keyboardVerticalOffset + safeOffset + bottom
+          ? keyboardVerticalOffset + bottom
           : verticalOffset
       }
       >
