@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View} from 'react-native';
+import {FlatList, View} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import CustomTextInput from '../../../../../components/ui/CustomTextInput';
 import {globalStyle} from '../../../../../styles/globalStyle';
@@ -8,7 +8,6 @@ import {useQueryClient} from '@tanstack/react-query';
 import {ItemDetalleStock} from './components/ItemDetalleStock';
 import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoader';
 import SinResultados from '../../../../../components/ui/SinResultados';
-import CustomFlatList from '../../../../../components/ui/CustomFlatList';
 
 export const DetalleStockScreen = () => {
   const {detalleStock, isLoading} = useDetalleStock();
@@ -48,7 +47,7 @@ export const DetalleStockScreen = () => {
             <SinResultados message="No se encontraron resultados." />
           </View>
         ) : (
-          <CustomFlatList
+          <FlatList
             data={dataFiltrada}
             keyExtractor={(item, index) => `${item.mate_codigo}_${index}`}
             contentContainerStyle={{gap: 16, paddingTop: 16}}

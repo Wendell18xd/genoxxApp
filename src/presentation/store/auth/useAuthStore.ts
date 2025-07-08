@@ -16,6 +16,13 @@ import {
   UpdatePasswordResponse,
 } from '../../../infrastructure/interfaces/auth/auth.response';
 import {StorageAdapter} from '../../adapter/storage-adapter';
+import {useSessionStore} from '../useSessionStore';
+import {
+  deleteAllEmpresaDB,
+  insertEmpresaDB,
+  listAllEmpresaDB,
+} from '../../services/database/tablas/EmpresaTabla';
+import {checkInternet} from '../../helper/network';
 
 export interface AuthState {
   user?: User;
@@ -23,48 +30,17 @@ export interface AuthState {
   login: (props: LoginRequest) => Promise<LoginResponse>;
   forgot: (props: ForgotRequest) => Promise<ForgotResponse>;
   update: (props: UpdatePasswordRequest) => Promise<UpdatePasswordResponse>;
+  logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>()(set => ({
   user: undefined,
   menu: [],
   login: async (props: LoginRequest) => {
-    try {
-      const resp = await getLogin({
-        usuaCodigo: props.usuaCodigo,
-        usuaClave: props.usuaClave,
-        emprCodigo: props.emprCodigo,
-        recorded: props.recorded,
-      });
+    const internet = await checkInternet();
 
-      const {estado} = resp.datos;
-
-      if (estado === 1) {
-        if (props.recorded) {
-          await StorageAdapter.setItem(
-            'usuario',
-            JSON.stringify({
-              ...resp.datos.usuario,
-              recorded: props.recorded,
-              usua_clave: props.usuaClave,
-            }),
-          );
-        } else {
-          await StorageAdapter.removeItem('usuario');
-        }
-      }
-
-      let usuario = resp.datos.usuario;
-
-      if (estado === 3) {
-        usuario = {
-          ...usuario,
-          usua_codigo: props.usuaCodigo,
-          usua_tipo: resp.datos.tipo_login,
-        };
-      }
-
-      const userInstance = new User(
+    const buildUserInstance = (usuario: any): User =>
+      new User(
         usuario.empr_codigo,
         usuario.empr_nombre,
         usuario.empr_pais,
@@ -76,16 +52,113 @@ export const useAuthStore = create<AuthState>()(set => ({
         usuario.usua_perfil,
         usuario.trab_documento,
         usuario.trab_estado,
-        new Date().getTime(),
+        Date.now(),
         usuario.empr_documento,
       );
 
-      set({user: userInstance});
-      set({menu: resp.datos.menu});
+    try {
+      if (internet) {
+        const resp = await getLogin({
+          usuaCodigo: props.usuaCodigo,
+          usuaClave: props.usuaClave,
+          emprCodigo: props.emprCodigo,
+          recorded: props.recorded,
+        });
 
-      return resp;
+        const {
+          estado,
+          usuario: usuarioResp,
+          menu,
+          empresas,
+          tipo_login,
+        } = resp.datos;
+
+        let usuario = usuarioResp;
+
+        //* Estado 3: Ajustar tipo de login
+        if (estado === 3) {
+          usuario = {
+            ...usuario,
+            usua_codigo: props.usuaCodigo,
+            usua_tipo: tipo_login,
+          };
+        }
+
+        //* Estado 5: Guardar empresas
+        if (estado === 5 && empresas) {
+          await deleteAllEmpresaDB();
+          await Promise.all(empresas.map(insertEmpresaDB));
+        }
+
+        //* Estado 1: Guardar usuario y menú
+        if (estado === 1) {
+          await StorageAdapter.setItem(
+            'usuario',
+            JSON.stringify({
+              ...usuario,
+              recorded: props.recorded,
+              usua_clave: props.usuaClave,
+            }),
+          );
+
+          await StorageAdapter.setItem('menu', JSON.stringify(menu));
+          useSessionStore.getState().setAuthenticated(true);
+        }
+
+        const userInstance = buildUserInstance(usuario);
+        set({user: userInstance, menu});
+
+        return resp;
+      } else {
+        //* Modo offline
+        const usuarioStr = await StorageAdapter.getItem('usuario');
+        const menu: Menu[] = JSON.parse(
+          (await StorageAdapter.getItem('menu')) || '[]',
+        );
+        const empresas = await listAllEmpresaDB();
+
+        if (!usuarioStr)
+          throw new Error(
+            'No hay conexión a internet y no hay usuario guardado',
+          );
+
+        const usuario = JSON.parse(usuarioStr);
+        if (
+          props.usuaCodigo !== usuario.usua_codigo ||
+          props.usuaClave !== usuario.usua_clave
+        ) {
+          return {
+            datos: {
+              estado: 0,
+              correo: '',
+              tipo_login: '',
+              empresas,
+              vehiculo: [],
+              menu,
+              usuario,
+            },
+            mensaje: 'Credenciales incorrectas',
+          };
+        }
+        const userInstance = buildUserInstance(usuario);
+
+        set({user: userInstance, menu});
+
+        return {
+          datos: {
+            estado: props.emprCodigo === '' ? 5 : 1,
+            correo: '',
+            tipo_login: '',
+            empresas,
+            vehiculo: [],
+            menu,
+            usuario,
+          },
+          mensaje: 'No hay conexión a internet',
+        };
+      }
     } catch (error) {
-      throw new Error(error as string);
+      throw new Error((error as Error).message);
     }
   },
   forgot: async (props: ForgotRequest) => {
@@ -119,5 +192,9 @@ export const useAuthStore = create<AuthState>()(set => ({
     } catch (error) {
       throw new Error(error as string);
     }
+  },
+  logout: () => {
+    set({user: undefined, menu: []});
+    useSessionStore.getState().logout();
   },
 }));

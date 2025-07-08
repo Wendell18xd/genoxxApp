@@ -9,4 +9,5 @@ export enum Menu {
   CONSULTA_HISTORICA_PATENTE_FLOTA = 'ConsultaHistoricaPatenteFragment',
   REPORTE_STOCK = 'ReporteStockFragment',
   CONSULTA_INSPECCIONES_FLOTA = 'HistorialInspeccionesFragment',
+  CONTROL_ODOMETRO_FLOTA = 'ControlOdometroFragment',
 }

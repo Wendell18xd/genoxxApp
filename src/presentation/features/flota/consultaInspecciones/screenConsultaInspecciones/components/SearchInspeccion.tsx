@@ -6,13 +6,12 @@ import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoa
 import {useSearchInspeccion} from '../hooks/useSearchInspeccion';
 import {Text} from 'react-native-paper';
 import CustomDateRangePicker from '../../../../../components/ui/CustomDateRangePicker';
-
 interface Props {
   onClose?: () => void;
 }
 
 export const SearchInspeccion = ({onClose}: Props) => {
-  const {initialValues, isFetchInspeccion, handleSearch, getValidationSchema} =
+  const {initialValues, isFetchInspeccion, handleSearch} =
     useSearchInspeccion();
 
   return (
@@ -20,8 +19,7 @@ export const SearchInspeccion = ({onClose}: Props) => {
       {isFetchInspeccion && <FullScreenLoader transparent />}
       <Formik
         initialValues={initialValues}
-        onSubmit={values => handleSearch(values, onClose)}
-        validationSchema={getValidationSchema}>
+        onSubmit={values => handleSearch(values, onClose)}>
         {({
           handleChange,
           handleBlur,

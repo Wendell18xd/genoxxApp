@@ -6,6 +6,8 @@ import {createFamiliaTable} from './tablas/FamiliaTabla';
 import {createSubFamiliaTable} from './tablas/SubFamiliaTabla';
 import {createSituacionTable} from './tablas/SituacionTabla';
 import { createSaveActividadSinObraTable } from './tablas/SaveActividadSinOrdenTabla';
+import { createOfflineQueueTable } from './tablas/OfflineQueueTabla';
+import { createEmpresaTable } from './tablas/EmpresaTabla';
 
 SQLite.enablePromise(true);
 
@@ -19,9 +21,10 @@ export const initDB = async () => {
 
   // Si necesitas recrear las tablas cada vez (cuidado: borra los datos)
   // solo descomentar si modificas la estructura de las tablas
-    // await db.executeSql('DROP TABLE IF EXISTS saveactividadsinobra;');
+    // await db.executeSql('DROP TABLE IF EXISTS menu;');
 
   // Crear tablas
+  await createEmpresaTable(db);
   await createObrasTable(db);
   await createActividadOrdenTable(db);
   await createActividadSinOrdenTable(db);
@@ -29,6 +32,7 @@ export const initDB = async () => {
   await createSubFamiliaTable(db);
   await createSituacionTable(db);
   await createSaveActividadSinObraTable(db);
+  await createOfflineQueueTable(db);
 
   console.log('Base de datos inicializada correctamente');
 };

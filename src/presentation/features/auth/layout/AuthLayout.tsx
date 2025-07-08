@@ -1,6 +1,5 @@
 import {
   Image,
-  Keyboard,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -8,7 +7,6 @@ import {
 import {Text, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import CurvaView from '../../../components/ui/CurvaView';
-import {useEffect, useState} from 'react';
 import MaterialIcons from '../../../components/ui/icons/MaterialIcons';
 import {showPromt} from '../../../adapter/prompt.adapter';
 import {
@@ -18,6 +16,7 @@ import {
 } from '../../../../config/api/genoxxApi';
 import {StorageAdapter} from '../../../adapter/storage-adapter';
 import {useNavigation} from '@react-navigation/native';
+import {useCanGoBackSafely} from '../../../hooks/useCanGoBackSafely';
 
 interface Props {
   children?: React.ReactNode;
@@ -27,8 +26,7 @@ const AuthLayout = ({children}: Props) => {
   const {top, bottom} = useSafeAreaInsets();
   const {colors} = useTheme();
   const navigation = useNavigation();
-
-  const [_keyboardVisible, setKeyboardVisible] = useState(false);
+  const canGoBack = useCanGoBackSafely();
 
   const handlerConfig = async () => {
     const host = await StorageAdapter.getItem('host');
@@ -64,34 +62,12 @@ const AuthLayout = ({children}: Props) => {
     });
   };
 
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      () => {
-        setKeyboardVisible(true);
-      },
-    );
-
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        setKeyboardVisible(false);
-      },
-    );
-
-    // Cleanup listeners on unmount
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    };
-  }, []);
-
   return (
     <View style={{flex: 1, paddingTop: top, backgroundColor: colors.primary}}>
       <View style={styles.box}>
         <View style={styles.boxHeader}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 20}}>
-            {navigation.canGoBack() && (
+            {canGoBack && (
               <TouchableOpacity onPress={navigation.goBack}>
                 <MaterialIcons name="arrow-left" color="white" />
               </TouchableOpacity>
@@ -115,25 +91,16 @@ const AuthLayout = ({children}: Props) => {
         <CurvaView />
       </View>
       <View style={{flex: 1, backgroundColor: colors.background}}>
-        {/* <KeyboardAwareScrollView
-          contentContainerStyle={{flexGrow: 1}}
-          enableOnAndroid={true}
-          extraScrollHeight={16}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}> */}
-          {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
-          <View
-            style={[
-              styles.containerChildren,
-              {
-                backgroundColor: colors.background,
-                paddingBottom: bottom,
-              },
-            ]}>
-            {children}
-          </View>
-          {/* </TouchableWithoutFeedback> */}
-        {/* </KeyboardAwareScrollView> */}
+        <View
+          style={[
+            styles.containerChildren,
+            {
+              backgroundColor: colors.background,
+              paddingBottom: bottom + 8,
+            },
+          ]}>
+          {children}
+        </View>
       </View>
     </View>
   );

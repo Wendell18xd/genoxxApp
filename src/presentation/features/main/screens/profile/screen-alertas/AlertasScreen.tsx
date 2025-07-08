@@ -16,6 +16,7 @@ import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoa
 import CustomIconBottom from '../../../../../components/ui/CustomIconBottom';
 import {useCamaraAlertas} from './hooks/useCamaraAlertas';
 import CustomScrollView from '../../../../../components/ui/CustomScrollView';
+import CustomKeyboardAvoidingView from '../../../../../components/ui/CustomKeyboardAvoidingView';
 
 export const AlertasScreen = () => {
   const {
@@ -79,93 +80,95 @@ export const AlertasScreen = () => {
   return (
     <View style={{flex: 1}}>
       <SafeAreaLayout title="Alertas" isHeader primary>
-        <CustomScrollView>
-          {(mutation.isPending || loadingGPS) && (
-            <FullScreenLoader transparent />
-          )}
-          {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
-          <View style={{flex: 1, padding: 16, paddingBottom: 80}}>
-            <Formik
-              initialValues={formValues}
-              validationSchema={getAlertValidationSchema}
-              onSubmit={(values, {resetForm}) => {
-                startAlertaSubmit(values, resetForm, audioBase64);
-              }}>
-              {({values, setFieldValue, handleSubmit, touched, errors}) => (
-                <View style={{flex: 1}}>
-                  <View>
-                    <CustomDropdownInput
-                      icon="lightbulb-outline"
-                      label="Tipo"
-                      options={tipos || []}
-                      value={values.tipo}
-                      onSelect={val => setFieldValue('tipo', val)}
-                      error={touched.tipo && !!errors.tipo}
+        <CustomKeyboardAvoidingView>
+          <CustomScrollView>
+            {(mutation.isPending || loadingGPS) && (
+              <FullScreenLoader transparent />
+            )}
+            {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
+            <View style={{flex: 1, padding: 16, paddingBottom: 80}}>
+              <Formik
+                initialValues={formValues}
+                validationSchema={getAlertValidationSchema}
+                onSubmit={(values, {resetForm}) => {
+                  startAlertaSubmit(values, resetForm, audioBase64);
+                }}>
+                {({values, setFieldValue, handleSubmit, touched, errors}) => (
+                  <View style={{flex: 1}}>
+                    <View>
+                      <CustomDropdownInput
+                        icon="lightbulb-outline"
+                        label="Tipo"
+                        options={tipos || []}
+                        value={values.tipo}
+                        onSelect={val => setFieldValue('tipo', val)}
+                        error={touched.tipo && !!errors.tipo}
+                      />
+                      {touched.tipo && errors.tipo && (
+                        <Text style={{color: 'red', marginTop: 4}}>
+                          {errors.tipo}
+                        </Text>
+                      )}
+                    </View>
+                    <View style={{marginTop: 8}}>
+                      <CustomTextInput
+                        label="Número de teléfono"
+                        mode="outlined"
+                        keyboardType="numeric"
+                        value={values.telefono}
+                        onChangeText={text => {
+                          const onlyNumbers = text
+                            .replace(/[^0-9]/g, '')
+                            .slice(0, 9);
+                          setFieldValue('telefono', onlyNumbers);
+                        }}
+                        left={<TextInput.Icon icon="phone" />}
+                        error={touched.telefono && !!errors.telefono}
+                      />
+                      {touched.telefono && errors.telefono && (
+                        <Text style={{color: 'red', marginTop: 4}}>
+                          {errors.telefono}
+                        </Text>
+                      )}
+                    </View>
+                    <View style={{marginTop: 16}}>
+                      <CustomTextInput
+                        placeholder="Comentario"
+                        mode="outlined"
+                        value={values.comentario}
+                        onChangeText={text => setFieldValue('comentario', text)}
+                        multiline={true}
+                        numberOfLines={5}
+                        style={{height: 150}}
+                        error={touched.comentario && !!errors.comentario}
+                        placeholderTextColor={
+                          touched.comentario && !!errors.comentario
+                            ? '#A72626'
+                            : '#5A5261'
+                        }
+                      />
+                      {touched.comentario && errors.comentario && (
+                        <Text style={{color: 'red', marginTop: 4}}>
+                          {errors.comentario}
+                        </Text>
+                      )}
+                    </View>
+                    <PrimaryButton
+                      debounce
+                      label="Enviar"
+                      icon="content-save"
+                      style={{marginTop: 16, width: '100%'}}
+                      onPress={handleSubmit}
+                      disabled={mutation.isPending || loadingGPS}
+                      loading={mutation.isPending || loadingGPS}
                     />
-                    {touched.tipo && errors.tipo && (
-                      <Text style={{color: 'red', marginTop: 4}}>
-                        {errors.tipo}
-                      </Text>
-                    )}
                   </View>
-                  <View style={{marginTop: 8}}>
-                    <CustomTextInput
-                      label="Número de teléfono"
-                      mode="outlined"
-                      keyboardType="numeric"
-                      value={values.telefono}
-                      onChangeText={text => {
-                        const onlyNumbers = text
-                          .replace(/[^0-9]/g, '')
-                          .slice(0, 9);
-                        setFieldValue('telefono', onlyNumbers);
-                      }}
-                      left={<TextInput.Icon icon="phone" />}
-                      error={touched.telefono && !!errors.telefono}
-                    />
-                    {touched.telefono && errors.telefono && (
-                      <Text style={{color: 'red', marginTop: 4}}>
-                        {errors.telefono}
-                      </Text>
-                    )}
-                  </View>
-                  <View style={{marginTop: 16}}>
-                    <CustomTextInput
-                      placeholder="Comentario"
-                      mode="outlined"
-                      value={values.comentario}
-                      onChangeText={text => setFieldValue('comentario', text)}
-                      multiline={true}
-                      numberOfLines={5}
-                      style={{height: 150}}
-                      error={touched.comentario && !!errors.comentario}
-                      placeholderTextColor={
-                        touched.comentario && !!errors.comentario
-                          ? '#A72626'
-                          : '#5A5261'
-                      }
-                    />
-                    {touched.comentario && errors.comentario && (
-                      <Text style={{color: 'red', marginTop: 4}}>
-                        {errors.comentario}
-                      </Text>
-                    )}
-                  </View>
-                  <PrimaryButton
-                    debounce
-                    label="Enviar"
-                    icon="content-save"
-                    style={{marginTop: 16, width: '100%'}}
-                    onPress={handleSubmit}
-                    disabled={mutation.isPending || loadingGPS}
-                    loading={mutation.isPending || loadingGPS}
-                  />
-                </View>
-              )}
-            </Formik>
-          </View>
-          {/* </TouchableWithoutFeedback> */}
-        </CustomScrollView>
+                )}
+              </Formik>
+            </View>
+            {/* </TouchableWithoutFeedback> */}
+          </CustomScrollView>
+        </CustomKeyboardAvoidingView>
       </SafeAreaLayout>
       <View
         pointerEvents="box-none"

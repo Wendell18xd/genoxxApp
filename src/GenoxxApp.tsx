@@ -10,6 +10,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import LoadingScreen from './presentation/components/ui/loaders/LoadingScreen';
 import PermissionChecker from './presentation/providers/PermissionChecker';
 import {initDB} from './presentation/services/database/database';
+import {useBackgroundSync} from './presentation/hooks/useBackgroundSync';
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ const GenoxxApp = () => {
   const colorScheme = useColorScheme();
   const barStyle = colorScheme === 'dark' ? 'light-content' : 'dark-content';
   const [loading, setLoading] = useState(true);
+  useBackgroundSync();
 
   useEffect(() => {
     initApi().then(() => {
@@ -50,7 +52,7 @@ const GenoxxApp = () => {
           </GestureHandlerRootView>
         </ThemeContextProvider>
       </QueryClientProvider>
-      <Toast position="bottom" />
+      <Toast position="top" />
     </>
   );
 };
