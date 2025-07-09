@@ -49,7 +49,7 @@ const CustomBottomSheet = forwardRef<CustomBottomSheetRef, Props>(
       onChange?.(newIndex);
     };
 
-    useEffect(() => {
+    /* useEffect(() => {
       const showSub = Keyboard.addListener('keyboardDidShow', () => {
         if (isSheetOpen.current) {
           sheetRef.current?.expand();
@@ -66,7 +66,7 @@ const CustomBottomSheet = forwardRef<CustomBottomSheetRef, Props>(
         showSub.remove();
         hideSub.remove();
       };
-    }, []);
+    }, []); */
 
     return (
       <BottomSheet

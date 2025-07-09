@@ -10,6 +10,7 @@ import {SearchObrasMaterialesCampo} from './components/SearchObrasMaterialesCamp
 import FullScreenLoader from '../../../../components/ui/loaders/FullScreenLoader';
 import Toast from 'react-native-toast-message';
 import {useQueryClient} from '@tanstack/react-query';
+import CustomKeyboardAvoidingView from '../../../../components/ui/CustomKeyboardAvoidingView';
 
 const ListarObrasMaterialesCampoScreen = () => {
   const {
@@ -52,54 +53,58 @@ const ListarObrasMaterialesCampoScreen = () => {
 
   return (
     <View style={{flex: 1}}>
-      {isFetchObras && <FullScreenLoader transparent />}
+      <CustomKeyboardAvoidingView keyboardVerticalOffset={0}>
+        {isFetchObras && <FullScreenLoader transparent />}
 
-      {obras && obras.length > 0 ? (
-        <>
-          <Searchbar
-            placeholder="Filtrar por nro de orden"
-            onChangeText={setSearchQuery}
-            value={searchQuery}
-            style={{marginHorizontal: 16, marginTop: 16}}
-          />
+        {obras && obras.length > 0 ? (
+          <>
+            <Searchbar
+              placeholder="Filtrar por nro de orden"
+              onChangeText={setSearchQuery}
+              value={searchQuery}
+              style={{marginHorizontal: 16, marginTop: 16}}
+            />
 
-          <FlatList
-            data={obrasFilter?.filter(obra =>
-              obra.nro_orden?.toLowerCase().includes(searchQuery.toLowerCase()),
-            )}
-            keyExtractor={item => item.regi_codigo}
-            contentContainerStyle={{gap: 16, padding: 16}}
-            refreshing={isFetchObras}
-            onRefresh={refetchObras}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item}) => (
-              <ItemObra
-                obra={item}
-                onPress={() => {
-                  handleSelectObra(item);
-                }}
-              />
-            )}
-          />
-        </>
-      ) : (
-        <SinResultados message="No se encontraron obras, use la lupa para buscar" />
-      )}
+            <FlatList
+              data={obrasFilter?.filter(obra =>
+                obra.nro_orden
+                  ?.toLowerCase()
+                  .includes(searchQuery.toLowerCase()),
+              )}
+              keyExtractor={item => item.regi_codigo}
+              contentContainerStyle={{gap: 16, padding: 16}}
+              refreshing={isFetchObras}
+              onRefresh={refetchObras}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item}) => (
+                <ItemObra
+                  obra={item}
+                  onPress={() => {
+                    handleSelectObra(item);
+                  }}
+                />
+              )}
+            />
+          </>
+        ) : (
+          <SinResultados message="No se encontraron obras, use la lupa para buscar" />
+        )}
 
-      <CustomFAB
-        icon="magnify"
-        onPress={handleOpenSearch}
-        style={{bottom: 16, right: 16}}
-      />
-
-      <CustomBottomSheet ref={ref}>
-        <SearchObrasMaterialesCampo
-          onClose={close}
-          initialValues={initialValues}
-          handleSearch={handleSearch}
-          getValidationSchema={getValidationSchema}
+        <CustomFAB
+          icon="magnify"
+          onPress={handleOpenSearch}
+          style={{bottom: 16, right: 16}}
         />
-      </CustomBottomSheet>
+
+        <CustomBottomSheet ref={ref}>
+          <SearchObrasMaterialesCampo
+            onClose={close}
+            initialValues={initialValues}
+            handleSearch={handleSearch}
+            getValidationSchema={getValidationSchema}
+          />
+        </CustomBottomSheet>
+      </CustomKeyboardAvoidingView>
     </View>
   );
 };
