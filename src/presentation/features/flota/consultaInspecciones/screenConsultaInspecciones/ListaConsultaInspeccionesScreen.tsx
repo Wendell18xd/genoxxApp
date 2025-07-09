@@ -79,7 +79,7 @@ export const ListaConsultaInspeccionesScreen = () => {
         <CustomFAB
           icon="magnify"
           onPress={open}
-          style={{bottom: 16, right: 16, marginBottom: 16}}
+          style={{bottom: 16, right: 16}}
         />
 
         <CustomBottomSheet ref={ref}>

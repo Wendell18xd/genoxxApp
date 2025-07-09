@@ -1,26 +1,22 @@
 import DrawerLayout from '../../../main/layout/DrawerLayout';
 import {useEffect, useState} from 'react';
-import {FlatList} from 'react-native-gesture-handler';
-import {useSearchConsulta} from './hooks/useSearchConsulta';
+import {SectionList, View} from 'react-native';
 import {useBottomSheetModal} from '../../../../hooks/useBottomSheet';
 import {useQueryClient} from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
-import {Searchbar} from 'react-native-paper';
+import {Searchbar, Text} from 'react-native-paper';
 import SinResultados from '../../../../components/ui/SinResultados';
 import {CustomFAB} from '../../../../components/ui/CustomFAB';
-import {ItemConsulta} from './components/ItemConsulta';
+import {ItemDocumento} from './components/ItemDocumento';
 import CustomBottomSheet from '../../../../components/ui/bottomSheetModal/CustomBottomSheet';
-import {SearchPlaca} from './components/SearchPlaca';
-import { View } from 'react-native';
+import {useSearchDocumentos} from './hooks/useSearchDocumentos';
+import {SearchDocumentos} from './components/SearchDocumentos';
+import {Dato} from '../../../../../domain/entities/VerDocumentos';
 
-export const ListaConsultaUnidadesScreen = () => {
-  const {
-    consulta,
-    errorConsulta,
-    isFetchConsulta,
-    refetchConsulta,
-    handleSelectConsulta,
-  } = useSearchConsulta();
+export const VerDocumentosScreen = () => {
+  const {consulta, errorConsulta, isFetchConsulta, refetchConsulta} =
+    useSearchDocumentos();
+
   const {ref, open, close} = useBottomSheetModal();
   const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState('');
@@ -37,41 +33,54 @@ export const ListaConsultaUnidadesScreen = () => {
   useEffect(() => {
     return () => {
       queryClient.removeQueries({
-        queryKey: ['consultaUnidades'],
+        queryKey: ['verDocumentos'],
       });
     };
   }, []);
 
+  const renderSecciones = (datos: Dato[], filtro: string) => {
+    return datos
+      .filter(grupo =>
+        grupo.nom_grupo.toLowerCase().includes(filtro.toLowerCase()),
+      )
+      .map(grupo => ({
+        title: grupo.nom_grupo,
+        data: grupo.arrHijos,
+      }));
+  };
+
   return (
-    <DrawerLayout title="Consulta de Unidades">
+    <DrawerLayout title="Ver Documentos">
       <View style={{flex: 1}}>
         {consulta && consulta.length > 0 ? (
           <>
             <Searchbar
-              placeholder="Filtrar por número de placa"
+              placeholder="Filtrar por grupo de documentos"
               onChangeText={setSearchQuery}
               value={searchQuery}
               style={{marginHorizontal: 16, marginTop: 16}}
             />
-            <FlatList
-              data={consulta?.filter(item =>
-                item.nro_placa
-                  ?.toLowerCase()
-                  .includes(searchQuery.toLowerCase()),
-              )}
-              keyExtractor={item => item.nro_placa}
-              contentContainerStyle={{gap: 16, padding: 16}}
+
+            <SectionList
+              sections={renderSecciones(consulta ?? [], searchQuery)}
+              keyExtractor={(item, index) => item.cod_documento + index}
+              contentContainerStyle={{padding: 16, gap: 16}}
               refreshing={isFetchConsulta}
               onRefresh={refetchConsulta}
               showsVerticalScrollIndicator={false}
-              renderItem={({item}) => (
-                <ItemConsulta
-                  consulta={item}
-                  onPress={() => {
-                    handleSelectConsulta(item);
-                  }}
-                />
+              renderSectionHeader={({section}) => (
+                <Text
+                  variant="titleMedium"
+                  style={{
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                    marginTop: 4,
+                    marginBottom: 4,
+                  }}>
+                  {section.title}
+                </Text>
               )}
+              renderItem={({item}) => <ItemDocumento consulta={item} />}
             />
           </>
         ) : (
@@ -85,7 +94,7 @@ export const ListaConsultaUnidadesScreen = () => {
         />
 
         <CustomBottomSheet ref={ref}>
-          <SearchPlaca onClose={close} />
+          <SearchDocumentos onClose={close} />
         </CustomBottomSheet>
       </View>
     </DrawerLayout>

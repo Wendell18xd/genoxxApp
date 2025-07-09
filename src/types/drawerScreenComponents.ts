@@ -6,6 +6,7 @@ import {LiquiMatATCStackNavigation} from '../presentation/features/gestionAtc/li
 import { EjecucionObrasStackNavigation } from '../presentation/features/gestionObras/navigations/EjecucionObrasStackNavigation';
 import {LiquidacionObrasStackNavigation} from '../presentation/features/gestionObras/navigations/LiquidacionObrasStackNavigation';
 import {ReporteStockStackNavigation} from '../presentation/features/logistica/reporteStock/navigations/ReporteStockStackNavigation';
+import { VerDocumentosStackNavigation } from '../presentation/features/prevencion/verDocumentos/navigations/verDocumentosStackNavigation';
 import {Menu} from './menus';
 
 export const drawerScreenComponents: Record<
@@ -23,8 +24,10 @@ export const drawerScreenComponents: Record<
   //Flota
   [Menu.CONSULTA_UNIDADES_FLOTA]: ConsultaUnidadesStackNavigation,
   [Menu.CONSULTA_HISTORICA_PATENTE_FLOTA]: ConsultaHistoricaPatenteStackNavigation,
-  //Logistica
-  [Menu.REPORTE_STOCK]: ReporteStockStackNavigation,
   [Menu.CONSULTA_INSPECCIONES_FLOTA]: ConsultaInspeccionesStackNavigation,
   [Menu.CONTROL_ODOMETRO_FLOTA]: ControlOdometroStackNavigation,
+  //Logistica
+  [Menu.REPORTE_STOCK]: ReporteStockStackNavigation,
+  //Prevencion
+  [Menu.VER_DOCUMENTOS_PREVENCION]: VerDocumentosStackNavigation,
 };
