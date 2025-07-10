@@ -10,6 +10,8 @@ import SinResultados from '../../../components/ui/SinResultados';
 import {useBottomSheetModal} from '../../../hooks/useBottomSheet';
 import {ItemConsultaEjecucion} from './components/ItemConsultaEjecucion';
 import {FlatList} from 'react-native-gesture-handler';
+import CustomKeyboardAvoidingView from '../../../components/ui/CustomKeyboardAvoidingView';
+import {View} from 'react-native';
 
 export const ConsultaEjecucionScreen = () => {
   const {
@@ -41,42 +43,46 @@ export const ConsultaEjecucionScreen = () => {
   console.log('Ejecucion:', ejecucion);
   return (
     <DrawerLayout title="Consulta de Ejecución">
-      {ejecucion && ejecucion.length > 0 ? (
-        <>
-          <FlatList
-            data={ejecucion}
-            contentContainerStyle={{gap: 16, padding: 16}}
-            refreshing={isFetchConsultarEjecucion}
-            onRefresh={refetchConsultarEjecucion}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item}) => (
-              <ItemConsultaEjecucion
-                consulta={item}
-                onPress={() => {
-                  item.nro_orden !== ''
-                    ? handleSelectConsultaEjecucion(item)
-                    : undefined;
-                }}
+      <View style={{flex: 1}}>
+        <CustomKeyboardAvoidingView>
+          {ejecucion && ejecucion.length > 0 ? (
+            <>
+              <FlatList
+                data={ejecucion}
+                contentContainerStyle={{gap: 16, padding: 16}}
+                refreshing={isFetchConsultarEjecucion}
+                onRefresh={refetchConsultarEjecucion}
+                showsVerticalScrollIndicator={false}
+                renderItem={({item}) => (
+                  <ItemConsultaEjecucion
+                    consulta={item}
+                    onPress={() => {
+                      item.nro_orden !== ''
+                        ? handleSelectConsultaEjecucion(item)
+                        : undefined;
+                    }}
+                  />
+                )}
               />
-            )}
-          />
+              <CustomFAB
+                icon="magnify"
+                onPress={open}
+                style={{bottom: 16, right: 16, marginBottom: 16}}
+              />
+            </>
+          ) : (
+            <SinResultados message="No se encontraron resultados" />
+          )}
           <CustomFAB
             icon="magnify"
             onPress={open}
-            style={{bottom: 16, right: 16, marginBottom: 16}}
+            style={{bottom: 16, right: 16}}
           />
-        </>
-      ) : (
-        <SinResultados message="No se encontraron resultados" />
-      )}
-      <CustomFAB
-        icon="magnify"
-        onPress={open}
-        style={{bottom: 16, right: 16, marginBottom: 16}}
-      />
-      <CustomBottomSheet ref={ref}>
-        <SearchConsultaEjecucion onClose={close} />
-      </CustomBottomSheet>
+          <CustomBottomSheet ref={ref}>
+            <SearchConsultaEjecucion onClose={close} />
+          </CustomBottomSheet>
+        </CustomKeyboardAvoidingView>
+      </View>
     </DrawerLayout>
   );
 };
