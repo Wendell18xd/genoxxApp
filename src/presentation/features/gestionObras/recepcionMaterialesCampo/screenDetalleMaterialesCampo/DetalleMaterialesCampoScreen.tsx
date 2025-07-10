@@ -20,6 +20,7 @@ const DetalleMaterialesCampoScreen = () => {
   const formikRef = useRef<FormikProps<initialValuesProps>>(null);
   const flatListRef = useRef<FlatList<any>>(null);
   const {
+    isSaving,
     initialValues,
     isRendering,
     indexSeleccionado,
@@ -45,6 +46,9 @@ const DetalleMaterialesCampoScreen = () => {
   return (
     <View style={globalStyle.defaultContainer}>
       {isRendering && <FullScreenLoader message="Cargando fotos" transparent />}
+      {isSaving && (
+        <FullScreenLoader message="Grabando" transparent />
+      )}
 
       <CustomKeyboardAvoidingView keyboardVerticalOffset={150}>
         <Formik

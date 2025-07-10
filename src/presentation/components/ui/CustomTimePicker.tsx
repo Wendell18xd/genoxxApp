@@ -13,6 +13,7 @@ interface Props {
   error?: boolean;
   style?: TextStyle;
   disabled?: boolean;
+  editable?: boolean;
 }
 
 const CustomTimePicker: React.FC<Props> = ({
@@ -23,6 +24,7 @@ const CustomTimePicker: React.FC<Props> = ({
   error,
   style,
   disabled = false,
+  editable = true,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -46,6 +48,7 @@ const CustomTimePicker: React.FC<Props> = ({
         value={value || ''}
         onPressIn={() => setOpen(true)}
         error={error}
+        editable={editable}
         left={<TextInput.Icon icon="clock-outline" />}
         showSoftInputOnFocus={false}
         style={style}

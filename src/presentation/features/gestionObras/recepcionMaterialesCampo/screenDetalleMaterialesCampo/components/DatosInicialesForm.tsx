@@ -55,6 +55,7 @@ const DatosInicialesForm = ({
             label="Fecha de ejecución"
             placeholder="Seleccione fecha de ejecución"
             value={values.fecha_ejecucion}
+            editable={false}
             onChange={val => setFieldValue('fecha_ejecucion', val)}
             error={touched.fecha_ejecucion && !!errors.fecha_ejecucion}
           />
@@ -63,6 +64,7 @@ const DatosInicialesForm = ({
           <CustomTimePicker
             label="Hora de ejecución"
             value={values.hora_ejecucion}
+            editable={false}
             onChange={hora => setFieldValue('hora_ejecucion', hora)}
             error={touched.hora_ejecucion && !!errors.hora_ejecucion}
           />
