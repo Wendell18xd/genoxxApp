@@ -4,7 +4,7 @@ import {
   forwardRef,
   ReactNode,
   useState,
-  useEffect,
+  // useEffect,
 } from 'react';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import {Keyboard, StyleSheet} from 'react-native';
@@ -22,7 +22,7 @@ interface Props {
 }
 
 const CustomBottomSheet = forwardRef<CustomBottomSheetRef, Props>(
-  ({children, snapPoints = ['50%', '85%'], onChange}, ref) => {
+  ({children, snapPoints = ['60%', '95%'], onChange}, ref) => {
     const sheetRef = useRef<BottomSheet>(null);
     const [index, setIndex] = useState(-1);
 
@@ -49,24 +49,24 @@ const CustomBottomSheet = forwardRef<CustomBottomSheetRef, Props>(
       onChange?.(newIndex);
     };
 
-    useEffect(() => {
-      const showSub = Keyboard.addListener('keyboardDidShow', () => {
-        if (isSheetOpen.current) {
-          sheetRef.current?.expand();
-        }
-      });
+    // useEffect(() => {
+    //   const showSub = Keyboard.addListener('keyboardDidShow', () => {
+    //     if (isSheetOpen.current) {
+    //       sheetRef.current?.expand();
+    //     }
+    //   });
 
-      const hideSub = Keyboard.addListener('keyboardDidHide', () => {
-        if (isSheetOpen.current) {
-          sheetRef.current?.snapToIndex(0);
-        }
-      });
+    //   const hideSub = Keyboard.addListener('keyboardDidHide', () => {
+    //     if (isSheetOpen.current) {
+    //       sheetRef.current?.snapToIndex(0);
+    //     }
+    //   });
 
-      return () => {
-        showSub.remove();
-        hideSub.remove();
-      };
-    }, []);
+    //   return () => {
+    //     showSub.remove();
+    //     hideSub.remove();
+    //   };
+    // }, []);
 
     return (
       <BottomSheet

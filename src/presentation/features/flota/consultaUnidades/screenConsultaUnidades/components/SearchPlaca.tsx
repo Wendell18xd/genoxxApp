@@ -4,6 +4,7 @@ import PrimaryButton from '../../../../../components/ui/PrimaryButton';
 import {View} from 'react-native';
 import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoader';
 import {useSearchConsulta} from '../hooks/useSearchConsulta';
+import CustomScrollView from '../../../../../components/ui/CustomScrollView';
 
 interface Props {
   onClose?: () => void;
@@ -27,7 +28,7 @@ export const SearchPlaca = ({onClose}: Props) => {
           touched,
         }) => {
           return (
-            <View style={{padding: 8}}>
+            <CustomScrollView>
               <CustomTextInput
                 label="Ingrese el número de placa"
                 mode="outlined"
@@ -37,7 +38,6 @@ export const SearchPlaca = ({onClose}: Props) => {
                 error={touched.nro_placa && !!errors.nro_placa}
                 style={{width: '100%'}}
               />
-
               <PrimaryButton
                 label="Buscar"
                 onPress={() => handleSubmit()}
@@ -47,7 +47,7 @@ export const SearchPlaca = ({onClose}: Props) => {
                 loading={isFetchConsulta}
                 style={{marginTop: 16, width: '100%'}}
               />
-            </View>
+            </CustomScrollView>
           );
         }}
       </Formik>

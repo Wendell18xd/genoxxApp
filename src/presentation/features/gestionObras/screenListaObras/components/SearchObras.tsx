@@ -9,6 +9,7 @@ import PrimaryButton from '../../../../components/ui/PrimaryButton';
 import {useSarchObras} from '../hooks/useSarchObras';
 import {IconButton, Text} from 'react-native-paper';
 import {useObrasNavigationStore} from '../../store/useObrasNavigationStore';
+import CustomScrollView from '../../../../components/ui/CustomScrollView';
 
 interface Props {
   onClose?: () => void;
@@ -99,54 +100,54 @@ export const SearchObras = ({onClose}: Props) => {
           touched,
         }) => {
           return (
-            <View style={{padding: 8}}>
-              <View>
-                <CustomDropdownInput
-                  label="Seleccione Proyecto"
-                  options={proyectos || []}
-                  value={values.cbo_proy_codigo}
-                  onSelect={val => setFieldValue('cbo_proy_codigo', val)}
-                  error={touched.cbo_proy_codigo && !!errors.cbo_proy_codigo}
-                  loading={!proyectos && isFetchProyecto}
-                  disabled={!proyectos && isFetchProyecto}
-                />
-                {touched.cbo_proy_codigo && errors.cbo_proy_codigo && (
-                  <Text style={{color: 'red', marginTop: 4}}>
-                    {errors.cbo_proy_codigo}
-                  </Text>
-                )}
-              </View>
-              <View style={{marginTop: 8, flexDirection: 'row', gap: 8}}>
-                <View style={{flex: 0.4}}>
+            <CustomScrollView>
+                <View>
                   <CustomDropdownInput
-                    label="Tipo búsqueda"
-                    options={tiposBusqueda}
-                    value={values.cbo_tipo}
-                    onSelect={val => setFieldValue('cbo_tipo', val)}
+                    label="Seleccione Proyecto"
+                    options={proyectos || []}
+                    value={values.cbo_proy_codigo}
+                    onSelect={val => setFieldValue('cbo_proy_codigo', val)}
+                    error={touched.cbo_proy_codigo && !!errors.cbo_proy_codigo}
+                    loading={!proyectos && isFetchProyecto}
+                    disabled={!proyectos && isFetchProyecto}
                   />
+                  {touched.cbo_proy_codigo && errors.cbo_proy_codigo && (
+                    <Text style={{color: 'red', marginTop: 4}}>
+                      {errors.cbo_proy_codigo}
+                    </Text>
+                  )}
                 </View>
-                <View style={{flex: 0.6}}>
-                  <CustomTextInput
-                    label="Buscar"
-                    mode="outlined"
-                    value={values.txt_busqueda}
-                    onChangeText={handleChange('txt_busqueda')}
-                    onBlur={handleBlur('txt_busqueda')}
-                    error={touched.txt_busqueda && !!errors.txt_busqueda}
-                  />
+                <View style={{marginTop: 8, flexDirection: 'row', gap: 8}}>
+                  <View style={{flex: 0.4}}>
+                    <CustomDropdownInput
+                      label="Tipo búsqueda"
+                      options={tiposBusqueda}
+                      value={values.cbo_tipo}
+                      onSelect={val => setFieldValue('cbo_tipo', val)}
+                    />
+                  </View>
+                  <View style={{flex: 0.6}}>
+                    <CustomTextInput
+                      label="Buscar"
+                      mode="outlined"
+                      value={values.txt_busqueda}
+                      onChangeText={handleChange('txt_busqueda')}
+                      onBlur={handleBlur('txt_busqueda')}
+                      error={touched.txt_busqueda && !!errors.txt_busqueda}
+                    />
+                  </View>
                 </View>
-              </View>
 
-              <PrimaryButton
-                label="Buscar"
-                onPress={() => handleSubmit()}
-                debounce
-                icon="magnify"
-                disabled={isFetchObras}
-                loading={isFetchObras}
-                style={{marginTop: 16, width: '100%'}}
-              />
-            </View>
+                <PrimaryButton
+                  label="Buscar"
+                  onPress={() => handleSubmit()}
+                  debounce
+                  icon="magnify"
+                  disabled={isFetchObras}
+                  loading={isFetchObras}
+                  style={{marginTop: 16, width: '100%'}}
+                />
+            </CustomScrollView>
           );
         }}
       </Formik>
