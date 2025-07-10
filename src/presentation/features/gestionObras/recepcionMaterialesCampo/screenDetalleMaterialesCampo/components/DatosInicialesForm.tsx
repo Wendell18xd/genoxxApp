@@ -74,10 +74,14 @@ const DatosInicialesForm = ({
         </View>
       </View>
 
-      <Text variant="titleLarge" style={{fontWeight: 'bold'}}>
-        Datos fotograficos
-      </Text>
-      <Divider style={{marginVertical: 16}} />
+      {values.fotos.length > 0 && (
+        <>
+          <Text variant="titleLarge" style={{fontWeight: 'bold'}}>
+            Datos fotograficos
+          </Text>
+          <Divider style={{marginTop: 16}} />
+        </>
+      )}
     </View>
   );
 };
