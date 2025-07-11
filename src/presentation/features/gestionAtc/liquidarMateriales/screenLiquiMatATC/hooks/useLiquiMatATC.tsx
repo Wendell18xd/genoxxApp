@@ -5,13 +5,8 @@ import {useRef} from 'react';
 import {DocumentoOrdenesRequest} from '../../../../../../infrastructure/interfaces/gestionATC/ordenes/ordenesATC.request';
 import {getDocumentoOrdenes} from '../../../../../../actions/gestionATC/ordenesATC';
 import { mapToDropdown } from '../../../../../../infrastructure/mappers/mapToDropdown';
-import { formatearFecha } from '../../../../../helper/timeUtils';
 
 interface LiquidarMatFromValues {
-  txt_fecha_liquidacion: string;
-  cbo_elegido: string;
-  cbo_proy_codigo: string;
-  txt_nro_buscar_doc: string;
   proyecto: string;
   fechaLiquidacion: string;
   tipoLiquidacion: string;
@@ -25,10 +20,6 @@ const initialValues: LiquidarMatFromValues = {
   tipoLiquidacion: '',
   nroSolicitud: '',
   nroPeticion: '',
-  cbo_elegido: '',
-  cbo_proy_codigo: '',
-  txt_nro_buscar_doc: '',
-  txt_fecha_liquidacion: '',
 };
 export const useLiquiMatATC = () => {
   const {user} = useAuthStore();
@@ -76,11 +67,11 @@ export const useLiquiMatATC = () => {
   ) => {
     const filtros: DocumentoOrdenesRequest = {
       vl_empr_codigo: user?.empr_codigo || '',
-      txt_nro_buscar_doc: values.txt_nro_buscar_doc || '',
       txt_codi_perfil: user?.usua_perfil || '',
-      cbo_proy_codigo: values.cbo_proy_codigo || '',
-      cbo_elegido: values.cbo_elegido || '',
-      txt_fecha_liquidacion: formatearFecha(values.txt_fecha_liquidacion),
+      txt_nro_buscar_doc: '',
+      cbo_proy_codigo: '',
+      cbo_elegido: values.tipoLiquidacion || '',
+      txt_fecha_liquidacion: values.fechaLiquidacion || '',
     };
     filtrosRef.current = filtros;
     refetchLiquidacion();

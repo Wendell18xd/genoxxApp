@@ -3,6 +3,7 @@ import {CustomCardContent} from '../../../../../components/ui/CustomCardContent'
 import {OrdenATC} from '../../../../../../domain/entities/OrdenATC';
 import {StyleSheet, View} from 'react-native';
 import MaterialIcons from '../../../../../components/ui/icons/MaterialIcons';
+import {formatearFecha} from '../../../../../helper/timeUtils';
 
 interface Props {
   liquidacion: OrdenATC;
@@ -12,8 +13,15 @@ interface Props {
 export const ItemLiquiMatATC = ({liquidacion, onPress}: Props) => {
   const {colors} = useTheme();
 
+  // 🔍 Log de depuración
+  console.log('Fecha cruda:', liquidacion.fecha_liquidacion);
+  console.log(
+    'Fecha formateada:',
+    formatearFecha(liquidacion.fecha_liquidacion),
+  );
+
   return (
-  <CustomCardContent
+    <CustomCardContent
       onPress={liquidacion.nro_ots ? onPress : undefined}
       mode="outlined"
       style={styles.card}
@@ -39,7 +47,10 @@ export const ItemLiquiMatATC = ({liquidacion, onPress}: Props) => {
           <View style={styles.footer}>
             <ItemInferior label="Telefono" value={liquidacion.telefono} />
             <ItemInferior label="Tipo Orden" value={liquidacion.tipo_orden} />
-            <ItemInferior label="Fecha Liq" value={liquidacion.fecha_liquidacion} />
+            <ItemInferior
+              label="Fecha Liq"
+              value={formatearFecha(liquidacion.fecha_liquidacion)}
+            />
           </View>
         </View>
       </View>
@@ -51,7 +62,13 @@ const ItemInferior = ({value, label}: {value: string; label: string}) => (
     <Text variant="bodySmall" style={styles.info}>
       {label}:
     </Text>
-    <Text variant="bodySmall">{value}</Text>
+    <Text
+      variant="bodySmall"
+      numberOfLines={1}
+      ellipsizeMode="tail"
+      style={{flexShrink: 1}}>
+      {value}
+    </Text>
   </View>
 );
 
