@@ -14,8 +14,13 @@ import {CustomDrawerContent, DrawIcon} from './CustomDrawerContent';
 import {ModuleScreen} from '../../features/main/screens/ModuleScreen';
 import {useEffect} from 'react';
 import {hexToRgba} from '../../helper/utils';
+import {UnmountOnBlur} from '../../components/wrappers/UnmountOnBlur';
 
 const Drawer = createDrawerNavigator();
+
+const withUnmountOnBlur = (children: React.ReactNode) => (
+  <UnmountOnBlur>{children}</UnmountOnBlur>
+);
 
 const DrawerContent = (props: DrawerContentComponentProps) => {
   return <CustomDrawerContent {...props} />;
@@ -86,10 +91,11 @@ export const SideMenuNavigator = () => {
         options={{
           drawerIcon: ({color}) => DrawIcon(color, 'view-module'),
           drawerLabel: menuSelected?.menu_nombre,
+          popToTopOnBlur: true,
         }}
       />
 
-      {menuFiltered?.menu_hijo.flatMap((item, index) => {
+      {menuFiltered?.menu_hijo?.flatMap((item, index) => {
         const subItems = item.menu_hijo || [];
         const allItems = [item, ...subItems];
 
@@ -111,7 +117,9 @@ export const SideMenuNavigator = () => {
                   drawerIcon: ({color}) =>
                     DrawIcon(color, menuItem.menu_icoapp),
                   drawerLabel: menuItem.menu_nombre,
+                  // popToTopOnBlur: true, //regresa al primer stack
                 }}
+                layout={({children}) => withUnmountOnBlur(children)} // desmonta el componente al cambiar de opcion
                 listeners={{
                   focus: () => {
                     setMenuSelected(menuItem);

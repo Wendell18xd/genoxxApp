@@ -6,9 +6,43 @@ import CustomTextInput from './CustomTextInput';
 import {TextStyle} from 'react-native';
 
 LocaleConfig.locales.es = {
-  monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-  monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-  dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+  monthNames: [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre',
+  ],
+  monthNamesShort: [
+    'Ene',
+    'Feb',
+    'Mar',
+    'Abr',
+    'May',
+    'Jun',
+    'Jul',
+    'Ago',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dic',
+  ],
+  dayNames: [
+    'Domingo',
+    'Lunes',
+    'Martes',
+    'Miércoles',
+    'Jueves',
+    'Viernes',
+    'Sábado',
+  ],
   dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
   today: 'Hoy',
 };
@@ -21,6 +55,7 @@ interface Props {
   onChange: (value: string) => void;
   error?: boolean;
   title?: string;
+  editable?: boolean;
   maximumDate?: Date;
   minimumDate?: Date;
   style?: TextStyle;
@@ -36,6 +71,7 @@ const CustomDateCalendarPicker: React.FC<Props> = ({
   maximumDate,
   minimumDate,
   style,
+  editable = true,
 }) => {
   const [visible, setVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -86,6 +122,7 @@ const CustomDateCalendarPicker: React.FC<Props> = ({
         value={value ? format(parseISO(value), 'dd/MM/yyyy') : ''}
         onPressIn={openPicker}
         error={error}
+        editable={editable}
         left={<TextInput.Icon icon="calendar" />}
         showSoftInputOnFocus={false}
         style={[style]}
@@ -123,4 +160,3 @@ const CustomDateCalendarPicker: React.FC<Props> = ({
 };
 
 export default CustomDateCalendarPicker;
-

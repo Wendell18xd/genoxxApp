@@ -5,6 +5,7 @@ import {ControlOdometroStackNavigation} from '../presentation/features/flota/con
 import {LiquiMatATCStackNavigation} from '../presentation/features/gestionAtc/liquidarMateriales/navigations/LiquiMatATCStackNavigation';
 import {EjecucionObrasStackNavigation} from '../presentation/features/gestionObras/navigations/EjecucionObrasStackNavigation';
 import {LiquidacionObrasStackNavigation} from '../presentation/features/gestionObras/navigations/LiquidacionObrasStackNavigation';
+import RecepcionMateCampoStackNavigation from '../presentation/features/gestionObras/recepcionMaterialesCampo/navigations/RecepcionMateCampoStackNavigation';
 import {ReporteStockStackNavigation} from '../presentation/features/logistica/reporteStock/navigations/ReporteStockStackNavigation';
 import {ConsultaInspeccionStackNavigation} from '../presentation/features/prevencion/consultaInspeccion/navigations/ConsultaInspeccionStackNavigation';
 import {VerDocumentosStackNavigation} from '../presentation/features/prevencion/verDocumentos/navigations/verDocumentosStackNavigation';
@@ -20,8 +21,7 @@ export const drawerScreenComponents: Record<
   [Menu.LIQUIDACION_MATERIALES_OBRAS]: LiquidacionObrasStackNavigation, //NORMAL
   [Menu.CONSULTAR_EJECUCION_OBRAS]: EjecucionObrasStackNavigation, //NORMAL
   [Menu.LIQUIDACION_MATERIALES_OBRAS_ENERGIA]: LiquidacionObrasStackNavigation, //ENERGIA
-  // [Menu.LIQUIDACION_PARTIDAS_OBRAS]: LiquiPartObrasStackNavigation, //NORMAL
-  // [Menu.LIQUIDACION_PARTIDAS_OBRAS_ENERGIA]: LiquiPartObrasStackNavigation, //ENERGIA
+  [Menu.RECEPCION_MATERIALES_CAMPO]: RecepcionMateCampoStackNavigation, //NORMAL
   //Flota
   [Menu.CONSULTA_UNIDADES_FLOTA]: ConsultaUnidadesStackNavigation,
   [Menu.CONSULTA_HISTORICA_PATENTE_FLOTA]:

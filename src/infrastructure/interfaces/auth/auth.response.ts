@@ -1,3 +1,5 @@
+import {Menu} from '../../../domain/entities/User';
+
 export interface LoginResponse {
   datos: LoginDatos;
   mensaje: string;
@@ -10,7 +12,7 @@ export interface LoginDatos {
   correo: string;
   vehiculo: any[];
   usuario: Usuario;
-  menu: any[];
+  menu: Menu[];
 }
 
 export interface Empresa {

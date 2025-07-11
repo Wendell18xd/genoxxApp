@@ -8,6 +8,7 @@ export interface GrabarFotosObrasRequest {
   vl_fotos_comentarios: string[];
   vl_coord_x: string;
   vl_coord_y: string;
+  vl_nro_guia?: string;
 }
 
 export interface ListarFotosObrasRequest {
