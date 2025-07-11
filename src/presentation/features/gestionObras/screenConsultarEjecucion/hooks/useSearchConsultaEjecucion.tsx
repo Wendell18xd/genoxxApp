@@ -104,9 +104,7 @@ export const useSearchConsultaEjecucion = () => {
   } = useQuery({
     queryKey: ['consultarEjecucion'],
     queryFn: async () => {
-      console.log('Consultando con filtros:', filtrosRef.current);
       const {datos} = await getlistarConsultaEjecucion(filtrosRef.current);
-      console.log('Datos devueltos por API:', datos);
       return datos;
     },
     enabled: false,
@@ -150,7 +148,6 @@ export const useSearchConsultaEjecucion = () => {
       txt_hora: values.txt_hora ?? '',
     };
 
-    console.log('📤 Filtros enviados desde handleSearch (limpios):', filtros);
 
     filtrosRef.current = filtros;
     refetchConsultarEjecucion();
@@ -164,7 +161,6 @@ export const useSearchConsultaEjecucion = () => {
         SegmentedButtonsDetalleConsulta: item,
       });
     }
-    console.log(item.nro_orden);
   };
 
   return {

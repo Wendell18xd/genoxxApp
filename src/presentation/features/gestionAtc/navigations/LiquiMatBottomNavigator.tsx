@@ -7,11 +7,11 @@ import {
 import {MD3Colors} from 'react-native-paper/lib/typescript/types';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
-import NoSeriadosScreen from '../screens/NoSeriadosScreen';
-import RecuperosScreen from '../screens/RecuperosScreen';
-import DetalleLiquidarMatScreen from '../screens/DetalleLiquidarMatScreen';
-import SeriadosScreen from '../screens/seriados/SeriadosScreen';
+import MaterialIcons from '../../../components/ui/icons/MaterialIcons';
+import NoSeriadosScreen from '../liquidarMateriales/screens/NoSeriadosScreen';
+import RecuperosScreen from '../liquidarMateriales/screens/RecuperosScreen';
+import DetalleLiquidarMatScreen from '../liquidarMateriales/screens/DetalleLiquidarMatScreen';
+import SeriadosScreen from '../liquidarMateriales/screens/seriados/SeriadosScreen';
 
 export type DetalleBottomTabParam = {
   DetalleLiquidarMatScreen: undefined;

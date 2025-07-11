@@ -2,7 +2,7 @@ import { ConsultaHistoricaPatenteStackNavigation } from '../presentation/feature
 import { ConsultaInspeccionesStackNavigation } from '../presentation/features/flota/consultaInspecciones/navigations/ConsultaInspeccionesStackNavigation';
 import {ConsultaUnidadesStackNavigation} from '../presentation/features/flota/consultaUnidades/navigations/ConsultaUnidadesStackNavigation';
 import { ControlOdometroStackNavigation } from '../presentation/features/flota/controlOdometro/navigations/ControlOdometroStackNavigation';
-import {LiquiMatATCStackNavigation} from '../presentation/features/gestionAtc/liquidarMateriales/navigations/LiquiMatATCStackNavigation';
+import {LiquiMatATCStackNavigation} from '../presentation/features/gestionAtc/navigations/LiquiMatATCStackNavigation';
 import { EjecucionObrasStackNavigation } from '../presentation/features/gestionObras/navigations/EjecucionObrasStackNavigation';
 import {LiquidacionObrasStackNavigation} from '../presentation/features/gestionObras/navigations/LiquidacionObrasStackNavigation';
 import {ReporteStockStackNavigation} from '../presentation/features/logistica/reporteStock/navigations/ReporteStockStackNavigation';

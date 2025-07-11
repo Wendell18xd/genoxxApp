@@ -38,7 +38,6 @@ export const ConsultaEjecucionScreen = () => {
       });
     };
   }, []);
-  console.log('Ejecucion:', ejecucion);
   return (
     <DrawerLayout title="Consulta de Ejecución">
       {ejecucion && ejecucion.length > 0 ? (

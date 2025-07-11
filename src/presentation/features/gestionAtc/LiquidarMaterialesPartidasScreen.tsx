@@ -1,0 +1,92 @@
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { View, TouchableOpacity } from 'react-native';
+import { Text } from 'react-native-paper';
+import { FlatList } from 'react-native-gesture-handler';
+
+import DrawerLayout from '../main/layout/DrawerLayout';
+import { CustomFAB } from '../../components/ui/CustomFAB';
+import SinResultados from '../../components/ui/SinResultados';
+import CustomBottomSheet from '../../components/ui/bottomSheetModal/CustomBottomSheet';
+import { useBottomSheetModal } from '../../hooks/useBottomSheet';
+import { SearchLiquiATC } from './liquidarMateriales/screenLiquiMatATC/components/SearchLiquiATC';
+import { ItemLiquiMatATC } from './liquidarMateriales/screenLiquiMatATC/components/ItemLiquiMatATC';
+import { useLiquiMatATC } from './liquidarMateriales/screenLiquiMatATC/hooks/useLiquiMatATC';
+
+export const LiquidarMaterialesPartidasScreen = () => {
+  const { ref, open, close } = useBottomSheetModal();
+  const queryClient = useQueryClient();
+
+  const {
+    liquidacion,
+    isFetchingLiquidacion,
+    refetchLiquidacion,
+  } = useLiquiMatATC();
+
+  useEffect(() => {
+    return () => {
+      queryClient.removeQueries({
+        queryKey: [''],
+      });
+    };
+  }, []);
+
+  return (
+    <DrawerLayout title="Liquidación">
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          paddingHorizontal: 16,
+          marginTop: 12,
+        }}>
+        <TouchableOpacity
+          onPress={() => console.log('Ver pendientes de materiales')}
+          style={{
+            backgroundColor: '#FFC107',
+            paddingVertical: 8,
+            paddingHorizontal: 16,
+            borderRadius: 20,
+            elevation: 2,
+          }}>
+          <Text style={{ fontWeight: 'bold' }}>MATERIALES: 25</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => console.log('Ver pendientes de partidas')}
+          style={{
+            backgroundColor: '#FFC107',
+            paddingVertical: 8,
+            paddingHorizontal: 16,
+            borderRadius: 20,
+            elevation: 2,
+          }}>
+          <Text style={{ fontWeight: 'bold' }}>PARTIDAS: 28</Text>
+        </TouchableOpacity>
+      </View>
+
+      {liquidacion && liquidacion.length > 0 ? (
+        <FlatList
+          data={liquidacion}
+          contentContainerStyle={{ gap: 16, padding: 16 }}
+          refreshing={isFetchingLiquidacion}
+          onRefresh={refetchLiquidacion}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => <ItemLiquiMatATC liquidacion={item} />}
+        />
+      ) : (
+        <SinResultados message="No se encontraron resultados" />
+      )}
+
+      <CustomFAB
+        icon="magnify"
+        onPress={open}
+        style={{ bottom: 16, right: 16, marginBottom: 16 }}
+      />
+
+      <CustomBottomSheet ref={ref}>
+        <SearchLiquiATC onClose={close} />
+      </CustomBottomSheet>
+    </DrawerLayout>
+  );
+};
