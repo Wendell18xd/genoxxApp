@@ -1,6 +1,6 @@
 import {genoxxApi} from '../../config/api/genoxxApi';
-import {VerDocumentosRequest} from '../../infrastructure/interfaces/inspecciones/verDocumentos.request';
-import {VerDocumentosResponse} from '../../infrastructure/interfaces/inspecciones/verDocumentos.response';
+import {VerDocumentosRequest} from '../../infrastructure/interfaces/prevencion/verDocumentos/verDocumentos.request';
+import {VerDocumentosResponse} from '../../infrastructure/interfaces/prevencion/verDocumentos/verDocumentos.response';
 
 export const getListarDocumentos = async (
   props: VerDocumentosRequest,
