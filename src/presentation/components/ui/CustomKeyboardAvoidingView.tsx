@@ -4,6 +4,8 @@ import {
   StyleProp,
   ViewStyle,
 } from 'react-native';
+import {useKeyBoardVisible} from '../../hooks/useKeyBoardVisible';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 interface Props {
   children: React.ReactNode;
@@ -18,6 +20,13 @@ const CustomKeyboardAvoidingView = ({
   behavior,
   style,
 }: Props) => {
+  const {keyboardVisible} = useKeyBoardVisible();
+  const {bottom} = useSafeAreaInsets();
+
+  const verticalOffset = keyboardVisible
+    ? keyboardVerticalOffset
+    : 0;
+
   return (
     <KeyboardAvoidingView
       behavior={
@@ -26,10 +35,10 @@ const CustomKeyboardAvoidingView = ({
       style={[{flex: 1}, style]}
       keyboardVerticalOffset={
         Platform.OS === 'ios'
-          ? keyboardVerticalOffset + 40
-          : keyboardVerticalOffset
-      }>
-      {/* The children components will be rendered here */}
+          ? keyboardVerticalOffset + bottom
+          : verticalOffset
+      }
+      >
       {children}
     </KeyboardAvoidingView>
   );

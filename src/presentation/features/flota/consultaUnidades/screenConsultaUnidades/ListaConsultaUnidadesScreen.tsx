@@ -11,6 +11,8 @@ import {CustomFAB} from '../../../../components/ui/CustomFAB';
 import {ItemConsulta} from './components/ItemConsulta';
 import CustomBottomSheet from '../../../../components/ui/bottomSheetModal/CustomBottomSheet';
 import {SearchPlaca} from './components/SearchPlaca';
+import {View} from 'react-native';
+import CustomKeyboardAvoidingView from '../../../../components/ui/CustomKeyboardAvoidingView';
 
 export const ListaConsultaUnidadesScreen = () => {
   const {
@@ -43,46 +45,52 @@ export const ListaConsultaUnidadesScreen = () => {
 
   return (
     <DrawerLayout title="Consulta de Unidades">
-      {consulta && consulta.length > 0 ? (
-        <>
-          <Searchbar
-            placeholder="Filtrar por número de placa"
-            onChangeText={setSearchQuery}
-            value={searchQuery}
-            style={{marginHorizontal: 16, marginTop: 16}}
-          />
-          <FlatList
-            data={consulta?.filter(item =>
-              item.nro_placa?.toLowerCase().includes(searchQuery.toLowerCase()),
-            )}
-            keyExtractor={item => item.nro_placa}
-            contentContainerStyle={{gap: 16, padding: 16}}
-            refreshing={isFetchConsulta}
-            onRefresh={refetchConsulta}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item}) => (
-              <ItemConsulta
-                consulta={item}
-                onPress={() => {
-                  handleSelectConsulta(item);
-                }}
+      <View style={{flex: 1}}>
+        <CustomKeyboardAvoidingView keyboardVerticalOffset={0}>
+          {consulta && consulta.length > 0 ? (
+            <>
+              <Searchbar
+                placeholder="Filtrar por número de placa"
+                onChangeText={setSearchQuery}
+                value={searchQuery}
+                style={{marginHorizontal: 16, marginTop: 16}}
               />
-            )}
+              <FlatList
+                data={consulta?.filter(item =>
+                  item.nro_placa
+                    ?.toLowerCase()
+                    .includes(searchQuery.toLowerCase()),
+                )}
+                keyExtractor={item => item.nro_placa}
+                contentContainerStyle={{gap: 16, padding: 16}}
+                refreshing={isFetchConsulta}
+                onRefresh={refetchConsulta}
+                showsVerticalScrollIndicator={false}
+                renderItem={({item}) => (
+                  <ItemConsulta
+                    consulta={item}
+                    onPress={() => {
+                      handleSelectConsulta(item);
+                    }}
+                  />
+                )}
+              />
+            </>
+          ) : (
+            <SinResultados message="No se encontraron unidades, use la lupa para buscar" />
+          )}
+
+          <CustomFAB
+            icon="magnify"
+            onPress={open}
+            style={{bottom: 16, right: 16}}
           />
-        </>
-      ) : (
-        <SinResultados message="No se encontraron unidades, use la lupa para buscar" />
-      )}
 
-      <CustomFAB
-        icon="magnify"
-        onPress={open}
-        style={{bottom: 16, right: 16, marginBottom: 16}}
-      />
-
-      <CustomBottomSheet ref={ref}>
-        <SearchPlaca onClose={close} />
-      </CustomBottomSheet>
+          <CustomBottomSheet ref={ref}>
+            <SearchPlaca onClose={close} />
+          </CustomBottomSheet>
+        </CustomKeyboardAvoidingView>
+      </View>
     </DrawerLayout>
   );
 };

@@ -8,9 +8,11 @@ import {Searchbar} from 'react-native-paper';
 import SinResultados from '../../../../components/ui/SinResultados';
 import {CustomFAB} from '../../../../components/ui/CustomFAB';
 import CustomBottomSheet from '../../../../components/ui/bottomSheetModal/CustomBottomSheet';
-import { useSearchInspeccion } from './hooks/useSearchInspeccion';
-import { SearchInspeccion } from './components/SearchInspeccion';
-import { ItemInspeccion } from './components/ItemInspeccion';
+import {useSearchInspeccion} from './hooks/useSearchInspeccion';
+import {SearchInspeccion} from './components/SearchInspeccion';
+import {ItemInspeccion} from './components/ItemInspeccion';
+import {View} from 'react-native';
+import CustomKeyboardAvoidingView from '../../../../components/ui/CustomKeyboardAvoidingView';
 
 export const ListaConsultaInspeccionesScreen = () => {
   const {
@@ -43,46 +45,50 @@ export const ListaConsultaInspeccionesScreen = () => {
 
   return (
     <DrawerLayout title="Consulta de Inspecciones">
-      {inspeccion && inspeccion.length > 0 ? (
-        <>
-          <Searchbar
-            placeholder="Filtrar por número de placa"
-            onChangeText={setSearchQuery}
-            value={searchQuery}
-            style={{marginHorizontal: 16, marginTop: 16}}
-          />
-          <FlatList
-            data={inspeccion?.filter(item =>
-              item.placa?.toLowerCase().includes(searchQuery.toLowerCase()),
-            )}
-            keyExtractor={item => item.numero_inspeccion}
-            contentContainerStyle={{gap: 16, padding: 16}}
-            refreshing={isFetchInspeccion}
-            onRefresh={refetchInspeccion}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item}) => (
-              <ItemInspeccion
-                inspeccion={item}
-                onPress={() => {
-                  handleSelectInspeccion(item);
-                }}
+      <View style={{flex: 1}}>
+        <CustomKeyboardAvoidingView keyboardVerticalOffset={0}>
+          {inspeccion && inspeccion.length > 0 ? (
+            <>
+              <Searchbar
+                placeholder="Filtrar por número de placa"
+                onChangeText={setSearchQuery}
+                value={searchQuery}
+                style={{marginHorizontal: 16, marginTop: 16}}
               />
-            )}
+              <FlatList
+                data={inspeccion?.filter(item =>
+                  item.placa?.toLowerCase().includes(searchQuery.toLowerCase()),
+                )}
+                keyExtractor={item => item.numero_inspeccion}
+                contentContainerStyle={{gap: 16, padding: 16}}
+                refreshing={isFetchInspeccion}
+                onRefresh={refetchInspeccion}
+                showsVerticalScrollIndicator={false}
+                renderItem={({item}) => (
+                  <ItemInspeccion
+                    inspeccion={item}
+                    onPress={() => {
+                      handleSelectInspeccion(item);
+                    }}
+                  />
+                )}
+              />
+            </>
+          ) : (
+            <SinResultados message="No se encontraron inspecciones, use la lupa para buscar" />
+          )}
+
+          <CustomFAB
+            icon="magnify"
+            onPress={open}
+            style={{bottom: 16, right: 16}}
           />
-        </>
-      ) : (
-        <SinResultados message="No se encontraron inspecciones, use la lupa para buscar" />
-      )}
 
-      <CustomFAB
-        icon="magnify"
-        onPress={open}
-        style={{bottom: 16, right: 16, marginBottom: 16}}
-      />
-
-      <CustomBottomSheet ref={ref}>
-        <SearchInspeccion onClose={close} />
-      </CustomBottomSheet>
+          <CustomBottomSheet ref={ref}>
+            <SearchInspeccion onClose={close} />
+          </CustomBottomSheet>
+        </CustomKeyboardAvoidingView>
+      </View>
     </DrawerLayout>
   );
 };

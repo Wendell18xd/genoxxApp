@@ -105,7 +105,6 @@ const LoginScreen = () => {
                       {errors.contrasena}
                     </Text>
                   )}
-
                   {empresas && empresas.length > 0 && (
                     <View style={{marginTop: 8}}>
                       <CustomDropdownInput

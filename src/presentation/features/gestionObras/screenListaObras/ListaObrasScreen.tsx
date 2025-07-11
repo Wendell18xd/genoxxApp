@@ -18,7 +18,8 @@ import {globalColors} from '../../../styles/globalStyle';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {LiquidacionObrasStackParam} from '../navigations/LiquidacionObrasStackNavigation';
 import {listAllSaveActividadSinObraDB} from '../../../services/database/tablas/SaveActividadSinOrdenTabla';
-import { useEjecucionObrasStore } from '../ejecucionObras/store/useEjecucionObrasStore';
+import {useEjecucionObrasStore} from '../ejecucionObras/store/useEjecucionObrasStore';
+import CustomKeyboardAvoidingView from '../../../components/ui/CustomKeyboardAvoidingView';
 
 const valuesEjecucion = {
   cbo_proy_codigo: '',
@@ -107,83 +108,90 @@ export const ListaObrasScreen = () => {
 
   return (
     <DrawerLayout title="Lista de Obras">
-      {(isFetchObras || loadingActividades) && (
-        <FullScreenLoader
-          message={
-            opcionSeleccionada !== 'ejecutar' ? 'Cargando' : 'Sincronizando'
-          }
-          transparent={opcionSeleccionada !== 'ejecutar'}
-        />
-      )}
-
       <View style={{flex: 1}}>
-        {obras && obras.length > 0 ? (
-          <>
-            <Searchbar
-              placeholder="Filtrar por nro de orden"
-              onChangeText={setSearchQuery}
-              value={searchQuery}
-              style={{marginHorizontal: 16, marginTop: 16}}
+        <CustomKeyboardAvoidingView keyboardVerticalOffset={0}>
+          {(isFetchObras || loadingActividades) && (
+            <FullScreenLoader
+              message={
+                opcionSeleccionada !== 'ejecutar' ? 'Cargando' : 'Sincronizando'
+              }
+              transparent={opcionSeleccionada !== 'ejecutar'}
             />
+          )}
 
-            {opcionSeleccionada !== 'liquidar' && (
-              <ChipsFiltroEjecucion value={chipValue} setValue={setChipValue} />
+          <View style={{flex: 1}}>
+            {obras && obras.length > 0 ? (
+              <>
+                <Searchbar
+                  placeholder="Filtrar por nro de orden"
+                  onChangeText={setSearchQuery}
+                  value={searchQuery}
+                  style={{marginHorizontal: 16, marginTop: 16}}
+                />
+
+                {opcionSeleccionada !== 'liquidar' && (
+                  <ChipsFiltroEjecucion
+                    value={chipValue}
+                    setValue={setChipValue}
+                  />
+                )}
+
+                <FlatList
+                  data={obrasFilter?.filter(obra =>
+                    obra.nro_orden
+                      ?.toLowerCase()
+                      .includes(searchQuery.toLowerCase()),
+                  )}
+                  keyExtractor={item => item.regi_codigo}
+                  contentContainerStyle={{gap: 16, padding: 16}}
+                  refreshing={isFetchObras}
+                  onRefresh={
+                    opcionSeleccionada === 'liquidar' ? refetchObras : undefined
+                  }
+                  showsVerticalScrollIndicator={false}
+                  renderItem={({item}) => (
+                    <ItemObra
+                      obra={item}
+                      opcionSeleccionada={opcionSeleccionada}
+                      onPress={() => {
+                        handleSelectObra(item);
+                      }}
+                    />
+                  )}
+                />
+              </>
+            ) : (
+              <SinResultados
+                message={
+                  opcionSeleccionada === 'ejecutar'
+                    ? 'No tienes ordenes asignadas, Consultar con despacho'
+                    : 'No se encontraron obras, use la lupa para buscar'
+                }
+              />
             )}
 
-            <FlatList
-              data={obrasFilter?.filter(obra =>
-                obra.nro_orden
-                  ?.toLowerCase()
-                  .includes(searchQuery.toLowerCase()),
-              )}
-              keyExtractor={item => item.regi_codigo}
-              contentContainerStyle={{gap: 16, padding: 16}}
-              refreshing={isFetchObras}
-              onRefresh={
-                opcionSeleccionada === 'liquidar' ? refetchObras : undefined
-              }
-              showsVerticalScrollIndicator={false}
-              renderItem={({item}) => (
-                <ItemObra
-                  obra={item}
-                  opcionSeleccionada={opcionSeleccionada}
+            {opcionSeleccionada === 'ejecutar' && (
+              <>
+                <CustomFAB
+                  icon="plus"
+                  label={isInicio ? 'Iniciar Actividad' : 'Finalizar Actividad'}
                   onPress={() => {
-                    handleSelectObra(item);
+                    navigation.navigate('ActividaSinObra');
                   }}
+                  style={{bottom: 85, left: 16}}
+                  color={
+                    isInicio ? globalColors.secondary : globalColors.warning
+                  }
                 />
-              )}
-            />
-          </>
-        ) : (
-          <SinResultados
-            message={
-              opcionSeleccionada === 'ejecutar'
-                ? 'No tienes ordenes asignadas, Consultar con despacho'
-                : 'No se encontraron obras, use la lupa para buscar'
-            }
-          />
-        )}
-
-        {opcionSeleccionada === 'ejecutar' && (
-          <>
-            <CustomFAB
-              icon="plus"
-              label={isInicio ? 'Iniciar Actividad' : 'Finalizar Actividad'}
-              onPress={() => {
-                navigation.navigate('ActividaSinObra');
-              }}
-              style={{bottom: 85, left: 16}}
-              color={isInicio ? globalColors.secondary : globalColors.warning}
-            />
-            <CustomFAB
-              icon="sync"
-              label="Sincronizar"
-              loading={isFetchObras}
-              onPress={() => handleSearch(valuesEjecucion)}
-              style={{bottom: 16, left: 16}}
-              color={globalColors.primary}
-            />
-            {/* <CustomFABGroup
+                <CustomFAB
+                  icon="sync"
+                  label="Sincronizar"
+                  loading={isFetchObras}
+                  onPress={() => handleSearch(valuesEjecucion)}
+                  style={{bottom: 16, left: 16}}
+                  color={globalColors.primary}
+                />
+                {/* <CustomFABGroup
               actions={[
                 {
                   icon: 'plus',
@@ -198,18 +206,20 @@ export const ListaObrasScreen = () => {
                 },
               ]}
             /> */}
-          </>
-        )}
+              </>
+            )}
 
-        <CustomFAB
-          icon="magnify"
-          onPress={handleOpenSearch}
-          style={{bottom: 16, right: 16}}
-        />
+            <CustomFAB
+              icon="magnify"
+              onPress={handleOpenSearch}
+              style={{bottom: 16, right: 16}}
+            />
 
-        <CustomBottomSheet ref={ref}>
-          <SeleccionarOpcionObra onClose={close} />
-        </CustomBottomSheet>
+            <CustomBottomSheet ref={ref}>
+              <SeleccionarOpcionObra onClose={close} />
+            </CustomBottomSheet>
+          </View>
+        </CustomKeyboardAvoidingView>
       </View>
     </DrawerLayout>
   );

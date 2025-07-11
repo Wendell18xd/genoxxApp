@@ -1,4 +1,4 @@
-import {format, parseISO} from 'date-fns';
+import {parse, parseISO, format, isValid} from 'date-fns';
 
 export const parseLocalDate = (isoDateString: string): Date => {
   const [year, month, day] = isoDateString.split('-').map(Number);
@@ -9,19 +9,22 @@ export const formatearFecha = (
   fechaString?: string | null,
   formato = 'dd/MM/yyyy',
 ): string => {
-  if (!fechaString) {
-    return '';
-  }
-  if (fechaString.includes('1900')) {
+  if (!fechaString) return '';
+  if (fechaString.includes('1900')) return '';
+
+  let fecha;
+
+  if (fechaString.includes('-')) {
+    fecha = parseISO(fechaString);
+  } else if (fechaString.includes('/')) {
+    fecha = parse(fechaString, 'dd/MM/yyyy', new Date());
+  } else {
     return '';
   }
 
-  try {
-    const fecha = parseISO(fechaString);
-    return format(fecha, formato);
-  } catch (error) {
-    return '';
-  }
+  if (!isValid(fecha)) return '';
+
+  return format(fecha, formato);
 };
 
 export const obtenerMesYAnio = (

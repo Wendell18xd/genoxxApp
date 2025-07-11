@@ -12,6 +12,7 @@ import {useQueryClient} from '@tanstack/react-query';
 import {SearchConsultaHistoricaPatente} from './components/SearchConsultaHistoricaPatente';
 import {ItemConsultaHistoricaPersonal} from './components/ItemConsultaHistoricaPersonal';
 import {ItemConsultaHistoricaPatente} from './components/ItemConsultaHistoricaPatente';
+import {View} from 'react-native';
 
 export const ListaConsultaHistoricaPatenteScreen = () => {
   const {
@@ -52,58 +53,62 @@ export const ListaConsultaHistoricaPatenteScreen = () => {
   }, []);
   return (
     <DrawerLayout title="Consulta Histórica de Patente">
-      {!busquedaRealizada || !tipoBusqueda ? (
-        <SinResultados message="No se encontraron resultados, use la lupa para buscar" />
-      ) : consultaHistoricaPatente && consultaHistoricaPatente.length > 0 ? (
-        <>
-          <Searchbar
-            placeholder="Filtrar"
-            onChangeText={setSearchQuery}
-            value={searchQuery}
-            style={{marginHorizontal: 16, marginTop: 16}}
-          />
+      <View style={{flex: 1}}>
+        {!busquedaRealizada || !tipoBusqueda ? (
+          <SinResultados message="No se encontraron resultados, use la lupa para buscar" />
+        ) : consultaHistoricaPatente && consultaHistoricaPatente.length > 0 ? (
+          <>
+            <Searchbar
+              placeholder="Filtrar"
+              onChangeText={setSearchQuery}
+              value={searchQuery}
+              style={{marginHorizontal: 16, marginTop: 16}}
+            />
 
-          <FlatList
-            data={consultaHistoricaPatente.filter(item =>
-              (
-                (item.nro_placa ?? '') +
-                ' ' +
-                (item.cod_perfil ?? '') +
-                ' ' +
-                (item.nom_perfil ?? '')
-              )
-                .toLowerCase()
-                .includes(searchQuery.toLowerCase()),
-            )}
-            keyExtractor={item => item.cod_registro}
-            contentContainerStyle={{gap: 16, padding: 16}}
-            refreshing={isFetchConsultaHistoricaPatente}
-            onRefresh={refetchConsultaHistoricaPatente}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item}) =>
-              tipoBusqueda === 'PERS' ? (
-                <ItemConsultaHistoricaPersonal
-                  consultaHistoricaPersonal={item}
-                />
-              ) : (
-                <ItemConsultaHistoricaPatente consultaHistoricaPatente={item} />
-              )
-            }
-          />
-        </>
-      ) : (
-        <SinResultados message="No se encontraron resultados, use la lupa para buscar" />
-      )}
+            <FlatList
+              data={consultaHistoricaPatente.filter(item =>
+                (
+                  (item.nro_placa ?? '') +
+                  ' ' +
+                  (item.cod_perfil ?? '') +
+                  ' ' +
+                  (item.nom_perfil ?? '')
+                )
+                  .toLowerCase()
+                  .includes(searchQuery.toLowerCase()),
+              )}
+              keyExtractor={item => item.cod_registro}
+              contentContainerStyle={{gap: 16, padding: 16}}
+              refreshing={isFetchConsultaHistoricaPatente}
+              onRefresh={refetchConsultaHistoricaPatente}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item}) =>
+                tipoBusqueda === 'PERS' ? (
+                  <ItemConsultaHistoricaPersonal
+                    consultaHistoricaPersonal={item}
+                  />
+                ) : (
+                  <ItemConsultaHistoricaPatente
+                    consultaHistoricaPatente={item}
+                  />
+                )
+              }
+            />
+          </>
+        ) : (
+          <SinResultados message="No se encontraron resultados, use la lupa para buscar" />
+        )}
 
-      <CustomFAB
-        icon="magnify"
-        onPress={open}
-        style={{bottom: 16, right: 16, marginBottom: 16}}
-      />
+        <CustomFAB
+          icon="magnify"
+          onPress={open}
+          style={{bottom: 16, right: 16}}
+        />
 
-      <CustomBottomSheet ref={ref}>
-        <SearchConsultaHistoricaPatente onClose={handleClose} />
-      </CustomBottomSheet>
+        <CustomBottomSheet ref={ref}>
+          <SearchConsultaHistoricaPatente onClose={handleClose} />
+        </CustomBottomSheet>
+      </View>
     </DrawerLayout>
   );
 };

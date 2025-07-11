@@ -3,9 +3,11 @@ import { ConsultaInspeccionesStackNavigation } from '../presentation/features/fl
 import {ConsultaUnidadesStackNavigation} from '../presentation/features/flota/consultaUnidades/navigations/ConsultaUnidadesStackNavigation';
 import { ControlOdometroStackNavigation } from '../presentation/features/flota/controlOdometro/navigations/ControlOdometroStackNavigation';
 import {LiquiMatATCStackNavigation} from '../presentation/features/gestionAtc/liquidarMateriales/navigations/LiquiMatATCStackNavigation';
+import { EjecucionObrasStackNavigation } from '../presentation/features/gestionObras/navigations/EjecucionObrasStackNavigation';
 import {LiquidacionObrasStackNavigation} from '../presentation/features/gestionObras/navigations/LiquidacionObrasStackNavigation';
 import RecepcionMateCampoStackNavigation from '../presentation/features/gestionObras/recepcionMaterialesCampo/navigations/RecepcionMateCampoStackNavigation';
 import {ReporteStockStackNavigation} from '../presentation/features/logistica/reporteStock/navigations/ReporteStockStackNavigation';
+import { VerDocumentosStackNavigation } from '../presentation/features/prevencion/verDocumentos/navigations/verDocumentosStackNavigation';
 import {Menu} from './menus';
 
 export const drawerScreenComponents: Record<
@@ -16,13 +18,16 @@ export const drawerScreenComponents: Record<
   [Menu.LIQUIDACION_MATERIALES_ATC]: LiquiMatATCStackNavigation,
   //Obras
   [Menu.LIQUIDACION_MATERIALES_OBRAS]: LiquidacionObrasStackNavigation, //NORMAL
+  [Menu.CONSULTAR_EJECUCION_OBRAS]: EjecucionObrasStackNavigation, //NORMAL
   [Menu.LIQUIDACION_MATERIALES_OBRAS_ENERGIA]: LiquidacionObrasStackNavigation, //ENERGIA
   [Menu.RECEPCION_MATERIALES_CAMPO]: RecepcionMateCampoStackNavigation, //NORMAL
   //Flota
   [Menu.CONSULTA_UNIDADES_FLOTA]: ConsultaUnidadesStackNavigation,
   [Menu.CONSULTA_HISTORICA_PATENTE_FLOTA]: ConsultaHistoricaPatenteStackNavigation,
-  //Logistica
-  [Menu.REPORTE_STOCK]: ReporteStockStackNavigation,
   [Menu.CONSULTA_INSPECCIONES_FLOTA]: ConsultaInspeccionesStackNavigation,
   [Menu.CONTROL_ODOMETRO_FLOTA]: ControlOdometroStackNavigation,
+  //Logistica
+  [Menu.REPORTE_STOCK]: ReporteStockStackNavigation,
+  //Prevencion
+  [Menu.VER_DOCUMENTOS_PREVENCION]: VerDocumentosStackNavigation,
 };
