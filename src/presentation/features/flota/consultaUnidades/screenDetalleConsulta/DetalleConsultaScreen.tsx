@@ -221,7 +221,9 @@ export const DetalleConsultaScreen = () => {
               editable={false}
             />
           </View>
-          <View style={{flex: 1, marginRight: 8}}>
+        </View>
+        <View style={{flexDirection: 'row', marginBottom: 12}}>
+          <View style={{flex: 1}}>
             <CustomTextInput
               label={campos[21]?.label}
               value={campos[21]?.value ?? ''}
@@ -229,7 +231,10 @@ export const DetalleConsultaScreen = () => {
               editable={false}
             />
           </View>
-          <View style={{flex: 1}}>
+        </View>
+
+        <View style={{flexDirection: 'row', marginBottom: 12}}>
+          <View style={{flex: 1, marginRight: 8}}>
             <CustomTextInput
               label={campos[22]?.label}
               value={campos[22]?.value ?? ''}
@@ -237,9 +242,6 @@ export const DetalleConsultaScreen = () => {
               editable={false}
             />
           </View>
-        </View>
-
-        <View style={{flexDirection: 'row', marginBottom: 12}}>
           <View style={{flex: 1}}>
             <CustomTextInput
               label={campos[23]?.label}
@@ -249,6 +251,7 @@ export const DetalleConsultaScreen = () => {
             />
           </View>
         </View>
+
         <View style={{flexDirection: 'row', marginBottom: 12}}>
           <View style={{flex: 1}}>
             <CustomTextInput
