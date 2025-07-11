@@ -12,7 +12,6 @@ import {
 } from '../../../../../actions/gestionObras/consultaEjecucion.obras';
 import {Option} from 'react-native-paper-dropdown';
 import {mapToDropdown} from '../../../../../infrastructure/mappers/mapToDropdown';
-import {formatearFecha} from '../../../../helper/timeUtils';
 import {ConsultaEjecucion} from '../../../../../domain/entities/ConsultaEjecucion';
 import {useConsultaEjecucionStore} from '../../store/useConsultaEjecucionStore';
 
@@ -142,8 +141,8 @@ export const useSearchConsultaEjecucion = () => {
     const filtros: ListarConsultaEjecucionRequest = {
       vg_empr_codigo: user?.empr_codigo || '',
       vl_codi_perfil: user?.usua_perfil || '',
-      txt_fecha_inicio: formatearFecha(values.txt_fecha_inicio),
-      txt_fecha_final: formatearFecha(values.txt_fecha_final),
+      txt_fecha_inicio: values.txt_fecha_inicio,
+      txt_fecha_final: values.txt_fecha_final,
       cbo_elegido: values.cbo_elegido || '0',
       txt_buscar: values.txt_buscar ?? '',
       txt_actividad: values.txt_actividad ?? '',

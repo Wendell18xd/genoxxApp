@@ -11,22 +11,22 @@ export const FotosConsultaScreen = () => {
   const [visible, setVisible] = useState(false);
   const [indexSeleccionado, setIndexSeleccionado] = useState(0);
 
+  const FotoValida = (url?: string) => {
+    return (
+      typeof url === 'string' &&
+      url !== '' &&
+      url.trim().length > 0 &&
+      /\.(jpg|jpeg|png|webp)$/i.test(url.trim())
+    );
+  };
+
   const fotos = [];
-  if (consulta?.foto1) {
-    fotos.push({
-      uri: consulta.foto1,
-    });
-  }
-  if (consulta?.foto2) {
-    fotos.push({
-      uri: consulta.foto2,
-    });
-  }
-  if (consulta?.foto3) {
-    fotos.push({
-      uri: consulta.foto3,
-    });
-  }
+  if (consulta && FotoValida(consulta.foto1))
+    fotos.push({uri: consulta.foto1});
+  if (consulta && FotoValida(consulta.foto2))
+    fotos.push({uri: consulta.foto2});
+  if (consulta && FotoValida(consulta.foto3))
+    fotos.push({uri: consulta.foto3});
 
   const abrirVisor = (index: number) => {
     setIndexSeleccionado(index);
