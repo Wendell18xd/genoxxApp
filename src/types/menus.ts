@@ -11,4 +11,5 @@ export enum Menu {
   CONSULTA_INSPECCIONES_FLOTA = 'HistorialInspeccionesFragment',
   CONTROL_ODOMETRO_FLOTA = 'ControlOdometroFragment',
   VER_DOCUMENTOS_PREVENCION = 'VerDocumentosFragment'
+  RECEPCION_MATERIALES_CAMPO = 'RecepcionMaterialesCampoFragment',
 }

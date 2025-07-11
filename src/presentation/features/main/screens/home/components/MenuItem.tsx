@@ -37,6 +37,8 @@ const MenuItem = ({menu, mode = 'elevated', onPress}: Props) => {
 
         <Text
           variant="bodyMedium"
+          numberOfLines={3}
+          adjustsFontSizeToFit
           style={[styles.text, {color: colors.secondary}]}>
           {menu.menu_nombre}
         </Text>
@@ -58,6 +60,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 3,
+    paddingVertical: 0,
   },
   box: {
     width: 70,

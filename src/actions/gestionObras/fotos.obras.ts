@@ -41,6 +41,7 @@ export const grabarFotosMaterialesObras = async (
     formData.append('vl_tipo_archivo', props.vl_tipo_archivo);
     formData.append('vl_coord_x', props.vl_coord_x);
     formData.append('vl_coord_y', props.vl_coord_y);
+    formData.append('vl_nro_guia', props.vl_nro_guia ? props.vl_nro_guia : '');
 
     const {data} = await genoxxApi.post<GrabarFotosObrasResponse>(
       '/obras/save_fotos_obra_materiales',
