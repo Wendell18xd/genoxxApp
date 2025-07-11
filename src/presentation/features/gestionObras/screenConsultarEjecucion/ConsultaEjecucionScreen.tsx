@@ -64,11 +64,6 @@ export const ConsultaEjecucionScreen = () => {
                   />
                 )}
               />
-              <CustomFAB
-                icon="magnify"
-                onPress={open}
-                style={{bottom: 16, right: 16, marginBottom: 16}}
-              />
             </>
           ) : (
             <SinResultados message="No se encontraron resultados" />
