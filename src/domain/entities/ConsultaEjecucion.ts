@@ -14,6 +14,9 @@ export interface ConsultaEjecucion {
   foto3: string;
   hora_inicio: string;
   hora_fin: string;
+  link_foto1: string;
+  link_foto2: string;
+  link_foto3: string;
 }
 
 export interface ActividadesOrden {
