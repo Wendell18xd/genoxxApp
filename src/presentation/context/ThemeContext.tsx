@@ -30,6 +30,10 @@ const CombinedDefaultTheme = {
   },
   fonts: {
     ...MD3LightTheme.fonts,
+    bodySmall: {
+      ...MD3LightTheme.fonts.bodySmall,
+      letterSpacing: 0,
+    },
     regular: {fontFamily: 'Nunito-Regular', fontWeight: '400' as '400'},
     medium: {fontFamily: 'Nunito-Medium', fontWeight: '500' as '500'},
     bold: {fontFamily: 'Nunito-Bold', fontWeight: '700' as '700'},
