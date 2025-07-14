@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
 import {Card, Text} from 'react-native-paper';
-import MaterialIcons from '../../../../components/ui/icons/MaterialIcons';
+import MaterialIcons from '../../../../../components/ui/icons/MaterialIcons';
 
 interface Material {
   id: string;

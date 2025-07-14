@@ -63,8 +63,8 @@ export const SearchLiquiATC = ({onClose}: Props) => {
                     label="Tipo de Liquidación"
                     mode="outlined"
                     options={[
-                      {label: 'Solicitud', value: 'Solicitud'},
-                      {label: 'Petición', value: 'Petición'},
+                      {label: 'Solicitud', value: 'SOLI'},
+                      {label: 'Petición', value: 'PETI'},
                     ]}
                     value={values.tipoLiquidacion}
                     onSelect={val => setFieldValue('tipoLiquidacion', val)}

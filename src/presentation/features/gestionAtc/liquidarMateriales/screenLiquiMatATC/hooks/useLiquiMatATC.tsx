@@ -69,7 +69,7 @@ export const useLiquiMatATC = () => {
       vl_empr_codigo: user?.empr_codigo || '',
       txt_codi_perfil: user?.usua_perfil || '',
       txt_nro_buscar_doc: '',
-      cbo_proy_codigo: '',
+      cbo_proy_codigo: values.proyecto || '',
       cbo_elegido: values.tipoLiquidacion || '',
       txt_fecha_liquidacion: values.fechaLiquidacion || '',
     };
