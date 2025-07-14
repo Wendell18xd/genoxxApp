@@ -1,31 +1,28 @@
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Alert,
-  PermissionsAndroid,
-  Platform,
-} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, Linking} from 'react-native';
 import Pdf from 'react-native-pdf';
 import RNFS from 'react-native-fs';
 import MaterialIcons from './ui/icons/MaterialIcons';
+import Toast from 'react-native-toast-message';
+import {requestStoragePermission} from '../../actions/permissions/download';
 
 interface Props {
   url: string;
   onLoadEnd?: () => void;
 }
 
-export const PdfViewer = ({ url, onLoadEnd }: Props) => {
+export const PdfViewer = ({url, onLoadEnd}: Props) => {
   const handleDownload = async () => {
     try {
-      if (Platform.OS === 'android') {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        );
-        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-          Alert.alert('Permiso denegado', 'No se puede guardar el archivo');
-          return;
-        }
+      const permission = await requestStoragePermission();
+
+      if (permission !== 'granted') {
+        Toast.show({
+          type: 'error',
+          text1: 'Permiso denegado',
+          text2: 'Activa el permiso de almacenamiento para descargar',
+          onPress: () => Linking.openSettings(),
+        });
+        return;
       }
 
       const fileName = url.split('/').pop() || 'documento.pdf';
@@ -39,26 +36,33 @@ export const PdfViewer = ({ url, onLoadEnd }: Props) => {
       const result = await download.promise;
 
       if (result.statusCode === 200) {
-        Alert.alert('Éxito', 'El documento se descargó en tu carpeta de Descargas.');
+        Toast.show({
+          type: 'success',
+          text1: 'Documento descargado',
+          text2: 'Revisa tu carpeta de Descargas',
+        });
       } else {
-        throw new Error('No se pudo descargar el archivo');
+        throw new Error('Fallo al descargar el archivo');
       }
     } catch (error) {
       console.error('[PDF] Error al descargar:', error);
-      Alert.alert('Error', 'No se pudo descargar el documento.');
+      Toast.show({
+        type: 'error',
+        text1: 'Error al descargar',
+        text2: 'Ocurrió un problema inesperado',
+      });
     }
   };
 
   return (
     <View style={styles.container}>
       <Pdf
-        source={{ uri: url, cache: true }}
+        source={{uri: url, cache: true}}
         onLoadComplete={onLoadEnd}
         style={styles.pdf}
         trustAllCerts={false}
       />
 
-      {/* Botón flotante de descarga */}
       <TouchableOpacity style={styles.downloadButton} onPress={handleDownload}>
         <MaterialIcons name="download" size={24} color="#fff" />
       </TouchableOpacity>
@@ -84,4 +88,3 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
 });
-
