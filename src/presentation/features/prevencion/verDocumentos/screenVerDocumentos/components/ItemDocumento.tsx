@@ -1,4 +1,4 @@
-import {Linking, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {IconButton, Text, useTheme} from 'react-native-paper';
 import MaterialIcons from '../../../../../components/ui/icons/MaterialIcons';
 import {CustomCardContent} from '../../../../../components/ui/CustomCardContent';
@@ -7,9 +7,10 @@ import {formatearFecha} from '../../../../../helper/timeUtils';
 
 interface Props {
   consulta: ArrHijo;
+  onPress?: () => void;
 }
 
-export const ItemDocumento = ({consulta}: Props) => {
+export const ItemDocumento = ({consulta, onPress}: Props) => {
   const {colors} = useTheme();
 
   const iconosPorExtension: Record<string, string> = {
@@ -35,11 +36,7 @@ export const ItemDocumento = ({consulta}: Props) => {
 
   return (
     <>
-      <CustomCardContent
-        onPress={() => {
-          Linking.openURL(consulta.nom_archivo);
-        }}
-        mode="outlined">
+      <CustomCardContent onPress={onPress} mode="outlined">
         <View style={styles.container}>
           {/* ICONO */}
           <MaterialIcons

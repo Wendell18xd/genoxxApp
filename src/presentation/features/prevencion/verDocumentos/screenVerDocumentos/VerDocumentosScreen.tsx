@@ -14,8 +14,13 @@ import {SearchDocumentos} from './components/SearchDocumentos';
 import {Dato} from '../../../../../domain/entities/VerDocumentos';
 
 export const VerDocumentosScreen = () => {
-  const {consulta, errorConsulta, isFetchConsulta, refetchConsulta} =
-    useSearchDocumentos();
+  const {
+    consulta,
+    errorConsulta,
+    isFetchConsulta,
+    refetchConsulta,
+    handleSelectDocumento,
+  } = useSearchDocumentos();
 
   const {ref, open, close} = useBottomSheetModal();
   const queryClient = useQueryClient();
@@ -80,7 +85,12 @@ export const VerDocumentosScreen = () => {
                   {section.title}
                 </Text>
               )}
-              renderItem={({item}) => <ItemDocumento consulta={item} />}
+              renderItem={({item}) => (
+                <ItemDocumento
+                  consulta={item}
+                  onPress={() => handleSelectDocumento(item.nom_archivo)}
+                />
+              )}
             />
           </>
         ) : (
