@@ -19,14 +19,21 @@ export const PdfViewer = ({url, onLoadEnd}: Props) => {
         Toast.show({
           type: 'error',
           text1: 'Permiso denegado',
-          text2: 'Activa el permiso de almacenamiento para descargar',
+          text2: 'Activa el permiso de almacenamiento',
           onPress: () => Linking.openSettings(),
         });
         return;
       }
 
       const fileName = url.split('/').pop() || 'documento.pdf';
-      const destPath = `${RNFS.DownloadDirectoryPath}/${fileName}`;
+      const downloadDir = RNFS.DownloadDirectoryPath;
+      const destPath = `${downloadDir}/${fileName}`;
+
+      // ✅ Verifica o crea la carpeta Download
+      const exists = await RNFS.exists(downloadDir);
+      if (!exists) {
+        await RNFS.mkdir(downloadDir);
+      }
 
       const download = RNFS.downloadFile({
         fromUrl: url,
@@ -38,8 +45,8 @@ export const PdfViewer = ({url, onLoadEnd}: Props) => {
       if (result.statusCode === 200) {
         Toast.show({
           type: 'success',
-          text1: 'Documento descargado',
-          text2: 'Revisa tu carpeta de Descargas',
+          text1: 'Descarga completada',
+          text2: 'Archivo guardado en tu carpeta Descargas',
         });
       } else {
         throw new Error('Fallo al descargar el archivo');
@@ -49,11 +56,10 @@ export const PdfViewer = ({url, onLoadEnd}: Props) => {
       Toast.show({
         type: 'error',
         text1: 'Error al descargar',
-        text2: 'Ocurrió un problema inesperado',
+        text2: 'Verifica permisos o espacio disponible',
       });
     }
   };
-
   return (
     <View style={styles.container}>
       <Pdf
