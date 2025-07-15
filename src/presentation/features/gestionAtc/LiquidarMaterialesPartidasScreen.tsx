@@ -1,36 +1,47 @@
-import { useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
-import { View, TouchableOpacity } from 'react-native';
-import { Text } from 'react-native-paper';
-import { FlatList } from 'react-native-gesture-handler';
+import {useQueryClient} from '@tanstack/react-query';
+import {useEffect} from 'react';
+import {View, TouchableOpacity} from 'react-native';
+import {Text} from 'react-native-paper';
+import {FlatList} from 'react-native-gesture-handler';
 
 import DrawerLayout from '../main/layout/DrawerLayout';
-import { CustomFAB } from '../../components/ui/CustomFAB';
+import {CustomFAB} from '../../components/ui/CustomFAB';
 import SinResultados from '../../components/ui/SinResultados';
 import CustomBottomSheet from '../../components/ui/bottomSheetModal/CustomBottomSheet';
-import { useBottomSheetModal } from '../../hooks/useBottomSheet';
-import { SearchLiquiATC } from './liquidarMateriales/screenLiquiMatATC/components/SearchLiquiATC';
-import { ItemLiquiMatATC } from './liquidarMateriales/screenLiquiMatATC/components/ItemLiquiMatATC';
-import { useLiquiMatATC } from './liquidarMateriales/screenLiquiMatATC/hooks/useLiquiMatATC';
+import {useBottomSheetModal} from '../../hooks/useBottomSheet';
+import {SearchLiquiATC} from './liquidarMateriales/screenLiquiMatATC/components/SearchLiquiATC';
+import {ItemLiquiMatATC} from './liquidarMateriales/screenLiquiMatATC/components/ItemLiquiMatATC';
+import {useLiquiMatATC} from './liquidarMateriales/screenLiquiMatATC/hooks/useLiquiMatATC';
+import Toast from 'react-native-toast-message';
 
 export const LiquidarMaterialesPartidasScreen = () => {
-  const { ref, open, close } = useBottomSheetModal();
+  const {ref, open, close} = useBottomSheetModal();
   const queryClient = useQueryClient();
 
   const {
     liquidacion,
     isFetchingLiquidacion,
     refetchLiquidacion,
+    errorLiquidacion,
+    handleSelectLiquiMatATC,
   } = useLiquiMatATC();
+
+  useEffect(() => {
+    if (errorLiquidacion) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error al obtener la consulta',
+      });
+    }
+  }, [errorLiquidacion]);
 
   useEffect(() => {
     return () => {
       queryClient.removeQueries({
-        queryKey: [''],
+        queryKey: ['liquidacionATC'],
       });
     };
   }, []);
-
   return (
     <DrawerLayout title="Liquidación">
       <View
@@ -49,7 +60,7 @@ export const LiquidarMaterialesPartidasScreen = () => {
             borderRadius: 20,
             elevation: 2,
           }}>
-          <Text style={{ fontWeight: 'bold' }}>MATERIALES: 25</Text>
+          <Text style={{fontWeight: 'bold'}}>MATERIALES: 25</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -61,18 +72,25 @@ export const LiquidarMaterialesPartidasScreen = () => {
             borderRadius: 20,
             elevation: 2,
           }}>
-          <Text style={{ fontWeight: 'bold' }}>PARTIDAS: 28</Text>
+          <Text style={{fontWeight: 'bold'}}>PARTIDAS: 28</Text>
         </TouchableOpacity>
       </View>
 
       {liquidacion && liquidacion.length > 0 ? (
         <FlatList
           data={liquidacion}
-          contentContainerStyle={{ gap: 16, padding: 16 }}
+          contentContainerStyle={{gap: 16, padding: 16}}
           refreshing={isFetchingLiquidacion}
           onRefresh={refetchLiquidacion}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => <ItemLiquiMatATC liquidacion={item} />}
+          renderItem={({item}) => (
+            <ItemLiquiMatATC
+              liquidacion={item}
+              onPress={() => {
+                item.nro_ots !== '' ? handleSelectLiquiMatATC(item) : undefined;
+              }}
+            />
+          )}
         />
       ) : (
         <SinResultados message="No se encontraron resultados" />
@@ -81,7 +99,7 @@ export const LiquidarMaterialesPartidasScreen = () => {
       <CustomFAB
         icon="magnify"
         onPress={open}
-        style={{ bottom: 16, right: 16, marginBottom: 16 }}
+        style={{bottom: 16, right: 16, marginBottom: 16}}
       />
 
       <CustomBottomSheet ref={ref}>

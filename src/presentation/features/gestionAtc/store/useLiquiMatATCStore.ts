@@ -1,29 +1,19 @@
-import {Option} from 'react-native-paper-dropdown';
 import {create} from 'zustand';
+import {OrdenATC} from '../../../../domain/entities/OrdenATC';
 
 interface LiquiMatATCState {
-  liquidacion: Option[];
-  liquidacionSeleccionada: string;
-  isRefetchLiquidacion: boolean;
-  setLiquidacion: (liquidacion: Option[]) => void;
-  setLiquidacionSeleccionada: (liquidacion: string) => void;
-  setIsRefetchLiquidacion: (isRefetch: boolean) => void;
+  LiquidacionMat?: OrdenATC;
+  isRefetchLiquidacionMat: boolean;
+  setLiquidacionMat: (LiquidacionMat: OrdenATC) => void;
+  setIsRefetchLiquidacionMat: (isRefresthLiquidacionMat: boolean) => void;
   reset: () => void;
 }
 
 export const useLiquiMatATCStore = create<LiquiMatATCState>()(set => ({
-  liquidacion: [],
-  liquidacionSeleccionada: 'TODOS',
-  isRefetchLiquidacion: true,
-  setLiquidacion: (liquidacion: Option[]) => set({liquidacion}),
-  setLiquidacionSeleccionada: (liquidacion: string) =>
-    set({liquidacionSeleccionada: liquidacion}),
-  setIsRefetchLiquidacion: (isRefetch: boolean) =>
-    set({isRefetchLiquidacion: isRefetch}),
-  reset: () =>
-    set({
-      liquidacion: [],
-      liquidacionSeleccionada: 'TODOS',
-      isRefetchLiquidacion: true,
-    }),
+  LiquidacionMat: undefined,
+  isRefetchLiquidacionMat: false,
+  setLiquidacionMat: (LiquidacionMat: OrdenATC) => set({LiquidacionMat}),
+  setIsRefetchLiquidacionMat: (isRefetchLiquidacionMat: boolean) =>
+    set({isRefetchLiquidacionMat}),
+  reset: () => set({LiquidacionMat: undefined}),
 }));

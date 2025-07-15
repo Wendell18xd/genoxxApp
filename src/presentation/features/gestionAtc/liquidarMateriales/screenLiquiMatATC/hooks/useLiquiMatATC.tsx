@@ -4,7 +4,11 @@ import {getProyecto} from '../../../../../../actions/gestionATC/proyectosATC';
 import {useRef} from 'react';
 import {DocumentoOrdenesRequest} from '../../../../../../infrastructure/interfaces/gestionATC/ordenes/ordenesATC.request';
 import {getDocumentoOrdenes} from '../../../../../../actions/gestionATC/ordenesATC';
-import { mapToDropdown } from '../../../../../../infrastructure/mappers/mapToDropdown';
+import {mapToDropdown} from '../../../../../../infrastructure/mappers/mapToDropdown';
+import {OrdenATC} from '../../../../../../domain/entities/OrdenATC';
+import {useLiquiMatATCStore} from '../../../store/useLiquiMatATCStore';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {LiquiMatATCStackParam} from '../../../navigations/LiquiMatATCStackNavigation';
 
 interface LiquidarMatFromValues {
   proyecto: string;
@@ -23,6 +27,8 @@ const initialValues: LiquidarMatFromValues = {
 };
 export const useLiquiMatATC = () => {
   const {user} = useAuthStore();
+  const {setLiquidacionMat} = useLiquiMatATCStore();
+  const navigation = useNavigation<NavigationProp<LiquiMatATCStackParam>>();
 
   const filtrosRef = useRef<DocumentoOrdenesRequest>({
     vl_empr_codigo: user?.empr_codigo || '',
@@ -41,8 +47,7 @@ export const useLiquiMatATC = () => {
   } = useQuery({
     queryKey: ['proyectosATC'],
     queryFn: async () => {
-      const resp = await getProyecto({vl_empr_codigo: user?.empr_codigo || '',
-      });
+      const resp = await getProyecto({vl_empr_codigo: user?.empr_codigo || ''});
       return mapToDropdown(resp.datos, 'proy_alias', 'proy_codigo');
     },
   });
@@ -68,7 +73,7 @@ export const useLiquiMatATC = () => {
     const filtros: DocumentoOrdenesRequest = {
       vl_empr_codigo: user?.empr_codigo || '',
       txt_codi_perfil: user?.usua_perfil || '',
-      txt_nro_buscar_doc: '',
+      txt_nro_buscar_doc: values.nroSolicitud || values.nroPeticion || '',
       cbo_proy_codigo: values.proyecto || '',
       cbo_elegido: values.tipoLiquidacion || '',
       txt_fecha_liquidacion: values.fechaLiquidacion || '',
@@ -76,6 +81,15 @@ export const useLiquiMatATC = () => {
     filtrosRef.current = filtros;
     refetchLiquidacion();
     onClose?.();
+  };
+
+  const handleSelectLiquiMatATC = (item: OrdenATC) => {
+    if (item.nro_ots !== '') {
+      setLiquidacionMat(item);
+      navigation.navigate('SegmentedButtonsLiquiMatATC', {
+        SegmentedButtonsLiquiMatATC: item,
+      });
+    }
   };
 
   return {
@@ -90,5 +104,6 @@ export const useLiquiMatATC = () => {
     isFetchingLiquidacion,
     refetchLiquidacion,
     errorLiquidacion,
+    handleSelectLiquiMatATC,
   };
 };

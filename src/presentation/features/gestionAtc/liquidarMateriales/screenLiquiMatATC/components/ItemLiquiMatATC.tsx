@@ -13,13 +13,6 @@ interface Props {
 export const ItemLiquiMatATC = ({liquidacion, onPress}: Props) => {
   const {colors} = useTheme();
 
-  // 🔍 Log de depuración
-  console.log('Fecha cruda:', liquidacion.fecha_liquidacion);
-  console.log(
-    'Fecha formateada:',
-    formatearFecha(liquidacion.fecha_liquidacion),
-  );
-
   return (
     <CustomCardContent
       onPress={liquidacion.nro_ots ? onPress : undefined}

@@ -13,11 +13,18 @@ interface Props {
 }
 
 export const SearchLiquiATC = ({onClose}: Props) => {
-  const {initialValues, proyectos, isFetchingProyectos, handleSearch} =
-    useLiquiMatATC();
+  const {
+    initialValues,
+    proyectos,
+    isFetchingProyectos,
+    isFetchingLiquidacion,
+    handleSearch,
+  } = useLiquiMatATC();
   return (
     <View>
-      {isFetchingProyectos && <FullScreenLoader transparent />}
+      {(isFetchingProyectos || isFetchingLiquidacion) && (
+        <FullScreenLoader transparent />
+      )}
       <Formik
         initialValues={initialValues}
         onSubmit={values => handleSearch(values, onClose)}>
@@ -71,7 +78,7 @@ export const SearchLiquiATC = ({onClose}: Props) => {
                   />
                 </View>
 
-                {values.tipoLiquidacion === 'Solicitud' && (
+                {values.tipoLiquidacion === 'SOLI' && (
                   <View style={{width: 180}}>
                     <CustomTextInput
                       label="Número de Solicitud"
@@ -85,7 +92,7 @@ export const SearchLiquiATC = ({onClose}: Props) => {
                   </View>
                 )}
 
-                {values.tipoLiquidacion === 'Petición' && (
+                {values.tipoLiquidacion === 'PETI' && (
                   <View style={{width: 180}}>
                     <CustomTextInput
                       label="Número de Petición"
@@ -104,8 +111,8 @@ export const SearchLiquiATC = ({onClose}: Props) => {
                 onPress={() => handleSubmit()}
                 debounce
                 icon="magnify"
-                disabled={isFetchingProyectos}
-                loading={isFetchingProyectos}
+                disabled={isFetchingLiquidacion}
+                loading={isFetchingLiquidacion}
                 style={{marginTop: 16, width: '100%'}}
               />
             </View>
