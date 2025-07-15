@@ -13,4 +13,5 @@ export enum Menu {
   VER_DOCUMENTOS_PREVENCION = 'VerDocumentosFragment',
   CONSULTAR_INSPECCION_PREVENCION = 'ConsultarInspeccionFragment',
   RECEPCION_MATERIALES_CAMPO = 'RecepcionMaterialesCampoFragment',
+  PREVENCION_INSECCION = 'ListarInspeccionesAsigFragment',
 }

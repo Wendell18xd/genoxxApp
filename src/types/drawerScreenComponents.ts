@@ -8,6 +8,7 @@ import {LiquidacionObrasStackNavigation} from '../presentation/features/gestionO
 import RecepcionMateCampoStackNavigation from '../presentation/features/gestionObras/recepcionMaterialesCampo/navigations/RecepcionMateCampoStackNavigation';
 import {ReporteStockStackNavigation} from '../presentation/features/logistica/reporteStock/navigations/ReporteStockStackNavigation';
 import {ConsultaInspeccionStackNavigation} from '../presentation/features/prevencion/consultaInspeccion/navigations/ConsultaInspeccionStackNavigation';
+import {InspeccionesStackNavigation} from '../presentation/features/prevencion/inspeccion/navigation/InspeccionesStackNavigation';
 import {VerDocumentosStackNavigation} from '../presentation/features/prevencion/verDocumentos/navigations/verDocumentosStackNavigation';
 import {Menu} from './menus';
 
@@ -33,4 +34,5 @@ export const drawerScreenComponents: Record<
   //Prevencion
   [Menu.VER_DOCUMENTOS_PREVENCION]: VerDocumentosStackNavigation,
   [Menu.CONSULTAR_INSPECCION_PREVENCION]: ConsultaInspeccionStackNavigation,
+  [Menu.PREVENCION_INSECCION]: InspeccionesStackNavigation,
 };
