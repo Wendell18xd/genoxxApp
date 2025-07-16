@@ -1,8 +1,10 @@
 import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
-import {Divider, Text} from 'react-native-paper';
+import {Divider, IconButton, Text} from 'react-native-paper';
 import {globalColors} from '../../../styles/globalStyle';
 import {useObrasStore} from '../store/useObrasStore';
 import CustomScrollView from '../../../components/ui/CustomScrollView';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {LiquidacionObrasStackParam} from '../navigations/LiquidacionObrasStackNavigation';
 
 interface Props {
   label: string;
@@ -22,7 +24,7 @@ const LabelValueRow = ({label, value, style}: Props) => {
           {label}
         </Text>
       </View>
-      <View style={{flex: 0.6}}>
+      <View style={{flex: 0.6, flexDirection: 'row'}}>
         <Text variant="bodyMedium" /* numberOfLines={1} adjustsFontSizeToFit */>
           {value}
         </Text>
@@ -33,12 +35,33 @@ const LabelValueRow = ({label, value, style}: Props) => {
 
 export const DetalleObraScreen = () => {
   const {obra} = useObrasStore();
+  const navigation =
+    useNavigation<NavigationProp<LiquidacionObrasStackParam>>();
 
   return (
     <CustomScrollView contentContainerStyle={{padding: 32}}>
-      <Text variant="titleLarge" style={{fontWeight: 'bold'}}>
-        Información de la obra
-      </Text>
+      <View style={[styles.row, {alignItems: 'center'}]}>
+        <View style={{flex: 1}}>
+          <Text variant="titleLarge" style={{fontWeight: 'bold'}}>
+            Información de la obra
+          </Text>
+        </View>
+
+        {obra?.coordenada_x && (
+          <IconButton
+            icon="map-marker"
+            iconColor={globalColors.danger}
+            onPress={() => {
+              navigation.navigate('MapsScreen', {
+                latitude: parseFloat(obra?.coordenada_x || '0'),
+                longitude: parseFloat(obra?.coordenada_y || '0'),
+                label: obra?.nro_orden || '',
+                description: obra?.nombre || '',
+              });
+            }}
+          />
+        )}
+      </View>
 
       <Divider style={{marginVertical: 16}} />
 
@@ -72,6 +95,7 @@ export const DetalleObraScreen = () => {
       <LabelValueRow label="Nombre" value={obra?.nombre} />
 
       <Divider style={{marginVertical: 16}} />
+
       <LabelValueRow label="Dirección" value={obra?.direccion} />
 
       <Divider style={{marginVertical: 16}} />
