@@ -2,7 +2,7 @@ import {
   createDrawerNavigator,
   DrawerContentComponentProps,
 } from '@react-navigation/drawer';
-import {useWindowDimensions} from 'react-native';
+// import {useWindowDimensions} from 'react-native';
 import {useTheme} from 'react-native-paper';
 import {useAuthStore} from '../../store/auth/useAuthStore';
 import {RouteProp, useRoute} from '@react-navigation/native';
@@ -29,7 +29,7 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
 export const SideMenuNavigator = () => {
   const {menu: menuSelected} =
     useRoute<RouteProp<MainStackParam, 'SideMenuNavigator'>>().params;
-  const dimensions = useWindowDimensions();
+  // const dimensions = useWindowDimensions();
   const {colors} = useTheme();
   const {menu} = useAuthStore();
   const {setMenuSelected, setMenusValid} = useMainStore();
@@ -73,7 +73,7 @@ export const SideMenuNavigator = () => {
         drawerStyle: {
           backgroundColor: colors.background,
         },
-        drawerType: dimensions.width >= 768 ? 'permanent' : 'slide',
+        // drawerType: dimensions.width >= 768 ? 'permanent' : 'slide',
         // drawerItemStyle: {marginTop: -5},
         drawerInactiveTintColor: colors.onSurface,
         drawerActiveBackgroundColor: hexToRgba(colors.primary, 0.2),

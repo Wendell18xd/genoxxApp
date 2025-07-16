@@ -6,7 +6,7 @@
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>Select image/video from photos</string>
 		<key>NSCameraUsageDescription</key>
-		<string>Capture Image</string>
+		<string>La app necesita acceso a la cámara.</string>
 
 		<key>NSPhotoLibraryAddUsageDescription</key>
 		<string>Necesitamos acceso para guardar imágenes</string>
