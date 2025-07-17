@@ -21,7 +21,6 @@ export const useLiquiMat = () => {
       });
       return datos;
     },
-    enabled:false,
   });
 
 

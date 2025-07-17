@@ -1,4 +1,3 @@
-import {useLiquiMatATCStore} from '../../../store/useLiquiMatATCStore';
 import {useQueryClient} from '@tanstack/react-query';
 import {useCallback, useEffect, useRef} from 'react';
 import {View} from 'react-native';
@@ -12,7 +11,6 @@ import FullScreenLoader from '../../../../../components/ui/loaders/FullScreenLoa
 import { ItemMateLiquidados } from './components/ItemMateLiquidados';
 
 export const LiquiMatScreen = () => {
-  const {LiquidacionMat} = useLiquiMatATCStore();
   const QueryClient = useQueryClient();
   const hasShownError = useRef(false);
 
@@ -54,7 +52,7 @@ export const LiquiMatScreen = () => {
     <View style={globalStyle.container}>
       {isFetchLiquidacionATC && <FullScreenLoader transparent/>}
       <View style={[globalStyle.padding, {flex: 1}]}>
-      {LiquidacionMat?.nro_ots && LiquidacionMat.nro_ots.length > 0 ? (
+      {LiquidacionATC && LiquidacionATC.length > 0 ?  (
         <FlatList
           data={LiquidacionATC}
           refreshing={isFetchLiquidacionATC}
