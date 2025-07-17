@@ -1,9 +1,15 @@
-import {StyleSheet, View, TouchableOpacity, Linking} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Platform,
+  PermissionsAndroid,
+  Alert,
+} from 'react-native';
 import Pdf from 'react-native-pdf';
-import RNFS from 'react-native-fs';
-import MaterialIcons from './ui/icons/MaterialIcons';
 import Toast from 'react-native-toast-message';
-import {requestStoragePermission} from '../../actions/permissions/download';
+import RNFetchBlob from 'rn-fetch-blob-v2';
+import MaterialIcons from './ui/icons/MaterialIcons';
 
 interface Props {
   url: string;
@@ -13,53 +19,63 @@ interface Props {
 export const PdfViewer = ({url, onLoadEnd}: Props) => {
   const handleDownload = async () => {
     try {
-      const permission = await requestStoragePermission();
+      const {config, fs} = RNFetchBlob;
+      const isAndroid = Platform.OS === 'android';
+      const api =
+        typeof Platform.Version === 'string'
+          ? parseInt(Platform.Version, 10)
+          : Platform.Version;
 
-      if (permission !== 'granted') {
-        Toast.show({
-          type: 'error',
-          text1: 'Permiso denegado',
-          text2: 'Activa el permiso de almacenamiento',
-          onPress: () => Linking.openSettings(),
+      // Permiso solo para Android 10–12
+      if (isAndroid && api <= 32) {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        );
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+          Alert.alert('Permiso denegado', 'No se puede guardar el archivo');
+          return;
+        }
+      }
+
+      const fileName = url.split('/').pop() ?? 'documento.pdf';
+      const filePath = `${fs.dirs.DownloadDir}/${fileName}`;
+
+      config({
+        addAndroidDownloads: {
+          useDownloadManager: true,
+          notification: true,
+          path: filePath,
+          mime: 'application/pdf',
+          title: fileName,
+          description: 'Archivo descargado con Genoxx',
+        },
+      })
+        .fetch('GET', url)
+        .then(() => {
+          Toast.show({
+            type: 'success',
+            text1: 'Descarga completa',
+            text2: 'Archivo guardado en tu carpeta Descargas',
+          });
+        })
+        .catch(error => {
+          console.error('[PDF] Error de descarga:', error);
+          Toast.show({
+            type: 'error',
+            text1: 'Error al descargar',
+            text2: 'Revisa conexión o permisos',
+          });
         });
-        return;
-      }
-
-      const fileName = url.split('/').pop() || 'documento.pdf';
-      const downloadDir = RNFS.DownloadDirectoryPath;
-      const destPath = `${downloadDir}/${fileName}`;
-
-      // ✅ Verifica o crea la carpeta Download
-      const exists = await RNFS.exists(downloadDir);
-      if (!exists) {
-        await RNFS.mkdir(downloadDir);
-      }
-
-      const download = RNFS.downloadFile({
-        fromUrl: url,
-        toFile: destPath,
-      });
-
-      const result = await download.promise;
-
-      if (result.statusCode === 200) {
-        Toast.show({
-          type: 'success',
-          text1: 'Descarga completada',
-          text2: 'Archivo guardado en tu carpeta Descargas',
-        });
-      } else {
-        throw new Error('Fallo al descargar el archivo');
-      }
-    } catch (error) {
-      console.error('[PDF] Error al descargar:', error);
+    } catch (err) {
+      console.error('[PDF] Error inesperado:', err);
       Toast.show({
         type: 'error',
-        text1: 'Error al descargar',
-        text2: 'Verifica permisos o espacio disponible',
+        text1: 'Error inesperado',
+        text2: 'Ocurrió un error al descargar',
       });
     }
   };
+
   return (
     <View style={styles.container}>
       <Pdf
@@ -68,7 +84,6 @@ export const PdfViewer = ({url, onLoadEnd}: Props) => {
         style={styles.pdf}
         trustAllCerts={false}
       />
-
       <TouchableOpacity style={styles.downloadButton} onPress={handleDownload}>
         <MaterialIcons name="download" size={24} color="#fff" />
       </TouchableOpacity>
