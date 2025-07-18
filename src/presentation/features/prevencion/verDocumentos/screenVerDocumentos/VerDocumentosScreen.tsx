@@ -19,7 +19,6 @@ export const VerDocumentosScreen = () => {
     errorConsulta,
     isFetchConsulta,
     refetchConsulta,
-    handleSelectDocumento,
   } = useSearchDocumentos();
 
   const {ref, open, close} = useBottomSheetModal();
@@ -88,7 +87,6 @@ export const VerDocumentosScreen = () => {
               renderItem={({item}) => (
                 <ItemDocumento
                   consulta={item}
-                  onPress={() => handleSelectDocumento(item.nom_archivo)}
                 />
               )}
             />
