@@ -4,9 +4,11 @@ import MaterialIcons from '../../../../../components/ui/icons/MaterialIcons';
 import {CustomCardContent} from '../../../../../components/ui/CustomCardContent';
 import {ArrHijo} from '../../../../../../domain/entities/VerDocumentos';
 import {formatearFecha} from '../../../../../helper/timeUtils';
+import Toast from 'react-native-toast-message';
 
 interface Props {
   consulta: ArrHijo;
+  onPress?: () => void;
 }
 
 export const ItemDocumento = ({consulta}: Props) => {
@@ -33,13 +35,33 @@ export const ItemDocumento = ({consulta}: Props) => {
   const fechaFormateada = formatearFecha(consulta.fecha_vencimiento);
   const sinFecha = fechaFormateada === '';
 
+  const handlePress = async () => {
+    const url = consulta.nom_archivo;
+    const googleViewerUrl = `https://docs.google.com/viewerng/viewer?url=${encodeURIComponent(
+      url,
+    )}`;
+
+    try {
+      const supported = await Linking.canOpenURL(googleViewerUrl);
+      if (supported) {
+        await Linking.openURL(googleViewerUrl);
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'No se puede abrir el archivo',
+        });
+      }
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Ocurrió un error al intentar abrir el archivo',
+      });
+    }
+  };
+
   return (
     <>
-      <CustomCardContent
-        onPress={() => {
-          Linking.openURL(consulta.nom_archivo);
-        }}
-        mode="outlined">
+      <CustomCardContent onPress={handlePress} mode="outlined">
         <View style={styles.container}>
           {/* ICONO */}
           <MaterialIcons
