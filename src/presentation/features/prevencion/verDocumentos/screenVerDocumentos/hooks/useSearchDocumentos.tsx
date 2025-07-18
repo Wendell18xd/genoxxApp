@@ -78,12 +78,6 @@ export const useSearchDocumentos = () => {
     }
   };
 
-  // const handleSelectDocumento = (url: string) => {
-  //   navigation.navigate('WebViewerDocumentoScreen', {
-  //     url,
-  //   });
-  // };
-
   return {
     //* Propiedades
     initialValues,
@@ -96,6 +90,5 @@ export const useSearchDocumentos = () => {
     refetchConsulta,
     getValidationSchema,
     handleSelectPersonal,
-    // handleSelectDocumento,
   };
 };
