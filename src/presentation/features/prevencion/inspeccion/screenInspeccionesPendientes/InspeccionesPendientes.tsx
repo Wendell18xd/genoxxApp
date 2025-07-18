@@ -5,21 +5,24 @@ import {CustomFAB} from '../../../../components/ui/CustomFAB';
 import {useBottomSheetModal} from '../../../../hooks/useBottomSheet';
 import GenerarAutoInspeccion from './components/GenerarAutoInspeccion';
 import SinResultados from '../../../../components/ui/SinResultados';
-// import {useFirmaStore} from '../../../firma/store/useFirmaStore';
+import {useFirmaStore} from '../../../firma/store/useFirmaStore';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {InspeccionesStackParam} from '../navigation/InspeccionesStackNavigation';
 import {useScannerStore} from '../../../barcodeScanner/store/useScannerStore';
 import {useEffect} from 'react';
+import {Text} from 'react-native-paper';
+import {FadeInImage} from '../../../../components/ui/FadeInImage';
 
 const InspeccionesPendientes = () => {
   const {ref, open, close} = useBottomSheetModal();
   const navigation = useNavigation<NavigationProp<InspeccionesStackParam>>();
-  // const {firma, clearFirma} = useFirmaStore();
+  const {firma, clearFirma} = useFirmaStore();
   const {codigo, resetCodigo} = useScannerStore();
-  /* const openFirma = () => {
+
+  const openFirma = () => {
     clearFirma();
     navigation.navigate('FirmaScreen');
-  }; */
+  };
 
   const openScanBar = () => {
     resetCodigo();
@@ -28,23 +31,31 @@ const InspeccionesPendientes = () => {
 
   useEffect(() => {
     return () => {
-      // clearFirma();
+      clearFirma();
       resetCodigo();
     };
   }, []);
 
+  console.log(firma);
+
   return (
     <DrawerLayout>
       <View style={{flex: 1, padding: 16}}>
+        {/*
         <SinResultados message="No se encontraron inspecciones asiganadas" />
-
-        {/* {firma && (
+        {firma && (
           <FadeInImage uri={firma} style={{width: '100%', height: 200}} />
         )} */}
 
+        {firma && (
+          <FadeInImage uri={firma} style={{width: '100%', height: 200}} />
+        )}
+
+        <Text>{codigo}</Text>
+
         <CustomFAB
           icon="plus"
-          onPress={openScanBar}
+          onPress={openFirma}
           style={{bottom: 16, right: 16}}
         />
 

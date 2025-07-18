@@ -29,8 +29,6 @@ const GenoxxApp = () => {
       );
 
       if (result === PermissionsAndroid.RESULTS.GRANTED) {
-        //todo: request for device token
-        requestToken();
       } else {
         Alert.alert(
           'Permisos de notificaciones denegados',
@@ -39,16 +37,6 @@ const GenoxxApp = () => {
       }
     } catch (error) {
       console.error('Error requesting permissions:', error);
-    }
-  };
-
-  const requestToken = async () => {
-    try {
-      await messaging().registerDeviceForRemoteMessages();
-      const token = await messaging().getToken();
-      console.log(token);
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -67,7 +55,16 @@ const GenoxxApp = () => {
 
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      console.log(remoteMessage);
+      /* Alert.alert(
+        remoteMessage.notification?.title || '',
+        remoteMessage.notification?.body || '',
+      ); */
+      Toast.show({
+        type: 'info',
+        text1: remoteMessage.notification?.title || '',
+        text2: remoteMessage.notification?.body || '',
+      });
     });
 
     return unsubscribe;
