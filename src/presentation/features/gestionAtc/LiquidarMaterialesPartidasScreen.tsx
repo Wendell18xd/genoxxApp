@@ -1,8 +1,7 @@
 import {useQueryClient} from '@tanstack/react-query';
-import {useEffect} from 'react';
-import {View, TouchableOpacity} from 'react-native';
+import {useEffect, useState} from 'react';
+import {View, TouchableOpacity, FlatList} from 'react-native';
 import {Text} from 'react-native-paper';
-import {FlatList} from 'react-native-gesture-handler';
 
 import DrawerLayout from '../main/layout/DrawerLayout';
 import {CustomFAB} from '../../components/ui/CustomFAB';
@@ -13,10 +12,12 @@ import {SearchLiquiATC} from './liquidarMateriales/screenLiquiMatATC/components/
 import {ItemLiquiMatATC} from './liquidarMateriales/screenLiquiMatATC/components/ItemLiquiMatATC';
 import {useLiquiMatATC} from './liquidarMateriales/screenLiquiMatATC/hooks/useLiquiMatATC';
 import Toast from 'react-native-toast-message';
+import { ModalOrdPendMate } from './liquidarMateriales/screenOrdenPendMateScreen/components/ModalOrdPendMate';
 
 export const LiquidarMaterialesPartidasScreen = () => {
   const {ref, open, close} = useBottomSheetModal();
   const queryClient = useQueryClient();
+  const [modalVisible, setModalVisible] = useState(false);
 
   const {
     liquidacion,
@@ -52,7 +53,7 @@ export const LiquidarMaterialesPartidasScreen = () => {
           marginTop: 12,
         }}>
         <TouchableOpacity
-          onPress={() => console.log('Ver pendientes de materiales')}
+          onPress={() => setModalVisible(true)}
           style={{
             backgroundColor: '#FFC107',
             paddingVertical: 8,
@@ -105,6 +106,11 @@ export const LiquidarMaterialesPartidasScreen = () => {
       <CustomBottomSheet ref={ref}>
         <SearchLiquiATC onClose={close} />
       </CustomBottomSheet>
+
+      <ModalOrdPendMate
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+      />
     </DrawerLayout>
   );
 };

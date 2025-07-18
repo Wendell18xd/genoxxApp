@@ -27,7 +27,7 @@ export const useOrdPendMate = () => {
       const {datos} = await getDocumentoOrdenes(filtrosRef.current);
       return datos.filter((orden) => orden.finaliza_material === '0');
     },
-    enabled: false,
+    // enabled: false,
   });
 
   return {
