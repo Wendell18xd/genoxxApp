@@ -8,8 +8,8 @@ import {
   LoginRequest,
   UpdatePasswordRequest,
 } from '../../infrastructure/interfaces/auth/auth.request';
-
 import {ForgotResponse} from '../../infrastructure/interfaces/auth/auth.response';
+import messaging from '@react-native-firebase/messaging';
 
 export const getLogin = async (props: LoginRequest): Promise<LoginResponse> => {
   try {
@@ -18,6 +18,14 @@ export const getLogin = async (props: LoginRequest): Promise<LoginResponse> => {
       txt_usua_clave: props.usuaClave,
       cbo_empr_codigo: props.emprCodigo,
     });
+
+    if (data.datos.estado === 1) {
+      await requestToken({
+        vg_empr_codigo: data.datos.usuario.empr_codigo,
+        vg_usua_perfil: data.datos.usuario.usua_perfil,
+      });
+    }
+
     return data;
   } catch (error) {
     throw new Error(error as string);
@@ -58,5 +66,24 @@ export const updatePassword = async (
     return data;
   } catch (error) {
     throw new Error(error as string);
+  }
+};
+
+const requestToken = async (props: {
+  vg_empr_codigo: string;
+  vg_usua_perfil: string;
+}) => {
+  try {
+    await messaging().registerDeviceForRemoteMessages();
+    const token = await messaging().getToken();
+    await genoxxApi.post<LoginResponse>('/auth/save_device_id', {
+      vg_empr_codigo: props.vg_empr_codigo,
+      vg_usua_perfil: props.vg_usua_perfil,
+      vl_device_id: token,
+    });
+    console.log(token);
+    return token;
+  } catch (error) {
+    console.log(error);
   }
 };

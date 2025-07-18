@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "72552521080",
+    "project_id": "genoxxv2-6694e",
+    "storage_bucket": "genoxxv2-6694e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:72552521080:android:44414e96667b91291a3c8d",
+        "android_client_info": {
+          "package_name": "com.ssisac.genoxxrn"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAv_8si5MqDa11vF4ya7xdQGV9gJ-ZXP4g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

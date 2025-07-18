@@ -6,7 +6,7 @@
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>Select image/video from photos</string>
 		<key>NSCameraUsageDescription</key>
-		<string>Capture Image</string>
+		<string>La app necesita acceso a la cámara.</string>
 
 		<key>NSPhotoLibraryAddUsageDescription</key>
 		<string>Necesitamos acceso para guardar imágenes</string>
@@ -15,7 +15,7 @@
 		<string>Necesito tu ubicación para mostrar el mapa</string>
 		<key>NSLocationTemporaryUsageDescriptionDictionary</key>
 		<dict>
-			<key>YOUR-PURPOSE-KEY</key>
+			<key>AIzaSyAtj6h1yq6R7_Bgk6TBgfQuLQl05zmYRS4</key>
 			<string>Necesito tu ubicacion para mostrar el mapa</string>
 		</dict>
 		<key>NSLocationWhenInUseUsageDescription</key>

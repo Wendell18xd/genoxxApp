@@ -14,6 +14,7 @@ import {LiquiPartObrasScreen} from '../liquidarPartidas/screenLiquiPartObras/Liq
 import {BuscadorActividadPartidaScreen} from '../../buscadores/buscadorActividadPartida/BuscadorActividadPartidaScreen';
 import {SegmentedButtonsEjecucionObras} from '../ejecucionObras/navigations/SegmentedButtonsEjecucionObras';
 import {ActividaSinObra} from '../ejecucionObras/ejecucionSinObra/screen-actividad/ActividaSinObra';
+import MapsScreen from '../../mapa/screen/MapsScreen';
 
 export type LiquidacionObrasStackParam = {
   ListaObrasScreen: undefined;
@@ -24,6 +25,12 @@ export type LiquidacionObrasStackParam = {
   LiquiPartObrasScreen: undefined;
   BuscadorActividadPartidaScreen: undefined;
   ActividaSinObra: undefined;
+  MapsScreen: {
+    latitude: number;
+    longitude: number;
+    label: string;
+    description: string;
+  };
 };
 
 const Stack = createStackNavigator<LiquidacionObrasStackParam>();
@@ -104,6 +111,10 @@ export const LiquidacionObrasStackNavigation = () => {
       <Stack.Screen
         name="BuscadorActividadPartidaScreen"
         component={BuscadorActividadPartidaScreen}
+      />
+      <Stack.Screen
+        name="MapsScreen"
+        component={MapsScreen}
       />
       <Stack.Screen name="CustomCameraScreen" component={CustomCameraScreen} />
       <Stack.Screen name="ActividaSinObra" component={ActividaSinObra} />
