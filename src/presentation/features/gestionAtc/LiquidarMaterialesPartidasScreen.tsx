@@ -12,12 +12,14 @@ import {SearchLiquiATC} from './liquidarMateriales/screenLiquiMatATC/components/
 import {ItemLiquiMatATC} from './liquidarMateriales/screenLiquiMatATC/components/ItemLiquiMatATC';
 import {useLiquiMatATC} from './liquidarMateriales/screenLiquiMatATC/hooks/useLiquiMatATC';
 import Toast from 'react-native-toast-message';
-import { ModalOrdPendMate } from './liquidarMateriales/screenOrdenPendMateScreen/components/ModalOrdPendMate';
+import {ModalOrdPendMate} from './liquidarMateriales/screenOrdenPendMateScreen/components/ModalOrdPendMate';
+import {useOrdPendMate} from './liquidarMateriales/screenOrdenPendMateScreen/hooks/useOrdPendMate';
 
 export const LiquidarMaterialesPartidasScreen = () => {
   const {ref, open, close} = useBottomSheetModal();
   const queryClient = useQueryClient();
   const [modalVisible, setModalVisible] = useState(false);
+  const {ordenesPendienteMate} = useOrdPendMate();
 
   const {
     liquidacion,
@@ -61,7 +63,9 @@ export const LiquidarMaterialesPartidasScreen = () => {
             borderRadius: 20,
             elevation: 2,
           }}>
-          <Text style={{fontWeight: 'bold'}}>MATERIALES: 25</Text>
+          <Text style={{fontWeight: 'bold'}}>
+            MATERIALES: {ordenesPendienteMate?.length ?? '...'}
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity

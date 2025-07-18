@@ -1,5 +1,6 @@
-import {Dialog, Button} from 'react-native-paper';
+import {Dialog, Button, Text} from 'react-native-paper';
 import {FlatList, View} from 'react-native';
+import {useEffect} from 'react';
 import {useOrdPendMate} from '../hooks/useOrdPendMate';
 import {ItemLiquiMatATC} from '../../screenLiquiMatATC/components/ItemLiquiMatATC';
 
@@ -16,9 +17,15 @@ export const ModalOrdPendMate = ({
 }: Props) => {
   const {
     ordenesPendienteMate,
-    isFetchingOrdenesPendienteMate,
-    refetchOrdenesPendienteMate,
+    isFetching,
+    refetch,
   } = useOrdPendMate();
+
+  useEffect(() => {
+    if (visible) {
+      refetch(); // fuerza que se actualice al abrir
+    }
+  }, [visible]);
 
   return (
     <Dialog
@@ -28,17 +35,27 @@ export const ModalOrdPendMate = ({
       <Dialog.Title style={{fontSize: 18}}>{title}</Dialog.Title>
 
       <Dialog.Content>
-        <View style = {{flex: 1}}>
+        {/* 🧱 View con altura fija para mostrar FlatList */}
+        <View style={{maxHeight: 400}}>
           <FlatList
-            data={ordenesPendienteMate}
-            contentContainerStyle={{gap: 12, padding: 12}}
-            refreshing={isFetchingOrdenesPendienteMate}
-            onRefresh={refetchOrdenesPendienteMate}
-            showsVerticalScrollIndicator={false}
+            data={ordenesPendienteMate ?? []}
+            keyExtractor={(item, index) => index.toString()}
+            contentContainerStyle={{gap: 12, paddingBottom: 16}}
+            refreshing={isFetching}
+            onRefresh={refetch}
+            showsVerticalScrollIndicator={true}
             renderItem={({item}) => <ItemLiquiMatATC liquidacion={item} />}
+            ListEmptyComponent={
+              !isFetching ? (
+                <Text style={{textAlign: 'center'}}>
+                  No hay órdenes pendientes
+                </Text>
+              ) : null
+            }
           />
         </View>
       </Dialog.Content>
+
       <Dialog.Actions>
         <Button onPress={onClose}>Cerrar</Button>
       </Dialog.Actions>

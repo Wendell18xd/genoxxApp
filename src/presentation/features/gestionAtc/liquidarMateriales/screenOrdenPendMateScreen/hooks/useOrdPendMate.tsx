@@ -18,22 +18,26 @@ export const useOrdPendMate = () => {
 
   const {
     data: ordenesPendienteMate,
-    isFetching: isFetchingOrdenesPendienteMate,
-    refetch: refetchOrdenesPendienteMate,
-    error: errorOrdenesPendienteMate,
-  } = useQuery({
-    queryKey: ['ordenesPendientes'],
+    isFetching,
+    refetch,
+    error,
+   } = useQuery({
+    queryKey: ['ordenesPendienteMate'],
     queryFn: async () => {
       const {datos} = await getDocumentoOrdenes(filtrosRef.current);
-      return datos.filter((orden) => orden.finaliza_material === '0');
+      return datos;
     },
-    // enabled: false,
   });
+
+  const ordenesPendientesMateriales = ordenesPendienteMate?.filter(o => o.finaliza_material === '0') ?? [];
+  const ordenesPendientesPartidas = ordenesPendienteMate?.filter(o => o.finaliza_partida === '0') ?? [];
 
   return {
     ordenesPendienteMate,
-    isFetchingOrdenesPendienteMate,
-    refetchOrdenesPendienteMate,
-    errorOrdenesPendienteMate,
+    ordenesPendientesMateriales,
+    ordenesPendientesPartidas,
+    isFetching,
+    refetch,
+    error,
   };
 };
